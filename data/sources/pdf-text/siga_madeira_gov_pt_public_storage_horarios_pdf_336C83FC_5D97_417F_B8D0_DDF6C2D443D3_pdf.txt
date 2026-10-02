@@ -1,0 +1,58 @@
+  SERVIÇO URBANO | URBAN SERVICE
+  022 Babosas
+            Babosas, T-22 (615)           Babosas, T-22 (615)                           Dias úteis                          Sábados                   Domingos e Feriados
+                                                                                       Working days                         Saturdays                 Sundays and Holidays
+           CAM Lombada, D (615B)          CAM Lombada, S (613A)
+ CAM Lombada, Serragem, D (580)           CAM Lombada, Serragem, S (613)                                        Partidas de: / Departures from:
+             CAM Lombada (1672)           CAM Lombada (1671)                      Centro          Babosas           Centro          Babosas           Centro          Babosas
+   Depois Serragem, Babosas (578)         Antes Serragem, Babosas (611)
+  R Portada STO António, D (578A)         R Portada STO António, S (609A)          07:15            07:00            07:20            07:00            07:25            07:00
+    STA Teresinha, Babosas, D (576)       STA Teresinha, Babosas, S (609)          07:40            07:45            08:15            07:50            08:15            07:50
+               Ponte Ferro, D (574)       Ponte Ferro, S (607)                     08:15            08:15            09:15            08:50            09:15            08:50
+  CZ CAM Desterro, Monte, D (572)         CZ CAM Desterro, Monte, S (605)
+                                                                                   08:45            08:45            10:15            09:45            10:15            09:45
+Depois CZ CAM Monte C22, D (570)          Depois CZ CAM Monte, S (603)
+    Sanatório João Almada, D (568)        Sanatório João Almada, S (601)           09:25            09:20            11:15            10:45            11:15            10:45
+Portada STO António, Ribeiro (568A)       Portada STO António, S2A (599A)          10:25            09:55            12:15            11:45            12:15            11:45
+ Portada STO António, Final (568B)        Portada STO António, S1A (599)           11:30            11:00            13:15            12:45            13:15            12:45
+         Entrada Sanatório, D (530)       Entrada Sanatório, S (559)
+                                                                                   12:15            12:00            14:15            13:45            14:15            13:45
+         Monte, Miradouro, D (528)        Monte, Miradouro, S (557)
+ Monte, Depois Miradouro, D (526)         Monte, Antes Miradouro, S (555)          12:40            12:45            15:45            14:45            15:45            14:45
+     Monte, Rua 1 de Maio, D (524)        Depois Pedreira, S (553)                 13:05            13:15            17:15            16:15            17:15            16:15
+           Monte, Pedreira, D (522)       Monte, Pedreira, S (551)                 13:25            13:35            18:45            17:45            18:45            17:45
+            CZ Livramento, D (520)        CZ Livramento, S (549)
+                                                                                   13:45            13:55            20:30            19:15            20:30            19:15
+        Monte, Pinheirinho, D (518)       Monte, Pinheirinho, S (547)
+     Antes CZ CAM dos Saltos (516)        CZ CAM dos Saltos (545)                  14:20            14:20            22:15            21:15            22:15            21:15
+      Monte, Penha França, D (514)        Monte, Penha França, S (543)             15:25            14:50
+            Antes Igreja I C M (512)      Depois Igreja I C M (541)                16:25            16:05
+                Igreja I C M, D (510)     Igreja I C M, S (539)
+                                                                                   17:25            17:00
+  Depois CZ LEV STA Luzia, D (508)        Antes CZ LEV STA Luzia, S (537)
+          ESCL B Perestrelo, D (506)      ESCL B Perestrelo, S (535)               18:05            18:00
+   Rua DR Ângelo A Silva, D (444C)        ESCL Bartolomeu, S (533A)                18:30            18:35
+                                          Rua DR Ângelo A Silva, S (491B)          19:10            19:10
+         Antes CZ Torrinha (444B)         Depois CZ Torrinha (491A)
+                                                                                   19:40            20:10
+ Antes CZ CAM Comboio, D (444A)           Antes CZ Rua Comboio (491)
+        Antes Rua STA Luzia (444)         CZ Rua STA Luzia (489)                   20:45            21:15
+   R Nova Pedro J Ornelas, D (442)        R Nova Pedro J Ornelas, S (487)          22:00            22:45
+   Rua Pedro J Ornelas, D2A (406)         Rua Pedro J Ornelas, ESCL (445)          23:30
+                                          Rua Pedro J Ornelas, Pena (443)
+    Colégio STA Teresinha, D (404)        Colégio STA Teresinha, S (441)
+    Rua Pedro J Ornelas, D3A (400)        R Pedro J Ornelas, Início (439)
+    ESCL Francisco Franco, D (614)        ESCL Francisco Franco, S (371A)
+          Rua do Matadouro (334)          Campo da Barca (371)
+     Centro Comercial Anadia (16)         Rua Oudinot (183B)
+       Praça Autonomia, D (156A)          Rua Artur Sousa Pinga (4)
+
+
+
+
+       Início carreira      Término     Paragem      (A) Código de Paragem
+       Starting point       Terminus    Bus stop         Bus stop Code
+
+ Dia 25 de Dezembro: Não se efetuam viagens. Dias 24 e 31 de Dezembro, 3ª feira de Carnaval e 5ª feira Santa: Serviço de Sábado (exceto se Domingo ou feriado).
+ On 25th December: No service. On 24th and 31st December, Mardi Gras and the Thursday before Easter: Saturday timetable (except if Sunday or Holiday).            DE/HF - 04.11.2024
+

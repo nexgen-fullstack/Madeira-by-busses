@@ -1,0 +1,56 @@
+  SERVIÇO URBANO | URBAN SERVICE
+   014 Álamos
+            Álamos, T-14 (710B)             Álamos, T-14 (710B)                          Dias úteis                          Sábados                   Domingos e Feriados
+                                                                                        Working days                         Saturdays                 Sundays and Holidays
+         Rua Antero Quental (710C)          CAM das Bróteas (710A)
+ Álamos, Saída CAM Bróteas (721A)           CAM Álamos, Beco Álamos (710)                                        Partidas de: / Departures from:
+           BC Álamos, Piscinas (723)        CAM Álamos, Dep LG Álamos (708)        Centro           Álamos           Centro           Álamos           Centro           Álamos
+    CAM Álamos LG Álamos (1670)             Igreja dos Álamos, S (706)
+          Igreja dos Álamos, D (727)        CAM Azinhaga, S3A (704A)                07:00            06:30            07:10            06:45            07:10            06:45
+         CAM Azinhaga, D1A (727A)           CAM Azinhaga, S2A (704)                 07:30            07:00            08:00            07:15            08:05            07:35
+          CAM Azinhaga, D2A (729)           CAM Azinhaga, S1A (702)                 08:00            07:15            08:40            07:35            08:55            08:30
+          CAM Azinhaga, D3A (731)           Golo, D (110)
+                         Golo, S (137)      Campo do Marítimo, T-46 (881)
+                                                                                    08:30            07:35            09:35            08:00            09:45            09:20
+    Rua Campo do Marítimo (1074)            TV Campo Marítimo, S (879)              09:00            07:55            10:30            08:30            10:45            10:15
+  TV Campo do Marítimo, D (1076)            R C Marítimo, QTA Falcão, S (877)       10:00            08:25            11:00            09:15            11:45            11:15
+ R C Marítimo, QTA Falcão, D (1078)         CAM Cemitério, QTA Leonor, S (953B)     11:05            08:50            11:30            10:05            12:45            12:15
+     CAM CEM, QTA Leonor, D (1080)          CAM Cemitério, QTA Falcão, S (953A)
+CAM Cemitério, QTA Falcão, D (906A)         Cemitério STO António (1296)
+                                                                                    12:05            09:20            12:00            10:55            13:45            13:15
+    Cemitério STO António, D (906)          Cemitério STO António, S (953)          12:35            10:00            12:35            11:30            15:00            14:15
+              CAM Terra Chã, D (908)        CAM Terra Chã, S (951)                  13:05            10:50            13:05            12:10            16:30            15:30
+     CAM Terra Chã, ESCL, D (908A)          CAM Terra Chã, ESCL, S (949A)           13:30            11:55            13:45            12:40            18:05            17:10
+       CAM Terra Chã, Beco, D (910)         CAM Terra Chã, Beco, S (949)
+Antigo C Saúde STO António (910A)           Junta Freguesia STO António (674A)
+                                                                                    14:15            12:55            15:00            13:05            19:05            18:30
+              CAM da Igreja, D (997)        CAM da Igreja, S (996)                  15:00            13:20            16:30            13:35            22:00
+     Ponte Ribeira Grande, D (1000)         Ponte Ribeira Grande, S (1001)          15:40            13:50            18:05            14:30
+          Jardins do Leme, D (1002)         Jardins do Leme, S (1003)               16:30            14:20            19:05            16:00
+        CZ Beco da Escola, D (1004)         CZ Beco da Escola, S (1005)
+            CZ Cine Teatro, D (1006)        CZ Cine Teatro, S (1007)
+                                                                                    17:05            15:00            20:30            17:10
+    CZ Beco da Madalena, D (1008)           CZ Beco da Madalena, S (1009)           17:35            15:50            22:30            18:35
+   CZ Azinhaga Ausentes, D (1010)           CZ Azinhaga Ausentes, S (1011)          18:05            16:30                             20:00
+        Azinhaga Ausentes, D (336)          Rua Levada do Cavalo (1115)             18:25            17:15
+       LEV Cavalo, Ferreiras, D (690)       Rua Nova Lev Cavalo (735)
+         BC Joaquim Carlos, D (692)         Rua Nova Levada Cavalo (733)
+                                                                                    18:40            17:45
+        TV Levada São João, D (694)         Hospital DR Nélio M, S2A (77)           19:10            18:10
+           Viaduto São João, D (650)        Centro, Freitas e Neto (73)             20:00            18:45
+                  Edifício 2000 (652)       Hotel Savoy, S (37)                     21:00            19:25
+                                            Hotel Casino Park, S (35)
+                           Marina (700)     R J Dias Leite (33)
+                                                                                    22:30            20:35
+                                            Galerias (31)                           00:10            21:45
+                          Praça Povo (2)    AV Mar, Alfândega (13)
+
+
+
+
+        Início carreira        Término     Paragem    (A) Código de Paragem
+        Starting point         Terminus    Bus stop       Bus stop Code
+
+  Dia 25 de Dezembro: Não se efetuam viagens. Dias 24 e 31 de Dezembro, 3ª feira de Carnaval e 5ª feira Santa: Serviço de Sábado (exceto se Domingo ou feriado).
+  On 25th December: No service. On 24th and 31st December, Mardi Gras and the Thursday before Easter: Saturday timetable (except if Sunday or Holiday).            DE/HF - 02.03.2026
+

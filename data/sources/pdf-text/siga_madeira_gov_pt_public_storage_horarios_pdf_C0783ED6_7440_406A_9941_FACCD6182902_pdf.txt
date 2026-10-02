@@ -1,0 +1,69 @@
+SERVIÇO URBANO | URBAN SERVICE
+ 032 Rochinha
+                                                                                                                         Dias úteis
+         Rochinha, T-32 (297)            Rochinha, T-32 (297)
+                                                                                                                        Working days
+         Escola Salesiana, D (262)       Depois Escola Salesiana (1203)
+          Depois Salesianos (260)        Escola Salesiana ,S (295)                          Partidas Centro de:                        Partidas Rochinha com destino a:
+                                                                                             Departures from:                            Departures from Rochinha to:
+                                         Antes Escola Salesiana (293)
+   Início Rua COR Cunha, D (258)         Rua Mãe dos Homens (291)                     Esfera                   Marina                   Lombo                      Palácio
+                                                                                                               (Cais)                  Segundo*                  S Lourenço
+      Rua Coronel Cunha, D (256)         R COR Cunha COR Afonso, S (289)
+           Rua Nova Alegria (254)        Rua COR Cunha, Entrada (287)                 06:45                     07:20                    07:35                     07:05
+           Rua Nova Alegria (804)        Rua da Rochinha (285)                        08:25                     07:40 a)                 08:40                     07:50 a)
+        Antes C C Anadia, D (156)        Rua da Infância (187)                        09:30                     08:05                    09:45                     08:20
+      Praça Autonomia, D (156A)          Rua dos Profetas, EEM (183)                  10:35                     08:40                    10:50                     08:55
+               R 31 Janeiro, S (9A)      Esfera (152)                                 11:40                     09:10                    11:55                     09:25
+                                                                                      12:45                     10:00                    12:25                     10:20
+                                                                                      13:20                     12:05                    13:00                     13:20
+                                                                                      13:45                     13:05                    14:00                     13:40
+         Rochinha, T-32 (297)            Rochinha, T-32 (297)                         14:10                     16:45                    14:30                     16:10
+         Escola Salesiana, D (262)       Depois Escola Salesiana (1203)               14:55                     17:55                    15:20                     17:05
+          Depois Salesianos (260)        Escola Salesiana ,S (295)                    15:45                     19:15                    16:30                     18:50
+                                         Antes Escola Salesiana (293)                 16:10                     20:00                    17:55                     19:35
+                                         Rua Mãe dos Homens (291)                     17:20                                              18:10                     20:15
+   Início Rua COR Cunha, D (258)         R COR Cunha COR Afonso, S (289)              18:30                                              19:50
+      Rua Coronel Cunha, D (256)         Rua COR Cunha, Entrada (287)                 19:30                                              21:00
+           Rua Nova Alegria (254)                                                     20:45                                              22:10
+           Rua Nova Alegria (804)        Rua da Rochinha (285)                        21:50                                              23:15 b)
+        Antes C C Anadia, D (156)        Rua da Infância (187)                        23:05
+      Praça Autonomia, D (156A)          Rua dos Profetas, EEM (183)
+            Palácio S Lourenço (6)       Cais (1A)
+
+                                                                                                 Sábados                                     Domingos e Feriados
+                                                                                                 Saturdays                                   Sundays and Holidays
+                                                                                                         Partidas Rochinha                                  Partidas Rochinha
+                                                                               Partidas Centro de:        com destino a:          Partidas Centro de:        com destino a:
+                                                                                Departures from:          Departures from          Departures from:          Departures from
+                                                                                                            Rochinha to:                                       Rochinha to:
+                                                                                Esfera      Marina       Lombo Palácio S           Esfera      Marina       Lombo Palácio S
+                                                                                            (Cais)      Segundo* Lourenço                      (Cais)      Segundo* Lourenço
+                                                                                06:45       11:00        08:00         07:05       07:40       15:10        08:00         14:30
+                                                                                07:40       12:10        09:45         11:15       08:50       18:10        09:20         17:30
+                                                                                08:50       13:15        10:50         12:30       10:00                    10:20
+                                                                                10:35       15:30        11:55         13:35       11:00                    11:25
+                                                                                11:40       16:15        13:00         15:20       12:05                    12:30
+                                                                                12:45                    14:00         15:45       13:10                    13:35
+                                                                                13:45                    16:30                     14:15                    15:30
+                                                                                14:55                    17:35                     16:10                    16:25
+                                                                                17:20                    18:40                     17:05                    18:35
+                                                                                18:25                    19:50                     19:25                    19:45
+                                                                                19:30                    21:00                     20:40                    21:00
+                                                                                20:45                    22:10                     21:50                    22:10
+                                                                                21:50                    23:15                     23:00                    23:15
+                                                                                23:00
+
+
+
+
+                                                                               a) Nos dias letivos, efetua fim/início de viagem na Rot. S. João Bosco
+                                                                               b) Não faz ligação a Lombo Segundo, termina na paragem “R 31 Janeiro, S
+                                                                               (9A)”
+     Início carreira     Término       Paragem       (A) Código de Paragem
+     Starting point      Terminus      Bus stop          Bus stop Code
+                                                                               * Para consultar horário e paragens para o Lombo Segundo ver carreira 017.
+
+Dia 25 de Dezembro: Não se efetuam viagens. Dias 24 e 31 de Dezembro, 3ª feira de Carnaval e 5ª feira Santa: Serviço de Sábado (exceto se Domingo ou feriado).
+On 25th December: No service. On 24th and 31st December, Mardi Gras and the Thursday before Easter: Saturday timetable (except if Sunday or Holiday).            DE/HF - 25.07.2022
+

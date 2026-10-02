@@ -1,0 +1,59 @@
+  SERVIÇO URBANO | URBAN SERVICE
+  011 Trapiche
+                Graça, T-11 (185)          Graça, T-11 (185)                            Dias úteis                          Sábados                   Domingos e Feriados
+                                                                                       Working days                         Saturdays                 Sundays and Holidays
+       Início ESTR Laranjal, D (922)       Final ESTR Laranjal, S (920A)
+     ESTR Laranjal, Ribeiro, D (985)       ESTR Laranjal, Ribeiro, S (920)                                      Partidas de: / Departures from:
+      Casa Saúde Trapiche, D (750)         Casa Saude Trapiche, S (781)           Centro            Graça           Centro            Graça           Centro            Graça
+     ESTR Laranjal, Oficina, D (752)       ESTR Laranjal, Oficina, S (779)
+        Saída do Curral Velho (754)        ENT CAM Curral Velho (777)              06:50            06:20            07:25            06:20            07:25            06:20
+            Antes CZ Laranjal (756)        Depois CZ Laranjal (775)                07:30            07:00            07:55            07:00            08:15            07:00
+                CZ Laranjal, D (758)       CZ Laranjal, S (773)                    07:45            07:20            09:00            07:20            09:10            07:50
+        Capela do Laranjal, D (760)        Capela do Laranjal, S (771)
+   ESTR CMDT C Freitas, RMP (131)          Rampa, Laranjal, D (104)
+                                                                                   08:00            07:35            10:05            07:50            10:10            08:40
+            CAM Cemitério, D (902)         CAM Cemitério, S (957)                  08:30            08:00            11:10            08:20            11:10            09:40
+  CAM Cemitério, C Mármore (904)           Atrás Cemitério STO António (955)       09:05            08:15            12:10            09:30            12:10            10:45
+    Cemitério STO António, D (906)         Cemitério STO António, S (953)          09:35            08:30            13:10            10:35            13:10            11:35
+            CAM Terra Chã, D (908)         CAM Terra Chã, S (951)
+     CAM Terra Chã, ESCL, D (908A)         CAM Terra Chã, ESCL, S (949A)
+                                                                                   10:05            09:00            14:00            11:35            14:00            12:35
+      CAM Terra Chã, Beco, D (910)         CAM Terra Chã, Beco, S (949)            11:05            09:35            14:50            12:35            14:50            13:35
+Antigo C Saúde STO António (910A)          Junta Freguesia STO António (674A)      11:40            10:05            15:40            13:35            15:40            14:25
+        Igreja STO António, D (674)        Igreja STO António, S1A (699)           12:10            10:35            16:35            14:25            16:35            15:15
+     TV Igreja STO António, D (676)        TV Igreja STO António, S (697)
+           Quinta do Leme, D (678)         Quinta do Leme, S (695)
+                                                                                   12:40            11:35            17:35            15:15            17:35            16:05
+  CAM STO António, BC ESCL (680)           CAM STO António, BC ESCL, S (693)       13:10            12:10            18:30            16:05            18:30            17:05
+                APS Basilios, D (682)      APS Basilios, S (691)                   13:45            12:35            19:30            17:05            19:30            18:00
+          Madalenas, CTT, D (682A)         EDF Praças Madalenas, S (1291)          14:20            13:05            20:30            18:00            20:30            19:00
+    Madalenas, Depois CTT, D (684)         Madalenas, CTT, S (689)
+                           RTP (686)       APS Novos Frente RTP, S (1201)
+                                                                                   15:30            13:35            21:45            19:00            21:45            20:00
+                                           APS 4 Madalenas (687)                   16:00            14:20            23:30            20:00            23:30            21:00
+             Levada Cavalo, D (688)        Levada Cavalo, S (685)                  16:35            15:00                             21:00
+       LEV Cavalo, Ferreiras, D (690)      Pico S João, Ferreiras, S (683)         17:00            16:00
+         BC Joaquim Carlos, D (692)        Beco Joaquim Carlos, S (681)
+        TV Levada São João, D (694)        TV Levada São João, S (679)
+                                                                                   17:20            16:30
+          Viaduto São João, D (650)        Hotel São João (1129)                   17:35            17:05
+                                           Viaduto São João, S (673)               17:45            17:30
+                  Edifício 2000 (652)      Rua Brito Câmara (671)                  18:00            17:55
+                                           Rua Brito Câmara CC (893)
+                          Marina (700)     R J Dias Leite (33)
+                                                                                   18:30            18:15
+                                           Galerias (31)                           19:00            18:30
+                         Praça Povo (2)    AV Mar, Alfândega (13)                  19:20            19:30
+                                                                                   20:10            21:00
+                                                                                   21:45            22:15
+                                                                                   23:30
+
+
+
+
+       Início carreira        Término     Paragem    (A) Código de Paragem
+       Starting point         Terminus    Bus stop       Bus stop Code
+
+ Dia 25 de Dezembro: Não se efetuam viagens. Dias 24 e 31 de Dezembro, 3ª feira de Carnaval e 5ª feira Santa: Serviço de Sábado (exceto se Domingo ou feriado).
+ On 25th December: No service. On 24th and 31st December, Mardi Gras and the Thursday before Easter: Saturday timetable (except if Sunday or Holiday).            DE/HF - 02.03.2026
+

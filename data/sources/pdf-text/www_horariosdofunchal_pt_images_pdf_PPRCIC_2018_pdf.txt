@@ -1,0 +1,1665 @@
+Versão final – 19.02.19
+Índice
+
+    1.          Parte I – Atribuições da empresa e responsabilidades ........................................ 3
+         1.1.       Siglas e acrónimos .......................................................................................................... 3
+         1.2.       Âmbito ................................................................................................................................. 4
+         1.3.       A Empresa Horários do Funchal - Transportes Públicos, S.A. ..................... 5
+         1.4.       Estrutura Acionista ........................................................................................................ 5
+         1.5.       Participações Sociais ..................................................................................................... 5
+         1.6.       Composição dos Órgãos Sociais ................................................................................ 6
+         1.7.       Missão, Visão e Valores................................................................................................. 7
+         1.8.       Princípios Estruturantes de Atuação ...................................................................... 8
+         1.9.       Compromisso Ético ........................................................................................................ 9
+         1.10. Estrutura de Coordenação e Gestão do Plano .................................................. 10
+    2.    Parte II – Organigrama, Metodologia, definição de corrupção e tipologias,
+    plano de prevenção e medidas de mitigação ...................................................................... 11
+         2.1.       Organigrama .................................................................................................................. 11
+             Identificação dos responsáveis....................................................................................... 11
+                                                                        DRAFT
+
+
+
+
+         2.2. Enquadramento metodológico e classificação dos riscos de corrupção e
+         infrações conexas ...................................................................................................................... 13
+         2.3.       Níveis de probabilidade ............................................................................................ 14
+         2.4. Identificação dos riscos de corrupção e infrações conexas e
+         correspondentes medidas preventivas dos riscos ...................................................... 16
+         2.5.       Considerações finais ................................................................................................... 30
+         2.6.       ANEXO I – Glossário .................................................................................................... 31
+                    Definição de corrupção e alusão aos crimes conexos ................................... 31
+
+
+
+
+      PPRCIC_2018                                                                                                                                           2
+ 1. Parte I – Atribuições                              da    empresa          e
+    responsabilidades
+1.1. Siglas e acrónimos
+
+
+     ACFE – Association of Certified Fraud Examiners
+     ACA – Apoio ao Conselho de Administração
+     CA – Conselho de Administração
+     CCSG – Companhia de Carros de São Gonçalo, S.A.
+     CP – Código Penal (Lei n.º 16/2018, de 27/03)
+     CPC – Conselho de Prevenção da Corrupção
+     DAP – Divisão de Aprovisionamento
+     DAC – Divisão Administrativa de Contabilidade
+     DC – Departamento Comercial
+     DE – Direção de Serviços de Exploração
+     DEX – Divisão de Serviços de Exploração
+     DEP – Divisão de Engenharia e Planeamento
+                                        DRAFT
+
+
+
+
+     DF – Direção Financeira
+     DRH – Divisão de Recursos Humanos
+     DPR – Divisão de Produção
+     DT – Direção dos Serviços Técnicos
+     EEM –Empresa de Eletricidade da Madeira, S.A.
+     SG - Secretária-geral
+     GCM – Gabinete de Comunicação e Marketing
+     GJ – Gabinete Jurídico
+     GGCO – Gabinete de Gestão e Controlo Orçamental
+     GEP – Gabinete de Estudos e Planeamento
+     GOI – Gabinete de Organização e Informática
+     HF – Horários do Funchal – Transportes Públicos, S.A.
+     OPT – Otimização e Planeamento de Transportes, S.A.
+     PPRCIC – Plano de Prevenção de Riscos de Corrupção e Infrações Conexas
+     RAM – Região Autónoma da Madeira
+     UCSA – Unidade de Controlo Interno – Segurança e Ambiente
+
+
+       PPRCIC_2018                                                            3
+1.2. Âmbito
+
+       De acordo com as Recomendações, nº1/2009 de 1 de Julho, nº1/2010 de 7 de
+
+Abril, nº3/2015 de 1 de Julho, e a mais recente de 4 de Maio de 2017, do Conselho de
+
+Prevenção da Corrupção, entidade administrativa independente, que funciona junto
+
+do Tribunal de Contas e que desenvolve ações de âmbito nacional no domínio da
+
+prevenção da corrupção e infrações conexas, os órgãos máximos das entidades
+
+gestoras de dinheiros, valores, ou patrimónios públicos, seja qual for a sua natureza,
+
+devem elaborar Planos de Prevenção de Riscos de Corrupção e Infrações Conexas
+
+(doravante apenas referenciado por “PPRCIC” ou “Plano”), bem como realizar e
+
+apresentar relatórios anuais de execução.
+
+       Deste modo, dando seguimento ao disposto no Tratado sobre o
+
+Funcionamento da União Europeia, bem como ao Regulamento Financeiro (UE,
+
+EURATOM) n.º 966/2012 do Parlamento Europeu e do Conselho de 25 de Outubro de
+
+2012, e ainda, ao Regulamento (UE) n.º 1303/2013 do Parlamento Europeu e do
+                                            DRAFT
+
+
+
+
+Conselho de 17 de Dezembro de 2013, a empresa Horários do Funchal – Transportes
+
+Públicos, S.A. (doravante referenciada apenas como Horários do Funchal, Empresa
+
+ou HF), elaborou o presente PPRCIC.
+
+       Sendo um instrumento de gestão, o PPRCIC tem como função primordial
+
+identificar, fiscalizar e minimizar os riscos de corrupção e infrações conexas no
+
+âmbito da aquisição de bens e serviços. O presente Plano visa igualmente facultar
+
+todas as informações importantes sobre os riscos mais relevantes associados aos
+
+variados processos internos e identificar as medidas preventivas e corretivas que
+
+minimizem a probabilidade de ocorrência desses riscos.
+
+       O PPRCIC contribuirá para o alinhamento dos diferentes processos com os
+
+princípios éticos da Horários do Funchal, assim como para o reforço do sistema
+
+interno de gestão.
+
+
+
+
+         PPRCIC_2018                                                                4
+1.3. A Empresa Horários do Funchal - Transportes Públicos, S.A.
+
+
+       A Horários do Funchal dedica-se à prestação do serviço público de transporte
+
+coletivo de passageiros de âmbito urbano em regime de concessão, em exclusivo, e
+
+em circunstâncias e condições especiais, nas quais se relevam o seu espaço de
+
+atuação na RAM. Durante o ano de 2017, a Horários do Funchal efetuou o transporte
+
+de cerca de 16,8milhões de passageiros em meio urbano (Concelho do Funchal). Pese
+
+embora a difícil orografia e rede rodoviária sinuosa e complexa, o serviço de
+
+transporte é realizado com enorme qualidade tendo uma componente muito
+
+relevante ao nível social.
+
+
+
+1.4. Estrutura Acionista
+
+       O Governo Regional da Região Autónoma da Madeira é o principal acionista
+                                          DRAFT
+
+
+
+
+da Horários do Funchal, sendo detentor de 95% do seu capital social. Os restantes 5%
+
+são detidos pela Empresa de Eletricidade da Madeira, S.A.
+
+
+
+
+1.5. Participações Sociais
+
+A Horários do Funchal detém participação no capital social das seguintes Empresas:
+
+              Companhia dos Carros de São Gonçalo, S.A. (CCSG)
+
+A CCSG, é uma empresa detida, pela HF, em 100% do seu capital social.
+
+Está orientada para o transporte interurbano em autocarro, ligando o Concelho do
+
+Funchal ao Curral das Freiras, Camacha, Santo da Serra, Porto da Cruz, São Roque
+
+do Faial, Arco de São Jorge, Santana, São Jorge e Santa Cruz.
+
+O aludido transporte interurbano em autocarros, compreende além do transporte
+
+interurbano de passageiros, por linhas e segundo horários determinados, mesmo
+
+
+         PPRCIC_2018                                                              5
+com carácter sazonal, a exploração de outros transportes terrestres de passageiros
+
+diversos, excursões e outros fretamentos ocasionais de autocarros, incluindo a
+
+exploração de autocarros escolares e o aluguer de veículos pesados de passageiros
+
+com condutor.
+
+               Otimização e Planeamento de Transportes, S.A. (OPT)
+
+A Horários do Funchal detém uma participação acionista de 5% no capital social da
+
+OPT.
+
+A OPT tem como objeto social a concessão, produção, desenvolvimento e
+
+comercialização de software, bem como a prestação de serviços e instalação de
+
+equipamentos e sistemas informáticos, em particular sistemas de gestão integrada de
+
+transportes, incluindo a formação de quadros.
+
+
+
+
+1.6. Composição dos Órgãos Sociais
+                                         DRAFT
+
+
+
+
+       MESA DA ASSEMBLEIA GERAL
+
+               PRESIDENTE António José Jardim Faria
+
+               SECRETÁRIO António Manuel Pita Rentróia
+
+       CONSELHO DE ADMINISTRAÇÃO
+
+               PRESIDENTE Alejandro Marcelino Gonçalves Gonçalves
+
+               VOGAL Susana Maria Florença Pinto Correia
+
+               VOGAL Duarte Leovigildo Faria Sousa
+
+       FISCAL ÚNICO
+
+               BDO & Associados, Sociedade de Revisores Oficiais de Contas, Lda.
+
+                SROC nº.29
+
+
+
+
+        PPRCIC_2018                                                              6
+1.7. Missão, Visão e Valores
+
+       A Horários do Funchal, opera no Concelho do Funchal, tendo por missão
+
+prestar um serviço público de transporte coletivo urbano de passageiros aos
+
+habitantes deste Concelho.
+
+       Com o presente Plano, a Horários do Funchal visa coordenar, informar e
+
+sensibilizar os membros do Conselho de Administração e todos os seus
+
+colaboradores, da necessidade de prevenção dos riscos de corrupção e infrações
+
+conexas que possam, eventualmente, existir no seio da Empresa.
+
+       O exercício da atividade da Horários do Funchal pauta-se por uma gestão
+
+equilibrada e racional, atenta às necessidades e exigências do interesse público e
+
+coletivo, visando assegurar o desenvolvimento de medidas orientadas para as suas
+
+áreas de atuação através de decisões sempre informadas, transparentes, participadas,
+
+isentas, idóneas, responsáveis e marcadas pela igualdade.
+                                           DRAFT
+
+
+
+
+       A gestão da Horários do Funchal assenta nos seguintes valores principais:
+
+      Transparência - acessibilidade, por todas partes interessadas às informações
+
+       institucionais referentes a assuntos que afetem os seus interesses, sendo
+
+       essencial    para     garantir   procedimentos   e/ou     atividades   isentas
+
+       proporcionando uma luta eficaz contra a corrupção e a fraude;
+
+      Probidade – agir de acordo com os princípios éticos e morais aceites numa
+
+       sociedade, devendo os seus colaboradores ter integridade de caráter;
+
+      Honestidade – obediência incondicional às regras morais existentes.
+
+A Empresa, acredita que estes são valores fundamentais à atuação de toda a sua
+
+estrutura, não prescindindo dos mesmos enquanto vetores de exercício da sua
+
+atividade e ação.
+
+
+
+
+         PPRCIC_2018                                                               7
+1.8. Princípios Estruturantes de Atuação
+
+
+       Considerando a missão, visão e valores a si cometidas, a Horários do Funchal
+
+rege-se por um conjunto de princípios estruturantes que enformam a sua atuação,
+
+entre os quais se destacam os seguintes:
+
+      Princípios do Serviço Público – Os colaboradores da HF encontram-se ao
+
+       serviço exclusivo da comunidade e dos cidadãos, prevalecendo sempre o
+
+       interesse público sobre os interesses particulares ou de grupo;
+
+      Princípio da Legalidade – Os colaboradores da HF atuam em conformidade
+
+       com os princípios constitucionais e de acordo com a Lei e o Direito;
+
+      Princípio da Justiça e Imparcialidade – Os colaboradores da HF, no exercício
+
+       da sua atividade, devem tratar de forma justa e imparcial todos os cidadãos,
+
+       atuando segundo rigorosos princípios de neutralidade;
+
+      Princípio da Igualdade – Os colaboradores da Hão podem beneficiar nem
+
+       prejudicar qualquer cidadão em função da sua ascendência, sexo, raça,
+                                           DRAFT
+
+
+
+
+       língua, convicções políticas, ideológicas ou religiosas, situação económica ou
+
+       condição social;
+
+      Princípios da Proporcionalidade – Os colaboradores da HF, no exercício da
+
+       sua atividade, só podem exigir aos cidadãos o indispensável à realização da
+
+       sua atividade;
+
+      Princípio da Colaboração e Boa-fé – Os colaboradores da HF, no exercício da
+
+       sua atividade, devem colaborar com os cidadãos, segundo o princípio da Boa-
+
+       Fé, tendo em vista a realização do interesse da comunidade e fomentar a sua
+
+       participação na realização da atividade administrativa;
+
+      Princípio da Informação e Qualidade – Os colaboradores da HF devem
+
+       prestar informações e/ou esclarecimentos de forma clara, simples, cortês e
+
+       rápida;
+
+      Princípios da Lealdade – Os colaboradores da HF, no exercício da sua
+
+       atividade, devem agir de forma leal, solidária e cooperante;
+
+
+
+
+        PPRCIC_2018                                                                8
+      Princípio da Integridade –          Os colaboradores da HF regem-se segundo
+
+       critérios de honestidade pessoal, de integridade e de caráter;
+
+      Princípio da Competência e Responsabilidade – Os colaboradores da HF
+
+       procedem de forma responsável e competente, dedicada e crítica,
+
+       empenhando-se na sua valorização profissional.
+
+
+
+
+1.9. Compromisso Ético
+
+       Para além dos princípios estruturantes que enformam a sua atuação, a
+
+Horários do Funchal tem presente que as relações que se estabelecem entre os seus
+
+colaboradores e clientes, assentam num conjunto de regras de conduta onde subsiste
+
+a ética empresarial.
+
+       Estas regras pretendem clarificar o modo de atuação dos colaboradores da
+
+Empresa, tendo permanentemente em conta os valores da organização, destacando-
+
+se os de maior relevância:
+                                             DRAFT
+
+
+
+
+               Honestidade no trabalho;
+
+               Lealdade com a Empresa;
+
+               Formação de uma consciência profissional;
+
+               Respeito pela dignidade da pessoa humana;
+
+               Segredo profissional;
+
+               Discrição no exercício da profissão;
+
+               Prestação de contas diariamente nos respetivos serviços;
+
+               Observação e respeito pelas normas administrativas da Empresa;
+
+               Tratamento cortês e respeitoso aos superiores, colegas, subordinados
+
+                hierárquicos e clientes;
+
+               Apoio e esforço para aperfeiçoamento da profissão.
+
+       O zelo e preservação pela honestidade e pelo cumprimento das regras de
+
+conduta estão representados em todas as áreas da Empresa.
+
+
+
+
+         PPRCIC_2018                                                              9
+1.10. Estrutura de Coordenação e Gestão do Plano
+
+
+
+      Na reunião do Conselho de Administração do dia 23 de janeiro de 2019,
+
+nomearam-se como elementos da estrutura de coordenação e gestão deste Plano, os
+
+membros Gabinete de Gestão e Controlo Orçamental, GGCO, apoiados pelo
+
+Gabinete Jurídico (GJ), pela Divisão de Recursos Humanos (DRH) e pelo
+
+Departamento Comercial (DC).
+
+
+
+
+      GGCO – Gabinete de gestão e controlo orçamental:
+
+              Dr. Miguel Bettencourt
+
+              Dr.ª Laura Castro
+
+
+
+      Apoio:
+
+      GJ – Gabinete jurídico
+                                        DRAFT
+
+
+
+
+              Dr.ª Inês Freitas
+
+              Dr. ª Raquel Henriques
+
+      DRH - Divisão de Recursos Humanos:
+
+              Ana Cristina Caíres
+
+      DC - Departamento Comercial:
+
+              Rúben Santos
+
+
+
+
+       PPRCIC_2018                                                          10
+2. Parte II – Organigrama, Metodologia, definição de
+  corrupção e tipologias, plano de prevenção e
+  medidas de mitigação
+
+ 2.1. Organigrama
+
+
+
+
+                                     DRAFT
+
+
+
+
+   Identificação dos responsáveis
+
+   CA – Conselho de Administração:
+         Presidente: Dr. Alejandro Gonçalves Gonçalves
+         Vogais: Eng.ª Susana Pinto Correia e Eng.º Duarte Sousa
+
+
+   ACA – Apoio ao Conselho de Administração: Sr.ª Sizaltina Andrade
+
+
+   GOI – Gabinete de Organização e Informática: Eng.º. Marco Louro
+
+
+
+
+   PPRCIC_2018                                                        11
+GEP – Gabinete Estudos e Planeamento: Dr. Claudio Mantero/ Dr. Pedro
+Ventura
+
+
+GCM – Gabinete de Comunicação e Marketing: Dr. Marco Vasconcelos
+
+
+GJ – Gabinete Jurídico: Dra. Inês Freitas/ Dra. Raquel Henriques
+
+
+UCSA – Unidade de Controlo Interno – Segurança e Ambiente: Engº. Bruno
+Sousa
+
+
+GGCO – Gabinete de Gestão e Controlo Orçamental: Dra. Laura Castro/ Dr.
+Miguel Bettencourt
+
+
+DC – Departamento Comercial: por designar – apoio do Dr. Pedro Ventura
+
+
+SG – Secretária-geral: Sr.ª Lídia Fernandes
+
+
+DRH – Divisão de Recursos Humanos: Dra. Ana Cristina Caíres
+                                   DRAFT
+
+
+
+
+DF – Direção Financeira:
+       DAC – Divisão Administrativa de Contabilidade: Dr. Carlos Camacho
+       – por acumulação de funções.
+
+
+DE – Direção de Serviços de Exploração
+       DEX – Divisão de Exploração: Sr. Silvino Jesus
+
+
+DT – Direção dos Serviços Técnicos
+       DPR – Divisão de Produção: Eng.º. Alfredo Pereira
+       DEP – Divisão de Engenharia e Planeamento: por designar – apoio do
+       Eng.º. Alfredo Pereira
+
+
+DAP – Divisão de Aprovisionamentos: Dr. Carlos Camacho
+
+
+
+
+PPRCIC_2018                                                              12
+    2.2. Enquadramento metodológico e classificação dos riscos de
+              corrupção e infrações conexas
+
+
+       O plano estruturou-se a partir de uma metodologia participativa, integrando
+
+as várias áreas da Horários do Funchal.
+
+       O método aplicado teve como princípio a organização de grupos focais
+
+relacionados com as várias estruturas nucleares e serviços. Para a elaboração do
+
+respetivo PPRCIC, partimos do princípio de que o conhecimento está interiorizado
+
+nas pessoas, com o pressuposto de extrair essa informação através da criação de
+
+grupos homogéneos. Esta técnica é de relativa facilidade, quer na sua
+
+implementação, quer na extração expedita de resultados para análise e respetivo
+
+diagnóstico.
+
+       Os grupos foram constituídos de forma homogénea através de pessoas com
+
+características semelhantes, a nível das suas funções e respetivas áreas que lhe estão
+
+conferidas.                                  DRAFT
+
+
+
+
+       Seguindo uma linha com base na literatura específica sobre metodologias
+
+participativas, todos os intervenientes foram explicitamente informados das razões
+
+do exercício, designadamente:
+
+                 A necessidade de definir de forma apropriada o bem-estar de todos e
+
+                  os impactos que a corrupção exerce sobre cada individuo em
+
+                  particular, mas também na organização e na sociedade como um todo;
+
+                 A necessidade de elevar os níveis de consciencialização;
+
+                 O interesse do conceito de corresponsabilidade e às suas implicações;
+
+                 O conteúdo e a forma de implementação do exercício.
+
+
+
+
+       PPRCIC_2018                                                                    13
+      2.3. Níveis de probabilidade
+
+
+           São diversos os fatores que levam a que uma determinada atividade e/ou
+
+   área seja considerada de maior ou menor risco, sendo difícil prever a ocorrência
+
+   de um evento e quais as consequências do mesmo.
+
+           Pelo que no âmbito deste PPRCIC, a classificação dos riscos terá por base
+
+   critérios de probabilidade da ocorrência e do impacto da mesma.
+
+           Assim, o nível de risco será uma combinação da probabilidade da
+
+   ocorrência com o impacto da mesma, e da qual resultará a graduação do risco –
+
+   conforme se encontra demonstrado nos gráficos infra.
+
+        Os níveis de probabilidade estão associados aos indicadores de impacto de
+
+risco e infrações numa escala de A a C, sendo que a letra A corresponde ao nível
+
+mais baixo.
+
+        Classificação do Risco: Combinação de Probabilidade (1=Baixa; 2=Média e 3 =
+                                              DRAFT
+
+
+
+
+Alta) e Impacto (A= Baixo; B= Médio e C= Alto).
+
+Classificação                             Consequências para a empresa
+
+                      Impacto muito significativo nos objetivos de negócio da empresa, ou
+  C        Alto       com graves consequências, elevadas perdas financeiras, danos graves
+                      de imagem e reputação ou importantes perdas humanas.
+
+                      Fortes consequências para a empresa com perdas financeiras
+  B
+          Médio       associadas, danos de imagem e reputação.
+                      Consequências ao nível departamental, com ou sem perdas
+  A        Baixo
+                      financeiras e possíveis danos para a empresa.
+
+
+
+           Para que possamos quantificar a probabilidade, o impacto na estrutura e
+
+   o grau de risco, decidimos atribuir valores para os riscos de 1 a 3, sendo que:
+
+
+
+
+           1– Nível Fraco;
+
+           2 – Nível Moderado;
+
+
+
+
+        PPRCIC_2018                                                                         14
+            3 – Nível Elevado.
+
+
+
+
+   Exemplo:
+
+                                                                            Grau
+Estrutura
+              Processo           Risco            Probabilidade   Impacto    de     Total
+Orgânica
+                                                                            Risco
+
+                        Favorecimento;
+            Contratação                                B
+DRH                     Conflito   de                               B        B       B
+            de pessoal
+                        interesses
+
+
+
+
+            Identificados os riscos, sinalizar-se-ão medidas de mitigação dos mesmos
+
+   que se encontram em curso e outras que poderão ser ativadas e implementadas
+
+   pelos respetivos responsáveis, com a consciência de que a gestão do risco é um
+
+   processo dinâmico e ininterrupto entre as diversas ações da organização.
+                                          DRAFT
+
+
+
+
+       PPRCIC_2018                                                                  15
+    2.4. Identificação dos riscos de corrupção e infrações conexas e correspondentes medidas preventivas dos riscos
+
+           Os riscos de corrupção e de infrações conexas que foram identificados e avaliados são as constantes no mapa que se segue e
+
+   avaliados conforme consta no ponto anterior.
+
+Departamentos/
+  Divisões /                                                   Identificação de                                     Grau de       Medidas e mecanismos vigentes de
+                                Atividades                                                Probabilidade   Impacto
+  Gabinetes/                                                        riscos                                           Risco           controlo interno e externo
+  Unidades
+
+
+
+                                                              Peculato de uso                  A              C       C
+
+
+                                                                                  DRAFT
+
+
+
+
+                                                                   Peculato                    B              C       C
+                 Funções       executivas,   nomeadamente                                                                     Formação e sensibilização em ética e
+                 coordenar, supervisionar e deliberar sobre                                                                   corrupção;
+     CA
+                 todas as áreas de atividade das unidades         Tráfico de
+                                                                                                                              Dupla validação;
+                 orgânicas da Empresa.                           influências;                  C              C       C
+                                                                                                                              Auditorias internas;
+
+                                                                                                                              Cumprimento da legislação;
+                                                               Abuso de poder
+                                                                                               C              C       C
+
+
+
+                                                                Administração
+                                                                                               C              C       C
+                                                                  danosa
+
+
+
+
+                                                                         PPRCIC_2018                                                                                 16
+Departamentos/
+  Divisões /                                                       Identificação de                                     Grau de       Medidas e mecanismos vigentes de
+                                  Atividades                                                  Probabilidade   Impacto
+  Gabinetes/                                                            riscos                                           Risco           controlo interno e externo
+  Unidades
+
+
+                                                                   Quebra de sigilo
+                       Efetua o processamento das minutas                                          A              B       B
+                                                                    profissional
+                  emanadas pelo Conselho de Administração, e
+                   receciona a correspondência, distribuindo-a
+                                pelos seus membros.                    Fuga de
+                   Redige as atas elaboradas pelos membros do        informação                    A              B       B
+                  CA, completando em certas circunstâncias os
+                     tópicos das respetivas reuniões, mantém
+                    atualizado o arquivo (geral e confidencial),
+                     coordena a agenda dos membros do CA;
+    ACA                                                            Peculato de uso                                                Formação e sensibilização em ética e
+                 Recebe diversas pessoas que se dirigem ao CA                         DRAFT
+
+
+                                                                                                   A              B       B       corrupção;
+                 (clientes, visitantes), encaminhando-os para os
+                                 respetivos destinos.                                                                             Dupla validação;
+                  Recebe as chamadas telefónicas destinadas ao
+                                                                                                                                  Auditorias internas;
+                      CA e estabelece comunicações entre os
+                 mesmos e todos os colaboradores da empresa,          Peculato                                                    Cumprimento da legislação;
+                                                                                                   A              B       B
+                   transmite instruções recebidas dos membros
+                   do CA para qualquer das áreas da empresa.
+                 Assegura a possibilidade de contacto imediato
+                  com os membros do CA na ausência destes e           Tráficode
+                             em situações de urgência.               influências                   B              B       B
+                     Procura resolver pequenos problemas de
+                      natureza puramente administrativa na
+                          ausência dos membros do CA.
+
+                                                                   Abuso de poder
+                                                                                                   B              B       B
+
+
+
+
+                                                                            PPRCIC_2018                                                                                  17
+Departamentos/
+  Divisões /                                                     Identificação de                                     Grau de       Medidas e mecanismos vigentes de
+                                  Atividades                                                Probabilidade   Impacto
+  Gabinetes/                                                          riscos                                           Risco           controlo interno e externo
+  Unidades
+
+                                                                 Violação do Sigilo
+                                                                   profissional;                 B              C       C
+
+                                                                                                                                Reforço nas medidas de prevenção do
+                                                                    Violação de                                                 acesso indevido a relatórios e dados nas
+                                                                    privacidade                  B              C       C       bases de dados;
+
+                                                                                                                                Registo de todos os pedidos de dados;
+                 Planeamento de sistemas de informação,
+                 desenvolvimento e manutenção de aplicações            Furto                                                    Formação e sensibilização na salvaguarda
+                 e gestão de tecnologia e infraestrutura.                                        B              B       B       dos dados;
+
+                 Resolução de pedidos de suporte dos                                                                            Formação e sensibilização em ética e
+                                                                   Recebimento
+                 colaboradores da HF, no domínio dos sistemas                       DRAFT
+
+
+
+                                                                                                                                corrupção;
+                                                                    indevido                     B              C       C
+     GOI         de informação utilizados pelas áreas de
+                                                                                                                                Reforço nas medidas de prevenção do
+                 negócio.
+                                                                                                                                acesso indevido às instalações;
+                 Arquiva a informação presente nos sistemas,       Apropriação
+                                                                                                                                Registo de todos os equipamentos
+                 base de dados e ficheiros da HF. Assegurao         ilegítima                    A              B       B       adquiridos;
+                 diálogo com entidades exteriores sobre
+                 matérias relacionadas com software e hardware                                                                  Registo dos abates dos equipamentos;
+                 e apresenta projetos para otimização da
+                                                                                                                                Registo de todos os acessos;
+                 utilização dos sistemas.
+                                                                                                                                Encriptação de toda a informação;
+                                                                 Abuso de poder                  B              C       C
+                                                                                                                                Alteração de códigos;
+
+
+
+
+                                                                           PPRCIC_2018                                                                                 18
+Departamentos/
+  Divisões /                                                      Identificação de                                     Grau de       Medidas e mecanismos vigentes de
+                                   Atividades                                                Probabilidade   Impacto
+  Gabinetes/                                                           riscos                                           Risco           controlo interno e externo
+  Unidades
+
+                                                                                                                                 Dupla validação;
+                                                                     Viagens de
+                                                                      trabalho                    B              B       B       Decisões tomada com base no cruzamento
+                                                                                                                                 de informação;
+                                                                    (ex. Civitas)
+                                                                                                                                 Atempada      aprovação    pelo   C.A.    do
+                                                                                                                                 itinerário;
+
+                 Gestão de projetos internos e externos.           Elaboração de                                                 Verificação por parte do DAP e da agência;
+                                                                                                  B              C       C
+                                                                      Estudos
+                 Cujas funções passam por gerir a produção de                                                                    Confidencialidade no tratamento de dados;
+                 estudos sobre a procura e atividade de                                                                          Analise pormenorizada por dois ou mais
+     GEP         exploração da HF, assim como, apoiar o CA                                                                       intervenientes;
+                 através de assessoria técnica e suporte                             DRAFT
+
+
+
+
+                 estratégico.                                                                                                    Os pedidos de pagamento e gestão da
+                                                                                                                                 informação das contas bancárias são geridos
+                 Acompanhar novos concursos de                                                                                   conjuntamente com a DAC. Solicita-se um
+                 financiamento e preparar candidaturas, gerir a                                                                  documento do banco e um documento do
+                 implementação de projetoscofinanciados e                                                                        parceiro para efetuar pagamento;
+                 reportar os pontos chaves para a
+                 implementação dos mesmos.                                                                                       A DAC fornece a informação base para a
+                                                                  Gestão financeira                                              elaboração dos relatórios financeiros, após o
+                                                                                                  B              C       C
+                                                                    de Projetos                                                  tratamento do GEP, a DAC volta a
+                                                                                                                                 conformar os valores totais. Os projetos
+                                                                                                                                 exigem auditorias;
+
+
+
+
+                                                                            PPRCIC_2018                                                                               19
+Departamentos/
+  Divisões /                                                     Identificação de                                     Grau de       Medidas e mecanismos vigentes de
+                                  Atividades                                                Probabilidade   Impacto
+  Gabinetes/                                                          riscos                                           Risco           controlo interno e externo
+  Unidades
+
+                                                                    Peculato
+                                                                                                 B              B       B
+
+
+
+                                                                 Peculato de uso                 B              B       B
+                 Responsável pela comunicação institucional da
+                 HF, nomeadamente na análise, tratamento e         Participação
+                 resposta das reclamações apresentadas pelos      económica em
+                 clientes.                                          negócios;                    B              B       B
+                 Desenvolve e coordena estratégias de                                                                           Consulta a 5 empresas, criando uma tabela
+                 marketing que visam adequar a prestação de                                                                     de qualidade e preço, em que são colocados
+                 serviços da empresa ao mercado onde se             Tráfico de      DRAFT
+
+                                                                                                                                os dados do fornecedor. Se o produto não
+    GCM                                                            Influências
+                 insere.                                                                         B              B       B       corresponder aos critérios de qualidade
+                                                                                                                                deixa de ser feita consultaa esse fornecedor;
+                 Assegurar que a empresa funciona segundo
+                 uma ótica de mercado e de responsabilidade                                                                     Rotatividade de empresas consultadas, onde
+                                                                 Abuso de poder
+                 social, garantindo que são tomadas todas as                                     B              B       B       trimestralmente são escolhidas novas
+                 medidas necessárias para a prestação do                                                                        empresas;
+                 melhor serviço.
+                                                                                                                                Rotação do Júri;
+                 Zela pela boa imagem da HF, junto dos seus
+                 clientes e da comunicação social, mantendo
+                 uma boa relação e prestando as informações
+                                                                 Quebra de sigilo
+                 necessárias.
+                                                                  profissional                   B              B       B
+
+
+
+
+                                                                          PPRCIC_2018                                                                                 20
+Departamentos/
+  Divisões /                                                       Identificação de                                     Grau de       Medidas e mecanismos vigentes de
+                                   Atividades                                                 Probabilidade   Impacto
+  Gabinetes/                                                            riscos                                           Risco           controlo interno e externo
+  Unidades
+
+                                                                     Conflito de
+                                                                     interesses                    B              C       C
+
+
+                                                                  Discricionariedade
+                                                                                                   B              C       C
+                 Assessorar e prestar o apoio jurídico
+                 necessário e solicitado internamente.             Favorecimento                                                  Avaliação rigorosa da situação de
+                                                                                                   A              C       C       acumulação e incompatibilidades;
+                 Assegurar a recolha e o tratamento sistemático
+                 e metódico da informação do foro jurídico
+     GJ          legislativo à HF.                                   Violação de
+                                                                     Segredo por                   A              C       C       Exigência de Declaração de inexistências de
+                                                                                      DRAFT
+
+
+
+
+                 Emitir pareceres e realizar o acompanhamento        Funcionário                                                  conflitos de interesse para todos os
+                 jurídico de processos de contratação no âmbito                                                                   funcionários em regime de acumulação de
+                 das várias áreas de direito aplicáveis, assim      Falsificação de                                               funções;
+                 como verificar a legalidade de qualquer             documentos                    B              C       C
+                                                                                                                                  Dupla Validação;
+                 documento ou comunicação da HF.
+
+                 Representar a Empresa perante autoridades        Corrupção Passiva
+                 governamentais, entidades públicas ou                                             A              C       C       Verificação da inexistência de
+                 privadas e em eventuais situações de litígio.                                                                    incompatibilidades e de conflito de
+                 Zelar pelo cumprimento das leis em vigor.                                                                        interesses.
+
+
+                                                                    Recebimento
+                                                                     indevido                      B              C       C
+
+
+
+
+                                                                             PPRCIC_2018                                                                                21
+Departamentos/
+  Divisões /                                                       Identificação de                                     Grau de       Medidas e mecanismos vigentes de
+                                   Atividades                                                 Probabilidade   Impacto
+  Gabinetes/                                                            riscos                                           Risco           controlo interno e externo
+  Unidades
+
+                 Colabora na definição da política geral da         Recebimento
+                                                                                                   B              B       B
+                 empresa relativa à prevenção de riscos de           indevido
+                 saúde e de segurança no trabalho e
+                 implementa o correspondente sistema de            Favorecimento                   B              B       B
+                 gestão.                                                                                                          Dupla/Tripla Validação;
+                                                                     Violação de
+                                                                                                   B              B       B
+                 Desempenha competências na gestão da                 segredo                                                     Critérios e condições da contratação;
+                 segurança nas instalações do Grupo; gere o seu
+                 património e elabora trabalhos de auditoria e    Corrupção passiva                B              B       B       Prova de inexistência de incompatibilidade
+    UCSA
+                 controlo às obras nas pequenas e grandes                                                                         e conflito de interesses;
+                 reparações.                                      Discricionariedade               B              B       B
+
+                 Apoia ainda na gestão de sinistros automóveis       Conflito de                                                  Controlo feito por picagem do ponto;
+                                                                                      DRAFT
+
+                                                                                                   B              B       B
+                 com terceiros e efetua a gestão ambiental.          interesses
+
+                                                                    Falsificação de
+                                                                                                   A              B       B
+                                                                     documentos
+
+
+                 É responsável pela realização, planeamento,       Acumulação de                                                  Dupla validação;
+                                                                                                   B              C       C
+                 gestão, elaboração, coordenação e controlo do        funções;
+                                                                                                                                  Avaliação rigorosa do risco de
+                 orçamento e plano de investimentos da             Favorecimento                   B              C       C       incompatibilidade de acumulação de
+                 empresa.                                                                                                         funções;
+   GGCO                                                              Conflito de
+                 Colabora com todos os departamentos da                                            B              C       C
+                                                                     interesses,                                                  Exigência de declaração de inexistência de
+                 empresa, prestando serviços de:                                                                                  conflitos de interesse;
+                 - Consultadoria financeira;                         Violação de                                                  Formação e sensibilização em ética e
+                                                                       segredo                     B              C       C       corrupção;
+                 - Gestão e controlo orçamental e de
+                                                                     profissional
+                 investimentos;
+
+
+
+
+                                                                             PPRCIC_2018                                                                                  22
+Departamentos/
+  Divisões /                                                    Identificação de                                     Grau de       Medidas e mecanismos vigentes de
+                                  Atividades                                               Probabilidade   Impacto
+  Gabinetes/                                                         riscos                                           Risco           controlo interno e externo
+  Unidades
+
+                 - Plano de negócios.                           Falsificação de
+                                                                                                B              C       C
+                                                                 documentos
+
+                                                                   Tráfico de
+                                                                                                B              C       C
+                                                                  influências
+
+                                                                Gestão danosa                   B              C       C
+
+                                                                Abuso de poder                  B              C       C
+
+                 Definir a política e estratégia comercial da      Peculato                     B              C       C
+                 empresa.
+
+                 Elaborar e determinar um plano de ação         Peculato de uso                 B              C       C
+                                                                                   DRAFT
+
+
+
+
+                 comercial e respetivo cronograma, de forma a
+                                                                   Tráfico de
+                 maximizar a sua quota de mercado e os seus                                     B              C       C
+                                                                  influências
+                 lucros, garantindo ao mesmo tempo a                                                                                        Dupla Validação;
+                 satisfação dos clientes.                         Conflito de
+                                                                                                B              C       C       Critérios de avaliação e análise de condições
+     DC                                                           interesses
+                 Colaborar na definição dos seguintes dados:                                                                             das empresas por um júri;
+                 volume de vendas que a empresa deve atingir;   Quebra de sigilo
+                                                                                                B              C       C       Prova de inexistência de incompatibilidade
+                 as oportunidades de negócio que devem ser       profissional
+                                                                                                                                         e conflito de interesses;
+                 exploradas; a tabela de preços a aplicar; os
+                                                                  Violação de
+                 produtos e/ou serviços que devem ser                                           B              C       C       Confidencialidade no tratamento de dados;
+                                                                   segredo
+                 desenvolvidos; as formas de publicidade e de
+                 promoção que devem ser utilizadas; os          Favorecimento                   B              C       C
+                 serviços que devem estar ao dispor dos
+                 clientes.                                       Recebimento
+                                                                                                B              C       C
+                                                                  indevido
+
+                                                                Abuso de poder                  B              C       C
+
+
+
+
+                                                                         PPRCIC_2018                                                                                23
+Departamentos/
+  Divisões /                                                      Identificação de                                     Grau de       Medidas e mecanismos vigentes de
+                                  Atividades                                                 Probabilidade   Impacto
+  Gabinetes/                                                           riscos                                           Risco           controlo interno e externo
+  Unidades
+
+                                                                      Fuga de
+                                                                                                  A              C       C
+                                                                    informação
+                 Elaborar mapas diários e mensais, relatórios,
+                 comunicações, gráficos, estatísticas e outros.   Peculato de uso                 A              C       C
+                                                                                                                                 Formação e sensibilização em ética e
+                 Receber e expedir correspondência.
+     SG                                                                                                                          corrupção;
+                                                                     Peculato                     B              C       C
+                 Arquivar documentos.
+                                                                                                                                 Dupla validação;
+                 Atender chamadas telefónicas e transmitir as        Tráfico de
+                                                                                                  B              C       C       Auditorias internas;
+                 respetivas mensagens.                              influências
+                                                                                                                                 Cumprimento da legislação;
+                                                                  Abuso de poder                  B              C       C
+
+                                                                  Quebra de sigilo   DRAFT
+
+
+
+
+                                                                                                  B              C       C
+                                                                   profissional
+
+                                                                     Peculato                     B              B       B       Maior rigor na verificação da área do
+                                                                                                                                 pessoal;
+                                                                  Peculato de uso                 B              B       B
+                                                                                                                                 Maior cautela e ponderação aquando do
+                                                                  Abuso de poder                  B              B       B
+                                                                                                                                 estudo dos custos, a fim de não prejudicar
+                                                                     Tráfico de                                                  financeiramente a empresa;
+                                                                                                  B              B       B
+                                                                     influência
+                                                                                                                                 Avaliações internas á execução dos
+                                                                  Imparcialidade                  B              B       B       orçamentos e custos com pessoal;
+                   Conceber, analisar e desenvolver políticas e
+                    técnicas de gestão de recursos humanos,         Participação                                                 Dupla validação de processos por parte do
+                   efetuar o levantamento de necessidades de       económica em                   B              B       B       Concelho de Administração;
+    DRH           formação, elaborar os planos para a mesma e        negócios;                                                   Maior rigor no controlo da apresentação dos
+                     controlar a qualidade da sua execução.                                                                      quadros de indicadores aos recursos
+                                                                     Suborno                      B              B       B       humanos;
+
+
+
+
+                                                                           PPRCIC_2018                                                                                   24
+Departamentos/
+  Divisões /                                                       Identificação de                                     Grau de       Medidas e mecanismos vigentes de
+                                  Atividades                                                  Probabilidade   Impacto
+  Gabinetes/                                                            riscos                                           Risco           controlo interno e externo
+  Unidades
+
+                     Coordenar processos de avaliação de           Quebra de sigilo                                               Verificação do rigor dos critérios de seleção
+                                                                                                   B              B       B
+                       desempenho e de recrutamento.                profissional                                                  para as convocatórias;
+
+                                                                    Favorecimento                  B              B       B       Avaliação dos processos de sinistros
+
+                    Elaborar e acompanhar candidaturas e           Escutas indevidas               B              B       B       Análise por parte dos formadores sobre a
+                      projetos nacionais e internacionais,                                                                        clarificação da responsabilidade dos
+                                                                   Omissão de dados                B              B       B
+                     coordenando as áreas sociais da HF.                                                                          acidentes ocorridos;
+
+                 Controlar e processar os registos salariais dos      Omissão de                                                  Dupla Validação;
+                 colaboradores e, bem assim, as atividades de      informações sobre
+                                                                                                   B              B       B       Avaliações internas aos processos de seleção
+                             medicina no trabalho.                 a qualificação dos
+                                                                       candidatos                                                 das empresas de formação;
+
+                                                                   Desigualdade de
+                                                                                      DRAFT
+
+                                                                                                                                  Realizar propostas de formação a diferentes
+                                                                                                   B              B       B       empresas, ao invés de uma única empresa;
+                                                                    oportunidades
+                                                                                                                                  Verificação da existência ou não de conflito
+                                                                                                                                  de interesses;
+
+                                                                                                                                  Maior rigor no controlo do registo de faltas;
+
+                                                                                                                                  Maior rigor no controlo do processamento
+                                                                                                                                  de abonos aos colaboradores;
+                                                                     Participação
+                                                                                                                                  Rigor nos registos das horas extraordinárias;
+                                                                    económica em                   B              B       B
+                                                                      negócios;
+
+
+
+
+                                                                             PPRCIC_2018                                                                                 25
+Departamentos/
+  Divisões /                                                         Identificação de                                     Grau de       Medidas e mecanismos vigentes de
+                                   Atividades                                                   Probabilidade   Impacto
+  Gabinetes/                                                              riscos                                           Risco           controlo interno e externo
+  Unidades
+
+                                                                        Peculato                     B              C       C       Prova de inexistência de incompatibilidade
+                                                                                                                                    e conflito de interesses;
+                                                                     Peculato de uso                 B              C       C
+                 Coordenar, analisar e controlar informações           Participação
+                 financeiras e contabilísticas, de modo a             económica em                   B              C       C       Confidencialidade no tratamento de dados;
+                 satisfazer as solicitações das diferentes áreas e       negócios
+                                                                                                                                    Dupla validação;
+    DAC          do CA.
+                                                                     Favorecimento                   B              C       C
+                 Prestar assessoria no que respeita às
+                 obrigações de carácter fiscal e contabilística.     Quebra de sigilo                                               Avaliação     rigorosa    do   risco    de
+                                                                                                     B              C       C
+                                                                      profissional                                                  incompatibilidade de      acumulação    de
+                                                                      Recebimento                                                   funções;
+                                                                                                     B              C       C
+                                                                       indevido
+                                                                                        DRAFT
+
+
+
+
+                                                                                                                                    Formação e sensibilização contínua em ética
+                                                                     Abuso de poder                  B              C       C
+                                                                                                                                    e corrupção;
+
+                                                                      Recebimentos                                                  Sensibilização das equipas;
+                      Desenvolver, coordenar e controlar as                                          B              C       C
+                                                                       indevidos
+                  atividades e procedimentos referentes à área
+                    de exploração da HF, promovendo a sua               Peculato                     B              C       C
+                                                                                                                                    Dupla validação;
+                                  otimização.                        Peculato de uso                 B              C       C
+    DEX            Gerir os recursos humanos adstritos à sua         Abuso de poder                  B              C       C
+                 área, incluindo o escalamento dos sectores de                                                                      Promover a comunicação interna;
+                 pessoal tripulante, tráfego e fiscalização, bem       Concussão                     B              C       C
+                        como o planeamento operacional.                Violação do                                                  Informar os colaboradores sobre os seus
+                                                                       segredo da                    B              C       C       deveres;
+                                                                        empresa
+
+
+
+
+                                                                              PPRCIC_2018                                                                              26
+Departamentos/
+  Divisões /                                                    Identificação de                                     Grau de       Medidas e mecanismos vigentes de
+                                 Atividades                                                Probabilidade   Impacto
+  Gabinetes/                                                         riscos                                           Risco           controlo interno e externo
+  Unidades
+
+                                                                  Participação
+                                                                 económica em                   B              C       C
+                                                                                                                               Relatórios mensais;
+                                                                   negócios;
+
+                                                                   Tráfico de
+                                                                                                B              C       C
+                                                                  influências
+
+                                                                  Facilitismo                   B              C       C
+
+                                                                   Peculato                     B              C       C
+
+                                                                Peculato de uso                 B              C       C       Dupla validação;
+
+                                                                   Tráfico de                                                  Critérios de avaliação e análise de condições
+                                                                                                B              C       C
+                                                                  influências
+                                                                                   DRAFT
+
+
+
+                                                                                                                               das empresas por um júri;
+                 Coordenar e controlar tecnicamente as
+                 operações de grandes e pequenas reparações       Conflito de                                                  Prova de inexistência de incompatibilidade
+    DPR                                                                                         B              C       C
+                 no âmbito das oficinas de manutenção da HF e     interesses                                                   e conflito de interesses;
+                 apoia tecnicamente as diferentes áreas do
+                                                                Quebra de sigilo                                               Confidencialidade no tratamento de dados;
+                 Grupo no âmbito da engenharia mecânica e                                       B              C       C
+                 das atividades de manutenção.                   profissional                                                  Formação e sensibilização em ética e
+                                                                  Violação de                                                  corrupção;
+                                                                    segredo                     B              C       C
+                                                                  profissional
+
+                                                                Favorecimento                   B              C       C
+
+                                                                 Recebimento
+                                                                                                B              C       C
+                                                                  indevido
+
+                                                                Abuso de poder                  B              C       C
+
+
+
+
+                                                                         PPRCIC_2018                                                                                27
+Departamentos/
+  Divisões /                                                       Identificação de                                     Grau de       Medidas e mecanismos vigentes de
+                                  Atividades                                                  Probabilidade   Impacto
+  Gabinetes/                                                            riscos                                           Risco           controlo interno e externo
+  Unidades
+
+                                                                      Peculato                     B              C       C
+
+                                                                   Peculato de uso                 B              C       C
+                                                                                                                                  Dupla validação;
+                     Ocupar-se do estudo, planeamento e               Tráfico de
+                                                                                                   B              C       C       Critérios de avaliação e análise de condições
+                  coordenação de operações de renovação da           influências
+                                                                                                                                  das empresas por um júri;
+                                    frota;
+                                                                     Conflito de                                                  Prova de inexistência de incompatibilidade
+                    Proceder à elaboração de cadernos de                                           B              C       C       e conflito de interesses;
+                                                                     interesses
+                       encargos, análise de propostas,
+                 acompanhamento e fiscalização de construção       Quebra de sigilo                                               Confidencialidade no tratamento de dados;
+     DEP                                                                                           B              C       C
+                               de autocarros.                       profissional                                                  Formação e sensibilização em ética e
+                                                                                      DRAFT
+
+
+
+
+                    Procede à promoção das vendas da área            Violação de                                                  corrupção;
+                  oficinal para o exterior e estabelecimento de        segredo                     B              C       C
+                            contactos com os clientes.               profissional
+
+                                                                   Favorecimento                   B              C       C
+
+                                                                    Recebimento
+                                                                                                   B              C       C
+                                                                     indevido
+
+                                                                   Abuso de poder                  B              C       C
+
+                                                                  Corrupção passiva                A              C       C       Prova de inexistência de incompatibilidade
+                                                                                                                                  e conflito de interesses;
+                                                                   Favorecimento                   A              C       C
+
+                                                                   Administração
+                                                                                                   B              C       C
+                                                                     danosa                                                       Confidencialidade no tratamento de dados;
+
+                                                                      Suborno                      B              C       C       Dupla validação;
+
+
+
+
+                                                                            PPRCIC_2018                                                                                28
+Departamentos/
+  Divisões /                                                      Identificação de                                     Grau de      Medidas e mecanismos vigentes de
+                                  Atividades                                                 Probabilidade   Impacto
+  Gabinetes/                                                           riscos                                           Risco          controlo interno e externo
+  Unidades
+
+                      Planificar, acompanhar e controlar as       Quebra de sigilo
+                                                                                                  B              C       C
+                 atividades e procedimentos inerentes às áreas     profissional
+                                                                                                                                 Avaliação     rigorosa   do   risco     de
+                   de compras, stocks e receção de produtos,
+                                                                    Pagamentos                                                   incompatibilidade de     acumulação     de
+    DAP                 equipamentos e outros materiais                                           B              C       C
+                                                                     indevidos;                                                  funções;
+                 É a divisão responsável por todo o processo de
+                                                                     Tráfico de
+                 contratação pública do Grupo e controla ainda                                    B              C       C
+                                                                    influências;
+                     o património da Empresa e a gestão de                                                                       Formação e sensibilização contínua em ética
+                         logística relacionada com obras.          Recebimento                                                   e corrupção;
+                                                                   indevido de                    B              C       C
+                                                                    vantagem;
+
+                                                                  Abuso de poder;    DRAFT
+                                                                                                  B              C       C
+
+                                                                    Concussão;                    B              C       C
+
+                                                                    Participação
+                                                                   económica em                   B              C       C
+                                                                     negócios;
+
+
+
+
+                                                                           PPRCIC_2018                                                                              29
+2.5. Considerações finais
+
+
+       O PPRCIC é um instrumento de gestão dinâmico e que terá que ser
+
+atualizado, reorganizado e eventualmente ajustado, seja decorrente das alterações
+
+legislativas seja por alterações no funcionamento da HF ou ainda por sugestões ou
+
+necessidades.
+
+       Todos os colaboradores da HF e principalmente os responsáveis de cada
+
+Gabinete, Departamento e Divisão, são também responsáveis por          garantir a
+
+implementação, funcionamento e atualização deste Plano, devendo o mesmo ser
+
+reconhecido como um instrumento que vise não só controlar como melhorar as
+
+atividades desenvolvidas em cada uma das áreas da HF.
+
+       O Conselho de Administração, com o apoio dos responsáveis pela
+
+coordenação e gestão do plano, assim como, de todas as direções e órgãos de apoio,
+
+elaborará um Relatório Anual de Execução do Plano.
+
+       Não obstante os relatórios anuais de execução, de eventuais revisões,
+
+validações ou atualizações, o Presidente do Conselho de Administração deverá ser
+
+sempre informado do surgimento de riscos que importe prevenir.
+
+
+
+
+                                                                               30
+    2.6. ANEXO I– Glossário
+
+Definição de corrupção e alusão aos crimes conexos:
+           Em sentido restrito, corrupção correspondente à utilização do poder ou
+
+   autoridade para obter para si ou para terceiro, vantagem ou compensação que não
+
+   é devida, encontrando-se a mesma tipificada1 no Código Penal2.
+
+           Para além dos crimes de corrupção, mostra-se igualmente necessário
+
+   enumerar algumas figuras jurídicas3 que se podem classificar como crimes conexos
+
+   ao crime de corrupção, na medida em que todos estes crimes têm em comum a
+
+   obtenção de uma vantagem (ou compensação) não devida e são prejudiciais ao
+
+   regular e bom funcionamento das instituições, assim como, à sua credibilidade.
+
+
+
+- Tipificação dos crimes corrupção:
+
+          Recebimento indevido de vantagem – o funcionário que, no exercício das
+
+           suas funções ou por causa delas, por si ou por interposta pessoa, com o seu
+
+           consentimento ou ratificação, solicitar ou aceitar para si ou para terceiro,
+
+           vantagem patrimonial ou não patrimonial, que não lhe seja devida4.
+
+          Corrupção passiva – o funcionário que por si, ou por interposta pessoa,
+
+           com o seu consentimento ou ratificação, solicitar ou aceitar, para si ou para
+
+           terceiro, vantagem patrimonial ou não patrimonial, ou a sua promessa, para
+
+           a prática de um qualquer ato ou omissão contrária aos deveres do cargo,
+
+           ainda que anteriores àquela solicitação ou aceitação5.
+
+          Corrupção ativa- quem por si ou por interposta pessoa com o seu
+
+           consentimento ou ratificação der ou prometer a funcionário ou a terceiro
+
+
+
+
+       1No Capítulo IV (referente aos crimes cometidos no exercício de funções públicas) do Título V
+
+       (referente aos crimes contra o Estado) do Código Penal (CP);
+       2Artigos 372º a 374º-B do Código Penal (CP);
+       3Previstas pelo Código Penal e pelo DL nº 28/84, de 20 de Janeiro, na sua versão atualizada, que
+
+       alterou o regime em vigor em matéria de infrações antieconómicas e contra a saúde pública;
+       4art.º 372º do CP;
+       5art.º 373º do CP;
+
+
+
+
+                                                                                                       31
+           com conhecimento daquele, vantagem patrimonial ou não patrimonial que
+
+           a este não seja devida, quer seja para a prática de um ato lícito ou ilícito6.
+
+
+
+- Tipificação dos crimes conexos:
+
+          Peculato – o funcionário que ilegitimamente se apropriar, em proveito
+
+           próprio ou de outra pessoa, de dinheiro ou qualquer coisa móvel ou imóvel,
+
+           pública ou particular, que lhe tenha sido entregue, esteja na sua posse ou
+
+           lhe seja acessível em razão das suas funções7.
+
+          Peculato de Uso – o funcionário que fizer uso ou permitir que outra pessoa
+
+           faça uso, para fins alheios àqueles a que se destinem, de veículos ou de
+
+           outras coisas móveis de valor apreciável, públicos ou particulares, que lhe
+
+           forem entregues, estiverem na sua posse ou lhe forem acessíveis, em razão
+
+           das suas funções e, ainda, o funcionário, sem que especiais razões de
+
+           interesse público o justifiquem, der a dinheiro público destino para uso
+
+           público diferente daquele a que está legalmente afeto8.
+
+          Participação Económica em Negócios – o funcionário que, com intenção de
+
+           obter, para si ou para terceiro, participação económica ilícita, lesar em
+
+           negócio jurídico os interesses patrimoniais que, no todo ou em parte, lhe
+
+           cumpre, em razão da sua função, administrar, fiscalizar, defender ou
+
+           realizar9.
+
+          Concussão – o funcionário que, no exercício das suas funções ou de poderes
+
+           de facto delas decorrentes, por si ou por interposta pessoa, com o seu
+
+           consentimento ou ratificação, receber, para si, para o Estado ou para
+
+           terceiro, mediante indução em erro ou aproveitamento de erro da vítima,
+
+           vantagem patrimonial que lhe não seja devida ou seja superior à devida,
+
+           nomeadamente contribuição, taxa, emolumento, multa ou coima10.
+
+
+
+       6art.º 374º do CP;
+       7art.º 375º do CP;
+       8art.º 376º do CP;
+       9art.º 377º do CP;
+       10art.º 379º do CP;
+
+
+
+
+                                                                                            32
+   Abuso de Poder – o funcionário que abusar de poderes ou violar deveres
+
+    inerentes às suas funções, com intenção de obter, para si ou para terceiros,
+
+    benefício ilegítimo ou causar prejuízo a outra pessoa11.
+
+   Branqueamento de Capitais – quem converter, transferir, auxiliar ou
+
+    facilitar alguma operação de conversão ou transferência de vantagem,
+
+    obtidas por si ou por terceiro, direta ou indiretamente, com o fim de
+
+    dissimular a sua origem ilícita, ou de evitar que o autor ou participante
+
+    dessas infrações seja criminalmente perseguido ou submetido a uma reação
+
+    criminal, é punido com pena de prisão de dois a doze anos12.
+
+   Tráfico de Influências - quem, por si ou por interposta pessoa, com o seu
+
+    consentimento ou ratificação, solicitar ou aceitar, para si ou para terceiro,
+
+    vantagem patrimonial ou não patrimonial, ou a sua promessa, para abusar
+
+    da sua influência, real ou suposta, junto de qualquer entidade pública13.
+
+   Administração Danosa – quem, infringindo intencionalmente normas de
+
+    controlo ou regras económicas de uma gestão racional, provocar dano
+
+    patrimonial importante em unidade económica do sector público ou
+
+    cooperativo14.
+
+   Apropriação Ilegítima – quem, por força do cargo que desempenha, detiver
+
+    a administração, gerência ou simples capacidade de dispor de bens do
+
+    sector público ou cooperativo, e por qualquer forma deles se apropriar
+
+    ilegitimamente          ou   permitir   intencionalmente   que   outra   pessoa
+
+    ilegitimamente se aproprie15.
+
+   Suborno – quem convencer ou tentar convencer outra pessoa, através de
+
+    dádiva ou promessa de vantagem patrimonial ou não patrimonial, a prestar
+
+    falso depoimento ou declarações em processo judicial ou na qualidade de
+
+    testemunha, perito, técnico, tradutor ou interprete, perante tribunal ou
+
+    funcionário competente prestar falso testemunho, apresentar relatório, der
+
+
+11art.º 382º do CP;
+12Nº2 do art.368º-Ado CP;
+13art.º 335º do CP;
+14art.º 235º do CP;
+15art.º 234.º do CP;
+
+
+
+
+                                                                                 33
+    informações ou fizer traduções falsos, mesmo que estes não venham a ser
+
+    cometidos16.
+
+   Fraude na obtenção de subsídio ou subvenção - quem obtiver subsídio ou
+
+    subvenção,         fornecendo      às    autoridades        ou    entidades   competentes
+
+    informações inexatas ou incompletas sobre si ou terceiros e relativas a factos
+
+    importantes para a concessão do subsídio ou subvenção; omitindo, contra o
+
+    disposto no regime legal da subvenção ou do subsídio, informações sobre
+
+    factos importantes para a sua concessão; utilizando documento justificativo
+
+    do direito à sua subvenção ou subsidio ou de factos importantes para a sua
+
+    concessão, obtido através de informações inexatas ou incompletas17.
+
+   Recetação – quem, com intenção de obter, para si ou para terceiros,
+
+    vantagem patrimonial, dissimular coisa ou animal que foi obtido por
+
+    outrem mediante facto ilícito típico contra o património, a receber em
+
+    penhor, a adquirir por qualquer título, a detiver, conservar, transmitir ou
+
+    contribuir para a transmitir, ou de qualquer forma assegurar, para si ou
+
+    para outra pessoa, a sua posse18.
+
+   Furto – quem, com ilegítima intenção de apropriação para si ou para outra
+
+    pessoa, subtrair coisa móvel ou animal alheios19.
+
+   Roubo – quem, com ilegítima intenção de apropriação para si ou para outra
+
+    pessoa, subtrai, ou constranger a que lhe seja entregue, coisa móvel ou
+
+    animal alheio, por meio de violência contra uma pessoa, de ameaça com
+
+    perigo iminente para a vida ou para a integridade física, ou pondo-a na
+
+    impossibilidade de resistir20.
+
+
+
+
+16art.º 363º do CP;
+17art.º 36º do Decreto-lei nº28/84 de 20 jan, na sua versão atualizada;
+18art.º 231º do CP;
+19art.º 203.º do CP;
+20art.º 210.º do CP;
+
+
+
+
+                                                                                           34
+35
+

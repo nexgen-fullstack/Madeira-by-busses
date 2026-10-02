@@ -1,0 +1,54 @@
+SERVIÇO URBANO | URBAN SERVICE
+ 034 Canto do Muro
+Canto do Muro, T-34 (1040)               Canto do Muro, T-34 (1040)                    Dias úteis                          Sábados                   Domingos e Feriados
+                                                                                      Working days                         Saturdays                 Sundays and Holidays
+  Caminho do Pasto, D1A (1096)           Canto do Muro, S (261)
+  Caminho do Pasto, D2A (1042)           APS Canto Muro, S (259)                                               Partidas de: / Departures from:
+ Caminho do Pasto, D2B (1042A)           Antes APS Canto Muro (1139)             Centro           Canto            Centro           Canto            Centro           Canto
+  Caminho do Pasto, D3A (1044)           Entrada R Murteiras, S (257)                            do Muro                           do Muro                           do Muro
+  Caminho do Pasto, D4A (1046)           R P Sina, Depois Sociedade (1367)
+       Rua da Pedra Sina (1294)          R Pedra Sina, Sociedade (255)           06:55            06:35 c)         06:55             06:35 c)         07:20           06:50 c)
+      Rua Pedra Sina, D2A (216)          R Pedra Sina-Conservas,1A (253)         07:30            06:55 c)         07:30             07:10            08:00           07:40
+      Rua Pedra Sina, D3A (214)          Rua Pedra Sina, S (251)                 07:45            07:10            07:50             07:30 c)         09:00           08:20
+         Chão da Loba, D (168)           Depois Chão Loba (249)
+                                                                                 08:05            07:25 c)         08:15             07:50            10:10           09:20
+                                         Chão da Loba, S (203)
+          TV Rio Janeiro, D (166)        Antes Chão Loba, S (201)                08:20            07:45            09:00             08:10            11:05           10:30
+       Antes Rua Louros, D (164)         Saída Rua Louros, S (199)               08:40            08:00 a)         10:00             08:35            12:10           11:25
+    Miradouro Vila Guida, D (162)        Miradouro Vila Guida, S (197)           09:00            08:20            11:00             09:20            13:10           12:30
+              Americana, D (160)         Americana, S (195)
+                                                                                 09:40            08:35 a)         11:40             10:20            14:20           13:30
+    CZ Rua Nova Alegria, D (158)         CZ R Nova Alegria, S (193)
+        Antes C C Anadia, D (156)        Rua da Infância (187)                   10:40            08:55            12:20             11:20            16:00           14:40
+      Praça Autonomia, D (156A)                                                  11:40            09:20            13:10             12:00            17:35           16:20
+           Palácio S Lourenço (6)        Cais (1A)                               12:20            09:55            14:20             12:40            18:30           17:55
+                                                                                 12:40            10:55            16:00             13:30            19:45           18:50
+                                                                                 13:05            12:00            17:35             14:40            21:00           20:05
+                                                                                 13:20            12:40            18:30             16:20            22:40           21:20
+                                                                                 14:00            13:00            19:55             17:55            00:00 b)        23:00
+                                                                                 14:40            13:25            21:00             18:50
+                                                                                 15:20            13:40            22:40             20:15
+                                                                                 16:15            14:20            00:30 b)          21:20
+                                                                                 17:15            14:55                              23:00
+                                                                                 18:10            15:40
+                                                                                 18:40            16:35
+                                                                                 19:10 b)         17:40
+                                                                                 19:35            18:35
+                                                                                 20:20            19:00
+                                                                                 21:20            19:55
+                                                                                 22:45            20:35
+                                                                                 00:45 b)         21:35
+                                                                                                  23:00
+
+
+
+
+                                                                               a) Nos dias letivos o percurso é efetuado Via Bom Sucesso
+                                                                               b) Até paragem Caminho do Pasto, D4A (1046)
+     Início carreira     Término       Paragem       (A) Código de Paragem
+     Starting point      Terminus      Bus stop          Bus stop Code
+                                                                               c) Inicia na paragem R Pedra Sina-Conservas, 1A (253)
+
+Dia 25 de Dezembro: Não se efetuam viagens. Dias 24 e 31 de Dezembro, 3ª feira de Carnaval e 5ª feira Santa: Serviço de Sábado (exceto se Domingo ou feriado).
+On 25th December: No service. On 24th and 31st December, Mardi Gras and the Thursday before Easter: Saturday timetable (except if Sunday or Holiday).            DE/HF - 01.04.2024
+

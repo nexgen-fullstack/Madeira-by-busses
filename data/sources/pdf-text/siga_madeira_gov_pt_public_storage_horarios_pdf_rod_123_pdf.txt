@@ -1,0 +1,30 @@
+                  Horário da carreira regular de transporte colectivo de passageiros
+
+
+     FUNCHAL - CAMPANÁRIO até L.SERRA/SÃO PAULO
+
+                                Carreira n.º            123
+         FUNCHAL - SÃO PAULO                                    SÃO PAULO - FUNCHAL
+
+Locais Passagem          2ª a 6ª Feira                Locais Passagem             2ª a 6ª Feira
+   Funchal                   18h00                    Ribeira Funda                    06h00
+E. Monumental                18h15                      São Paulo                      06h05
+ VIA RÁPIDA                  18h20                        Fontes                       06h10
+  Qª Grande                  18h35                      Lugar Serra                    06h15
+  Vera Cruz                  18h45                       Terreiros                     06h20
+   Tranqual                  18h50                      Lugar Serra                    06h30
+ Campanário                  18h55                         Adega                       06h35
+    Adega                    19h00                     Campanário                      06h40
+  Lugar Serra                19h10                       Tranqual                      06h45
+   Terreiros                 19h15                       Vera Cruz                     06h50
+  Lugar Serra                19h20                      Qª Grande                      06h55
+    Fontes                   19h30                      VIA RÁPIDA                     07h05
+  São Paulo                  19h35                        Funchal                      07h25
+ Ribeira Funda               19h45
+
+
+
+OBSERVAÇÕES:
+
+Não se realizam viagens a 25 de Dezembro
+

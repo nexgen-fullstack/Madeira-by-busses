@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="pt">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="DxiE62AXqfznuBA3HEfUOSlLvt3QnKTLp9Dbkz63">
+    <title>SIGA</title>
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+    <link href="https://siga.madeira.gov.pt/public/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://siga.madeira.gov.pt/public/css/layout.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css"
+        integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous">
+    <link rel="shortcut icon" href="https://siga.madeira.gov.pt/public/favicon.ico">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/flick/jquery-ui.css">
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/flick/jquery-ui.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+    <link rel="stylesheet" href="https://siga.madeira.gov.pt/public/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://siga.madeira.gov.pt/public/css/buttons.dataTables.min.css">
+</head>
+<body class="d-flex flex-column min-vh-100" style="font-family: 'Arial', sans-serif;">
+    
+    <div class="js-cookie-consent cookie-consent fixed bottom-0 inset-x-0 pb-2">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="p-2 rounded-lg bg-yellow-100">
+            <div class="flex items-center justify-between flex-wrap">
+                <div class="w-0 flex-1 items-center hidden md:inline">
+                    <p class="ml-3 text-black cookie-consent__message">
+                        Este site utiliza cookies. Ao navegar no site estará a consentir a sua utilização. <a href="https://privacidade.madeira.gov.pt/" target="_blank" style="color: gray;">Saiba mais sobre o uso de cookies</a>
+                        <button class="js-cookie-consent-agree cookie-consent__agree cursor-pointer flex items-center justify-center px-4 py-2 rounded-md text-sm font-medium text-yellow-800 bg-yellow-400 hover:bg-yellow-300">
+                            Aceitar
+                        </button>
+                    </p>
+                </div>
+                <div class="mt-2 flex-shrink-0 w-full sm:mt-0 sm:w-auto">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+
+        window.laravelCookieConsent = (function () {
+
+            const COOKIE_VALUE = 1;
+            const COOKIE_DOMAIN = 'siga.madeira.gov.pt';
+
+            function consentWithCookies() {
+                setCookie('laravel_cookie_consent', COOKIE_VALUE, 7300);
+                hideCookieDialog();
+            }
+
+            function cookieExists(name) {
+                return (document.cookie.split('; ').indexOf(name + '=' + COOKIE_VALUE) !== -1);
+            }
+
+            function hideCookieDialog() {
+                const dialogs = document.getElementsByClassName('js-cookie-consent');
+
+                for (let i = 0; i < dialogs.length; ++i) {
+                    dialogs[i].style.display = 'none';
+                }
+            }
+
+            function setCookie(name, value, expirationInDays) {
+                const date = new Date();
+                date.setTime(date.getTime() + (expirationInDays * 24 * 60 * 60 * 1000));
+                document.cookie = name + '=' + value
+                    + ';expires=' + date.toUTCString()
+                    + ';domain=' + COOKIE_DOMAIN
+                    + ';path=/'
+                    + ';samesite=lax';
+            }
+
+            if (cookieExists('laravel_cookie_consent')) {
+                hideCookieDialog();
+            }
+
+            const buttons = document.getElementsByClassName('js-cookie-consent-agree');
+
+            for (let i = 0; i < buttons.length; ++i) {
+                buttons[i].addEventListener('click', consentWithCookies);
+            }
+
+            return {
+                consentWithCookies: consentWithCookies,
+                hideCookieDialog: hideCookieDialog
+            };
+        })();
+    </script>
+
+    <div id="app" class="bs-component">
+        <nav class="navbar navbar-expand-md navbar-dark bg-info" style="padding-top: 1rem;padding-bottom: 1rem;">
+            <div class="container-fluid">
+                <ul class="navbar-nav ml-auto mb-2 mb-lg-0  ms-5">
+                    
+                    <li class="nav-item flex-sm-fill flex-md-fill flex-lg-fill"><a class="nav-link text-center"
+                            style="color: #ffd200" href="https://siga.madeira.gov.pt/public/index.php/home">SIGA</a></li>
+                    
+                </ul>
+                <div class="flex justify-center me-5">
+                        <a class="ml-1 underline ml-2 mr-2" href="https://siga.madeira.gov.pt/public/index.php/language/en">
+                <span>
+                    <img src="/img/English.png" class="img-fluid" style="height: 20px">
+                    
+                </span>
+            </a>
+                                <span class="ml-2 mr-2 text-gray-700">
+                <img src="https://siga.madeira.gov.pt/public/index.php/img/Portuguese.png" class="img-fluid" style="height: 20px">
+                
+            </span>
+            </div>  
+                                    <button class="navbar-toggler d-block d-sm-none" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2">
+                            <li class="nav-item flex-sm-fill flex-md-fill flex-lg-fill dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Viajar <span class="caret"></span>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item " href="https://siga.madeira.gov.pt/public/index.php/horarios">Horários</a>
+                                    <a class="dropdown-item " data-bs-toggle="modal" data-bs-target="#planeador">Planear
+                                        Viagem</a>
+                                    <a class="dropdown-item " href="https://siga.madeira.gov.pt/public/index.php/aerobus">Aerobus</a>
+                                    <a class="dropdown-item " href="https://siga.madeira.gov.pt/public/index.php/pmr">Transporte de passageiros com cadeira de rodas</a>
+                                    <a class="dropdown-item disabled" > Transporte a Pedido</a>
+                                </div>
+                            </li>
+                            <li class="nav-item flex-sm-fill flex-md-fill flex-lg-fill dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Comprar <span class="caret"></span>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    
+                                    <a class="dropdown-item " href="https://siga.madeira.gov.pt/public/index.php/tiim">Títulos</a>     
+                                    <a class="dropdown-item " href="https://siga.madeira.gov.pt/public/index.php/apoio?item=4">Pedir faturas</a>
+                                    <a class="dropdown-item " href="https://siga.madeira.gov.pt/public/index.php/pontosvenda">Pontos de Venda</a>
+                                </div>
+                            </li>
+                            <li class="nav-item flex-sm-fill flex-md-fill flex-lg-fill dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Informar <span class="caret"></span>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item " href="https://siga.madeira.gov.pt/public/index.php/avisos">Avisos</a>
+                                    <a class="dropdown-item" href="https://siga.madeira.gov.pt/public/index.php/noticias">Notícias</a>
+                                    <a class="dropdown-item " href="https://siga.madeira.gov.pt/public/index.php/apoio">Apoio ao Passageiro</a>
+                                    <a class="dropdown-item" href="https://siga.madeira.gov.pt/public/index.php/faq">Perguntas Frequentes</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                                
+            </div>
+        </nav>
+                                                        
+        <header class="masthead img-responsive header_horario">
+            <div class="carousel-caption " style="top: 35% !important">
+                <h1 class="fw-bold "></h1>
+            </div>   
+            <div class="row" style="overflow: hidden;">
+                <style>
+    .skills,
+    .langs {
+        /* text-transform: uppercase; */
+        display: inline-block;
+        white-space: nowrap;
+        animation: floatText 90s infinite linear;
+        padding-left: 100%;
+        /*Initial offset*/
+        color: #ada97d;
+    }
+
+    .langs {
+        animation-delay: 5s;
+    }
+
+    .skills:hover,
+    .langs:hover {
+        animation-play-state: paused;
+    }
+
+
+    @keyframes floatText {
+        to {
+            transform: translateX(-100%);
+        }
+    }
+</style>
+<div id="avisosCarousel" class="carousel slide btn-warning p-2 col-12" data-bs-ride="carousel" data-bs-interval="3000" onclick="window.location.href = 'https://siga.madeira.gov.pt/public/index.php/avisos'">
+    <div class="skills">
+        
+        <div id="avisos_slider">
+
+        </div>
+       
+    </div>
+    
+</div>
+
+                </div>
+                   
+            
+            <div class="row">
+                <div class="col-sm-12 col-md-2 col-lg-2 mt-5 d-none d-sm-block d-sm-none d-md-block" onclick="window.location='/'" style="z-index: 999999">
+                    
+                    <img src="https://siga.madeira.gov.pt/public/img/SIGA logomarca_rgb.png" class="img-fluid ps-5">
+                </div>
+                <div class="col col-sm-12 col-md-8 col-lg-8 text-end mt-5 d-none d-sm-block d-sm-none d-md-block">
+                    <div class="btn-group btn-group-lg" role="group">
+                        <button id="btnGroupDrop1" type="button"
+                        class="btn dropdown-toggle btn-outline-light border-0" data-bs-toggle="dropdown"
+                            aria-expanded="false" >
+                            Viajar
+                        </button>
+                        <ul class="dropdown-menu mt-2" aria-labelledby="btnGroupDrop1">
+                            <li><a class="dropdown-item" href="https://siga.madeira.gov.pt/public/index.php/horarios">Horários</a>
+                            </li>
+                            <li><a class="dropdown-item" data-bs-toggle="modal"
+                                    data-bs-target="#planeador">Planear viagem</a></li>
+                            <li><a class="dropdown-item" href="https://siga.madeira.gov.pt/public/index.php/aerobus">Aerobus</a></li>
+                            <li><a class="dropdown-item " href="https://siga.madeira.gov.pt/public/index.php/pmr">Transporte de passageiros com cadeira de rodas</a></li>
+                            <li><a class="dropdown-item " href="https://siga.madeira.gov.pt/public/index.php/pedido_transporte">Transporte a Pedido</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group btn-group-lg rounded" role="group">
+                        <button id="btnGroupDrop1" type="button"
+                        class="btn dropdown-toggle btn-outline-light border-0" data-bs-toggle="dropdown"
+                            aria-expanded="false" >
+                            Comprar
+                        </button>
+                        <ul class="dropdown-menu mt-2" aria-labelledby="btnGroupDrop2">
+                            
+                            <li><a class="dropdown-item " href="https://siga.madeira.gov.pt/public/index.php/tiim">Tarifas</a></li>
+                            <li><a class="dropdown-item " href="https://siga.madeira.gov.pt/public/index.php/apoio?item=4">Pedir faturas</a></li>
+                            <li><a class="dropdown-item " href="https://siga.madeira.gov.pt/public/index.php/pontosvenda">Pontos de Venda</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group btn-group-lg rounded" role="group">
+                        <button id="btnGroupDrop1" type="button"
+                        class="btn dropdown-toggle btn-outline-light border-0" data-bs-toggle="dropdown"
+                            aria-expanded="false" >
+                            Informar
+                        </button>
+                        <ul class="dropdown-menu mt-2" aria-labelledby="btnGroupDrop3">
+                            <li><a class="dropdown-item " href="https://siga.madeira.gov.pt/public/index.php/avisos">Avisos</a></li>
+                            <li><a class="dropdown-item" href="https://siga.madeira.gov.pt/public/index.php/noticias">Notícias</a>
+                            </li>
+                            <li><a class="dropdown-item " href="https://siga.madeira.gov.pt/public/index.php/apoio">Apoio ao Passageiro</a>
+                            </li>
+                            <li><a class="dropdown-item" href="https://siga.madeira.gov.pt/public/index.php/faq">Perguntas frequentes</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <main class="py-3">
+            <div class="container-lg">
+                                                                                                            </div>
+        </main>
+                <style>
+    #map {
+        height: 350px
+    }
+    .click-zoom input[type=checkbox] {
+    display: none
+    }
+
+    .click-zoom img {  
+    transition: transform 0.25s ease;
+    cursor: zoom-in
+    }
+
+    .click-zoom input[type=checkbox]:checked~img {
+    transform:  scale(1.5);
+    cursor: zoom-out;
+    }
+</style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+    integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-sm-12 col-md-2 col-lg-2">
+            <img src="https://siga.madeira.gov.pt/public/img/13.png" class="img-fluid d-none d-sm-block d-md-none d-lg-block"
+                style="width:50%">
+        </div>
+        <div class="col-sm-12 col-md-8 col-lg-8 text-center">
+            <div class="justify-content-md-start">
+                <div class="row ms-1 me-1">
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                        <nav class="mt-4"
+                            style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);"
+                            aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="https://siga.madeira.gov.pt/public/index.php/home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="https://siga.madeira.gov.pt/public/index.php/horarios">Horários</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">19
+                                </li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+                                                                
+                                <div class="row mt-3 ms-1">
+                    <div class="col-2 text-center">
+                        <small class="text-secondary">Nº de Carreira</small>     
+                    </div>
+                </div>
+                <div class="row ms-1">
+                    <div class="col col-lg-1 badge rounded-pill align-self-center">
+                           <small class="text-secondary">Atual</small>
+                    </div>
+                    <div class="col col-lg-1 badge rounded-pill align-self-center" >
+                        <small class="text-secondary">Novo</small>
+                    </div>
+                    <div class="col col-8 text-start">    
+                        <small class="text-secondary"></small>                 
+                    </div>
+                </div>
+                
+                <div class="row mt-3 ms-1">
+                    <div class="col col-lg-1 badge rounded-pill align-self-center" style="background-color: #ffd200">
+                        <h3 class="mb-0 ">19</h3>
+                    </div>
+                                        <div class="col col-lg-1 badge rounded-pill align-self-center" style="background-color: #ffd200">
+                        <h3 class="mb-0 ">019</h3>
+                    </div>
+                                        <div class="col col-8 text-start">
+                        <h3 class="fw-bold mb-0">Centro - Levada da Corujeira</h3>
+                    </div>
+                </div>
+                                
+
+                <div class="row mt-5">
+                    <div class="col-sm-12 col-md-7 col-lg-7">
+                                                
+                        
+                                                <div class='click-zoom'> 
+                            <label>
+                                <input type='checkbox' />
+                                <img style="width: 100%; z-index:99999;position: relative;" src="https://siga.madeira.gov.pt/public/storage/horarios_jpg/CB63D6A4-8B35-4BBB-9E52-E93534C424BC.jpg">
+                            </label>
+                        </div>
+                                                
+                        <p class="mt-3">
+                            <a class="text-start"
+                                href="https://siga.madeira.gov.pt/public/storage/horarios_pdf/41066FF7-FC6D-4E03-A173-A6FFBC751F44.pdf"
+                                target="_blank"><i class="far fa-lg fa-file-pdf fa-3x"></i>Download pdf</a>
+                        </p>
+                                            </div>
+                    <!-- sorrry podes mexerxD--->
+                                        <div class="col-sm-12 col-md-5 col-lg-5">                        
+                        <div class="row justify-content-center">
+                            
+                                <div class="btn-group dropdown mb-3">
+                                    <button class="btn btn-light dropdown-toggle w-100 border cardsrounded "
+                                        type="button" id="triggerId" data-bs-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                        Sentido
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="triggerId" style="z-index: 999999;">
+                                        <button class="dropdown-item"
+                                            onclick="requestShapeData(18162,'Centro')">Centro</button>
+                                        <button class="dropdown-item"
+                                            onclick="requestShapeData(18161,'Lev. Corujeira - Via Pena')">Lev. Corujeira - Via Pena</button>
+                                    </div>
+                                </div>
+                                
+                        </div>
+                        <div class="row w-100 ms-1">
+                            <div id="map"></div>
+                        </div>                        
+                    </div>
+                                    </div>
+                            </div>
+        </div>
+        <div class="col-sm-12 col-md-2 col-lg-2 text-end align-self-end">
+            <img src="https://siga.madeira.gov.pt/public/img/2.png"
+                class="img-fluid mt-4 d-none d-sm-block d-md-none d-lg-block float-end">
+        </div>
+    </div>
+</div>
+
+
+                        
+        <!-- Modal Planeador -->
+        <div class="modal fade" id="planeador" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <span>Funcionalidade encontra-se em desenvolvimento! <br></span>
+                        <span>Como alternativa, poderá aceder aos seguintes serviços:</span>
+                        <table class="table table-hover mt-2">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <a target="_blank"
+                                            href="https://www.google.pt/maps/@32.6600438,-16.9246706,14z"><img
+                                                title="googleMaps" alt="googleMaps"
+                                                src="https://siga.madeira.gov.pt/public/img/planeadores/googlemaps.png" height="35">
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a target="_blank" href="http://www.rome2rio.com/pt/s/Funchal"><img
+                                                title="Rome2Rio" alt="Rome2Rio"
+                                                src="https://siga.madeira.gov.pt/public/img/planeadores/Rome2rio.jpg" height="35">
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a target="_blank"
+                                            href="https://wego.here.com/?map=32.66233,-16.88485,14,public_transport"><img
+                                                title=" here" alt=" here"
+                                                src="https://siga.madeira.gov.pt/public/img/planeadores/wego.png" height="35"> </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a target="_blank" href="http://moovitapp.com/"><img title=" Moovit"
+                                                alt="Moovit" src="https://siga.madeira.gov.pt/public/img/planeadores/Moovit.png"
+                                                width="140" height="35"></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row text-end">
+                            <button type="button" class="btn btn-secondary " data-bs-dismiss="modal">Sair</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <footer id="sticky-footer" class="mt-auto bg-info text-white">
+        <div class="container">
+            <div class="row mt-5 border-bottom border-light">
+                <div class="col-sm-12 col-md-5 col-lg-5">
+                    <p><img src="https://siga.madeira.gov.pt/public/img/SIGA logomarca_rgb.png" class="w-50" onclick="window.location='/'">
+                    </p>
+                    
+                    <p>
+                        <small><i class="fas fa-envelope"></i> imt@madeira.gov.pt</small>
+                    <br>
+                        <small><i class="fas fa-phone"></i> +351 291 145 180 <i class="fas fa-clock"></i> 9:00 - 12:30 / 14:00 - 17:30 (2ª a 6ª Feira úteis)</small>
+                    </p>
+                    <p>
+                        <small><b>Em caso de inconveniência com os horários e carreiras, contatar:</b></small>
+                        <br>
+                        <small><i class="fas fa-bus"></i> Horários do Funchal - +351 291 705 555 </small>
+                        <br>
+                        <small><i class="fas fa-bus"></i> SIGA RODOESTE - +351 291 220 148 </small>
+                        <br>
+                        <small><i class="fas fa-bus"></i> CAM - +351 291 201 151 </small>
+                    </p>
+                    <p>
+                        <a href="https://www.livroreclamacoes.pt/Inicio/"><img src="https://siga.madeira.gov.pt/public/img/livro_rec.png"
+                                height="40"></a>
+                    </p>
+                    <p>
+                        <small><a href="https://privacidade.madeira.gov.pt/" target="_blank"
+                                style="color:white;text-decoration: none;"
+                                title="Política de Privacidade (e cookies) - Termos e Condições">POLÍTICA DE PRIVACIDADE</a></small>
+                    </p>
+                </div>
+                <div class="col-sm-12 col-md-2 col-lg-2 ">
+                    <h4>Viajar</h4>
+                    <p><small><a href="https://siga.madeira.gov.pt/public/index.php/horarios" class="link-light linknounderline">
+                                Horários</a></small></p>
+                    <p><small><a data-bs-toggle="modal" data-bs-target="#planeador"
+                                class="link-light linknounderline">Planear Viagem</a></small></p>
+                    <p><small><a href="https://siga.madeira.gov.pt/public/index.php/aerobus"
+                                class="link-light linknounderline">Aerobus</a></small></p>
+                    <p><small><a href="https://siga.madeira.gov.pt/public/index.php/pmr" class="link-light linknounderline">Transporte de passageiros com cadeira de rodas</a></small></p>
+                    <p><small><a 
+                                class="link-light linknounderline">Transporte a Pedido</a></small></p>
+                </div>
+                <div class="col-sm-12 col-md-2 col-lg-2">
+                    <h4>Comprar</h4>
+                    
+                    <p><small><a class="link-light linknounderline" href="https://siga.madeira.gov.pt/public/index.php/tiim">
+                                Títulos</a></small></p>
+                    <p><small><a class="link-light linknounderline" href="https://siga.madeira.gov.pt/public/index.php/apoio?item=4">
+                                Pedir Fatura</a></small></p>
+                </div>
+                <div class="col-sm-12 col-md-2 col-lg-2">
+                    <h4>Informar</h4>
+                    <p><small><a href="https://siga.madeira.gov.pt/public/index.php/avisos" class="link-light linknounderline">
+                                Avisos</a></small></p>
+                    <p><small><a href="https://siga.madeira.gov.pt/public/index.php/noticias" class="link-light linknounderline">
+                                Notícias</a></small></p>
+                    <p><small><a href="https://siga.madeira.gov.pt/public/index.php/apoio" class="link-light linknounderline">Apoio ao Passageiro</a></small></p>
+                    <p><small><a href="https://siga.madeira.gov.pt/public/index.php/faq" class="link-light linknounderline">Perguntas frequentes</a></small></p>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12  mb-3">
+                        <div class="text-end">
+                            <a class="btn btn-light rounded-circle"><i class="fab fa-facebook-f fa-2xl"></i></a>
+                            <a class="btn btn-light rounded-circle"><i class="fab fa-instagram fa-2xl"></i></a>
+                            <a class="btn btn-light rounded-circle"><i class="fab fa-whatsapp fa-2xl"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            </div>
+            <div class="container text-center mt-3 mb-5">
+                <small>2024 &copy; Governo Regional da Madeira - SRF </small><br>
+                <small>Desenvolvido por <a href="https://www.madeira.gov.pt/dri" style="color:white;"
+                        title="DRI - Direção Regional de Informática">DRI - Direção Regional de Informática</a></small>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+        integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+        crossorigin="anonymous"></script>
+    <script src="https://siga.madeira.gov.pt/public/js/app.js"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+    <script src="https://siga.madeira.gov.pt/public/js/jquery.dataTables.min.js"></script>
+    <script src="https://siga.madeira.gov.pt/public/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://siga.madeira.gov.pt/public/js/dataTables.buttons.min.js"></script>
+    <script src="https://siga.madeira.gov.pt/public/js/buttons.bootstrap4.min.js"></script>
+    <script src="https://siga.madeira.gov.pt/public/js/buttons.colVis.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js" type="text/javascript"></script>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+    <script src="https://siga.madeira.gov.pt/public/js/summernote-cleaner.js"></script>
+    <script>
+        window.setTimeout(function() {
+            $(".alert-success").fadeTo(500, 0).slideUp(500, function() {
+                $(this).remove();
+            });
+        }, 15000);
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+        jQuery(function($) {
+            $.datepicker.regional['pt-BR'] = {
+                closeText: 'Fechar',
+                prevText: '&#x3c;Anterior',
+                nextText: 'Pr&oacute;ximo&#x3e;',
+                currentText: 'Hoje',
+                monthNames: ['Janeiro', 'Fevereiro', 'Mar&ccedil;o', 'Abril', 'Maio', 'Junho',
+                    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+                ],
+                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+                    'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
+                ],
+                dayNames: ['Domingo', 'Segunda-feira', 'Ter&ccedil;a-feira', 'Quarta-feira', 'Quinta-feira',
+                    'Sexta-feira', 'Sabado'
+                ],
+                dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                weekHeader: 'Sm',
+                dateFormat: 'dd/mm/yy',
+                firstDay: 0,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: ''
+            };
+            $.datepicker.setDefaults($.datepicker.regional['pt-BR']);
+        });
+    </script>
+        
+         <script>          
+        $.ajax({
+            method: 'GET',
+            url: "https://siga.madeira.gov.pt/public/index.php/avisos_slider",
+            dataType: 'json',
+            /* success: function (response) {
+                if (response[0] != '0') {
+                    jQuery.each(response, function(index, value){
+                        var html = '<small><span class="badge rounded-pill" style="background-color: '+value.rgb+'">'+value.carreira+'</span>';
+                            html += ' <a href="#" id="noticia" style="text-decoration:solid !important">'+value.titulo+' </a>';
+                            html += '   ||   </small>';
+                        $('#avisos_slider').append(html);
+                    });
+                    
+                }
+            }, */
+            success: function(response) {
+                if (response[0] != '0') {
+                    jQuery.each(response, function(index, value) {
+                        var locale = 'pt';
+                        var titulo = locale == 'en' ? (value.title != null ? value.title : value.titulo) : value.titulo;
+
+                        var html = '<small><span class="badge rounded-pill" style="background-color: ' +
+                            value.rgb + '">' + value.carreira + '</span>';
+                        html +=
+                            ' <a href="https://siga.madeira.gov.pt/public/index.php/avisos" id="noticia" style="text-decoration:solid !important">' +
+                            titulo + ' </a>';
+                        html += '      </small>';
+                        $('#avisos_slider').append(html);
+                    });
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) { // What to do if we fail
+                console.log(JSON.stringify(jqXHR));
+                console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+            }
+        });
+    </script>
+    <script>
+    // config map
+            let config = {
+                minZoom: 7,
+                maxZoom: 18,
+            };
+            // magnification with which the map will start
+            const zoom = 12;
+
+            // co-ordinates
+            const lat = 32.647607;
+            const lng = -16.9036;
+
+            // calling map
+            const map = L.map("map", config).setView([lat, lng], zoom);
+
+            // Used to load and display tile layers on the map
+            // Most tile servers require attribution, which you can set under `Layer`
+            L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            }).addTo(map);
+
+            //--------------------------------------------------------------------------------------
+
+            let stops = [];
+            let polys = [];
+            let start_end = [];
+            
+                            requestShapeData(18161,"Lev. Corujeira - Via Pena");
+                        
+
+            function requestShapeData(id,name) {
+                // colocar nome no botao
+                var btn = document.getElementById("triggerId");
+                btn.innerHTML = name;
+                $.ajax({
+                    method: 'GET',
+                    url: "https://siga.madeira.gov.pt/public/index.php/horarios/shapedata" + '/' + id,
+                    dataType: 'json',
+                    success: function(response) {
+                        stops.forEach(element => {
+                            element.remove();
+                        });
+                        stops = [];
+                        response[1].forEach(element => {
+                            stops.push(L.marker([element['stop_lat'], element['stop_lon']])
+                                .bindPopup('<span class="text-primary"><b>Nome:</b> ' + element['stop_name'] + ' <br><b>Código:</b> ' + element[
+                                    'stop_code']+'</span>')
+                                .on('click',
+                                    function(event) {
+                                        map.setView(event.latlng, map.getZoom(), {
+                                            animate: true,
+                                            duration: 1
+                                        });
+                                    }))
+                        });
+                        stops.forEach(element => {
+                            element.addTo(map);
+                        });
+
+                        polys.forEach(element => {
+                            element.remove();
+                        });
+                        polys = [];
+                        let poly = L.polyline(response[0], {
+                            color: "red",
+                            opacity: 0.9,
+                            weight: 5,
+                        });
+                        poly.bindPopup("polygon");
+                        poly.addTo(map);
+                        map.fitBounds(poly.getBounds());
+                        polys.push(poly);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
+                        console.log(JSON.stringify(jqXHR));
+                        console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+                    }
+                });
+            }
+
+            function clearMap() {
+                polys.forEach(element => {
+                    element.remove();
+                });
+                polys = [];
+            }
+</script>
+</body>
+</html>

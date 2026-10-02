@@ -1,0 +1,50 @@
+  SERVIÇO URBANO | URBAN SERVICE
+   037 Pinheirinho (via Palheiro Ferreiro)
+       Pinheirinho, T-37 (1163)            Pinheirinho, T-37 (1163)                      Dias úteis                          Sábados                   Domingos e Feriados
+                                                                                        Working days                         Saturdays                 Sundays and Holidays
+     R Palheiro Ferreiro, D1A (1104)       R Palheiro Ferreiro, S4A (1161)
+     R Palheiro Ferreiro, D2A (1106)       R Palheiro Ferreiro, S3A (1159)                                       Partidas de: / Departures from:
+    R Palheiro Ferreiro-LG, D (1108)       R Palheiro Ferreiro, S2A (1157)         Centro        Pinheirinho         Centro        Pinheirinho         Centro       Pinheirinho
+                                           R Palheiro Ferreiro, S1A (1155)
+Lagoas Palheiro Ferreiro, C-37 (1110)      Lagoas Palheiro Ferreiro (1153)         07:55            07:20            07:55            08:25            12:05            08:25
+     QTA Palheiro, Blandy, D (376C)        QTA Palheiro, Blandy, S (411C)          09:45 a)         08:25            12:05            12:35            16:45 a)         12:35
+CAM QTA Palheiro, Padaria, D (376B)        CAM QTA Palheiro, Padaria, S (411B)     11:00 a)         10:15 a)         13:10            13:50            19:25            17:15 a)
+ Saída do CAM QTA Palheiro (376A)          Entrada QTA Palheiro (411A)
+         Lombo da Quinta, D (374)          Lombo da Quinta, S (411)
+                                                                                   12:00            11:30 a)         16:45 a)         17:15 a)
+ Depois Lombo Quinta, C-37 (1112)          Antes Lombo Quinta, C-37 (1165)         13:10            12:35            19:25
+       Estrada Camacha, D1A (212)          Estrada Camacha, S2A (247)              14:20 a)         13:50
+       Estrada Camacha, D2A (210)          Estrada Camacha, S1A (245)              16:40            14:50 a)
+    Saída R Caridade Pestana (208)         ENT R Caridade Pestana (243)
+           Autosil, Bica Pau, D (206)      Autosil, Bica Pau, S (241)
+                                                                                   17:30            17:10
+   ESTR Camacha, Bica Pau, D (204)         ESTR Camacha, Bica Pau, S (239A)        18:10            18:05
+         CAM Bica Pau, Inicio (982)        CAM Bica Pau, Final (947)               19:20            18:45
+      CAM Bica Pau, Curva, D (984)         CAM Bica Pau, Curva, S (937)            19:55 a)         20:20 a)
+       CAM Bica Pau, Fonte, D (986)        CAM Bica Pau, Fonte, S (925)
+    Cemitério São Gonçalo, D (988)         Cemitério São Gonçalo, S (919)
+                                                                                   21:00 a)
+  Depois Igreja S Gonçalo, D (174A)        Antes Igreja S Gonçalo, S (209A)
+      ESTR C Carvalhal, RIB, D (174)       ESTR C Carvalhal, RIB, S (209)
+     ESTR Conde Carvalhal, D (172)         ESTR Conde Carvalhal, S2A (207)
+                                           ESTR Conde Carvalhal, S1A (205)
+          Antes Chão Loba, D (170)         S Gonçalo, Depois Chão Loba (203A)
+             Chão da Loba, D (168)         Chão da Loba, S (203)
+            TV Rio Janeiro, D (166)        Antes Chão Loba, S (201)
+         Antes Rua Louros, D (164)         Saída Rua Louros, S (199)
+      Miradouro Vila Guida, D (162)        Miradouro Vila Guida, S (197)
+                Americana, D (160)         Americana, S (195)
+      CZ Rua Nova Alegria, D (158)         CZ R Nova Alegria, S (193)
+          Antes C C Anadia, D (156)        Rua da Infância (187)
+        Praça Autonomia, D (156A)          Pinga (19)
+
+
+
+
+                                                                                 a) Até/Das mercearias do Palheiro Ferreiro, paragens “Lagoas Palheiro
+       Início carreira      Término      Paragem      (A) Código de Paragem
+       Starting point       Terminus     Bus stop         Bus stop Code          Ferreiro (1153)” e “Lagoas Palheiro Ferreiro, C37 (1110)”
+
+  Dia 25 de Dezembro: Não se efetuam viagens. Dias 24 e 31 de Dezembro, 3ª feira de Carnaval e 5ª feira Santa: Serviço de Sábado (exceto se Domingo ou feriado).
+  On 25th December: No service. On 24th and 31st December, Mardi Gras and the Thursday before Easter: Saturday timetable (except if Sunday or Holiday).            DE/HF - 01.07.2024
+

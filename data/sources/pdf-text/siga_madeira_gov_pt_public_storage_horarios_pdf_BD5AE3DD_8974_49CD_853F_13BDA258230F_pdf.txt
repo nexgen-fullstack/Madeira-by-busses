@@ -1,0 +1,65 @@
+ SERVIÇO URBANO | URBAN SERVICE
+  001 Ponta da Laranjeira
+Ponta da Laranjeira, T-01 (871)           Ponta da Laranjeira, T-01 (871)               Dias úteis                         Sábados                    Domingos e Feriados
+                                                                                       Working days                        Saturdays                  Sundays and Holidays
+       Ponta da Laranjeira, D (836)
+                   Victória, D (838)     Victória, S (869)                                                      Partidas de: / Departures from:
+           Depois da Victória (840)      Antes da Vitória (867)                   Centro         Ponta da           Centro         Ponta da           Centro         Ponta da
+            Fábrica Blocos, D (842)      Fábrica Blocos, S (865)                                 Laranjeira                        Laranjeira                        Laranjeira
+          Hotel Orca Praia, D (844)      Hotel Orca Praia, S (863)
+           Aripan, Areeiro, D (846)      Aripan, Areeiro, S (861)                 06:05            06:10             06:05           06:10             06:05           06:30
+                    Areeiro, D (848)     Areeiro, S (859)                         06:35            06:30             06:30           06:30             06:30           07:00
+              Areeiro, Abrigo (850)      Praia Formosa, S (857A)                  07:00            07:00             07:05           07:00             07:05           07:30
+           Praia Formosa, D (850A)       Ilma (1351)
+                                                                                  07:30            07:30             07:35           07:30             07:35           08:00
+                        Ilma, D (852)    APS Caracas, S (855)
+              APS Caracas, D (854)       Madeira Palácio, S (57)                  08:10            08:00             08:05           08:00             08:05           08:30
+            Madeira Palácio, D (30)      Depois Forum Madeira (55)                08:30            08:40             08:30           08:35             08:35           09:00
+          Corama, Centromar (28)         Forum Madeira, S (53)                    09:10            09:00             09:05           08:55             09:05           09:30
+                   Duas Torres (26)      Antes Forum Madeira (51A)
+                                                                                  09:35            09:35             09:35           09:30 c)          09:35           10:00 c)
+             Hotel Baia Azul, D (24)     Hotel Baia Azul, S (51)
+        Pestana Promenade (1338)         STO Hellier (49)                         10:05            10:05             10:05           10:00             10:05           10:30
+                   Porto Bay (1340)      Simplicio P Gouveia CGD (45)             10:35            10:35             10:35           10:30             11:05           11:30
+                         CZ Lido (18)    Hotel Girassol (43)                      11:10            11:00             11:05           11:00             12:05           12:30
+            Hotel Cliff Bay, Bes (14)    Pestana Village (41)
+                                                                                  11:35            11:40             11:35           11:30             13:10           13:35
+                   Hotel Reid’s (12)     Hotel Miramar (39)
+                Hotel Savoy, D (10)      Hotel Savoy, S (37)                      12:10            12:05             12:05           12:00             14:05           14:30 b)
+         Hotel Casino Park, D (10A)      Hotel Casino Park, S (35)                12:35 a)         12:40             12:35           12:30             15:05           15:30
+           Parque STA Catarina (8)       R J Dias Leite, Rotunda (33A)            13:10            13:05             13:10           13:00             16:05           16:30
+              Rua Conselheiro (17)       Palácio S Lourenço (29)
+                                                                                  13:40            13:40             13:35           13:35             17:05           17:30
+                     Praça Povo (2)      G N R (15)
+              AV do Mar, E E M (11)       AV do Mar, E E M (11)                   14:10            14:10             14:05           14:00 c)          18:05           18:30
+                                                                                  14:30            14:40             14:35           14:30             19:05           19:30
+                                                                                  15:10            15:00 b)          15:05           15:00             20:05           20:30
+                                                                                  15:35            15:40             15:35           15:30             21:05           21:35
+                                                                                  16:10            16:05             16:05           16:00             21:40           22:00
+                                                                                  16:25            16:40             17:05           16:30             22:25           23:05
+                                                                                  17:10            16:55             18:05           17:30             23:25           23:50
+                                                                                  17:30 a)         17:40             19:05           18:30             00:30
+                                                                                  18:10            18:00             20:05           19:30
+                                                                                  18:30            18:40             21:05           20:30
+                                                                                  19:10            19:00             21:40           21:35
+                                                                                  19:30            19:35             22:25           22:00
+                                                                                  20:05            20:00             23:25           23:05
+                                                                                  20:30            20:35             00:30           23:50
+                                                                                  21:05            21:00
+                                                                                  21:40            21:35
+                                                                                  22:25            22:05
+                                                                                  00:35            23:00
+
+
+
+
+                                                                               a) Via Alto Lido
+                                                                               Ligação direta ao Monte, não passa na paragem “AV do Mar, EEM (11)”/
+                                                                               Direct connection to Monte, does not pass at bus stop “AV do Mar, EEM (11)”:
+                                                                               b) Efetua de seguida o trajeto da carreira 020/ Route path 020
+      Início carreira      Término      Paragem      (A) Código de Paragem
+      Starting point       Terminus     Bus stop         Bus stop Code         c) Efetua de seguida o trajeto da carreira 021/ Route path 021
+
+ Dia 25 de Dezembro: Não se efetuam viagens. Dias 24 e 31 de Dezembro, 3ª feira de Carnaval e 5ª feira Santa: Serviço de Sábado (exceto se Domingo ou feriado).
+ On 25th December: No service. On 24th and 31st December, Mardi Gras and the Thursday before Easter: Saturday timetable (except if Sunday or Holiday).            DE/HF - 04.11.2024
+

@@ -1,0 +1,55 @@
+SERVIÇO URBANO | URBAN SERVICE
+ 009 Courelas
+        Courelas, T-9 (1147A)            Courelas, T-9 (1147A)                         Dias úteis                          Sábados                   Domingos e Feriados
+                                                                                      Working days                         Saturdays                 Sundays and Holidays
+    Rua 4 Pico Romeiras, D (1147)        Rua 4 Pico Romeiras, S (1145)
+   Pico das Romeiras, D1A (1098)         Rua 4 Pico Romeiras, S1A (1143)                                       Partidas de: / Departures from:
+   Pico das Romeiras, D2A (1100)         Pico das Romeiras (1141)                Centro          Courelas          Centro          Courelas          Centro          Courelas
+     Bairro Pico Romeiras, D (654)       Depois CZ Courelas, D (86)
+                                         CZ das Courelas, D (666)                 07:05            06:35            07:15            07:15            07:45            07:20
+                                         CAM Velho Chamorra, Lotinha (111C)       07:40            07:00            07:45            07:40            08:40            08:15
+                                         Depois Capela Preces (111B)              08:00            07:15            08:05            08:00            09:35            09:10
+Depois CAM Velho Chamorra (84)           CAM Velho da Chamorra (111A)
+         Antes das Romeiras (82)         ENT CAM Velho Chamorra, S (113)
+                                                                                  08:30            07:40            08:40            08:15            10:30            10:05
+             Beco Cascalho (994)         Depois CZ das Romeiras (111)             08:50            08:10            09:35            08:30            11:25            11:00
+    Romeiras, Apartamentos (80)          ENT Bairro das Romeiras (109A)           09:35            08:35            10:30            09:10            12:20            11:55
+  Estação Rádio Madeira, D (78A)         Antes CZ das Romeiras (109)              10:30            09:00            11:20            10:00            13:30            12:45
+         Pico dos Barcelos, D (78)       Estação Rádio Madeira, S (107A)
+    PAV dos Trabalhadores, D (76)        Pico dos Barcelos, S (107)
+                                                                                  11:30            09:30            12:10            10:55            15:00            14:00
+   Depois PAV Trabalhadores (74)         PAV dos Trabalhadores, S (105)           12:05            10:05            12:40            11:45            16:15            15:25
+ CAM Pilar, QTA Esmeraldo (730)          Antes PAV Trabalhadores (103)            12:35            11:00            13:10            12:35            17:45            17:15
+  CAM Pilar, C STO António (734)         Quinta do Esmeraldo (101)                13:05            12:00            13:35            13:10            19:00            18:20
+ Antes CZ CAM DR Barreto (736)           Depois Casa STO António (749)
+                                         Depois CZ DR Barreto (745)
+                                                                                  13:20            12:35            14:05            13:35            20:00            19:30
+      CAM P, Pilar Refeições (738)       CZ CAM Pilar DR Barreto (1279)           13:40            13:10            15:10            14:10            21:00            20:25
+    CAM Pilar, Bar Janota, D (740)       CAM Pilar, A Nossa Casa (743)            14:30            13:35            16:30            14:45            22:30            21:30
+     CAM Pilar, Antes da BP (742)        CAM Pilar, Bar Janota, S (741)           15:30            13:55            17:30            15:35
+       CAM Pilar, Terra Chã (744)        CAM Pilar, Depois da BP (739)
+                                         Rua Levada Cavalo, BP (737)
+                                                                                  16:25            14:20            18:20            16:55
+         Ponte RIB Seco, D (744A)        Rua Nova Lev Cavalo (735)                17:00            15:00            19:30            17:55
+                                         Rua Nova Levada Cavalo (733)             17:30            16:05            20:45            18:45
+      Hospital DR Nélio M, D (48)        Hospital DR Nélio M, S2A (77)            17:50            16:55            22:35            20:00
+                  Rua Ilhéus (46)        Centro, Freitas e Neto (73)
+              Hotel Savoy, D (10)        Hotel Savoy, S (37)
+                                                                                  18:20            17:30                             21:30
+       Hotel Casino Park, D (10A)        Hotel Casino Park, S (35)                18:45            18:00
+         Parque STA Catarina (8)         R J Dias Leite (33)                      19:00            18:25
+            Rua Conselheiro (17)         Palácio S Lourenço (29)                  19:30            18:55
+                                         G N R (15)
+                       Praça Povo (2)    AV do Mar, E E M (11)
+                                                                                  20:30            20:00
+                                                                                  23:20            21:30
+
+
+
+
+     Início carreira        Término     Paragem     (A) Código de Paragem
+     Starting point         Terminus    Bus stop        Bus stop Code
+
+Dia 25 de Dezembro: Não se efetuam viagens. Dias 24 e 31 de Dezembro, 3ª feira de Carnaval e 5ª feira Santa: Serviço de Sábado (exceto se Domingo ou feriado).
+On 25th December: No service. On 24th and 31st December, Mardi Gras and the Thursday before Easter: Saturday timetable (except if Sunday or Holiday).            DE/HF - 02.03.2026
+

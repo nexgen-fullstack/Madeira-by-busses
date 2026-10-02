@@ -1,0 +1,1710 @@
+<!DOCTYPE html>
+<html lang="pt-PT" dir="ltr">
+        
+
+<head>
+<script type="text/javascript">  (function(){   function blockCookies(disableCookies, disableLocal, disableSession){   if(disableCookies == 1){   if(!document.__defineGetter__){   Object.defineProperty(document, 'cookie',{   get: function(){ return ''; },   set: function(){ return true;}   });   }else{   var oldSetter = document.__lookupSetter__('cookie');   if(oldSetter) {   Object.defineProperty(document, 'cookie', {   get: function(){ return ''; },   set: function(v){   if(v.match(/reDimCookieHint\=/) || v.match(/c3c76a646f276036eaeb6edfd24e6a6e\=/)) {   oldSetter.call(document, v);   }   return true;   }   });   }   }   var cookies = document.cookie.split(';');   for (var i = 0; i < cookies.length; i++) {   var cookie = cookies[i];   var pos = cookie.indexOf('=');   var name = '';   if(pos > -1){   name = cookie.substr(0, pos);   }else{   name = cookie;   }   if(name.match(/reDimCookieHint/)) {   document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT';   }   }   }   if(disableLocal == 1){   window.localStorage.clear();   window.localStorage.__proto__ = Object.create(window.Storage.prototype);   window.localStorage.__proto__.setItem = function(){ return undefined; };   }   if(disableSession == 1){   window.sessionStorage.clear();   window.sessionStorage.__proto__ = Object.create(window.Storage.prototype);   window.sessionStorage.__proto__.setItem = function(){ return undefined; };   }   }   blockCookies(1,1,1);   }());   </script>
+
+
+    
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        
+
+        
+            
+         <meta charset="utf-8">
+	<meta name="author" content="adminDt">
+	<meta name="description" content="Consulte os horários, percursos e tarifários da Horários do Funchal. Planeie a sua viagem de transportes públicos no Funchal com rapidez e comodidade. Viaje connosco.">
+	<meta name="generator" content="Joomla! - Open Source Content Management">
+	<title>Detalhes do Ponto de Interesse</title>
+	<link href="https://www.horariosdofunchal.pt/index.php/a-visitar?poi_id=12" rel="alternate" hreflang="pt-PT">
+	<link href="https://www.horariosdofunchal.pt/index.php/en/to-visit" rel="alternate" hreflang="en-GB">
+
+    <link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css?4528d7" rel="stylesheet">
+	<link href="/modules/mod_pontos_interesse/assets/css/style.css?v=1790953579" rel="stylesheet">
+	<link href="/media/vendor/joomla-custom-elements/css/joomla-alert.min.css?0.4.1" rel="stylesheet">
+	<link href="/plugins/system/cookiehint/legacy/css/bw.css?4528d7" rel="stylesheet">
+	<link href="https://www.horariosdofunchal.pt//modules/mod_jt_languageswitcher/assets/css/style.css" rel="stylesheet">
+	<link href="/media/gantry5/engines/nucleus/css-compiled/nucleus.css" rel="stylesheet">
+	<link href="/templates/g5_helium/custom/css-compiled/helium_16.css" rel="stylesheet">
+	<link href="/media/gantry5/engines/nucleus/css-compiled/bootstrap5.css" rel="stylesheet">
+	<link href="/media/system/css/joomla-fontawesome.min.css" rel="stylesheet">
+	<link href="/media/plg_system_debug/css/debug.css" rel="stylesheet">
+	<link href="/media/gantry5/assets/css/font-awesome.min.css" rel="stylesheet">
+	<link href="/templates/g5_helium/custom/css-compiled/helium-joomla_16.css" rel="stylesheet">
+	<link href="/templates/g5_helium/custom/css-compiled/custom_16.css" rel="stylesheet">
+	<style>#redim-cookiehint-bottom {position: fixed; z-index: 99999; left: 0px; right: 0px; bottom: 0px; top: auto !important;}</style>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js?4528d7"></script>
+	<script src="/media/system/js/leaflet-geolocation.js?4528d7"></script>
+	<script type="application/json" class="joomla-script-options new">{"joomla.jtext":{"ERROR":"Erro","MESSAGE":"Mensagem","NOTICE":"Aviso","WARNING":"Advertência","SUCCESS":"Success","JCLOSE":"Fechar","JOK":"Aceitar","JOPEN":"Abrir"},"system.paths":{"root":"","rootFull":"https:\/\/www.horariosdofunchal.pt\/","base":"","baseFull":"https:\/\/www.horariosdofunchal.pt\/"},"csrf.token":"68c9f3b5b101996a8e2e6215a7a357c9"}</script>
+	<script src="/media/system/js/core.min.js?a3d8f8"></script>
+	<script src="/media/vendor/bootstrap/js/alert.min.js?5.3.8" type="module"></script>
+	<script src="/media/vendor/bootstrap/js/button.min.js?5.3.8" type="module"></script>
+	<script src="/media/vendor/bootstrap/js/carousel.min.js?5.3.8" type="module"></script>
+	<script src="/media/vendor/bootstrap/js/collapse.min.js?5.3.8" type="module"></script>
+	<script src="/media/vendor/bootstrap/js/dropdown.min.js?5.3.8" type="module"></script>
+	<script src="/media/vendor/bootstrap/js/modal.min.js?5.3.8" type="module"></script>
+	<script src="/media/vendor/bootstrap/js/offcanvas.min.js?5.3.8" type="module"></script>
+	<script src="/media/vendor/bootstrap/js/popover.min.js?5.3.8" type="module"></script>
+	<script src="/media/vendor/bootstrap/js/scrollspy.min.js?5.3.8" type="module"></script>
+	<script src="/media/vendor/bootstrap/js/tab.min.js?5.3.8" type="module"></script>
+	<script src="/media/vendor/bootstrap/js/toast.min.js?5.3.8" type="module"></script>
+	<script src="/media/system/js/messages.min.js?9a4811" type="module"></script>
+	<script src="https://www.googletagmanager.com/gtag/js?id=G-0RTY61DZNL" async></script>
+	<script src="https://www.googletagmanager.com/gtag/js?id=G-LQ1NVLY8V3" async></script>
+	<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","@id":"https://www.horariosdofunchal.pt/#/schema/BreadcrumbList/17","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https://www.horariosdofunchal.pt/index.php","name":"Home"}},{"@type":"ListItem","position":2,"item":{"@id":"https://www.horariosdofunchal.pt/index.php/a-visitar","name":"A visitar"}}]}</script>
+	<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.horariosdofunchal.pt/#/schema/Organization/base","name":"Horários do Funchal -- Transportes Públicos SA","url":"https://www.horariosdofunchal.pt/"},{"@type":"WebSite","@id":"https://www.horariosdofunchal.pt/#/schema/WebSite/base","url":"https://www.horariosdofunchal.pt/","name":"Horários do Funchal -- Transportes Públicos SA","publisher":{"@id":"https://www.horariosdofunchal.pt/#/schema/Organization/base"},"potentialAction":{"@type":"SearchAction","target":"https://www.horariosdofunchal.pt/index.php/resultados-da-pesquisa?q={search_term_string}","query-input":"required name=search_term_string"}},{"@type":"WebPage","@id":"https://www.horariosdofunchal.pt/#/schema/WebPage/base","url":"https://www.horariosdofunchal.pt/index.php/a-visitar?poi_id=12","name":"Detalhes do Ponto de Interesse","description":"Consulte os horários, percursos e tarifários da Horários do Funchal. Planeie a sua viagem de transportes públicos no Funchal com rapidez e comodidade. Viaje connosco.","isPartOf":{"@id":"https://www.horariosdofunchal.pt/#/schema/WebSite/base"},"about":{"@id":"https://www.horariosdofunchal.pt/#/schema/Organization/base"},"inLanguage":"pt-PT","breadcrumb":{"@id":"https://www.horariosdofunchal.pt/#/schema/BreadcrumbList/17"}},{"@type":"Article","@id":"https://www.horariosdofunchal.pt/#/schema/com_content/article/83","name":"Detalhes do Ponto de Interesse","headline":"Detalhes do Ponto de Interesse","inLanguage":"pt-PT","isPartOf":{"@id":"https://www.horariosdofunchal.pt/#/schema/WebPage/base"}}]}</script>
+	<script>(function() {
+    function initHfToggle() {
+        var bMapa = document.getElementById('hf-btn-mapa');
+        var bLista = document.getElementById('hf-btn-lista');
+        var aMapa = document.getElementById('hf-area-mapa');
+        var aLista = document.getElementById('hf-area-lista');
+
+        if (bMapa && bLista && aMapa && aLista) {
+            bMapa.addEventListener('click', function() {
+                aMapa.style.setProperty('display', 'block', 'important');
+                aLista.style.setProperty('display', 'none', 'important');
+                bMapa.className = 'hf-toggle-btn left active';
+                bLista.className = 'hf-toggle-btn right inactive';
+            });
+
+            bLista.addEventListener('click', function() {
+                aMapa.style.setProperty('display', 'none', 'important');
+                aLista.style.setProperty('display', 'block', 'important');
+                bLista.className = 'hf-toggle-btn right active';
+                bMapa.className = 'hf-toggle-btn left inactive';
+            });
+        }
+    }
+
+    // Executa ao carregar e tenta novamente após 1 seg caso o Joomla demore a carregar o módulo
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+        initHfToggle();
+    } else {
+        document.addEventListener("DOMContentLoaded", initHfToggle);
+    }
+})();</script>
+	<script>if (document.cookie.indexOf('reDimCookieHint=1') !== -1) {
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '360511801689685');
+  fbq('track', 'PageView');
+}</script>
+	<script>      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0RTY61DZNL');
+
+          </script>
+	<script>      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-LQ1NVLY8V3');
+
+          </script>
+	<link href="https://www.horariosdofunchal.pt/index.php/a-visitar?poi_id=12" rel="alternate" hreflang="x-default">
+
+    
+                
+</head>
+
+    <body class="gantry g-helium-style site com_content view-article no-layout no-task dir-ltr itemid-222 outline-16 g-offcanvas-left g-default g-style-preset1">
+        
+                    
+
+        <div id="g-offcanvas"  data-g-offcanvas-swipe="0" data-g-offcanvas-css3="1">
+                        <div class="g-grid">                        
+
+        <div class="g-block size-100">
+             <div id="mobile-menu-5697-particle" class="g-content g-particle">            <div id="g-mobilemenu-container" data-g-menu-breakpoint="48rem"></div>
+            </div>
+        </div>
+            </div>
+    </div>
+        <div id="g-page-surround">
+            <div class="g-offcanvas-hide g-offcanvas-toggle" role="navigation" data-offcanvas-toggle aria-controls="g-offcanvas" aria-expanded="false"><i class="fa fa-fw fa-bars"></i></div>                        
+
+                                
+                <section id="g-alertBar" class="g-flushed">
+                <div class="g-container">                                <div class="g-grid">                        
+
+        <div class="g-block size-100">
+             <div class="g-content">
+                                    <div class="platform-content"><div class=" moduletable ">
+        
+<div id="alertas-notification-bar" class="alertas-bar">
+    <div class="alertas-bar-track">
+        <div class="alertas-bar-content">
+                            <a href="https://www.horariosdofunchal.pt/index.php?Itemid=269&id=212" class="alertas-bar-item">
+                    <span class="alertas-bar-date">06/10/2026</span>
+                    <span class="alertas-bar-separator">|</span>
+                    <span class="alertas-bar-title">Carreira nº: 028 (28)</span>
+                </a>
+                            <a href="https://www.horariosdofunchal.pt/index.php?Itemid=269&id=211" class="alertas-bar-item">
+                    <span class="alertas-bar-date">02/10/2026</span>
+                    <span class="alertas-bar-separator">|</span>
+                    <span class="alertas-bar-title">Carreiras que partem do centro</span>
+                </a>
+                            <a href="https://www.horariosdofunchal.pt/index.php?Itemid=269&id=210" class="alertas-bar-item">
+                    <span class="alertas-bar-date">06/10/2026</span>
+                    <span class="alertas-bar-separator">|</span>
+                    <span class="alertas-bar-title">Carreira nº: 024 (24)</span>
+                </a>
+                            <a href="https://www.horariosdofunchal.pt/index.php?Itemid=269&id=209" class="alertas-bar-item">
+                    <span class="alertas-bar-date">03/10/2026</span>
+                    <span class="alertas-bar-separator">|</span>
+                    <span class="alertas-bar-title">Carreira nº: 028 (28)</span>
+                </a>
+                            <a href="https://www.horariosdofunchal.pt/index.php?Itemid=269&id=208" class="alertas-bar-item">
+                    <span class="alertas-bar-date">01/10/2026</span>
+                    <span class="alertas-bar-separator">|</span>
+                    <span class="alertas-bar-title">Postos de Venda e Atendimento HF</span>
+                </a>
+                            <a href="https://www.horariosdofunchal.pt/index.php?Itemid=269&id=176" class="alertas-bar-item">
+                    <span class="alertas-bar-date">26/08/2026</span>
+                    <span class="alertas-bar-separator">|</span>
+                    <span class="alertas-bar-title">Novas placas de paragem</span>
+                </a>
+                            <a href="https://www.horariosdofunchal.pt/index.php?Itemid=269&id=160" class="alertas-bar-item">
+                    <span class="alertas-bar-date">29/07/2026</span>
+                    <span class="alertas-bar-separator">|</span>
+                    <span class="alertas-bar-title"> Carreiras nºs: 015 (15), 042 (42) e 115 (05B)</span>
+                </a>
+                            <a href="https://www.horariosdofunchal.pt/index.php?Itemid=269&id=24" class="alertas-bar-item">
+                    <span class="alertas-bar-date">09/03/2026</span>
+                    <span class="alertas-bar-separator">|</span>
+                    <span class="alertas-bar-title">Nova numeração e denominação das carreiras</span>
+                </a>
+                    </div>
+        <!-- Duplicado para scroll contínuo sem gaps -->
+        <div class="alertas-bar-content" aria-hidden="true">
+                            <a href="https://www.horariosdofunchal.pt/index.php?Itemid=269&id=212" class="alertas-bar-item">
+                    <span class="alertas-bar-date">06/10/2026</span>
+                    <span class="alertas-bar-separator">|</span>
+                    <span class="alertas-bar-title">Carreira nº: 028 (28)</span>
+                </a>
+                            <a href="https://www.horariosdofunchal.pt/index.php?Itemid=269&id=211" class="alertas-bar-item">
+                    <span class="alertas-bar-date">02/10/2026</span>
+                    <span class="alertas-bar-separator">|</span>
+                    <span class="alertas-bar-title">Carreiras que partem do centro</span>
+                </a>
+                            <a href="https://www.horariosdofunchal.pt/index.php?Itemid=269&id=210" class="alertas-bar-item">
+                    <span class="alertas-bar-date">06/10/2026</span>
+                    <span class="alertas-bar-separator">|</span>
+                    <span class="alertas-bar-title">Carreira nº: 024 (24)</span>
+                </a>
+                            <a href="https://www.horariosdofunchal.pt/index.php?Itemid=269&id=209" class="alertas-bar-item">
+                    <span class="alertas-bar-date">03/10/2026</span>
+                    <span class="alertas-bar-separator">|</span>
+                    <span class="alertas-bar-title">Carreira nº: 028 (28)</span>
+                </a>
+                            <a href="https://www.horariosdofunchal.pt/index.php?Itemid=269&id=208" class="alertas-bar-item">
+                    <span class="alertas-bar-date">01/10/2026</span>
+                    <span class="alertas-bar-separator">|</span>
+                    <span class="alertas-bar-title">Postos de Venda e Atendimento HF</span>
+                </a>
+                            <a href="https://www.horariosdofunchal.pt/index.php?Itemid=269&id=176" class="alertas-bar-item">
+                    <span class="alertas-bar-date">26/08/2026</span>
+                    <span class="alertas-bar-separator">|</span>
+                    <span class="alertas-bar-title">Novas placas de paragem</span>
+                </a>
+                            <a href="https://www.horariosdofunchal.pt/index.php?Itemid=269&id=160" class="alertas-bar-item">
+                    <span class="alertas-bar-date">29/07/2026</span>
+                    <span class="alertas-bar-separator">|</span>
+                    <span class="alertas-bar-title"> Carreiras nºs: 015 (15), 042 (42) e 115 (05B)</span>
+                </a>
+                            <a href="https://www.horariosdofunchal.pt/index.php?Itemid=269&id=24" class="alertas-bar-item">
+                    <span class="alertas-bar-date">09/03/2026</span>
+                    <span class="alertas-bar-separator">|</span>
+                    <span class="alertas-bar-title">Nova numeração e denominação das carreiras</span>
+                </a>
+                    </div>
+    </div>
+</div>
+
+<style>
+/* ===== NOTIFICATION BAR ===== */
+.alertas-bar {
+    background-color: #fdb915;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    width: 100%;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+}
+
+.alertas-bar-track {
+    display: flex;
+    animation: alertas-scroll 30s linear infinite;
+}
+
+.alertas-bar-track:hover {
+    animation-play-state: paused;
+}
+
+.alertas-bar-content {
+    display: flex;
+    flex-shrink: 0;
+}
+
+.alertas-bar-item {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 2rem;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    height: 36px;
+    transition: background-color 0.2s;
+}
+
+.alertas-bar-item:hover {
+    color: #FFFFFF;
+    background-color: rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+}
+
+.alertas-bar-date {
+    font-weight: 400;
+}
+
+.alertas-bar-separator {
+    margin: 0 0.5rem;
+    opacity: 0.7;
+}
+
+.alertas-bar-title {
+    font-weight: 600;
+}
+
+@keyframes alertas-scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Se só houver 1 ou 2 alertas, ajustar velocidade */
+@media (max-width: 768px) {
+    .alertas-bar-item {
+        font-size: 0.9rem;
+        padding: 0 1.2rem;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Ajustar velocidade baseado na largura do conteúdo
+    var track = document.querySelector('.alertas-bar-track');
+    var content = document.querySelector('.alertas-bar-content');
+    if (track && content) {
+        var contentWidth = content.scrollWidth;
+        // ~50px por segundo de scroll
+        var duration = Math.max(contentWidth / 50, 15);
+        track.style.animationDuration = duration + 's';
+    }
+});
+</script>
+</div></div>
+            
+        </div>
+        </div>
+            </div>
+            </div>
+        
+    </section>
+                    
+                <section id="g-navigation" class="section-vertical-paddings-small">
+                <div class="g-container">                                <div class="g-grid">                        
+
+        <div class="g-block size-100">
+             <div class="g-system-messages">
+                                            <div id="system-message-container" aria-live="polite"></div>
+
+            
+    </div>
+        </div>
+            </div>
+            </div>
+        
+    </section>
+                    
+                <header id="g-header">
+                <div class="g-container">                                <div class="g-grid">                        
+
+        <div class="g-block size-25">
+             <div id="logo-7811-particle" class="g-content g-particle">            <a href="/" target="_self" title="" aria-label="" rel="home" class="g-logo">
+                        <img src="/images/img/HF-logo.png"  alt="" />
+            </a>
+            </div>
+        </div>
+                    
+
+        <div class="g-block size-60 MainMenuCSS">
+             <div id="menu-1079-particle" class="g-content g-particle">            <nav class="g-main-nav" data-g-hover-expand="true">
+        <ul class="g-toplevel">
+                                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-url g-menu-item-115 g-parent g-standard g-menu-item-link-parent ">
+                            <a class="g-menu-item-container" href="#">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Viajar</span>
+            
+                    </span>
+                    <span class="g-menu-parent-indicator" data-g-menuparent=""></span>                            </a>
+                                                                            <ul class="g-dropdown g-inactive g-fade g-dropdown-right">
+            <li class="g-dropdown-column">
+                        <div class="g-grid">
+                        <div class="g-block size-100">
+            <ul class="g-sublevel">
+                <li class="g-level-1 g-go-back">
+                    <a class="g-menu-item-container" href="#" data-g-menuparent=""><span>Back</span></a>
+                </li>
+                                                                                                                    
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-176  ">
+                            <a class="g-menu-item-container" href="/index.php/viajar/horarios">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Horários</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-177  ">
+                            <a class="g-menu-item-container" href="/index.php/viajar/mapas">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Mapas</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-119  ">
+                            <a class="g-menu-item-container" href="/index.php/viajar/planear-viagem">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Planear Viagem</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-344  ">
+                            <a class="g-menu-item-container" href="/index.php/viajar/calendario-em-vigor">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Calendário em vigor</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-url g-menu-item-120  ">
+                            <a class="g-menu-item-container" href="/index.php/pt/alertas">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Alertas</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-121  ">
+                            <a class="g-menu-item-container" href="/index.php/viajar/titulos-e-tarifas">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Títulos e Tarifas</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-122  ">
+                            <a class="g-menu-item-container" href="/index.php/viajar/pontos-de-venda">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Pontos de Venda</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-362  ">
+                            <a class="g-menu-item-container" href="/index.php/viajar/conversor-de-paragens">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Conversor de Paragens</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-478  ">
+                            <a class="g-menu-item-container" href="/index.php/viajar/escolas">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Escolas</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-123  ">
+                            <a class="g-menu-item-container" href="/index.php/viajar/boas-praticas">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Boas Práticas</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-116  ">
+                            <a class="g-menu-item-container" href="/index.php/viajar/o-nosso-servico">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">O nosso serviço</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-124  ">
+                            <a class="g-menu-item-container" href="/index.php/viajar/pico-do-areeiro">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Pico do Areeiro</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-125  ">
+                            <a class="g-menu-item-container" href="/index.php/viajar/pmr-transporte-especial">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">PMR - Transporte Especial</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-126  ">
+                            <a class="g-menu-item-container" href="/index.php/viajar/servico-de-aluguer">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Serviço de Aluguer</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+    
+            </ul>
+        </div>
+            </div>
+
+            </li>
+        </ul>
+            </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-url g-menu-item-127 g-parent g-standard g-menu-item-link-parent ">
+                            <a class="g-menu-item-container" href="#">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Turismo</span>
+            
+                    </span>
+                    <span class="g-menu-parent-indicator" data-g-menuparent=""></span>                            </a>
+                                                                            <ul class="g-dropdown g-inactive g-fade g-dropdown-right">
+            <li class="g-dropdown-column">
+                        <div class="g-grid">
+                        <div class="g-block size-100">
+            <ul class="g-sublevel">
+                <li class="g-level-1 g-go-back">
+                    <a class="g-menu-item-container" href="#" data-g-menuparent=""><span>Back</span></a>
+                </li>
+                                                                                                                    
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-128  ">
+                            <a class="g-menu-item-container" href="/index.php/turismo/a-visitar">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">A visitar</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-129  ">
+                            <a class="g-menu-item-container" href="/index.php/turismo/roteiros">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Roteiros</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-130  ">
+                            <a class="g-menu-item-container" href="/index.php/turismo/tarifas-recomendadas">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Tarifas Recomendadas</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+    
+            </ul>
+        </div>
+            </div>
+
+            </li>
+        </ul>
+            </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-url g-menu-item-131 g-parent g-standard g-menu-item-link-parent ">
+                            <a class="g-menu-item-container" href="#">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Atendimento</span>
+            
+                    </span>
+                    <span class="g-menu-parent-indicator" data-g-menuparent=""></span>                            </a>
+                                                                            <ul class="g-dropdown g-inactive g-fade g-dropdown-right">
+            <li class="g-dropdown-column">
+                        <div class="g-grid">
+                        <div class="g-block size-100">
+            <ul class="g-sublevel">
+                <li class="g-level-1 g-go-back">
+                    <a class="g-menu-item-container" href="#" data-g-menuparent=""><span>Back</span></a>
+                </li>
+                                                                                                                    
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-138  ">
+                            <a class="g-menu-item-container" href="/index.php/atendimento/contactos">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Contactos</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-139  ">
+                            <a class="g-menu-item-container" href="/index.php/atendimento/condicoes-de-utilizacao">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Condições de utilização</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-140  ">
+                            <a class="g-menu-item-container" href="/index.php/atendimento/perguntas-frequentes">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Perguntas frequentes</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-141  ">
+                            <a class="g-menu-item-container" href="/index.php/atendimento/pedidos-sugestoes-elogios-e-reclamacoes">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Pedidos, sugestões, elogios e reclamações</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-445  ">
+                            <a class="g-menu-item-container" href="/index.php/atendimento/merchandising">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Merchandising</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+    
+            </ul>
+        </div>
+            </div>
+
+            </li>
+        </ul>
+            </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-url g-menu-item-132 g-parent g-standard g-menu-item-link-parent ">
+                            <a class="g-menu-item-container" href="#">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Empresas</span>
+            
+                    </span>
+                    <span class="g-menu-parent-indicator" data-g-menuparent=""></span>                            </a>
+                                                                            <ul class="g-dropdown g-inactive g-fade g-dropdown-right">
+            <li class="g-dropdown-column">
+                        <div class="g-grid">
+                        <div class="g-block size-100">
+            <ul class="g-sublevel">
+                <li class="g-level-1 g-go-back">
+                    <a class="g-menu-item-container" href="#" data-g-menuparent=""><span>Back</span></a>
+                </li>
+                                                                                                                    
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-144  ">
+                            <a class="g-menu-item-container" href="/index.php/empresas/publicidade-na-hf">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Publicidade na HF</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-145  ">
+                            <a class="g-menu-item-container" href="/index.php/empresas/parcerias">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Parcerias</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+    
+            </ul>
+        </div>
+            </div>
+
+            </li>
+        </ul>
+            </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-url g-menu-item-133 g-parent g-standard g-menu-item-link-parent ">
+                            <a class="g-menu-item-container" href="#">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Institucional</span>
+            
+                    </span>
+                    <span class="g-menu-parent-indicator" data-g-menuparent=""></span>                            </a>
+                                                                            <ul class="g-dropdown g-inactive g-fade g-dropdown-right">
+            <li class="g-dropdown-column">
+                        <div class="g-grid">
+                        <div class="g-block size-100">
+            <ul class="g-sublevel">
+                <li class="g-level-1 g-go-back">
+                    <a class="g-menu-item-container" href="#" data-g-menuparent=""><span>Back</span></a>
+                </li>
+                                                                                                                    
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-alias g-menu-item-146  ">
+                            <a class="g-menu-item-container" href="/index.php/sobre-a-hf/quem-somos">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Sobre a HF</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-alias g-menu-item-157  ">
+                            <a class="g-menu-item-container" href="/index.php/governanca-e-conformidade/pprcic">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Governança e conformidade</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-162  ">
+                            <a class="g-menu-item-container" href="/index.php/institucional/contratacao-publica">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Contratação pública </span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-163  ">
+                            <a class="g-menu-item-container" href="/index.php/institucional/projetos">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Projetos</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-164  ">
+                            <a class="g-menu-item-container" href="/index.php/institucional/noticias">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Notícias</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+                                                                                                
+        
+                
+        
+                
+        
+        <li class="g-menu-item g-menu-item-type-component g-menu-item-331  ">
+                            <a class="g-menu-item-container" href="/index.php/institucional/recrutamento">
+                                                                <span class="g-menu-item-content">
+                                    <span class="g-menu-item-title">Recrutamento</span>
+            
+                    </span>
+                                                </a>
+                                </li>
+    
+    
+            </ul>
+        </div>
+            </div>
+
+            </li>
+        </ul>
+            </li>
+    
+    
+        </ul>
+    </nav>
+            </div>
+        </div>
+                    
+
+        <div class="g-block size-6 MainMenuCSS">
+             <div id="custom-8073-particle" class="g-content g-particle">            <!-- Partícula Gantry 5: Search Modal -->
+
+<button type="button" class="g-search-modal__trigger" aria-label="Abrir pesquisa" aria-expanded="false">
+    <i class="fa fa-search"></i>
+</button>
+
+<!-- Modal Overlay -->
+<div class="g-search-modal__overlay" aria-hidden="true">
+    <div class="g-search-modal__container">
+        
+        <button type="button" class="g-search-modal__close" aria-label="Fechar pesquisa">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        
+        <div class="g-search-modal__content">
+            <h2 class="g-search-modal__title">O que procura?</h2>
+            <form class="g-search-modal__form" onsubmit="return false;">
+                <div class="g-search-modal__input-wrap">
+                    <input type="search" 
+                           class="g-search-modal__input" 
+                           placeholder="Pesquisar..." 
+                           autocomplete="off" 
+                           aria-label="Campo de pesquisa">
+                   <button type="button" class="g-search-modal__submit" aria-label="Pesquisar">
+    <i class="fa fa-search"></i>
+</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+/* ===== TRIGGER BUTTON ===== */
+.g-search-modal__trigger {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    font-size: 22px;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+.g-search-modal__trigger:hover {
+    color: #ccc;
+}
+
+/* ===== OVERLAY ===== */
+.g-search-modal__overlay {
+  position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.g-search-modal__overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ===== CONTAINER ===== */
+.g-search-modal__container {
+    width: 90%;
+    max-width: 700px;
+    position: relative;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.g-search-modal__overlay.is-open .g-search-modal__container {
+    transform: translateY(0);
+}
+
+/* ===== CLOSE BUTTON ===== */
+.g-search-modal__close {
+    position: absolute;
+    top: -60px;
+    right: 0;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 8px;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.g-search-modal__close:hover {
+    opacity: 1;
+}
+
+/* ===== CONTENT ===== */
+.g-search-modal__title {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* ===== FORM ===== */
+.g-search-modal__input-wrap {
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid #fff;
+    padding-bottom: 8px;
+}
+
+.g-search-modal__input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 300;
+    padding: 10px 0;
+}
+
+.g-search-modal__input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.g-search-modal__input::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+}
+
+.g-search-modal__submit {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 10px;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.g-search-modal__submit:hover {
+    opacity: 1;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const trigger = document.querySelector('.g-search-modal__trigger');
+    const overlay = document.querySelector('.g-search-modal__overlay');
+    const closeBtn = document.querySelector('.g-search-modal__close');
+    const input = document.querySelector('.g-search-modal__input');
+    const submitBtn = document.querySelector('.g-search-modal__submit');
+    
+    // Configurações - ajustar conforme necessário
+    const itemid = '293';
+    const component = 'com_finder';
+    const paramName = 'q';
+    
+    function getBaseUrl() {
+        const path = window.location.pathname;
+        const indexPos = path.indexOf('/index.php');
+        if (indexPos !== -1) {
+            return window.location.origin + path.substring(0, indexPos + 1);
+        }
+        const langMatch = path.match(/^(.*?)\/(pt|en)\//);
+        if (langMatch) {
+            return window.location.origin + langMatch[1] + '/';
+        }
+        return window.location.origin + '/';
+    }
+    
+    function openModal() {
+        overlay.classList.add('is-open');
+        overlay.setAttribute('aria-hidden', 'false');
+        trigger.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+        setTimeout(function() { input.focus(); }, 300);
+    }
+    
+    function closeModal() {
+        overlay.classList.remove('is-open');
+        overlay.setAttribute('aria-hidden', 'true');
+        trigger.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+        input.value = '';
+    }
+    
+    function doSearch() {
+        const searchValue = input.value.trim();
+        if (!searchValue) { input.focus(); return; }
+        
+        const baseUrl = getBaseUrl();
+        let targetUrl;
+        
+        if (itemid) {
+            targetUrl = baseUrl + 'index.php?Itemid=' + itemid + '&' + paramName + '=' + encodeURIComponent(searchValue);
+        } else {
+            targetUrl = baseUrl + 'index.php?option=' + component + '&view=search&' + paramName + '=' + encodeURIComponent(searchValue);
+        }
+        
+        window.location.href = targetUrl;
+    }
+    
+    // Event listeners
+    trigger.addEventListener('click', function(e) {
+        e.preventDefault();
+        openModal();
+    });
+    
+    closeBtn.addEventListener('click', closeModal);
+    
+    // Fechar ao clicar no fundo
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) closeModal();
+    });
+    
+    // Enter para pesquisar
+    input.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') { e.preventDefault(); doSearch(); }
+    });
+    
+    // ESC para fechar
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeModal();
+    });
+    
+    // Botão submit
+    submitBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        doSearch();
+    });
+});
+</script>
+            </div>
+        </div>
+                    
+
+        <div class="g-block size-9 MainMenuCSS">
+             <div class="g-content">
+                                    <div class="platform-content"><div class="language moduletable ">
+        <style type="text/css">
+#select-container {height:28px;top:0px;;}
+#select-container:hover {height: 74px;}
+[tooltip]::after {content: attr(tooltip);width:40px;}
+#select-container ul li img,#select-container button.active-lang img{width:20px;height:20px;border-radius:50%;border:2px solid #FFFFFF;box-shadow: 0px 0px 6px rgba(79, 104, 113, 0.3);}
+#select-container ul li {min-height:24px;}
+#select-container button{height:28px;line-height:24px;}
+#select-container ul li span.langname-code {height:24px;display: grid;align-content: center;}
+#select-container ul.lang-block114{display:flex;flex-direction:column;align-items: center;}
+@media screen and (max-width:767px){
+#select-container {height:28px;top:10px;;}
+}
+</style>
+	
+<div class="mod-jt-languageswitcher">
+<div id="select-container">
+ <div class="mod-jt-languageswitcher__select">
+									<button  id="language_btn_114" class="active-lang" aria-haspopup="listbox" aria-labelledby="language_picker_des_114 language_btn_114" aria-expanded="false">
+										<span class="img-cover" style="float:left;margin-right:0px;"><img src="https://www.horariosdofunchal.pt//modules/mod_jt_languageswitcher/assets/images/pt_pt.png"/></span>
+														</button>
+												<ul role="listbox" aria-labelledby="language_picker_des_114" class="lang-block114">
+					 
+								 
+							<li lang-selection="en_gb"   flow="up">
+					<a role="option" aria-label="English (United Kingdom)" href="/index.php/en/to-visit">
+												<span class="img-cover" style="float:left;margin-right:0px;"> <img src="https://www.horariosdofunchal.pt//modules/mod_jt_languageswitcher/assets/images/en_gb.png"/></span>
+																	</a>
+				</li>
+							</ul>
+	</div>
+    
+  </ul>
+</div>
+</div>
+
+<script type="text/javascript">
+
+var container = document.getElementById('select-container');
+var items = container.getElementsByTagName('ul')[0].getElementsByTagName('li');
+var selectedItem = items[0];
+
+hideSelected();
+
+function onSelect(item) {
+  showUnselected();
+  selectedItem.innerHTML = item.innerHTML;
+  selectedItem.setAttribute('lang-selection', item.getAttribute('lang-selection'));
+  selectedItem.setAttribute('tooltip', item.getAttribute('tooltip'));
+  hideSelected();
+  unwrapSelector();
+}
+
+function unwrapSelector() {
+  container.style.pointerEvents = "none";
+  setTimeout(() => container.style.pointerEvents = "auto", 200);
+}
+
+function showUnselected() {
+  let selectedLangCode = selectedItem.getAttribute('lang-selection');
+
+  for (let i = 1; i < items.length; i++) {
+    if (items[i].getAttribute('lang-selection') == selectedLangCode) {
+      items[i].style.opacity = '1';
+      items[i].style.display = '';
+      break;
+    }
+  }
+}
+
+function hideSelected() {
+  let selectedLangCode = selectedItem.getAttribute('lang-selection');
+
+  for (let i = 1; i < items.length; i++) {
+    if (items[i].getAttribute('lang-selection') == selectedLangCode) {
+      items[i].style.opacity = '0';
+      setTimeout(() => items[i].style.display = 'none', 200);
+      break;
+    }
+  }
+}</script></div></div>
+            
+        </div>
+        </div>
+            </div>
+            </div>
+        
+    </header>
+                    
+                <section id="g-hero">
+                <div class="g-container">                                <div class="g-grid">                        
+
+        <div class="g-block size-100">
+             <div class="g-content">
+                                    <div class="platform-content"><div class="breadcrumbs moduletable ">
+        <nav class="mod-breadcrumbs__wrapper" aria-label="Breadcrumbs PT">
+    <ol class="mod-breadcrumbs breadcrumb px-3 py-2">
+                    <li class="mod-breadcrumbs__divider float-start">
+                <span class="divider icon-location icon-fw" aria-hidden="true"></span>
+            </li>
+        
+        <li class="mod-breadcrumbs__item breadcrumb-item"><a href="/index.php" class="pathway"><span>Home</span></a></li><li class="mod-breadcrumbs__item breadcrumb-item active"><span>A visitar</span></li>    </ol>
+    </nav>
+</div></div>
+            
+        </div>
+        </div>
+            </div>
+            </div>
+        
+    </section>
+    
+                                
+                
+    
+                <section id="g-container-main" class="g-wrapper">
+                <div class="g-container">                    <div class="g-grid">                        
+
+        <div class="g-block size-100">
+             <main id="g-mainbar">
+                                        <div class="g-grid">                        
+
+        <div class="g-block size-100">
+             <div class="g-content">
+                                                            <div class="platform-content container"><div class="row"><div class="col"><div class="com-content-article item-page">
+    <meta itemprop="inLanguage" content="pt-PT">
+    
+    
+        
+        
+    
+    
+        
+                                                <div class="com-content-article__body">
+        
+<div id="mod-pontos-interesse-132" class="mod-pontos-interesse mod-pontos-interesse-detail">
+    
+    <!-- Botão Voltar -->
+    <div class="pi-detail-nav">
+        <a href="/index.php/turismo/a-visitar" class="pi-btn-back">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Voltar        </a>
+    </div>
+    
+    <div class="pi-detail-container">
+        <!-- Imagem Principal -->
+        <div class="pi-detail-image">
+            <img src="https://www.horariosdofunchal.pt/images/pontos/qta-das-cruzes-003-francisco-correia.jpeg#joomlaImage://local-images/pontos/qta-das-cruzes-003-francisco-correia.jpeg?width=1920&amp;height=870" 
+                 alt="Jardim Quinta das Cruzes">
+            <span class="pi-detail-categoria">
+                Jardins            </span>
+        </div>
+        
+        <!-- Conteúdo -->
+        <div class="pi-detail-content">
+            <h1 class="pi-detail-title">Jardim Quinta das Cruzes</h1>
+            
+            <div class="pi-detail-meta">
+                <div class="pi-detail-location">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    <span>Calçada do Pico 1, Funchal</span>
+                </div>
+                
+                                <div class="pi-detail-locality">
+                    <strong>Localidade:</strong>
+                    Funchal                </div>
+                            </div>
+            
+                        <div class="pi-detail-description">
+                O Jardim da Quinta das Cruzes situa-se na Quinta onde se crê que viveu João Gonçalves Zarco.<br />
+Este jardim dispõe de uma rica coleção de plantas endémicas e exóticas e o seu amplo parque ajardinado apresenta árvores centenárias que ladeiam os caminhos empedrados em calhau rolado.<br />
+            </div>
+                        
+                        <div class="pi-detail-actions">
+                <a href="https://ifcn.madeira.gov.pt/quintas-e-jardins/quintas/quinta-das-cruzes.html" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="pi-btn pi-btn-primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                    Visitar Website                </a>
+            </div>
+                    </div>
+        
+        <!-- Mapa de localização -->
+                <div class="pi-detail-map-section">
+            <h3>Localização</h3>
+            <div id="pi-detail-map-132" 
+                 class="pi-detail-map" 
+                 style="height: 300px;"
+                 data-lat="32.650868"
+                 data-lng="-16.914296"
+                 data-icon="https://www.horariosdofunchal.pt/images/img/icon-jardins.png"
+                 data-nome="Jardim Quinta das Cruzes">
+            </div>
+        </div>
+                
+        <!-- Carreiras Associadas -->
+                <div class="pi-detail-carreiras-section">
+            <h3>Carreiras</h3>
+            <div class="pi-detail-carreiras-list">
+                                                     <a href="https://www.horariosdofunchal.pt/index.php/viajar/horarios#carreira=115" 
+                class="pi-detail-carreira-numero" 
+                style="background-color: #FBB900;">
+                    115                </a>
+                                            </div>
+        </div>
+                
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mapContainer = document.getElementById('pi-detail-map-132');
+    if (!mapContainer || typeof L === 'undefined') return;
+    
+    const lat = parseFloat(mapContainer.dataset.lat);
+    const lng = parseFloat(mapContainer.dataset.lng);
+    const iconUrl = mapContainer.dataset.icon;
+    const nome = mapContainer.dataset.nome;
+    
+    const map = L.map(mapContainer).setView([lat, lng], 16);
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+    
+    const icon = L.icon({
+        iconUrl: iconUrl,
+        iconSize: [32, 40],
+        iconAnchor: [16, 40],
+        popupAnchor: [0, -40]
+    });
+    
+    L.marker([lat, lng], { icon: icon })
+        .addTo(map)
+        .bindPopup('<strong>' + nome + '</strong>')
+        .openPopup();
+});
+</script>
+     </div>
+
+        
+                                        </div></div></div></div>
+    
+            
+    </div>
+        </div>
+            </div>
+            
+    </main>
+        </div>
+            </div>
+    </div>
+        
+    </section>
+    
+                    
+                <section id="g-barraRodape">
+                <div class="g-container">                                <div class="g-grid">                        
+
+        <div class="g-block size-100">
+             <div id="logo-7795-particle" class="g-content g-particle">            <div class="barraRodape">                       
+            </div>
+            </div>
+        </div>
+            </div>
+            </div>
+        
+    </section>
+                    
+                <footer id="g-footer">
+                <div class="g-container">                                <div class="g-grid">                        
+
+        <div class="g-block size-100">
+             <div id="custom-1231-particle" class="g-content g-particle">            <footer class="footer">
+    <div class="footer-container">
+        <div class="footer-content">
+            <div class="footer-left">
+                <h4>Contactos</h4>
+                <p>
+                    Travessa da Fundoa de Baixo 5<br>
+                    9020-242 FUNCHAL<br>
+                    Tel: 291 705 555 <span class="tel-info">(Chamada para a rede fixa nacional)</span><br>
+                    <a href="mailto:geral@horariosdofunchal.pt">geral@horariosdofunchal.pt</a>
+                </p>
+            </div>
+
+            <div class="footer-right">
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/horarios.funchal/" target="_blank">
+                        <img src="/images/img/icon-facebook.png" alt="Facebook" class="social-icon">
+                    </a>
+                    <a href="https://www.instagram.com/horariosdofunchal/" target="_blank">
+                        <img src="/images/img/icon-instagram.png" alt="Instagram" class="social-icon">
+                    </a>
+                    <a href="https://www.whatsapp.com/channel/0029VaLDpCwKmCPTleJqip22" target="_blank">
+                        <img src="/images/img/icon-whatsapp.png" alt="WhatsApp" class="social-icon">
+                    </a>
+                    <a href="https://www.linkedin.com/company/horários-do-funchal" target="_blank">
+                        <img src="/images/img/icon-linkedin.png" alt="likedin" class="social-icon">
+                    </a>
+                    <a href="https://www.youtube.com/user/HorariosFunchal" target="_blank">
+                        <img src="/images/img/icon-youtube.png" alt="YouTube" class="social-icon">
+                    </a>
+                </div>
+                <a href="https://www.livroreclamacoes.pt" target="_blank" class="livro-reclamacoes">
+                    <img src="/images/img/icon-livro.png" alt="Livro de Reclamações" class="livro-reclamacoes-img">
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<style>
+    /* Base do Footer */
+    .footer { 
+        background-color: #FFD200; 
+        width: 100%; 
+        padding: 40px 0; /* Espaçamento vertical generoso */
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    /* Container para limitar a largura no PC */
+    .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    .footer-content { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; /* Alinha o texto com os ícones verticalmente */
+    }
+
+    /* Lado Esquerdo */
+    .footer-left h4 { 
+        font-size: 18px; 
+        margin: 0 0 10px 0; 
+        color: #000; 
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    .footer-left p { 
+        font-size: 15px; 
+        color: #000; 
+        line-height: 1.6; 
+        margin: 0 !important;
+    }
+    .tel-info {
+        font-size: 13px;
+        opacity: 0.8;
+    }
+    .footer-left a { 
+        color: #000; 
+        text-decoration: none; 
+        font-weight: bold;
+    }
+    .footer-left a:hover {
+        text-decoration: underline;
+    }
+
+    /* Lado Direito */
+    .footer-right { 
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end; /* Alinha tudo à direita no PC */
+    }
+
+    .social-icons { 
+        display: flex; 
+        gap: 15px; 
+        margin-bottom: 20px; 
+    }
+    .social-icon { 
+        width: 32px; 
+        height: 32px; 
+        transition: transform 0.2s ease;
+    }
+    .social-icon:hover {
+        transform: scale(1.1);
+    }
+
+    .livro-reclamacoes-img { 
+        height: auto; /* Tamanho controlado para o logo do livro */
+        width: 163px;
+    }
+
+    /* RESPONSIVIDADE (Mobile) */
+    @media (max-width: 768px) {
+        .footer {
+            padding: 30px 0;
+        }
+        .footer-content { 
+            flex-direction: column; 
+            text-align: center; 
+        }
+        .footer-left {
+            margin-bottom: 30px;
+        }
+        .footer-right { 
+            align-items: center; /* Centraliza no telemóvel */
+        }
+        .social-icons { 
+            justify-content: center; 
+        }
+    }
+</style>
+            </div>
+        </div>
+            </div>
+            </div>
+        
+    </footer>
+    
+                <section id="g-footerCookies">
+                                        <div class="g-grid">                        
+
+        <div class="g-block size-100">
+             <div id="custom-6719-particle" class="g-content g-particle">            <div class="footer-bottom">
+    <p>© 2026 Horários do Funchal | <a href="/images/pdf/protecao-dados.pdf">Política de Privacidade</a> | <a href="/index.php/politica-de-cookies">Política de Cookies</a></p>
+</div>
+
+<style>
+    .footer-bottom{ 
+        background: #414141; /* Grey background */
+        text-align: center; 
+color:white;
+        width: 100% !important; /* Stretch to full width */
+        margin: 0 !important; /* Remove any margins */
+        box-sizing: border-box; 
+    }
+ #g-footerCookies { 
+        background: #414141; /* Grey  }
+    .footer-bottom p { 
+        font-size: 12px; 
+        color: #fff; /* White text */
+        margin: 0; /* Remove default margin */
+    }
+    .footer-bottom a { 
+        color: #fff; /* White links */
+        text-decoration: underline; 
+    }
+
+.g-content {
+padding: 0 !important;
+}
+
+    /* Responsiveness for smaller screens */
+    @media (max-width: 768px) {
+        .footer-bottom { 
+            padding: 10px; 
+        }
+    }
+</style>
+            </div>
+        </div>
+            </div>
+            
+    </section>
+    
+                        
+
+        </div>
+                    
+
+                        <script type="text/javascript" src="/media/gantry5/assets/js/main.js"></script>
+    <script type="text/javascript">(function(){function initOffcanvasNav(){var o=document.getElementById('g-offcanvas');if(!o)return;o.addEventListener('click',function(e){var el=e.target;while(el&&el!==o){if(el.tagName==='A'&&el.getAttribute('href')&&el.getAttribute('href')!=='#'){e.stopImmediatePropagation();e.preventDefault();var href=el.href;if(window.G5&&G5.offcanvas)G5.offcanvas.close();window.location.href=href;return;}el=el.parentElement;}},true);if(!document.getElementById('hf-offcanvas-close')){var btn=document.createElement('div');btn.id='hf-offcanvas-close';var lang=document.documentElement.lang||'';btn.innerHTML='&#10005; '+(lang.toLowerCase().indexOf('pt')===0?'Fechar':'Close');btn.addEventListener('click',function(){if(window.G5&&G5.offcanvas)G5.offcanvas.close();});o.insertBefore(btn,o.firstChild);}}if(document.readyState==='complete'||document.readyState==='interactive'){initOffcanvasNav();}else{document.addEventListener('DOMContentLoaded',initOffcanvasNav);}})();</script>
+    
+
+    
+
+        
+    
+<script type="text/javascript">   function cookiehintsubmitnoc(obj) {     if (confirm("A refusal will affect the functions of the website. Do you really want to decline?")) {       document.cookie = 'reDimCookieHint=-1; expires=0; path=/';       cookiehintfadeOut(document.getElementById('redim-cookiehint-bottom'));       return true;     } else {       return false;     }   } </script> <div id="redim-cookiehint-bottom">   <div id="redim-cookiehint">     <div class="cookiehead">       <span class="headline">Usamos Cookies</span>     </div>     <div class="cookiecontent">  Respeitamos a sua privacidade. Com o objetivo de melhorar a performance, os conteúdos e a segurança deste site, a Horários do Funchal pretende recorrer à utilização de cookies ou tecnologias similares.    </div>     <div class="cookiebuttons">       <form class="reset" method="post">         <button id="cookiehintsubmit" onclick="return cookiehintsubmit(this);" data-href="https://www.horariosdofunchal.pt/index.php/a-visitar?poi_id=12&amp;rCH=2"           type="submit" name="rCH" value="2"           class="btn">OK</button>                   <button id="cookiehintsubmitno" onclick="return cookiehintsubmitnoc(this);" data-href="https://www.horariosdofunchal.pt/index.php/a-visitar?poi_id=12&amp;rCH=-2"            type="submit" name="rCH" value="-2"            class="btn">Não, obrigado</button>                 <div class="text-center" id="cookiehintinfo">                   <a target="_self" href="/index.php/politica-de-cookies">Consultar Política de Cookies</a>                         </div>       </form>     </div>     <div class="clr"></div>   </div> </div>     <script type="text/javascript">       if (!navigator.cookieEnabled) {         document.addEventListener("DOMContentLoaded", function (event) {           document.getElementById('redim-cookiehint-bottom').remove();         });       }       function cookiehintfadeOut(el) {         el.style.opacity = 1;         (function fade() {           if ((el.style.opacity -= .1) < 0) {             el.style.display = "none";           } else {             requestAnimationFrame(fade);           }         })();       }             function cookiehintsubmit(obj) {         document.cookie = 'reDimCookieHint=1; expires=Sat, 02 Oct 2027 23:59:59 GMT;; path=/';         cookiehintfadeOut(document.getElementById('redim-cookiehint-bottom'));         return true;       }       function cookiehintsubmitno(obj) {         document.cookie = 'reDimCookieHint=-1; expires=0; path=/';         cookiehintfadeOut(document.getElementById('redim-cookiehint-bottom'));         return true;       }     </script>     
+</body>
+</html>

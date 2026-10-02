@@ -1,0 +1,1238 @@
+Versão final – 19.02.19
+Índice
+
+
+         Índice .................................................................................................................................... 2
+         1.      Parte I – Atribuições da Empresa e responsabilidades ................................... 3
+         1.1. Siglas e acrónimos .......................................................................................................... 3
+         1.2. Âmbito................................................................................................................................. 5
+         1.3. Composição dos Órgãos Sociais................................................................................ 6
+         1.4. Estrutura de Coordenação e Gestão do Plano..................................................... 6
+         2.      Parte II – Organigrama, Metodologia, definição de corrupção e
+                 tipologias, plano de gestão e medidas de mitigação………..……………7
+         2.1. Organigrama ..................................................................................................................... 7
+         2.2. Identificação dos responsáveis das várias áreas ............................................... 8
+         2.3. Matriz de avaliação dos riscos de corrupção e infrações conexas ............. 9
+         2.4. A Eficácia das medidas preventivas e avaliação das medidas de
+              mitigação implementadas ........................................................................................ 11
+         2.5. Considerações finais................................................................................................... 26
+
+
+                                                                  DRAFT
+
+
+
+
+                                                                                Relatório de execução do PGRCIC_2019
+                                                                                                                                                 2
+1. Parte I – Atribuições da Empresa e responsabilidades
+
+
+1.1. Siglas e acrónimos
+
+    ACFE – Association of Certified Fraud Examiners
+    CA – Conselho de Administração
+    CCSG – Companhia de Carros de São Gonçalo, S.A.
+    CP – Código Penal (Lei n.º 16/2018, de 27/03)
+    CPC – Conselho de Prevenção da Corrupção
+    DC – Departamento Comercial
+    DE – Departamento de Exploração
+    DF – Departamento Financeiro
+    DL – Departamento de Logística
+    DM – Departamento de Manutenção
+    DRH – Departamento de Recursos Humanos
+    DT – Departamento Tecnológico
+    EEM – Empresa de Eletricidade da Madeira, S.A.
+                                         DRAFT
+
+
+
+
+    GCM – Gabinete de Comunicação e Marketing
+    GD – Gabinete de Design
+    GEP – Gabinete de Engenharia e Produção
+    GEPRI – Gabinete de Estudos, Planeamento e Relações Internacionais
+    GJ – Gabinete Jurídico
+    GGCO – Gabinete de Gestão e Controlo Orçamental
+    HF – Horários do Funchal – Transportes Públicos, S.A.
+    OGR – Oficina das Grandes Reparações
+    OPR – Oficina da Pequenas Reparações
+    OPT – Otimização e Planeamento de Transportes, S.A.
+    PPRCIC – Plano de Prevenção de Riscos de Corrupção e Infrações Conexas
+    PGRCIC – Plano de Gestão de Riscos de Corrupção e Infrações Conexas
+    RAM – Região Autónoma da Madeira
+    SAEF – Seção de Armazém, Economato e Ferramentaria
+    SC – Seção de Contabilidade
+    SCRM – Seção de Compras e Receção de Material
+
+
+
+                                                 Relatório de execução do PGRCIC_2019
+                                                                                   3
+SG - Secretária-geral
+SGP – Seção de Gestão do Património
+SCPTRP – Seção de Controlo, Preparação de Trabalho e Revisões Periódicas
+SFMRPIP – Setor de Fiscalização, Manutenção da Rede de Paragens e Informação
+           ao Público
+SPAL – Seção do Posto de Abastecimento e Lavagem
+SPT – Setor de Pessoal Tripulante
+STP – Setor de Tráfego e Planeamento
+STIT- Setor de Transporte Interurbano e Turismo
+STCT – Seção de Tesouraria e Controlo de Títulos
+SR – Setor de Remunerações
+SRFOP – Setor de Recrutamento, Formação e Orientação Profissional
+SSST- Setor de Seguros, Segurança e Saúde no Trabalho
+SVAC – Setor de Vendas e Atendimento ao Cliente
+
+
+
+
+                                    DRAFT
+
+
+
+
+                                            Relatório de execução do PGRCIC_2019
+                                                                              4
+1.2. Âmbito
+
+      De acordo com as Recomendações, nº1/2009 de 1 de julho, nº1/2010 de 7 de
+abril, nº3/2015 de 1 de julho, e a mais recente de 4 de maio de 2017, do Conselho de
+Prevenção da Corrupção, entidade administrativa independente, que funciona junto do
+Tribunal de Contas e que desenvolve ações de âmbito nacional no domínio da
+prevenção da corrupção e infrações conexas, os órgãos máximos das entidades
+gestoras de dinheiros, valores, ou patrimónios públicos, seja qual for a sua natureza,
+devem elaborar Planos de Prevenção de Riscos de Corrupção e Infrações Conexas
+(doravante apenas referenciado por “PPRCIC” ou “Plano”), bem como realizar e
+apresentar relatórios anuais de execução.
+
+      Deste modo, dando seguimento ao disposto no Tratado sobre o Funcionamento
+da União Europeia, bem como ao Regulamento Financeiro (UE, EURATOM) n.º
+966/2012 do Parlamento Europeu e do Conselho de 25 de outubro de 2012, e ainda, ao
+Regulamento (UE) n.º 1303/2013 do Parlamento Europeu e do Conselho de Prevenção
+da Corrupção,    de 17 de dezembro de 2013, a Empresa Horários do Funchal –
+                                            DRAFT
+
+
+
+
+Transportes Públicos, S.A. (doravante referenciada apenas como Horários do Funchal,
+Empresa ou HF), elaborou e publicou o seu Plano de Prevenção de Riscos de Corrupção
+e Infrações Conexas em 2018.
+
+      Nessa   sequência,    vimos   apresentar      os   dados   recolhidos   em   2019,
+nomeadamente no que respeita à avaliação do estado de implementação das medidas
+e mecanismos adotados para mitigar os riscos de corrupção e infrações conexas.
+
+      Sendo que no presente ano, de 2020, iremos continuar a desenvolver
+mecanismos internos com o objetivo de reduzir o risco de exposição da Empresa e dos
+seus colaboradores às situações já devidamente identificadas.
+
+      Sendo um instrumento de gestão, o PGRCIC, Plano Gestão de Riscos de
+Corrupção e Infrações Conexas, tem como função primordial identificar, fiscalizar e
+minimizar os riscos de corrupção e infrações conexas no âmbito da aquisição de bens e
+serviços. O presente Plano visou igualar e facultar todas as informações importantes
+sobre os riscos mais relevantes associados aos variados processos internos e identificar
+
+
+
+
+                                                     Relatório de execução do PGRCIC_2019
+                                                                                       5
+as medidas preventivas e corretivas que minimizem a probabilidade de ocorrência
+desses riscos.
+
+      O PGRCIC, contribuiu para o alinhamento dos diferentes processos com os
+princípios éticos da Horários do Funchal, assim como para o reforço do sistema interno
+de gestão.
+
+
+1.3. Composição dos Órgãos Sociais
+
+      MESA DA ASSEMBLEIA GERAL
+
+                PRESIDENTE: António José Jardim Faria;
+                SECRETÁRIO: António Manuel Pita Rentróia;
+                SECRETÁRIO: Gabriel de Lima Farinha.
+
+      CONSELHO DE ADMINISTRAÇÃO
+
+                PRESIDENTE: Alejandro Marcelino Gonçalves Gonçalves;
+                VOGAL: Susana Maria Florença Pinto Correia;
+                VOGAL: Duarte Leovigildo de Faria Sousa.
+                                           DRAFT
+
+
+
+
+      FISCAL ÚNICO
+
+              BDO & Associados, Sociedade de Revisores Oficiais de Contas, Lda.
+                 SROC nº.29.
+
+
+
+1.4. Estrutura de Coordenação e Gestão do Plano
+
+      Na reunião do Conselho de Administração do dia 23 de janeiro de 2019, foram
+nomeados como elementos da estrutura de coordenação e gestão deste Plano, os
+membros do Gabinete de Gestão e Controlo Orçamental, GGCO, apoiados pelo
+Gabinete Jurídico (GJ), pelo Departamento de Recursos Humanos (DRH) e pelo
+Departamento Comercial (DC).
+
+
+
+      GGCO – Gabinete de Gestão e Controlo Orçamental:
+                Dr. Miguel Bettencourt.
+
+
+
+
+                                                   Relatório de execução do PGRCIC_2019
+                                                                                     6
+           Apoio:
+           GJ – Gabinete Jurídico:
+                   Dr.ª Inês Freitas;
+           Dr. ª Raquel Henriques.
+           DC - Departamento Comercial:
+                   Sr. Rúben Santos.
+           DRH - Departamento de Recursos Humanos:
+                   Dr.ª Ana Cristina Caíres.
+
+
+     2.    Parte II – Organigrama, Metodologia, definição de corrupção e
+           tipologias, plano de gestão e medidas de mitigação
+
+           A 10 de julho de 2019, foi concluído o processo de reestruturação do novo
+     Organigrama, descrito infra, tendo em consideração a evolução verificada no respetivo
+     quadro de pessoal, bem como, a necessidade de adoção de práticas mais eficientes
+     para o funcionamento da Horários do Funchal.
+
+
+
+     2.1. Organigrama                           DRAFT
+
+
+
+
+                                                        CA
+                                     SG                           GJ
+                                         GGCO
+                                                               GEPRI
+                    SCPTRP           GEP
+                    SPAL
+
+
+DC                              DE                              DM        DRH         DT            DF    DL
+GCM         SPT        STP       STIT       SFMRPIP
+                                                                 OGR         SR                      SC   SAEF
+ GD                       COAE                                   OPR         SRFOP                  STCT SCRM
+SVAC                                                                        SSSST                         SGP
+
+
+
+                                                             Relatório de execução do PGRCIC_2019
+                                                                                               7
+2.2. Identificação dos responsáveis das várias áreas
+    Administração:
+    CA – Conselho de Administração:
+    Presidente: Dr. Alejandro Marcelino Gonçalves Gonçalves.
+    Vogal: Eng.ª Susana Maria Florença Pinto Correia.
+    Vogal: Eng.º Duarte Leovigildo de Faria Sousa.
+
+
+    Órgãos de Staff:
+    SG – Secretária-geral: Sr.ª Sizaltina Andrade.
+    GJ – Gabinete Jurídico: Dr.ª Inês Freitas / Dr.ª Raquel Henriques.
+    GGCO – Gabinete de Gestão e Controlo Orçamental: A definir.
+    GEP – Gabinete de Engenharia e Produção: Eng.º Bruno Sousa.
+          SCPTRP – Secção de Controlo, Preparação de Trabalho e Revisões
+                     Periódicas: Sr. Dúlio Martins.
+          SPAL – Secção do Posto de abastecimento e Lavagem: Sr. Basílio Quintal.
+    GEPRI – Gabinete Estudos, Planeamento e Relações Internacionais: Dr. Cláudio
+            Mantero.
+                                           DRAFT
+
+
+
+
+    Órgãos de Direção:
+    DC – Departamento Comercial: A definir
+         GCM – Gabinete de Comunicação e Marketing: Dr. Marco Vasconcelos.
+         GD – Gabinete de Design: Dr.ª Carina Freitas.
+         SVAC – Setor de Vendas e Atendimento ao Público: Sr.ª Celíssia Freitas.
+    DE – Departamento de Exploração: Sr. Silvino Jesus.
+         SPT – Setor de Pessoal Tripulante: Sr. Marco Oliveira.
+         STP – Setor de Tráfego e Planeamento: Sr.ª Cristina Sousa.
+         STIT – Setor de Transportes Interurbano e Turismo: Sr. Humberto Soares.
+         SFMRPIP – Setor de Fiscalização, Manutenção da Rede de Paragens e
+                       Informação ao Público: Sr.ª Ivone Silva.
+    DM – Departamento de Manutenção: Eng.º Alfredo Pereira.
+         OGR – Oficina das Grandes Reparações – Eng.º Rodrigo Araújo.
+         OPR – Oficina das Pequenas Reparações – Sr. João Andrade.
+
+
+
+
+                                                     Relatório de execução do PGRCIC_2019
+                                                                                       8
+      DRH – Departamento de Recursos Humanos: Dr.ª Ana Cristina Caíres.
+           SR- Setor de Remunerações: Sr. Miguel Silva.
+           SRFOP – Setor de Recrutamento, Formação e Orientação Profissional: A
+                   definir;
+           SSSST – Setor de Seguros, Segurança e Saúde no Trabalho: A definir
+      DT – Departamento Tecnológico: Eng.º. Marco Louro.
+      DF – Departamento Financeiro: Dr. Carlos Camacho.
+           SC – Secção de Contabilidade: A definir.
+           STCT- Secção de Tesouraria e Controlo de Títulos: Sr. António Dias.
+      DL – Departamento de Logística: Dr. Carlos Camacho.
+           SAEF – Secção de Armazém, Economato e Ferramentaria: Sr. Miguel Sousa.
+           SCRM - Secção de Compras e Receção de Material: Sr. Miguel Sousa.
+           SGP - Secção de Gestão do Património: Sr. Miguel Sousa.
+
+
+
+
+2.3. Matriz de avaliação dos riscos de corrupção e infrações
+     conexas
+                                           DRAFT
+
+
+
+
+      São diversos os fatores que levam a que uma determinada atividade e/ou área
+seja considerada de maior ou menor risco, sendo difícil prever a ocorrência de um
+evento e quais as consequências do mesmo.
+
+      Pelo que no âmbito deste PGRCIC, a classificação dos riscos teve por base
+critérios de probabilidade da ocorrência e do impacto da mesma.
+
+      Assim, o nível de risco será uma combinação da probabilidade da ocorrência com
+o impacto da mesma, e da qual resultará a graduação do risco, conforme se encontra
+demonstrado nos gráficos infra.
+
+      Os níveis de probabilidade estão associados aos indicadores de impacto de risco
+e infrações numa escala de A a C, sendo que a letra A corresponde ao nível mais baixo.
+
+      Classificação do Risco: Combinação de Probabilidade (1=Baixa; 2=Média e 3 =
+Alta) e Impacto (A= Baixo; B= Médio e C= Alto).
+
+
+
+
+                                                   Relatório de execução do PGRCIC_2019
+                                                                                         9
+        Classificação                             Consequências para a empresa
+
+                           Impacto muito significativo nos objetivos de negócio da empresa, ou com
+        C        Alto      graves consequências, elevadas perdas financeiras, danos graves de
+                           imagem e reputação ou importantes perdas humanas.
+                           Fortes consequências para a empresa com perdas financeiras associadas,
+        B       Médio
+                           danos de imagem e reputação.
+                           Consequências ao nível departamental, com ou sem perdas financeiras e
+        A        Baixo
+                           possíveis danos para a empresa.
+
+
+
+            Para que possamos quantificar a probabilidade, o impacto na estrutura e o grau
+    de risco, decidimos atribuir valores para os riscos de 1 a 3, sendo que:
+
+            A – Nível Fraco;
+
+            B – Nível Moderado;
+
+            C – Nível Elevado.
+
+
+
+            Exemplo:                              DRAFT
+
+
+
+
+Estrutura                                                                             Grau de
+                Processo                  Risco             Probabilidade Impacto             Total
+Orgânica                                                                               Risco
+             Contratação de       Favorecimento
+  DRH                                                             B            B         B           B
+                pessoal           Conflito de interesses
+
+
+
+            Identificados os riscos, sinalizar-se-ão medidas de mitigação dos mesmos que se
+    encontram em curso e outras que poderão ser ativadas e implementadas pelos
+    respetivos responsáveis, com a consciência de que a gestão do risco é um processo
+    dinâmico e ininterrupto entre as diversas ações da organização.
+
+
+
+
+                                                            Relatório de execução do PGRCIC_2019
+                                                                                             10
+    2.4. A Eficácia das medidas preventivas e avaliação das medidas de mitigação implementadas
+           Os riscos de corrupção e de infrações conexas que foram identificados e avaliados, são os constantes no mapa que se segue e avaliados
+   conforme consta no ponto anterior.
+
+Departamentos/                                                                                                                            Avaliação das    Nível de Grau
+                                                                                             Grau       Medidas e mecanismos                Medidas           após a
+   Divisões /                                  Identificação de   Probabilida
+                        Atividades                                              Impacto       de     aplicados de controlo interno      implementadas e   implementação
+  Gabinetes/                                        riscos        de
+                                                                                             Risco             e externo                   adaptadas
+   Unidades                                                                                                                                                 das medidas
+
+
+                                              Peculato de uso          A                 C    C                                                              B - Médio
+
+
+
+
+                                                   Peculato            B                 C    C                                                              B - Médio
+                                                                                                     a) Formação e sensibilização
+                     Funções executivas,                                         DRAFT
+
+
+
+
+     CA                                                                                              em ética e corrupção;
+                 nomeadamente coordenar,
+ Conselho de      supervisionar e deliberar       Tráfico de                                                                               Medidas
+                                                                                                     b) Dupla validação;
+Administração      sobre todas as áreas de       influências;          C                 C    C                                          Implementas         B - Médio
+                   atividade das unidades                                                            c) Auditorias internas;
+                    orgânicas da Empresa.
+                                                                                                     d) Cumprimento da legislação;
+                                               Abuso de poder
+                                                                       C                 C    C                                                              B - Médio
+
+
+
+                                                Administração
+                                                                       C                 C    C                                                              B - Médio
+                                                  danosa
+
+
+
+
+                                                                                                                                     Relatório de execução do PGRCIC_2019
+                                                                                                                                                                          11
+Departamentos/                                                                                                                                Avaliação das        Nível de Grau
+                                                                                                 Grau       Medidas e mecanismos                Medidas               após a
+   Divisões /                                      Identificação de   Probabilida
+                            Atividades                                              Impacto       de     aplicados de controlo interno      implementadas e       implementação
+  Gabinetes/                                            riscos        de
+                                                                                                 Risco             e externo                   adaptadas
+   Unidades                                                                                                                                                        das medidas
+                    Efetua o processamento das
+                      minutas emanadas pelo
+                   Conselho de Administração, e
+                   receciona a correspondência,
+                      distribuindo-a pelos seus
+                              membros.
+
+                     Redige as atas elaboradas
+                       pelos membros do CA,        Quebra de sigilo
+                                                                           A                 B    B                                                                 B – Médio
+                      completando em certas         profissional
+                   circunstâncias os tópicos das                                                                                                 Foram
+                   respetivas reuniões, mantém                                                                                              implementadas as
+                   atualizado o arquivo (geral e                                                                                           seguintes medidas:
+                     confidencial), coordena a                                                           a) Formação e sensibilização
+                   agenda dos membros do CA;
+                                                                                     DRAFT
+
+
+
+                                                                                                         em ética e corrupção;            - b) Dupla validação;
+                                                                                                         b) Dupla validação;               - d) Cumprimento
+      SG           Recebe diversas pessoas que                                                                                                da legislação;
+                     se dirigem ao CA (clientes,                                                         c) Auditorias internam;
+Secretária-geral   visitantes), encaminhando-os                                                                                                   - e)
+                                                       Fuga de                                           d) Cumprimento da legislação;
+                    para os respetivos destinos.                                                                                           Confidencialidade
+                                                     informação            A                 B    B                                        no tratamento de         B – Médio
+                       Recebe as chamadas                                                                                                        dados;
+                   telefónicas destinadas ao CA
+                    e estabelece comunicações
+                   entre os mesmos e todos os      Peculato de uso
+                    colaboradores da empresa,                              A                 B    B                                                                 B - Médio
+                       transmite instruções
+                    recebidas dos membros do
+                    CA para qualquer das áreas
+                           da empresa.
+                                                      Peculato
+                                                                           A                 B    B                                                                 B - Médio
+                    Assegura a possibilidade de
+                     contacto imediato com os
+
+
+
+                                                                                                                                         Relatório de execução do PGRCIC_2019
+                                                                                                                                                                                 12
+Departamentos/                                                                                                                                Avaliação das    Nível de Grau
+                                                                                                Grau       Medidas e mecanismos                 Medidas           após a
+   Divisões /                                   Identificação de     Probabilida
+                          Atividades                                               Impacto       de     aplicados de controlo interno       implementadas e   implementação
+  Gabinetes/                                         riscos          de
+                                                                                                Risco             e externo                    adaptadas
+   Unidades                                                                                                                                                    das medidas
+                 membros do CA na ausência
+                  destes e em situações de          Tráfico de
+                          urgência.                influências            B                 B    B                                                              B - Médio
+                  Procura resolver pequenos
+                    problemas de natureza
+                 puramente administrativa na
+                  ausência dos membros do
+                                                Abuso de poder                                                                                 Medidas
+                             CA.                                          B                 B    B                                                              B - Médio
+                                                                                                                                            Implementadas
+
+
+
+                      Responsável pelo          Violação do Sigilo
+                 Planeamento de sistemas de       profissional;           B                 C    C                                                               A - Baixo
+                                                                                    DRAFT               Reforço nas medidas de prevenção
+                          informação,                                                                   do acesso indevido a relatórios e
+                     desenvolvimento e                                                                  dados nas bases de dados;
+                 manutenção de aplicações e        Violação de
+                    gestão de tecnologia e         privacidade            B                 C    C      Registo de todos os pedidos                              A - Baixo
+                        infraestrutura.                                                                 de dados;                              Medidas
+                    Executar os pedidos de                                                              Formação e sensibilização na        Implementadas
+                                                      Furto                                             salvaguarda dos dados;
+                 suporte dos colaboradores da                             B                 B    B                                                              B - Médio
+     DT           HF, no domínio dos sistemas
+                                                                                                        Formação e sensibilização em
+                   de informação utilizados                                                             ética e corrupção;
+Departamento        pelas áreas de negócio.       Recebimento
+ Tecnológico                                        indevido              B                 C    C      Reforço nas medidas de                                  B - Médio
+                    Arquivar a informação
+                                                                                                        prevenção do acesso indevido
+                 presente nos sistemas, base                                                            às instalações;
+                 de dados e ficheiros da HF.      Apropriação
+                                                   ilegítima                                            Registo de todos os                    Medidas
+                   Assegurar o diálogo com                                A                 B    B                                                               A - Baixo
+                                                                                                        equipamentos adquiridos;            Implementadas
+                  entidades exteriores sobre
+
+
+
+
+                                                                                                                                        Relatório de execução do PGRCIC_2019
+                                                                                                                                                                             13
+Departamentos/                                                                                                                              Avaliação das    Nível de Grau
+                                                                                               Grau       Medidas e mecanismos                Medidas           após a
+   Divisões /                                    Identificação de   Probabilida
+                          Atividades                                              Impacto       de     aplicados de controlo interno      implementadas e   implementação
+  Gabinetes/                                          riscos        de
+                                                                                               Risco             e externo                   adaptadas
+   Unidades                                                                                                                                                   das medidas
+                  matérias relacionadas com
+                                                                                                       Registo dos abates dos
+                    software e hardware e
+                                                                                                       equipamentos;
+                   apresenta projetos para
+                 otimização da utilização dos                                                          Registo de todos os acessos;
+                          sistemas.
+                                                                                                       Encriptação de toda a
+                                                                                                       informação;
+                                                                                                       Alteração de códigos;                                   B - Médio
+                                                 Abuso de poder          B                 C    C
+
+
+
+
+                                                                                   DRAFT
+
+
+
+
+                     Proceder à gestão de                                                              Dupla validação;
+                 projetos internos e externos.                                                         Decisões tomada com base no
+    GEPRI                                                                                              cruzamento de informação;
+                                                                                                       Atempada aprovação pelo
+                                                   Viagens de                                          C.A. do itinerário;
+ Gabinete de     Gerir a produção de estudos        trabalho                                                                                 Medidas
+                                                                         B                 B    B      Verificação por parte do DL e                           B - Médio
+   Estudos,       sobre a procura e atividade                                                                                             Implementadas
+Planeamento e     de exploração da HF, assim       (ex. Civitas)                                       da agência;
+   Relações      como, apoiar o CA através de                                                          Confidencialidade no
+Internacionais    assessoria técnica e suporte                                                         tratamento de dados;
+                          estratégico.
+                                                                                                       Analise pormenorizada por
+                                                                                                       dois ou mais intervenientes;
+
+
+
+
+                                                                                                                                       Relatório de execução do PGRCIC_2019
+                                                                                                                                                                            14
+Departamentos/                                                                                                                                 Avaliação das    Nível de Grau
+                                                                                                 Grau       Medidas e mecanismos                 Medidas           após a
+   Divisões /                                     Identificação de    Probabilida
+                          Atividades                                                Impacto       de     aplicados de controlo interno       implementadas e   implementação
+  Gabinetes/                                           riscos         de
+                                                                                                 Risco             e externo                    adaptadas
+   Unidades                                                                                                                                                      das medidas
+                                                                                                         Os pedidos de pagamento e
+                                                                                                         gestão da informação das
+                                                   Elaboração de                                         contas bancárias são geridos
+                                                                           B                 C    C      conjuntamente com a DF.                                  B - Médio
+                                                      Estudos
+                                                                                                         Solicita-se um documento do
+                      Acompanhar novos                                                                   banco e um documento do
+                 concursos de financiamento                                                              parceiro para efetuar
+                   e preparar candidaturas,                                                              pagamento;
+                  gerir a implementação de
+                   projetos cofinanciados e                                                              A DF fornece a informação base para
+                  reportar os pontos chaves                                                              a elaboração dos relatórios
+                  para a implementação dos                                                               financeiros, após o tratamento do
+                           mesmos.                                                                       GEPRI, o DF volta a confirmar os
+                                                                                                         valores totais.
+                                                  Gestão financeira
+                                                                           B                 C    C                                                               B - Médio
+                                                                                     DRAFT
+
+
+
+
+                                                    de Projetos                                          Os projetos exigem auditorias;
+
+
+
+
+                 Definir a estratégia comercial
+                          da empresa.
+                   Elaborar e determinar um
+                   plano de ação comercial e          Peculato
+                   respetivo cronograma, de                                B                 C    C                                                               B - Médio
+                    forma a maximizar a sua
+     DC                                                                                                                                         Medidas
+                  quota de mercado e os seus
+                                                                                                                                             Implementadas
+Departamento     lucros, garantindo ao mesmo
+  Comercial          tempo a satisfação dos
+
+
+
+
+                                                                                                                                          Relatório de execução do PGRCIC_2019
+                                                                                                                                                                               15
+Departamentos/                                                                                                                                 Avaliação das    Nível de Grau
+                                                                                                 Grau        Medidas e mecanismos                Medidas           após a
+   Divisões /                                      Identificação de   Probabilida
+                            Atividades                                              Impacto       de      aplicados de controlo interno      implementadas e   implementação
+  Gabinetes/                                            riscos        de
+                                                                                                 Risco              e externo                   adaptadas
+   Unidades                                                                                                                                                      das medidas
+                              clientes.
+     Inclui:                                                                                                    Dupla Validação;
+                    Colaborar na definição dos
+                                                   Peculato de uso         B                 C    C                                                               B - Médio
+                   seguintes dados: volume de
+                   vendas que a empresa deve
+GCM – Gabinete     atingir; as oportunidades de    Quebra de sigilo
+de Comunicação        negócio que devem ser         profissional
+ e Marketing;                                                              B                 C    C                                                               B - Médio
+                      exploradas; a tabela de
+                   preços a aplicar; os produtos                                                             Critérios de avaliação e
+                   e/ou serviços que devem ser        Tráfico de                                            análise de condições das
+GD – Gabinete de   desenvolvidos; as formas de       Influências                                             empresas por um júri;
+     Design,                                                               B                 C    C                                                               B - Médio
+                    publicidade e de promoção
+                   que devem ser utilizadas; os
+                   serviços que devem estar ao                                                                                                Medidas
+                                                     Conflito de
+                        dispor dos clientes.                                                                                               Implementadas
+                                                     interesses            B                 C    C
+                                                                                     DRAFT                                                                        B - Médio
+                         Responsável pela
+SVAC – Setor de    comunicação institucional da
+                      HF, nomeadamente na                                                                   Prova de inexistência de
+   Vendas e
+                       análise, tratamento e         Violação de                                          incompatibilidade e conflito
+Atendimento ao
+                     resposta das reclamações         Segredo                                                    de interesses;
+    Público
+                   apresentadas pelos clientes.
+                                                                           B                 C        C                                                           B - Médio
+                      Desenvolve e coordena
+                   estratégias de marketing que
+                    visam adequar a prestação
+                    de serviços da empresa ao
+                                                                                                             Confidencialidade no
+                     mercado onde se insere.       Favorecimento                                                                                                  B - Médio
+                                                                           B                 C        C      tratamento de dados;
+                     Assegurar que a empresa
+                   funciona segundo uma ótica
+                         de mercado e de                                                                                                                          B - Médio
+                                                    Recebimento
+                     responsabilidade social,                              B                 C        C
+                                                      indevido
+
+
+
+
+                                                                                                                                          Relatório de execução do PGRCIC_2019
+                                                                                                                                                                               16
+Departamentos/                                                                                                                                       Avaliação das        Nível de Grau
+                                                                                                      Grau        Medidas e mecanismos                 Medidas               após a
+   Divisões /                                          Identificação de    Probabilida
+                             Atividades                                                  Impacto       de      aplicados de controlo interno       implementadas e       implementação
+  Gabinetes/                                                riscos         de
+                                                                                                      Risco              e externo                    adaptadas
+   Unidades                                                                                                                                                               das medidas
+                    garantindo que são tomadas
+                                                                                                                                                                           B - Médio
+                    todas as medidas necessárias
+                     para a prestação do melhor        Abuso de Poder           B                 C        C
+                               serviço.
+                    Zela pela boa imagem da HF,
+                     junto dos seus clientes e da
+                         comunicação social,
+                    mantendo uma boa relação e
+                      prestando as informações
+                            necessárias.                   Fuga de
+                                                                                B                 C        C                                                               B - Médio
+                                                         Informação
+
+
+                                                                                          DRAFT
+
+
+
+
+                    Assessorar e prestar o apoio         Conflito de                                           a) Avaliação rigorosa da
+                       jurídico necessário e             interesses             B                 C    C       situação de acumulação e                                    B - Médio
+                     solicitado internamente.                                                                  incompatibilidades;
+                                                                                                                                                  Todas as medidas
+                       Assegurar a recolha e o                                                                                                           foram
+                                                      Discricionariedade
+                      tratamento sistemático e                                  B                 C    C                                         implementadas com         B - Médio
+                     metódico da informação do                                                                 b) Exigência de Declaração de
+                                                                                                                                                 a particularidade de
+                    foro jurídico legislativo à HF.                                                            inexistências de conflitos de
+                                                                                                                                                   ter sido incluída
+                                                       Favorecimento                                           interesse para todos os
+                     Emitir pareceres e realizar o                              A                 C    C                                          mais uma medida:         B - Médio
+                                                                                                               funcionários em regime de
+                    acompanhamento jurídico de                                                                 acumulação de funções;            - Verificação técnica
+                    processos de contratação no          Violação de                                                                             por outras áreas dos
+       GJ             âmbito das várias áreas de                                                               c) Dupla Validação;
+                                                         Segredo por            A                 C    C                                             processos de          B - Médio
+Gabinete Jurídico      direito aplicáveis, assim         Funcionário                                                                                 contratação
+                     como verificar a legalidade
+                     de qualquer documento ou          Falsificação de                                         d) Verificação da inexistência
+                                                                                B                 C    C       de incompatibilidades e de                                  B - Médio
+                         comunicação da HF.             documentos
+
+
+
+
+                                                                                                                                                Relatório de execução do PGRCIC_2019
+                                                                                                                                                                                        17
+Departamentos/                                                                                                                                     Avaliação das    Nível de Grau
+                                                                                                      Grau       Medidas e mecanismos                Medidas           após a
+   Divisões /                                          Identificação de    Probabilida
+                             Atividades                                                  Impacto       de     aplicados de controlo interno      implementadas e   implementação
+  Gabinetes/                                                riscos         de
+                                                                                                      Risco             e externo                   adaptadas
+   Unidades                                                                                                                                                          das medidas
+                                                                                                              conflito de interesses.
+                       Representar a Empresa
+                         perante autoridades
+                     governamentais, entidades
+                      públicas ou privadas e em       Corrupção Passiva
+                    eventuais situações de litígio.                             A                 C    C                                                              B - Médio
+                     Zelar pelo cumprimento das
+                            leis em vigor.
+
+
+                                                        Recebimento
+                                                          indevido              B                 C    C                                                              B - Médio
+
+
+                                                                                          DRAFT
+
+
+
+
+                    Colabora na definição da            Recebimento
+                                                                                B                 B    B                                                              B - Médio
+                    política geral da empresa             indevido
+                    relativa à prevenção de riscos
+                    de saúde e de segurança no         Favorecimento            B                 B    B                                                              B - Médio
+                                                                                                                 Dupla/Tripla Validação;
+                    trabalho e implementa o
+     SSSST          correspondente sistema de            Violação de                                          Critérios e condições da
+                                                                                B                 B    B                                                              B - Médio
+                    gestão.                                segredo                                            contratação;
+Setor de Seguros,
+  Segurança e       Desempenha competências           Corrupção passiva         B                 B    B      Prova de inexistência de                                B - Médio
+                                                                                                                                                    Medidas
+    Saúde no        na gestão da segurança nas                                                                incompatibilidade e conflito
+                                                                                                                                                 Implementadas
+    Trabalho        instalações do Grupo; Gere o      Discricionariedade        B                 B    B      de interesses;                                          B - Médio
+                    seu património e elabora
+(Sector depende
+                    trabalhos de auditoria e             Conflito de
+    do C.A.)                                                                    B                 B    B                                                              B - Médio
+                    controlo    às   obras    de         interesses                                           Controlo feito por picagem do
+                    pequenas       e     grandes                                                              ponto;
+                    reparações.
+                                                       Falsificação de
+                    Apoia ainda na gestão de                                    A                 B    B                                                              B - Médio
+                                                        documentos
+                    sinistros automóveis com
+
+
+
+                                                                                                                                              Relatório de execução do PGRCIC_2019
+                                                                                                                                                                                   18
+Departamentos/                                                                                                                              Avaliação das    Nível de Grau
+                                                                                              Grau       Medidas e mecanismos                 Medidas           após a
+   Divisões /                                   Identificação de   Probabilida
+                          Atividades                                             Impacto       de     aplicados de controlo interno       implementadas e   implementação
+  Gabinetes/                                         riscos        de
+                                                                                              Risco             e externo                    adaptadas
+   Unidades                                                                                                                                                   das medidas
+                 terceiros e efetua a gestão
+                 ambiental.
+
+
+
+
+                                                Acumulação de
+                                                                        B                 C    C                                                               A - Baixo
+                                                   funções;
+                 É responsável pela
+                 realização, planeamento,
+    GGCO         gestão, elaboração,            Favorecimento           B                 C    C      Dupla validação;                                         B - Médio
+ Gabinete de     coordenação e controlo do                                                            Avaliação rigorosa do risco de
+                 orçamento e plano de             Conflito de
+  Gestão e                                                              B                 C    C      incompatibilidade de                                     A - Baixo
+                 investimentos da empresa.        interesses,
+  Controlo                                                                                            acumulação de funções;
+ Orçamental      Colabora com todos os                                            DRAFT
+
+
+                                                                                                      Exigência de declaração de             Medidas
+                 departamentos/gabinetes da       Violação de
+                                                                                                      inexistência de conflitos de       implementadas na
+                 empresa, prestando serviços        segredo             B                 C    C                                                               B - Médio
+                                                                                                      interesse;                              íntegra
+                 de:                              profissional
+                                                                                                      Formação e sensibilização em
+                 - Consultadoria financeira;                                                          ética e corrupção;
+                                                Falsificação de
+                 - Gestão e controlo                                    B                 C    C                                                               B - Médio
+                                                 documentos
+                 orçamental e de
+                 investimentos;                    Tráfico de
+                                                                        B                 C    C                                                               B - Médio
+                                                  influências
+                 - Plano de negócios.
+                                                Gestão danosa           B                 C    C                                                               B - Médio
+
+                                                Abuso de poder          B                 C    C                                                               A - Baixo
+
+                                               Corrupção passiva        A                 C    C                                                               A – Baixo
+
+     DL                                                                                                                                      Medidas
+                                                Favorecimento           A                 C    C                                                               A- Baixo
+Departamento     Planificar, acompanhar e                                                                                                 Implementadas
+ de Logística    controlar as atividades e
+                                                Administração           B                 C    C                                                               A – Baixo
+
+
+
+                                                                                                                                       Relatório de execução do PGRCIC_2019
+                                                                                                                                                                            19
+Departamentos/                                                                                                                               Avaliação das    Nível de Grau
+                                                                                              Grau       Medidas e mecanismos                  Medidas           após a
+   Divisões /                                   Identificação de   Probabilida
+                          Atividades                                             Impacto       de     aplicados de controlo interno        implementadas e   implementação
+  Gabinetes/                                         riscos        de
+                                                                                              Risco             e externo                     adaptadas
+   Unidades                                                                                                                                                    das medidas
+                  procedimentos inerentes às        danosa
+  Inclui:
+                  áreas de compras, stocks e
+SAEF- Secção de   receção    de     produtos,
+   Armazém,       equipamentos    e    outros      Suborno              B                 C    C                                                                B – Médio
+  Economato e     materiais.
+ Ferramentaria                                  Quebra de sigilo
+                                                                        B                 C    C                                                                B - Médio
+                                                 profissional
+                                                 Pagamentos
+SCRM- Secção de                                                         B                 C    C                                                                A - Baixo
+                  É        o    departamento      indevidos
+   Compras e
+                  responsável por todo o
+  Receção de                                       Tráfico de
+                  processo de contratação                               B                 C    C                                                                A - Baixo
+    Material                                      influências
+                  pública do Grupo e controla
+                  ainda o património da          Recebimento
+                  Empresa e a gestão de           indevido de           B                 C    C                                                                A - Baixo
+ SGP- Seção de
+                                                                                  DRAFT
+
+
+
+
+                  logística relacionada com        vantagem
+   Gestão do      obras.
+  Património                                    Abuso de poder          B                 C    C                                                                B - Médio
+                                                  Concussão             B                 C    C                                                                B - Médio
+                                                 Participação
+                                                económica em            B                 C    C                                                                B - Médio
+                                                   negócios
+
+                       Conceber, analisar e                                                           a) Maior rigor na verificação                             B - Médio
+                                                   Peculato             B                 B    B      da área do pessoal;
+                     desenvolver políticas e
+                      técnicas de gestão de                                                           b) Maior cautela e ponderação
+                                                Peculato de uso         B                 B    B                                                                B - Médio
+                  recursos humanos, efetuar o                                                         aquando do estudo dos                   Medidas
+                        levantamento de         Abuso de poder          B                 B    B      custos, a fim de não prejudicar                           B - Médio
+                                                                                                                                           Implementadas
+                   necessidades de formação,                                                          financeiramente a empresa;
+                    elaborar os planos para a      Tráfico de                                                                                                   B - Médio
+      DRH                                                               B                 B    B
+                      mesma e controlar a          influência                                         c) Avaliações internas á
+ Departamento      qualidade da sua execução.                                                         execução dos orçamentos e
+                                                Imparcialidade          B                 B    B                                                                B - Médio
+
+
+
+
+                                                                                                                                        Relatório de execução do PGRCIC_2019
+                                                                                                                                                                             20
+Departamentos/                                                                                                                                   Avaliação das    Nível de Grau
+                                                                                                    Grau       Medidas e mecanismos                Medidas           após a
+   Divisões /                                       Identificação de     Probabilida
+                            Atividades                                                 Impacto       de     aplicados de controlo interno      implementadas e   implementação
+  Gabinetes/                                             riscos          de
+                                                                                                    Risco             e externo                   adaptadas
+   Unidades                                                                                                                                                        das medidas
+  de Recursos                                                                                               custos com pessoal;
+                      Coordenar processos de          Participação                                                                                                  B - Médio
+   Humanos
+                    avaliação de desempenho e        económica em             B                 B    B      d)Dupla validação de
+                         de recrutamento.              negócios;                                            processos por parte do
+                                                                                                            Concelho de Administração;
+     Inclui:           Elaborar e acompanhar                                                                                                                        B - Médio
+                      candidaturas e projetos           Suborno               B                 B    B      e) Maior rigor no controlo da
+  SR- Setor das
+                     nacionais e internacionais,                                                            apresentação dos quadros de
+ remunerações;
+                    coordenando as áreas sociais    Quebra de sigilo                                        indicadores aos recursos                                B - Médio
+SRFOP – Setor de               da HF.                                         B                 B    B      humanos;
+                                                     profissional
+ Recrutamento,
+                       Elaborar e acompanhar        Favorecimento             B                 B    B      f) Verificação do rigor dos                             B - Médio
+  Formação e
+                      candidaturas e projetos                                                               critérios de seleção para as
+   Orientação
+                     nacionais e internacionais,   Escutas indevidas          B                 B    B      convocatórias;                                          B - Médio
+  Profissional
+                    coordenando as áreas sociais
+                                                   Omissão de dados           B                 B    B      g) Avaliação dos processos de                           B - Médio
+ SSST – é tratado              da HF.                                                   DRAFT
+
+
+
+                                                                                                            sinistros
+à parte apesar de                                      Omissão de
+  pertencer na                                     informações sobre                                        h) Análise por parte dos
+                                                                              B                 B    B                                                              B - Médio
+área dos Seguros                                    a qualificação dos                                      formadores sobre a
+ ao DRH possui a                                       candidatos                                           clarificação da                       Medidas
+     Saúde e                                                                                                responsabilidade dos               Implementadas
+  Segurança do                                                                                              acidentes ocorridos;                                    B - Médio
+                      Controlar e processar os      Desigualdade de
+    Trabalho           registos salariais dos                                 B                 B    B
+                                                     oportunidades                                          i) Realizar propostas de
+
+
+
+
+                                                                                                                                            Relatório de execução do PGRCIC_2019
+                                                                                                                                                                                 21
+Departamentos/                                                                                                                                    Avaliação das    Nível de Grau
+                                                                                                 Grau       Medidas e mecanismos                    Medidas           após a
+   Divisões /                                      Identificação de   Probabilida
+                           Atividades                                               Impacto       de     aplicados de controlo interno          implementadas e   implementação
+  Gabinetes/                                            riscos        de
+                                                                                                 Risco             e externo                       adaptadas
+   Unidades                                                                                                                                                         das medidas
+dependente do     colaboradores e, bem assim,                                                            formação a diferentes
+     CA           as atividades de medicina no                                                           empresas, ao invés de uma
+                            trabalho.                                                                    única empresa;
+                                                                                                         j) Verificação da existência ou
+                                                                                                         não de conflito de interesses;
+                                                                                                         l) Maior rigor no controlo do
+                                                    Participação                                         registo de faltas;
+                                                                                                                                                   Medidas
+                                                   económica em            B                 B    B                                                                  B - Médio
+                                                                                                         m) Maior rigor no controlo do          Implementadas
+                                                     negócios;
+                                                                                                         processamento de abonos aos
+                                                                                                         colaboradores;
+                                                                                                         n) Rigor nos registos das horas
+                                                                                                         extraordinárias;
+                                                                                     DRAFT
+
+
+
+
+                                                      Peculato             B                 C    C      Prova de inexistência de                                    B - Médio
+      DF                                                                                                 incompatibilidade e conflito
+                                                   Peculato de uso         B                 C    C      de interesses;                                              B - Médio
+Departamento          Coordenar, analisar e
+ Financeiro          controlar informações          Participação                                                                                                     B - Médio
+                  financeiras e contabilísticas,   económica em            B                 C    C
+    Inclui:                                           negócios                                           Confidencialidade             no
+                     de modo a satisfazer as
+ SC – Seção de     solicitações das diferentes                                                           tratamento de dados;
+                                                                                                                                                                     B - Médio
+ Contabilidade            áreas e do CA.           Favorecimento           B                 C    C      Dupla validação;                          Medidas
+                                                                                                                                                Implementadas
+STCT – Seção de    Prestar assessoria no que
+  Tesouraria e     respeita às obrigações de       Quebra de sigilo
+  Controlo de           carácter fiscal e                                  B                 C    C      Avaliação rigorosa do risco de                              B - Médio
+                                                    profissional
+    Títulos              contabilística.                                                                 incompatibilidade           de
+                                                    Recebimento                                          acumulação de funções;
+                                                                           B                 C    C                                                                  B - Médio
+                                                      indevido
+
+                                                   Abuso de poder          B                 C    C      Formação     e     sensibilização                           B - Médio
+
+
+
+                                                                                                                                             Relatório de execução do PGRCIC_2019
+                                                                                                                                                                                  22
+Departamentos/                                                                                                                                     Avaliação das    Nível de Grau
+                                                                                                 Grau       Medidas e mecanismos                     Medidas           após a
+   Divisões /                                      Identificação de   Probabilida
+                             Atividades                                             Impacto       de     aplicados de controlo interno           implementadas e   implementação
+  Gabinetes/                                            riscos        de
+                                                                                                 Risco             e externo                        adaptadas
+   Unidades                                                                                                                                                          das medidas
+                                                                                                         contínua   em         ética      e
+                                                                                                         corrupção;
+                                                   Recebimentos
+                                                                           B                 C    C                                                                   B - Médio
+                                                     indevidos
+       DE
+                                                      Peculato             B                 C    C                                                                   B - Médio
+ Departamento
+                                                   Peculato de uso         B                 C    C                                                                   B - Médio
+ de Exploração        Desenvolver, coordenar e
+                      controlar as atividades e    Abuso de poder          B                 C    C                                                                   B - Médio
+                                                                                                         a) Sensibilização das equipas;
+                     procedimentos referentes à
+     Inclui:        área de exploração do Grupo,     Concussão             B                 C    C                                                                    C - Alto
+                         promovendo a sua            Violação do
+ SPT – Setor de                                                                                          Dupla validação;
+                             otimização.             segredo da            B                 C    C                                                                   B - Médio
+    Pessoal
+  Tripulante;                                         empresa                        DRAFT
+
+
+
+
+                                                                                                         Promover a comunicação
+ STP – Setor de
+                                                    Participação                                         interna;                                   Medidas
+   Tráfego e
+ Planeamento;                                      económica em            B                 C    C                                              implementadas        B - Médio
+                                                     negócios;
+ STIT – Setor de                                                                                         Informar os colaboradores
+   Transporte                                                                                            sobre os seus deveres;
+ Interurbano e                                        Tráfico de
+                                                                           B                 C    C                                                                   B - Médio
+    Turismo;                                         influências
+                     Gerir os recursos humanos                                                           Relatórios mensais;
+SFMRPIP – Setor
+                         adstritos à sua área,
+ de Fiscalização,
+                    incluindo o escalamento dos
+ manutenção da
+                         sectores de pessoal
+rede de paragens
+                         tripulante, tráfego e       Facilitismo           B                 C    C                                                                   B - Médio
+ e informação ao
+                      fiscalização, bem como o
+      Público.
+                     planeamento operacional.
+
+
+                                                      Peculato             B                 C    C                                                 Medidas           B - Médio
+
+
+
+
+                                                                                                                                              Relatório de execução do PGRCIC_2019
+                                                                                                                                                                                   23
+Departamentos/                                                                                                                                 Avaliação das    Nível de Grau
+                                                                                                  Grau       Medidas e mecanismos                Medidas           após a
+   Divisões /                                       Identificação de   Probabilida
+                             Atividades                                              Impacto       de     aplicados de controlo interno      implementadas e   implementação
+  Gabinetes/                                             riscos        de
+                                                                                                  Risco             e externo                   adaptadas
+   Unidades                                                                                                                                                      das medidas
+                                                                                                                                             Implementadas
+                    Coordenar      e    controlar   Peculato de uso         B                 C    C      Dupla validação;                                        B - Médio
+                    tecnicamente as operações
+                                                     Participação                                         Critérios de avaliação e
+                    de grandes e pequenas
+                                                    económica em            B                 C    C      análise de condições das                                B - Médio
+                    reparações no âmbito das
+                                                       negócios                                           empresas por um júri;
+                    oficinas de manutenção da
+      DM            HF e apoia tecnicamente as      Quebra de sigilo                                      Prova de inexistência de
+                    diferentes áreas do Grupo no                            B                 C    C                                                              B - Médio
+Departamento                                         profissional                                         incompatibilidade e conflito
+de Manutenção       âmbito      da    engenharia                                                          de interesses;
+                    mecânica e das atividades de    Favorecimento           B                 C    C                                                              A - Baixo
+     Inclui:        manutenção.                                                                           Confidencialidade          no
+                                                     Recebimento                                          tratamento de dados;
+                                                                            B                 C    C                                                              B - Médio
+ OGR – Oficina                                         indevido
+ das Grandes                                                                                              Formação e sensibilização em
+  Reparações                                                                                              ética e corrupção;
+                                                                                      DRAFT
+
+
+
+
+OPR – Oficina das                                   Abuso de poder          B                 C    C                                                              B - Médio
+   Pequenas
+   Reparações
+
+                       Ocupar-se do estudo,            Peculato             B                 C    C                                                              B - Médio
+                    planeamento e coordenação       Peculato de uso         B                 C    C                                                              B - Médio
+                    de operações de renovação
+      GEP                    da frota;                                                                    Dupla validação;                                        B - Médio
+                                                       Tráfico de
+  Gabinete de         Proceder à elaboração de                              B                 C    C      Critérios de avaliação e
+                                                      influências
+  Engenharia e          cadernos de encargos,                                                             análise de condições das
+   Produção              análise de propostas,                                                            empresas por um júri;
+                         acompanhamento e             Conflito de                                                                                                 B - Médio
+     Inclui:                                                                B                 C    C      Prova de inexistência de
+                    fiscalização de construção de     interesses
+                                                                                                          incompatibilidade e conflito
+SCPTRP – Seção                autocarros.                                                                 de interesses;
+                                                    Quebra de sigilo                                                                                              B - Médio
+  de Controlo,                                                              B                 C    C
+                      Procede à promoção das         profissional
+ Preparação de                                                                                            Confidencialidade          no
+   Trabalho e       vendas da área oficinal para      Violação de                                         tratamento de dados;                                     C- Alto
+                    o exterior e estabelecimento                            B                 C    C
+    Revisões                                            segredo
+
+
+
+
+                                                                                                                                          Relatório de execução do PGRCIC_2019
+                                                                                                                                                                               24
+Departamentos/                                                                                                                               Avaliação das    Nível de Grau
+                                                                                                Grau       Medidas e mecanismos                Medidas           após a
+   Divisões /                                     Identificação de   Probabilida
+                           Atividades                                              Impacto       de     aplicados de controlo interno      implementadas e   implementação
+  Gabinetes/                                           riscos        de
+                                                                                                Risco             e externo                   adaptadas
+   Unidades                                                                                                                                                    das medidas
+  Periódicas      de contactos com os clientes.     profissional
+                                                                                                        Formação e sensibilização em
+SPAL - Seção do                                    Recebimento                                          ética e corrupção;                                       C- Alto
+   Posto de                                                               B                 C    C
+                                                     indevido
+Abastecimento e
+   Lavagem                                                                                                                                                      B - Médio
+
+                                                  Abuso de poder          B                 C    C
+
+
+
+
+                                                                                    DRAFT
+
+
+
+
+                                                                                                                                        Relatório de execução do PGRCIC_2019
+                                                                                                                                                                             25
+2.5. Considerações finais
+      O PGRCIC é um instrumento de gestão dinâmico e que terá que ser atualizado,
+reorganizado e eventualmente ajustado, seja decorrente das alterações legislativas seja por
+alterações no funcionamento da HF ou ainda por sugestões ou necessidades.
+
+      Todos os colaboradores da HF e principalmente os responsáveis de cada Gabinete,
+Departamento, Secção ou Setor, são também responsáveis por garantir a implementação,
+funcionamento e atualização deste Plano, devendo o mesmo ser reconhecido como um
+instrumento que vise não só controlar como melhorar as atividades desenvolvidas em cada
+uma das áreas da HF. O Conselho de Administração, com o apoio dos responsáveis pela
+coordenação e gestão do plano, assim como, de todas as direções e órgãos de apoio, elaborará
+um Relatório Anual de Execução do Plano.
+
+      O exposto e o aludido Plano aplicar-se-á igualmente à Companhia dos Carros de São
+Gonçalo S.A., até porque a maioria dos recursos humanos exerce as suas funções para ambas
+as Empresas e sendo o Conselho de Administração o mesmo, os princípios, valores e regras são
+idênticos para todos os colaboradores.
+
+      No ano de 2019 foi necessário redefinir atividades em diversas áreas dada a alteração
+organigrama, o que levou a uma nova ponderação e reflexão do Plano.
+
+      Em termos globais as áreas corporativas consideraram adequados os mecanismos de
+prevenção e mitigação dos riscos identificados, bem como a sua eficácia e adequação face às
+funções exercidas.
+
+      A referida colaboração das áreas corporativas teve especial relevância, atendendo às
+alterações efetuadas e melhor descritas no organigrama da Empresa, o que levou à necessária
+redefinição de atividades, conforme já mencionado e à reavaliação das mesmas.
+
+      Em 2019, foi constituído um Grupo de Trabalho para a Revisão e Atualização do PPRCIC,
+cujo principal objetivo é investir no aperfeiçoamento do trabalho já desenvolvido, devendo o
+mesmo se caraterizar por uma exaustiva identificação constante dos riscos, de modo a cobrir
+todos os departamentos/gabinetes e aprofundar quanto à adoção e execução das medidas
+preventivas correspondentes, tendo no âmbito das suas tarefas chegado à conclusão de que
+em 2020 deverá ser implementado um novo Plano de Prevenção dos Riscos de Gestão,
+Corrupção, Infrações conexas (PGRCIC) e conflitos de interesses.
+
+
+
+                                                          Relatório de execução do PGRCIC_2019
+                                                                                           26
+                           Conselho de Administração
+
+
+Presidente do Conselho
+                          Dr. Alejandro Gonçalves
+   de Administração
+
+        Vogal             Eng.ª Susana Pinto Correia
+
+        Vogal             Eng.º Duarte Sousa
+
+
+
+
+                         Funchal, 25 de março de 2020
+
+
+                                                    Relatório de execução do PGRCIC_2019
+                                                                                     27
+Funchal
+
+
+
+
+          Relatório de execução do PGRCIC_2019
+                                           28
+
