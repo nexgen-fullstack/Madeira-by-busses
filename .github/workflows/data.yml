@@ -1,0 +1,44 @@
+name: Nightly timetable
+
+# Fetches the operators' official GTFS feeds, validates them and builds the
+# network bundle. The report and a diff against the previous night are
+# attached to the run and shown in its summary.
+on:
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  build-data:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Restore previous bundle for the diff
+        uses: dawidd6/action-download-artifact@v6
+        continue-on-error: true
+        with:
+          workflow: data.yml
+          name: network-bundle
+          path: .
+          if_no_artifact_found: ignore
+      - name: Build bundle from Horários do Funchal GTFS
+        run: pnpm data:real
+      - name: Summary
+        if: always()
+        run: |
+          cat data/build/report.md >> "$GITHUB_STEP_SUMMARY" || true
+          cat data/build/diff.md >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: network-bundle
+          path: |
+            apps/web/public/data/network.json
+            data/build/
+          retention-days: 30

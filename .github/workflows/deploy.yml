@@ -1,0 +1,49 @@
+name: Deploy to GitHub Pages
+
+# One-time setup: Settings → Pages → Source: "GitHub Actions". Then run this
+# workflow from the Actions tab. "demo" ships the synthetic network; "real"
+# builds the bundle from the operators' GTFS feeds.
+on:
+  workflow_dispatch:
+    inputs:
+      data:
+        description: Timetable source
+        type: choice
+        options: [demo, real]
+        default: demo
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build timetable data
+        run: pnpm ${{ inputs.data == 'real' && 'data:real' || 'data' }}
+      - run: pnpm --filter @madeirabus/web build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/web/dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
