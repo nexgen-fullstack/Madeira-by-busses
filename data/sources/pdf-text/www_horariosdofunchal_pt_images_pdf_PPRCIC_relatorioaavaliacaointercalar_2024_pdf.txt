@@ -1,80 +1,0 @@
-ÍNDICE
-
-          ....................................................................................................................
-                                                            ..................................................................
-                                                                                                       ......................
-                                                                                                                               .
-                                           ..................................................................................
-                                                                      ........................................................
-                                              ...............................................................................
-                                                   ..........................................................................
-                                                                                             .................................
-                                    .........................................................................................
-                                                                          .................................................
-         ...................................................................................................................
-1. INTRODUÇÃO
-2. PROGRAMA DE CUMPRIMENTO NORMATIVO
-   3. MONITORIZAÇÃO E AVALIAÇÃO DE RISCO ELEVADO OU
-      MÁXIMO
-
-
-
-
-                                                     Risco     Medidas
-                      Área                                                  Ocorrências
-                                                    Elevado   Preventivas
-Conselho de Administração (CA)                          6          4            0
-Secretaria Geral (SG)                                   1          3            0
-Gabinete Jurídico (GJ)                                  7          4            0
-Gab. de Est., Plan. e Rel. Internacionais (GEPRI)       2          5            0
-Depart. Gest. Orçam. Controlo Interno (DGOCI)           0          0            0
-Departamento Comercial (DC)                             0          0            0
-Departamento de Exploração (DE)                        10          5            0
-Departamento de Manutenção (DM)                         7          5            0
-Departamento Recursos Humanos (DRH)                    20         14            0
-Departamento Tecnológico (DT)                           2          8            0
-Departamento Financeiro (DF)                            0          0            0
-Departamento de Logística (DL)                          0          0            0
-Gabinete Engenharia e Produção (GEP)                    8          5            0
-                                           Total      63          53            0
-   4. METEDOLOGIA DA AVALIAÇÃO
-
-
-
-
-                                             Medidas       Medidas implementadas
-                  Área
-                                            Preventivas   Sim       Em curso   Não
-Conselho de Administração (CA)                   4         4           0         0
-Secretaria Geral (SG)                            3         2           1         0
-Gabinete Jurídico (GJ)                           4          4          0         0
-Gab. de Est., Plan. e Rel. Inter. (GEPRI)        5         4           1         0
-Dep. Gest. Orça. Contr. Interno (DGOCI)          0         0           0         0
-Departamento Comercial (DC)                      0         0           0         0
-Departamento de Exploração (DE)                  5         5           0         0
-Departamento de Manutenção (DM)                  5         5           0         0
-Departamento Recursos Humanos (DRH)             14         13          1         0
-Departamento Tecnológico (DT)                    8          8          0         0
-Departamento Financeiro (DF)                     0         0           0         0
-Departamento de Logística (DL)                   0         0           0         0
-Gabinete Engenharia e Produção (GEP)             5         4           1         0
-                                    Total       53        49          4        0
-                         % Implementação                  92%        8%       0%
-5. GRAU DE CUMPRIMENTO DAS MEDIDAS PREVENTIVAS
-(1) Probabilidade de Ocorrência (PO): Baixo (1) / Médio (2) / Alto (3)
-(2) Impacto (IP): Baixo (1) / Médio (2) / Alto (3)
-(3) Grau de Risco: Nível Fraco (1) / Nível Moderado (2) / Nível Elevado (3)
-(1) Probabilidade de Ocorrência (PO): Baixo (1) / Médio (2) / Alto (3)
-(2) Impacto (IP): Baixo (1) / Médio (2) / Alto (3)
-(3) Grau de Risco: Nível Fraco (1) / Nível Moderado (2) / Nível Elevado (3)
-(1) Probabilidade de Ocorrência (PO): Baixo (1) / Médio (2) / Alto (3)
-(2) Impacto (IP): Baixo (1) / Médio (2) / Alto (3)
-(3) Grau de Risco: Nível Fraco (1) / Nível Moderado (2) / Nível Elevado (3)
-(1) Probabilidade de Ocorrência (PO): Baixo (1) / Médio (2) / Alto (3)
-(2) Impacto (IP): Baixo (1) / Médio (2) / Alto (3)
-(3) Grau de Risco: Nível Fraco (1) / Nível Moderado (2) / Nível Elevado (3)
-(1) Probabilidade de Ocorrência (PO): Baixo (1) / Médio (2) / Alto (3)
-(2) Impacto (IP): Baixo (1) / Médio (2) / Alto (3)
-(3) Grau de Risco: Nível Fraco (1) / Nível Moderado (2) / Nível Elevado (3)
-6. CONCLUSÕES
-

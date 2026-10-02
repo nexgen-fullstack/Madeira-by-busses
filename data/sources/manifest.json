@@ -1,25 +1,37 @@
 {
-  "fetchedAt": "2026-10-02T15:00:02.519Z",
+  "fetchedAt": "2026-10-02T15:14:21.999Z",
   "seeds": [
     "https://siga.madeira.gov.pt/",
     "https://siga.madeira.gov.pt/public/index.php/language/en",
     "https://siga.madeira.gov.pt/public/index.php/language/pt",
     "https://www.rodoeste.pt/",
-    "https://www.sam.pt/",
-    "https://www.horariosdofunchal.pt/"
+    "https://www.sam.pt/"
   ],
+  "hf": {
+    "url": "https://www.horariosdofunchal.pt/googletransit.zip",
+    "bytes": 3696546,
+    "sha256": "d07e6c9cf9b13357",
+    "feedInfo": "feed_type,feed_publisher_name,feed_publisher_url,feed_lang,feed_start_date,feed_end_date,feed_version,feed_desc,feed_remarks,feed_contact_email,feed_contact_url\r\n,HF,https://www.horariosdofunchal.pt/,pt,20260909,20261130,202609091923,,,geral@horariosdofunchal.pt,https://www.horariosdofunchal.pt/"
+  },
   "osm": {
-    "error": "Error: Overpass HTTP 504"
+    "routeRelations": 225,
+    "routeMasters": 2,
+    "operators": [
+      "CAM",
+      "RODOESTE",
+      "Rodoeste",
+      "SAM",
+      "HF",
+      "HF - Urbano",
+      "Horários do Funchal",
+      "SIGA"
+    ],
+    "stops": 4027,
+    "places": 3261
   },
   "web": {
-    "pages": 600,
+    "pages": 415,
     "pdfs": [
-      {
-        "url": "https://www.horariosdofunchal.pt/images/pdf/protecao-dados.pdf",
-        "bytes": 317714,
-        "sha256": "28805840ee4f1f86",
-        "text": "pdf-text/www_horariosdofunchal_pt_images_pdf_protecao_dados_pdf.txt"
-      },
       {
         "url": "https://siga.madeira.gov.pt/img/aerobus/aerobus_1.pdf",
         "bytes": 3488146,
@@ -43,172 +55,10 @@
         "text": "pdf-text/siga_madeira_gov_pt_tiim.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/img/aerobus/aerobus_1.pdf",
-        "bytes": 3488146,
-        "sha256": "a50a7830a1302a82",
-        "text": "pdf-text/siga_madeira_gov_pt_public_img_aerobus_aerobus_1_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/img/aerobus/aerobus_2.pdf",
-        "bytes": 2104793,
-        "sha256": "57723233909da396",
-        "text": "pdf-text/siga_madeira_gov_pt_public_img_aerobus_aerobus_2_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/index.php/tiim",
+        "url": "https://siga.madeira.gov.pt/index.php/tiim",
         "bytes": 186400,
         "sha256": "0b0cff66504a0b8c",
-        "text": "pdf-text/siga_madeira_gov_pt_public_index_php_tiim.txt"
-      },
-      {
-        "url": "https://www.horariosdofunchal.pt/images/pdf/conversao.pdf",
-        "bytes": 51537,
-        "sha256": "6ea68c608f73b43c",
-        "text": "pdf-text/www_horariosdofunchal_pt_images_pdf_conversao_pdf.txt"
-      },
-      {
-        "url": "https://www.horariosdofunchal.pt/carreiras/todas.pdf",
-        "bytes": 1774938,
-        "sha256": "06db9d6c39c51748",
-        "text": "pdf-text/www_horariosdofunchal_pt_carreiras_todas_pdf.txt"
-      },
-      {
-        "url": "https://www.horariosdofunchal.pt/images/pdf/mapaurbano.pdf",
-        "bytes": 1773620,
-        "sha256": "bd1bef419429ce0d",
-        "text": "pdf-text/www_horariosdofunchal_pt_images_pdf_mapaurbano_pdf.txt"
-      },
-      {
-        "url": "https://www.horariosdofunchal.pt/images/pdf/mapainterurbano.pdf",
-        "bytes": 911885,
-        "sha256": "31c7c634c1f04ad7",
-        "text": "pdf-text/www_horariosdofunchal_pt_images_pdf_mapainterurbano_pdf.txt"
-      },
-      {
-        "url": "https://www.horariosdofunchal.pt/images/pdf/picoareeiro/mapa.pdf",
-        "bytes": 662459,
-        "sha256": "05fefc40a58f0112",
-        "text": "pdf-text/www_horariosdofunchal_pt_images_pdf_picoareeiro_mapa_pdf.txt"
-      },
-      {
-        "url": "https://www.horariosdofunchal.pt/images/pdf/picoareeiro/condicoesgerais.pdf",
-        "bytes": 64786,
-        "sha256": "c7b96fef8d35697e",
-        "text": "pdf-text/www_horariosdofunchal_pt_images_pdf_picoareeiro_condicoesgerais_pdf.txt"
-      },
-      {
-        "url": "https://www.horariosdofunchal.pt/images/pdf/visitFunchal.pdf",
-        "bytes": 2208235,
-        "sha256": "824a6f1312dc06eb",
-        "text": "pdf-text/www_horariosdofunchal_pt_images_pdf_visitFunchal_pdf.txt"
-      },
-      {
-        "url": "https://www.horariosdofunchal.pt/images/pdf/centrodoFunchal.pdf",
-        "bytes": 813254,
-        "sha256": "335321fde842a203",
-        "text": "pdf-text/www_horariosdofunchal_pt_images_pdf_centrodoFunchal_pdf.txt"
-      },
-      {
-        "url": "https://www.horariosdofunchal.pt/images/pdf/condicoes-gerais-HF.pdf",
-        "bytes": 166808,
-        "sha256": "ba30d6f362cd2c81",
-        "text": "pdf-text/www_horariosdofunchal_pt_images_pdf_condicoes_gerais_HF_pdf.txt"
-      },
-      {
-        "url": "https://www.horariosdofunchal.pt/images/pdf/PPRCIC/2024_2026.pdf",
-        "bytes": 2383565,
-        "sha256": "d0e21d4c7871477f",
-        "text": "pdf-text/www_horariosdofunchal_pt_images_pdf_PPRCIC_2024_2026_pdf.txt"
-      },
-      {
-        "url": "https://www.horariosdofunchal.pt/images/pdf/PPRCIC/2018.pdf",
-        "bytes": 2068408,
-        "sha256": "162b40edae5009de",
-        "text": "pdf-text/www_horariosdofunchal_pt_images_pdf_PPRCIC_2018_pdf.txt"
-      },
-      {
-        "url": "https://www.horariosdofunchal.pt/images/pdf/PPRCIC/2025.pdf",
-        "bytes": 2462541,
-        "sha256": "ae74d4769d840240",
-        "text": "pdf-text/www_horariosdofunchal_pt_images_pdf_PPRCIC_2025_pdf.txt"
-      },
-      {
-        "url": "https://www.horariosdofunchal.pt/images/pdf/PPRCIC/2024.pdf",
-        "bytes": 2705109,
-        "sha256": "f83460da1ec3ded4",
-        "text": "pdf-text/www_horariosdofunchal_pt_images_pdf_PPRCIC_2024_pdf.txt"
-      },
-      {
-        "url": "https://www.horariosdofunchal.pt/images/pdf/PPRCIC/2023.pdf",
-        "bytes": 2133088,
-        "sha256": "362643e6e704d2c3",
-        "text": "pdf-text/www_horariosdofunchal_pt_images_pdf_PPRCIC_2023_pdf.txt"
-      },
-      {
-        "url": "https://www.horariosdofunchal.pt/images/pdf/PPRCIC/2022.pdf",
-        "bytes": 4874813,
-        "sha256": "b8cd0b0e28bfdbc5",
-        "text": "pdf-text/www_horariosdofunchal_pt_images_pdf_PPRCIC_2022_pdf.txt"
-      },
-      {
-        "url": "https://www.horariosdofunchal.pt/images/pdf/PPRCIC/2021.pdf",
-        "bytes": 6803014,
-        "sha256": "5fa4816d36ac6d41",
-        "text": "pdf-text/www_horariosdofunchal_pt_images_pdf_PPRCIC_2021_pdf.txt"
-      },
-      {
-        "url": "https://www.horariosdofunchal.pt/images/pdf/PPRCIC/2020.pdf",
-        "bytes": 1806454,
-        "sha256": "83fa83a1546e7694",
-        "text": "pdf-text/www_horariosdofunchal_pt_images_pdf_PPRCIC_2020_pdf.txt"
-      },
-      {
-        "url": "https://www.horariosdofunchal.pt/images/pdf/PPRCIC/2019.pdf",
-        "bytes": 2059612,
-        "sha256": "f51e03e914e9352a",
-        "text": "pdf-text/www_horariosdofunchal_pt_images_pdf_PPRCIC_2019_pdf.txt"
-      },
-      {
-        "url": "https://www.horariosdofunchal.pt/images/pdf/PPRCIC/relatorioaavaliacaointercalar_2025.pdf",
-        "bytes": 905409,
-        "sha256": "28be88745e0d8a4c",
-        "text": "pdf-text/www_horariosdofunchal_pt_images_pdf_PPRCIC_relatorioaavaliacaointercalar_2025_pdf.txt"
-      },
-      {
-        "url": "https://www.horariosdofunchal.pt/images/pdf/PPRCIC/relatorioaavaliacaointercalar_2024.pdf",
-        "bytes": 6351213,
-        "sha256": "6d80e7651f81064e",
-        "text": "pdf-text/www_horariosdofunchal_pt_images_pdf_PPRCIC_relatorioaavaliacaointercalar_2024_pdf.txt"
-      },
-      {
-        "url": "https://www.horariosdofunchal.pt/images/pdf/PPRCIC/relatorioaavaliacaointercalar_2022.pdf",
-        "bytes": 1716271,
-        "sha256": "d5a9b4be7d08b426",
-        "text": "pdf-text/www_horariosdofunchal_pt_images_pdf_PPRCIC_relatorioaavaliacaointercalar_2022_pdf.txt"
-      },
-      {
-        "url": "https://www.horariosdofunchal.pt/images/pdf/PPRCIC/declaracao-conflito.pdf",
-        "bytes": 202959,
-        "sha256": "b7043e59c01e8220",
-        "text": "pdf-text/www_horariosdofunchal_pt_images_pdf_PPRCIC_declaracao_conflito_pdf.txt"
-      },
-      {
-        "url": "https://www.horariosdofunchal.pt/images/pdf/PPRCIC/declaracao-inexistencia-conflito.pdf",
-        "bytes": 206617,
-        "sha256": "12ffceeb20e778c9",
-        "text": "pdf-text/www_horariosdofunchal_pt_images_pdf_PPRCIC_declaracao_inexistencia_conflito_pdf.txt"
-      },
-      {
-        "url": "https://www.horariosdofunchal.pt/images/pdf/rare2024.pdf",
-        "bytes": 220511,
-        "sha256": "a70ce3417090862a",
-        "text": "pdf-text/www_horariosdofunchal_pt_images_pdf_rare2024_pdf.txt"
-      },
-      {
-        "url": "https://www.horariosdofunchal.pt/images/pdf/rare.pdf",
-        "bytes": 240932,
-        "sha256": "0008fe4ea09e495f",
-        "text": "pdf-text/www_horariosdofunchal_pt_images_pdf_rare_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_tiim.txt"
       },
       {
         "url": "https://siga.madeira.gov.pt/noticias/download/2181",
@@ -220,829 +70,967 @@
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/173CCB95-4440-455C-B49B-244343E85F87.pdf",
         "bytes": 95917,
         "sha256": "c09844c0cbf66a5e",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_173CCB95_4440_455C_B49B_244343E85F87_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_173CCB95_4440_455C_B49B_244343E85F87_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_173CCB95_4440_455C_B49B_244343E85F87_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/3CA4A08D-34DD-4EA6-BBA3-13C7E3D24B8A.pdf",
         "bytes": 97199,
         "sha256": "d87ea65ed9b52a2d",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_3CA4A08D_34DD_4EA6_BBA3_13C7E3D24B8A_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_3CA4A08D_34DD_4EA6_BBA3_13C7E3D24B8A_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_3CA4A08D_34DD_4EA6_BBA3_13C7E3D24B8A_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/833756D8-75A7-4F05-A643-0263F76F886E.pdf",
         "bytes": 95598,
         "sha256": "9d581216834bc11d",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_833756D8_75A7_4F05_A643_0263F76F886E_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_833756D8_75A7_4F05_A643_0263F76F886E_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_833756D8_75A7_4F05_A643_0263F76F886E_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/3BBBA4D0-DF09-47AA-8EB1-0BE970AB12A0.pdf",
         "bytes": 96518,
         "sha256": "34e2baf18d4546c2",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_3BBBA4D0_DF09_47AA_8EB1_0BE970AB12A0_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_3BBBA4D0_DF09_47AA_8EB1_0BE970AB12A0_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_3BBBA4D0_DF09_47AA_8EB1_0BE970AB12A0_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/9093CA3C-9CB2-46C9-8465-35250862867F.pdf",
         "bytes": 96752,
         "sha256": "99ea5078508b1fc2",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_9093CA3C_9CB2_46C9_8465_35250862867F_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_9093CA3C_9CB2_46C9_8465_35250862867F_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_9093CA3C_9CB2_46C9_8465_35250862867F_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/FFB3A4AF-2B97-4770-901C-F15512723BE7.pdf",
         "bytes": 97396,
         "sha256": "e229467412ab9903",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_FFB3A4AF_2B97_4770_901C_F15512723BE7_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_FFB3A4AF_2B97_4770_901C_F15512723BE7_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_FFB3A4AF_2B97_4770_901C_F15512723BE7_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/7A2210BA-29B8-4D7A-961C-1081DE44F956.pdf",
         "bytes": 96674,
         "sha256": "7703daff7d27f561",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_7A2210BA_29B8_4D7A_961C_1081DE44F956_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_7A2210BA_29B8_4D7A_961C_1081DE44F956_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_7A2210BA_29B8_4D7A_961C_1081DE44F956_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/1868D233-026F-4307-8768-730D80CD8804.pdf",
         "bytes": 97275,
         "sha256": "1518816229dc968c",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_1868D233_026F_4307_8768_730D80CD8804_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_1868D233_026F_4307_8768_730D80CD8804_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_1868D233_026F_4307_8768_730D80CD8804_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/3FCA583E-495D-43AF-9D3A-4CE53541162C.pdf",
         "bytes": 99501,
         "sha256": "9fbbd67e65a7a26c",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_3FCA583E_495D_43AF_9D3A_4CE53541162C_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_3FCA583E_495D_43AF_9D3A_4CE53541162C_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_3FCA583E_495D_43AF_9D3A_4CE53541162C_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/5874D2B0-9F17-4910-8D6A-70EA5747106C.pdf",
         "bytes": 96871,
         "sha256": "798aa7846b3db8b7",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_5874D2B0_9F17_4910_8D6A_70EA5747106C_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_5874D2B0_9F17_4910_8D6A_70EA5747106C_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_5874D2B0_9F17_4910_8D6A_70EA5747106C_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/67D43AC4-655D-4E4A-91F9-22B160216A11.pdf",
         "bytes": 95879,
         "sha256": "c704e929e03b7b95",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_67D43AC4_655D_4E4A_91F9_22B160216A11_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_67D43AC4_655D_4E4A_91F9_22B160216A11_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_67D43AC4_655D_4E4A_91F9_22B160216A11_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/F3E1042C-CBD0-4E19-8B29-523D9F46E3D6.pdf",
         "bytes": 97406,
         "sha256": "d4e69b5444fbc0cf",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_F3E1042C_CBD0_4E19_8B29_523D9F46E3D6_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_F3E1042C_CBD0_4E19_8B29_523D9F46E3D6_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_F3E1042C_CBD0_4E19_8B29_523D9F46E3D6_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/300FDF7E-E5DD-490F-93AF-F438200F9E05.pdf",
         "bytes": 95879,
         "sha256": "f1b5b8389710c2eb",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_300FDF7E_E5DD_490F_93AF_F438200F9E05_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_300FDF7E_E5DD_490F_93AF_F438200F9E05_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_300FDF7E_E5DD_490F_93AF_F438200F9E05_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/41066FF7-FC6D-4E03-A173-A6FFBC751F44.pdf",
         "bytes": 96612,
         "sha256": "7552171a3aa7d767",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_41066FF7_FC6D_4E03_A173_A6FFBC751F44_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_41066FF7_FC6D_4E03_A173_A6FFBC751F44_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_41066FF7_FC6D_4E03_A173_A6FFBC751F44_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/3313FB1E-7B77-48A4-BBAD-62BAEE5B2884.pdf",
         "bytes": 97725,
         "sha256": "c8fa71273a16eccf",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_3313FB1E_7B77_48A4_BBAD_62BAEE5B2884_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_3313FB1E_7B77_48A4_BBAD_62BAEE5B2884_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_3313FB1E_7B77_48A4_BBAD_62BAEE5B2884_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/81563E35-9E0D-44F0-AE75-2E34B1F58D72.pdf",
         "bytes": 97950,
         "sha256": "00afa5fb35327214",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_81563E35_9E0D_44F0_AE75_2E34B1F58D72_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_81563E35_9E0D_44F0_AE75_2E34B1F58D72_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_81563E35_9E0D_44F0_AE75_2E34B1F58D72_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/336C83FC-5D97-417F-B8D0-DDF6C2D443D3.pdf",
         "bytes": 96572,
         "sha256": "e817f57f1826c380",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_336C83FC_5D97_417F_B8D0_DDF6C2D443D3_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_336C83FC_5D97_417F_B8D0_DDF6C2D443D3_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_336C83FC_5D97_417F_B8D0_DDF6C2D443D3_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/7E0F8122-1283-4A47-BF53-664CCA8A1718.pdf",
         "bytes": 95981,
         "sha256": "adc2ba7e39eed875",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_7E0F8122_1283_4A47_BF53_664CCA8A1718_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_7E0F8122_1283_4A47_BF53_664CCA8A1718_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_7E0F8122_1283_4A47_BF53_664CCA8A1718_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/4BE589B9-9FED-40B4-B742-1411177E839A.pdf",
         "bytes": 94767,
         "sha256": "dd227577ed1da018",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_4BE589B9_9FED_40B4_B742_1411177E839A_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_4BE589B9_9FED_40B4_B742_1411177E839A_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_4BE589B9_9FED_40B4_B742_1411177E839A_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/D4EB0C65-4142-40CC-A656-692564E1EF62.pdf",
         "bytes": 94940,
         "sha256": "5003fe6aef3a59fd",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_D4EB0C65_4142_40CC_A656_692564E1EF62_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_D4EB0C65_4142_40CC_A656_692564E1EF62_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_D4EB0C65_4142_40CC_A656_692564E1EF62_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/2078A094-887D-4BB6-9F91-E780F64A2D84.pdf",
         "bytes": 96291,
         "sha256": "51b2c7afb23f4e7f",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_2078A094_887D_4BB6_9F91_E780F64A2D84_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_2078A094_887D_4BB6_9F91_E780F64A2D84_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_2078A094_887D_4BB6_9F91_E780F64A2D84_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/76AC5213-3237-4E7D-AF2C-6B881068B48A.pdf",
         "bytes": 91076,
         "sha256": "d42508c4e1e95bde",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_76AC5213_3237_4E7D_AF2C_6B881068B48A_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_76AC5213_3237_4E7D_AF2C_6B881068B48A_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_76AC5213_3237_4E7D_AF2C_6B881068B48A_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/21AF3A25-4216-4F6A-BA09-47B825B615AE.pdf",
         "bytes": 95773,
         "sha256": "9a39733981a92e74",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_21AF3A25_4216_4F6A_BA09_47B825B615AE_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_21AF3A25_4216_4F6A_BA09_47B825B615AE_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_21AF3A25_4216_4F6A_BA09_47B825B615AE_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/C0783ED6-7440-406A-9941-FACCD6182902.pdf",
         "bytes": 97697,
         "sha256": "074c92a44290f69f",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_C0783ED6_7440_406A_9941_FACCD6182902_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_C0783ED6_7440_406A_9941_FACCD6182902_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_C0783ED6_7440_406A_9941_FACCD6182902_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/FE9638AD-FA09-45CA-A5E0-12D450AD5B96.pdf",
         "bytes": 96150,
         "sha256": "d35a9ea5769d12ac",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_FE9638AD_FA09_45CA_A5E0_12D450AD5B96_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_FE9638AD_FA09_45CA_A5E0_12D450AD5B96_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_FE9638AD_FA09_45CA_A5E0_12D450AD5B96_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/3B382F74-2820-45CA-B1A1-EC9F482431DF.pdf",
         "bytes": 95573,
         "sha256": "a3038f3e4ba0132c",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_3B382F74_2820_45CA_B1A1_EC9F482431DF_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_3B382F74_2820_45CA_B1A1_EC9F482431DF_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_3B382F74_2820_45CA_B1A1_EC9F482431DF_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/00BC7587-4293-4B09-BD49-9D6565690EF3.pdf",
         "bytes": 96321,
         "sha256": "79c143b5497121fc",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_00BC7587_4293_4B09_BD49_9D6565690EF3_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_00BC7587_4293_4B09_BD49_9D6565690EF3_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_00BC7587_4293_4B09_BD49_9D6565690EF3_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/1FE932BB-E189-4C6F-8521-303592D59E50.pdf",
         "bytes": 96267,
         "sha256": "33930fa9fbf9ebb6",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_1FE932BB_E189_4C6F_8521_303592D59E50_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_1FE932BB_E189_4C6F_8521_303592D59E50_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_1FE932BB_E189_4C6F_8521_303592D59E50_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/FD7FA670-47E0-4EC7-8DA9-E2C71F5AA4C4.pdf",
         "bytes": 96201,
         "sha256": "bacf4de0cc796335",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_FD7FA670_47E0_4EC7_8DA9_E2C71F5AA4C4_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_FD7FA670_47E0_4EC7_8DA9_E2C71F5AA4C4_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_FD7FA670_47E0_4EC7_8DA9_E2C71F5AA4C4_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/CE5CA223-BC63-4F9D-8588-4740E720BB3F.pdf",
         "bytes": 95737,
         "sha256": "a04236fb61366f38",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_CE5CA223_BC63_4F9D_8588_4740E720BB3F_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_CE5CA223_BC63_4F9D_8588_4740E720BB3F_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_CE5CA223_BC63_4F9D_8588_4740E720BB3F_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/86685A07-C576-4324-A98B-10AA12EAC15B.pdf",
         "bytes": 91524,
         "sha256": "a3832c3fd6c64f06",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_86685A07_C576_4324_A98B_10AA12EAC15B_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_86685A07_C576_4324_A98B_10AA12EAC15B_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_86685A07_C576_4324_A98B_10AA12EAC15B_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/303F50B8-B842-407E-B41A-4C1180B635AA.pdf",
         "bytes": 96151,
         "sha256": "f78712e68c993ba0",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_303F50B8_B842_407E_B41A_4C1180B635AA_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_303F50B8_B842_407E_B41A_4C1180B635AA_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_303F50B8_B842_407E_B41A_4C1180B635AA_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/24F6584E-EDF3-4E11-AA95-9E00C8B0688E.pdf",
         "bytes": 95475,
         "sha256": "4c6629f9274c9a9e",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_24F6584E_EDF3_4E11_AA95_9E00C8B0688E_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_24F6584E_EDF3_4E11_AA95_9E00C8B0688E_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_24F6584E_EDF3_4E11_AA95_9E00C8B0688E_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/45250D5E-A5D8-4AC8-812D-498BD6848745.pdf",
         "bytes": 95113,
         "sha256": "505c9e228cd7c766",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_45250D5E_A5D8_4AC8_812D_498BD6848745_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_45250D5E_A5D8_4AC8_812D_498BD6848745_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_45250D5E_A5D8_4AC8_812D_498BD6848745_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/D181E9F5-58D9-4570-9B53-1B7320B53514.pdf",
         "bytes": 95710,
         "sha256": "b2ea63495e570c3c",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_D181E9F5_58D9_4570_9B53_1B7320B53514_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_D181E9F5_58D9_4570_9B53_1B7320B53514_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_D181E9F5_58D9_4570_9B53_1B7320B53514_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/D3D62DFF-1E50-4DB3-B92C-BEE9F5AC64C3.pdf",
         "bytes": 96727,
         "sha256": "812ca02c091d1604",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_D3D62DFF_1E50_4DB3_B92C_BEE9F5AC64C3_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_D3D62DFF_1E50_4DB3_B92C_BEE9F5AC64C3_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_D3D62DFF_1E50_4DB3_B92C_BEE9F5AC64C3_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/180BB40E-229F-4B75-B7D3-2E84B6D0AB5B.pdf",
         "bytes": 99960,
         "sha256": "6389faba1f278afa",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_180BB40E_229F_4B75_B7D3_2E84B6D0AB5B_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_180BB40E_229F_4B75_B7D3_2E84B6D0AB5B_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_180BB40E_229F_4B75_B7D3_2E84B6D0AB5B_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/3C3B8E13-5C8D-4326-9D6F-3DDAD82F1061.pdf",
         "bytes": 95512,
         "sha256": "395479abb639aec5",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_3C3B8E13_5C8D_4326_9D6F_3DDAD82F1061_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_3C3B8E13_5C8D_4326_9D6F_3DDAD82F1061_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_3C3B8E13_5C8D_4326_9D6F_3DDAD82F1061_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/79B2826F-E3A5-4859-9245-DA3404FFBE95.pdf",
         "bytes": 98687,
         "sha256": "006db18c1c0b6d49",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_79B2826F_E3A5_4859_9245_DA3404FFBE95_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_79B2826F_E3A5_4859_9245_DA3404FFBE95_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_79B2826F_E3A5_4859_9245_DA3404FFBE95_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/8C479329-328D-4B48-A3FC-A4E27070418E.pdf",
         "bytes": 100229,
         "sha256": "7582683c7119b23f",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_8C479329_328D_4B48_A3FC_A4E27070418E_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_8C479329_328D_4B48_A3FC_A4E27070418E_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_8C479329_328D_4B48_A3FC_A4E27070418E_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/C26D0750-DCF1-4BA1-8895-2C78C45966EA.pdf",
         "bytes": 182865,
         "sha256": "617130ba95df8900",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_C26D0750_DCF1_4BA1_8895_2C78C45966EA_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_C26D0750_DCF1_4BA1_8895_2C78C45966EA_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_C26D0750_DCF1_4BA1_8895_2C78C45966EA_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/1D1D74C7-8A0C-49AC-AD75-A08F97D5A47E.pdf",
         "bytes": 92492,
         "sha256": "7ca7be5a597ea41d",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_1D1D74C7_8A0C_49AC_AD75_A08F97D5A47E_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_1D1D74C7_8A0C_49AC_AD75_A08F97D5A47E_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_1D1D74C7_8A0C_49AC_AD75_A08F97D5A47E_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/C94A7348-F847-4DA3-BD81-DF3EACD85A07.pdf",
         "bytes": 95912,
         "sha256": "a79b2ecb2723b11f",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_C94A7348_F847_4DA3_BD81_DF3EACD85A07_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_C94A7348_F847_4DA3_BD81_DF3EACD85A07_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_C94A7348_F847_4DA3_BD81_DF3EACD85A07_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/A2971ADC-2EF4-412D-9271-1EDF1FDE8635.pdf",
         "bytes": 93201,
         "sha256": "8f18a0323623d700",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_A2971ADC_2EF4_412D_9271_1EDF1FDE8635_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_A2971ADC_2EF4_412D_9271_1EDF1FDE8635_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_A2971ADC_2EF4_412D_9271_1EDF1FDE8635_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/BA2DC732-DC4F-4F96-A5C2-A879EED812D5.pdf",
         "bytes": 95660,
         "sha256": "efcaa14bb21b03a3",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_BA2DC732_DC4F_4F96_A5C2_A879EED812D5_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_BA2DC732_DC4F_4F96_A5C2_A879EED812D5_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_BA2DC732_DC4F_4F96_A5C2_A879EED812D5_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/B13DE4E4-54CE-4B4B-9480-E14F39A8E99B.pdf",
         "bytes": 93848,
         "sha256": "573a2eaaa9d73dc3",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_B13DE4E4_54CE_4B4B_9480_E14F39A8E99B_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_B13DE4E4_54CE_4B4B_9480_E14F39A8E99B_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_B13DE4E4_54CE_4B4B_9480_E14F39A8E99B_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/BD5AE3DD-8974-49CD-853F-13BDA258230F.pdf",
         "bytes": 108642,
         "sha256": "5cb4dfb2f11d02b6",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_BD5AE3DD_8974_49CD_853F_13BDA258230F_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_BD5AE3DD_8974_49CD_853F_13BDA258230F_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_BD5AE3DD_8974_49CD_853F_13BDA258230F_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/18235D5E-5BBA-4BD8-B86E-B9C894C5F3B4.pdf",
         "bytes": 106615,
         "sha256": "0a7f5b074e522f68",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_18235D5E_5BBA_4BD8_B86E_B9C894C5F3B4_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_18235D5E_5BBA_4BD8_B86E_B9C894C5F3B4_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_18235D5E_5BBA_4BD8_B86E_B9C894C5F3B4_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/D15EFA77-B12A-4F78-8C15-2926BFE47D96.pdf",
         "bytes": 97166,
         "sha256": "e78a8794dce0af9b",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_D15EFA77_B12A_4F78_8C15_2926BFE47D96_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_D15EFA77_B12A_4F78_8C15_2926BFE47D96_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_D15EFA77_B12A_4F78_8C15_2926BFE47D96_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/5CCF65C6-D00C-475B-A0DD-8E53D129E48C.pdf",
         "bytes": 98967,
         "sha256": "4c4f4980b59c3641",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_5CCF65C6_D00C_475B_A0DD_8E53D129E48C_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_5CCF65C6_D00C_475B_A0DD_8E53D129E48C_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_5CCF65C6_D00C_475B_A0DD_8E53D129E48C_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/57F61DCF-10FF-486E-AEC3-2F6BE4876DB8.pdf",
         "bytes": 96146,
         "sha256": "619788a4613fa570",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_57F61DCF_10FF_486E_AEC3_2F6BE4876DB8_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_57F61DCF_10FF_486E_AEC3_2F6BE4876DB8_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_57F61DCF_10FF_486E_AEC3_2F6BE4876DB8_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/EC0A738B-3A47-4CC1-A7A2-1302FE1135F1.pdf",
         "bytes": 95655,
         "sha256": "0db59a63413c6c96",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_EC0A738B_3A47_4CC1_A7A2_1302FE1135F1_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_EC0A738B_3A47_4CC1_A7A2_1302FE1135F1_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_EC0A738B_3A47_4CC1_A7A2_1302FE1135F1_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/96F581D6-384C-4E5F-9131-EDCEE624462B.pdf",
         "bytes": 97027,
         "sha256": "ece56101f17ce28d",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_96F581D6_384C_4E5F_9131_EDCEE624462B_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_96F581D6_384C_4E5F_9131_EDCEE624462B_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_96F581D6_384C_4E5F_9131_EDCEE624462B_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/5BCE8B18-50BB-4773-B78D-335E8F0E0B08.pdf",
         "bytes": 626493,
         "sha256": "590ffc8a0cbcc8cf",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_5BCE8B18_50BB_4773_B78D_335E8F0E0B08_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_5BCE8B18_50BB_4773_B78D_335E8F0E0B08_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_5BCE8B18_50BB_4773_B78D_335E8F0E0B08_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/111.pdf",
         "bytes": 463298,
         "sha256": "ea6490f0b2ea1c9b",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_111_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_111_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_111_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/112.pdf",
         "bytes": 78189,
         "sha256": "e5785e9962c6e8a5",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_112_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_112_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_112_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/CCA02DC2-A77F-43D2-805E-C78895944973.pdf",
         "bytes": 620928,
         "sha256": "dd9bca7e721d5465",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_CCA02DC2_A77F_43D2_805E_C78895944973_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_CCA02DC2_A77F_43D2_805E_C78895944973_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_CCA02DC2_A77F_43D2_805E_C78895944973_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/114.pdf",
         "bytes": 410763,
         "sha256": "bd0586ebb98fa0bf",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_114_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_114_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_114_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/129.pdf",
         "bytes": 444403,
         "sha256": "6b174dd59f68fa75",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_129_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_129_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_129_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/77.pdf",
         "bytes": 563435,
         "sha256": "666fec4d2528a63d",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_77_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_77_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_77_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/EA5F137E-7D09-4706-B6F9-A925A0FEECC3.pdf",
         "bytes": 194557,
         "sha256": "5145d79d1e1c8428",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_EA5F137E_7D09_4706_B6F9_A925A0FEECC3_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_EA5F137E_7D09_4706_B6F9_A925A0FEECC3_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_EA5F137E_7D09_4706_B6F9_A925A0FEECC3_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/85.pdf",
         "bytes": 447650,
         "sha256": "716f6e91b5419685",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_85_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_85_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_85_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/4DE51252-FEC6-4017-82B5-72CC10B464A2.pdf",
         "bytes": 94661,
         "sha256": "33fe167442812e83",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_4DE51252_FEC6_4017_82B5_72CC10B464A2_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_4DE51252_FEC6_4017_82B5_72CC10B464A2_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_4DE51252_FEC6_4017_82B5_72CC10B464A2_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/EE265927-773F-485C-8376-8DD403A49E15.pdf",
         "bytes": 95368,
         "sha256": "d1b62432249640ac",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_EE265927_773F_485C_8376_8DD403A49E15_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_EE265927_773F_485C_8376_8DD403A49E15_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_EE265927_773F_485C_8376_8DD403A49E15_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/B0EA67C3-ECA9-4322-BBD7-0374E8E447C5.pdf",
         "bytes": 94333,
         "sha256": "ea8dc119baca466d",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_B0EA67C3_ECA9_4322_BBD7_0374E8E447C5_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_B0EA67C3_ECA9_4322_BBD7_0374E8E447C5_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_B0EA67C3_ECA9_4322_BBD7_0374E8E447C5_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/5EF8B9EE-C970-41DC-8DA8-B9F2639902E4.pdf",
         "bytes": 94161,
         "sha256": "46f900c07c26cd6a",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_5EF8B9EE_C970_41DC_8DA8_B9F2639902E4_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_5EF8B9EE_C970_41DC_8DA8_B9F2639902E4_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_5EF8B9EE_C970_41DC_8DA8_B9F2639902E4_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/38E141EA-54A5-415E-9D2F-BB06C2BB21CC.pdf",
         "bytes": 93077,
         "sha256": "832a99f88a1fdae0",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_38E141EA_54A5_415E_9D2F_BB06C2BB21CC_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_38E141EA_54A5_415E_9D2F_BB06C2BB21CC_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_38E141EA_54A5_415E_9D2F_BB06C2BB21CC_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/C0F44B90-2EA2-4469-A053-72E9C6CBB2FC.pdf",
         "bytes": 99666,
         "sha256": "9d9f1a5db1cd93e2",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_C0F44B90_2EA2_4469_A053_72E9C6CBB2FC_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_C0F44B90_2EA2_4469_A053_72E9C6CBB2FC_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_C0F44B90_2EA2_4469_A053_72E9C6CBB2FC_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_1.pdf",
         "bytes": 388043,
         "sha256": "b17cb87ea5cd0793",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_1_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_1_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_rod_1_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/59E61085-687E-4431-8D9C-E3B6A1BEC3DE.pdf",
         "bytes": 119605,
         "sha256": "73940d29a449cc86",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_59E61085_687E_4431_8D9C_E3B6A1BEC3DE_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_59E61085_687E_4431_8D9C_E3B6A1BEC3DE_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_59E61085_687E_4431_8D9C_E3B6A1BEC3DE_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_4miradouro.pdf",
         "bytes": 277962,
         "sha256": "e0b74a0f3280f85a",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_4miradouro_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_4miradouro_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_rod_4miradouro_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_4funchal.pdf",
         "bytes": 352420,
         "sha256": "72c37ebec339e79d",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_4funchal_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_4funchal_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_rod_4funchal_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_6.pdf",
         "bytes": 520114,
         "sha256": "4499408198231a03",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_6_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_6_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_rod_6_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_7furna.pdf",
         "bytes": 260657,
         "sha256": "9aa4025fe8513fe3",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_7furna_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_7furna_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_rod_7furna_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_7funchal.pdf",
         "bytes": 307851,
         "sha256": "e7153290dbb46adf",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_7funchal_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_7funchal_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_rod_7funchal_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_8.pdf",
         "bytes": 255285,
         "sha256": "c2d6de8253c25499",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_8_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_8_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_rod_8_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/3617EC3F-7EB9-42D8-9471-65BD27A4BD17.pdf",
         "bytes": 179474,
         "sha256": "c82a0433dbf416f7",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_3617EC3F_7EB9_42D8_9471_65BD27A4BD17_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_3617EC3F_7EB9_42D8_9471_65BD27A4BD17_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_3617EC3F_7EB9_42D8_9471_65BD27A4BD17_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/6B1E0B53-B03C-4ED6-96C5-B7A43462413E.pdf",
         "bytes": 150799,
         "sha256": "fd3a529aa92a4ea1",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_6B1E0B53_B03C_4ED6_96C5_B7A43462413E_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_6B1E0B53_B03C_4ED6_96C5_B7A43462413E_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_6B1E0B53_B03C_4ED6_96C5_B7A43462413E_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/471E790A-3436-48E4-9679-DAC75FBD3F66.pdf",
         "bytes": 163126,
         "sha256": "eacd584d3602e074",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_471E790A_3436_48E4_9679_DAC75FBD3F66_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_471E790A_3436_48E4_9679_DAC75FBD3F66_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_471E790A_3436_48E4_9679_DAC75FBD3F66_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_100.pdf",
         "bytes": 230721,
         "sha256": "3356749f9b14db08",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_100_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_100_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_rod_100_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_107.pdf",
         "bytes": 300662,
         "sha256": "d5b6d7357863cdae",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_107_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_107_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_rod_107_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_115.pdf",
         "bytes": 299631,
         "sha256": "b42ab7ab9f3943b0",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_115_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_115_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_rod_115_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_123.pdf",
         "bytes": 268337,
         "sha256": "540166ff4a11a65b",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_123_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_123_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_rod_123_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_127.pdf",
         "bytes": 389606,
         "sha256": "b7d9719f2d83f657",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_127_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_127_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_rod_127_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/4D0FCAB9-3F92-4186-AF98-B498F3390675.pdf",
         "bytes": 169577,
         "sha256": "08f72d60576d128c",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_4D0FCAB9_3F92_4186_AF98_B498F3390675_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_4D0FCAB9_3F92_4186_AF98_B498F3390675_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_4D0FCAB9_3F92_4186_AF98_B498F3390675_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/A7986371-1A86-40CF-BD74-2B02A9B7BC6E.pdf",
         "bytes": 337154,
         "sha256": "c20b40bb827a019c",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_A7986371_1A86_40CF_BD74_2B02A9B7BC6E_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_A7986371_1A86_40CF_BD74_2B02A9B7BC6E_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_A7986371_1A86_40CF_BD74_2B02A9B7BC6E_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_142.pdf",
         "bytes": 626504,
         "sha256": "8b8c4d271232890f",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_142_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_142_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_rod_142_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_146.pdf",
         "bytes": 377109,
         "sha256": "c87e100d0bc0e161",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_146_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_146_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_rod_146_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_148.pdf",
         "bytes": 237194,
         "sha256": "1f33dbc04247ba82",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_148_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_148_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_rod_148_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_150.pdf",
         "bytes": 318710,
         "sha256": "34d121bd8e4aa900",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_150_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_150_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_rod_150_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_154.pdf",
         "bytes": 327841,
         "sha256": "09fffa85fb1a3406",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_154_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_154_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_rod_154_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_158.pdf",
         "bytes": 324752,
         "sha256": "d645902dabe1117f",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_158_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_158_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_rod_158_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_159.pdf",
         "bytes": 280308,
         "sha256": "f9267bab43f99a1b",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_159_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_159_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_rod_159_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_160.pdf",
         "bytes": 255738,
         "sha256": "75226345c121343e",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_160_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_160_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_rod_160_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_161.pdf",
         "bytes": 232760,
         "sha256": "046a769938d116ac",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_161_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_161_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_rod_161_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_162.pdf",
         "bytes": 252936,
         "sha256": "fc89218dafc4d581",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_162_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_162_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_rod_162_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_163.pdf",
         "bytes": 297601,
         "sha256": "2df839aa94a13bfe",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_163_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_163_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_rod_163_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_164.pdf",
         "bytes": 387601,
         "sha256": "e83ffee2d6ebb487",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_164_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_rod_164_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_rod_164_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/C2.pdf",
         "bytes": 502157,
         "sha256": "a4084e30bbafb92c",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_C2_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_C2_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_C2_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/C87.pdf",
         "bytes": 414614,
         "sha256": "d2a025e86d8692c4",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_C87_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_C87_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_C87_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/C88.pdf",
         "bytes": 409284,
         "sha256": "1253afcd8979a175",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_C88_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_C88_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_C88_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/C109.pdf",
         "bytes": 442131,
         "sha256": "6615a88c08d44a00",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_C109_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_C109_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_C109_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/C109A.pdf",
         "bytes": 378355,
         "sha256": "be9117ae8f62c487",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_C109A_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_C109A_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_C109A_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/C136.pdf",
         "bytes": 299666,
         "sha256": "bec198dd4a02f6d0",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_C136_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_C136_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_C136_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/5F0B3170-0F43-431B-B018-784FE40DA06A.pdf",
         "bytes": 275307,
         "sha256": "f9f9152a77e2dd64",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_5F0B3170_0F43_431B_B018_784FE40DA06A_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_5F0B3170_0F43_431B_B018_784FE40DA06A_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_5F0B3170_0F43_431B_B018_784FE40DA06A_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/C157.pdf",
         "bytes": 310399,
         "sha256": "a79054c7322d014b",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_C157_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_C157_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_C157_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/sam_20.pdf",
         "bytes": 1618860,
         "sha256": "ab505679cc2ca585",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_20_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_20_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_sam_20_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/sam_23.pdf",
         "bytes": 2392211,
         "sha256": "e72367d0422aa0c0",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_23_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_23_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_sam_23_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/sam_25.pdf",
         "bytes": 2388790,
         "sha256": "891259434f7fc91f",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_25_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_25_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_sam_25_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/sam_53.pdf",
         "bytes": 2621575,
         "sha256": "e6162fe5dbfe07a0",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_53_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_53_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_sam_53_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/sam_60.pdf",
         "bytes": 1516971,
         "sha256": "f5dea6725bc8493e",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_60_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_60_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_sam_60_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/sam_78.pdf",
         "bytes": 2425129,
         "sha256": "76d93d5b32151b9b",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_78_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_78_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_sam_78_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/sam_111.pdf",
         "bytes": 1473590,
         "sha256": "dc04eb1def8a7c46",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_111_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_111_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_sam_111_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/sam_113.pdf",
         "bytes": 2361684,
         "sha256": "c9438599a9c88635",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_113_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_113_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_sam_113_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/sam_113rs.pdf",
         "bytes": 2457491,
         "sha256": "ad2dca55ceb795b1",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_113rs_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_113rs_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_sam_113rs_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/sam_128.pdf",
         "bytes": 1522329,
         "sha256": "450f87c3c8ddd6e9",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_128_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_128_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_sam_128_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/E962B8CA-504E-4D65-890F-707CACA5DDA8.pdf",
         "bytes": 665132,
         "sha256": "93ea30ef2bdc9dba",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_E962B8CA_504E_4D65_890F_707CACA5DDA8_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_E962B8CA_504E_4D65_890F_707CACA5DDA8_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_E962B8CA_504E_4D65_890F_707CACA5DDA8_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/sam_156.pdf",
         "bytes": 2359283,
         "sha256": "f09384bf984548e9",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_156_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_156_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_sam_156_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/sam_201.pdf",
         "bytes": 2383856,
         "sha256": "1a904a129bf390d9",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_201_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_201_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_sam_201_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/sam_202.pdf",
         "bytes": 2371243,
         "sha256": "339f228f6c19a08d",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_202_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_202_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_sam_202_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/sam_203.pdf",
         "bytes": 1501063,
         "sha256": "350b47a2bfaa8423",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_203_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_203_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_sam_203_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/sam_204.pdf",
         "bytes": 1699724,
         "sha256": "4b0c1349c9fab6b7",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_204_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_204_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_sam_204_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/sam_205.pdf",
         "bytes": 1575581,
         "sha256": "fc27fcfcbfc99f7f",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_205_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_205_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_sam_205_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/sam_206.pdf",
         "bytes": 2401386,
         "sha256": "9059962418e235dc",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_206_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_206_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_sam_206_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/sam_207.pdf",
         "bytes": 2373363,
         "sha256": "f8a1c1e8f312ea8e",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_207_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_207_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_sam_207_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/sam_208.pdf",
         "bytes": 2578106,
         "sha256": "711d8b29a078377d",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_208_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_208_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_sam_208_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/sam_209.pdf",
         "bytes": 2387801,
         "sha256": "9a1900edf24515d1",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_209_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_sam_209_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_sam_209_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/FC7C67CB-F2C9-413C-ACF2-CAE88280CCBD.pdf",
         "bytes": 2415599,
         "sha256": "04ada454754dfea9",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_FC7C67CB_F2C9_413C_ACF2_CAE88280CCBD_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_FC7C67CB_F2C9_413C_ACF2_CAE88280CCBD_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_FC7C67CB_F2C9_413C_ACF2_CAE88280CCBD_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/47BD00FC-805E-44CE-9FC1-BCF84150A768.pdf",
         "bytes": 2104793,
         "sha256": "57723233909da396",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_47BD00FC_805E_44CE_9FC1_BCF84150A768_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_47BD00FC_805E_44CE_9FC1_BCF84150A768_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_47BD00FC_805E_44CE_9FC1_BCF84150A768_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/96929967-4ACA-46EF-A219-E3D12770FAF7.pdf",
         "bytes": 2104793,
         "sha256": "57723233909da396",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_96929967_4ACA_46EF_A219_E3D12770FAF7_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_96929967_4ACA_46EF_A219_E3D12770FAF7_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_96929967_4ACA_46EF_A219_E3D12770FAF7_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/44398B04-BC0E-4791-902D-7802101575ED.pdf",
         "bytes": 5579592,
         "sha256": "6d87857df95f9d50",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_44398B04_BC0E_4791_902D_7802101575ED_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_44398B04_BC0E_4791_902D_7802101575ED_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_44398B04_BC0E_4791_902D_7802101575ED_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/17AB7997-EBB0-4808-B1B6-56F8B2516C6F.pdf",
         "bytes": 5579592,
         "sha256": "6d87857df95f9d50",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_17AB7997_EBB0_4808_B1B6_56F8B2516C6F_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_17AB7997_EBB0_4808_B1B6_56F8B2516C6F_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_17AB7997_EBB0_4808_B1B6_56F8B2516C6F_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/75592A82-1723-4DBB-B4A1-D89489C7201C.pdf",
         "bytes": 5579592,
         "sha256": "6d87857df95f9d50",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_75592A82_1723_4DBB_B4A1_D89489C7201C_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_75592A82_1723_4DBB_B4A1_D89489C7201C_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_75592A82_1723_4DBB_B4A1_D89489C7201C_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/6F124271-558F-4E2C-A067-DFC4E32AC70E.pdf",
         "bytes": 296198,
         "sha256": "9e3adb2626bcfd05",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_6F124271_558F_4E2C_A067_DFC4E32AC70E_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_6F124271_558F_4E2C_A067_DFC4E32AC70E_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_6F124271_558F_4E2C_A067_DFC4E32AC70E_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/09E84134-213E-4827-96B7-3DA6B1DFD935.pdf",
         "bytes": 173828,
         "sha256": "8b8f98bb55fccf44",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_09E84134_213E_4827_96B7_3DA6B1DFD935_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_09E84134_213E_4827_96B7_3DA6B1DFD935_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_09E84134_213E_4827_96B7_3DA6B1DFD935_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/9580F75A-5EFF-4919-85EF-4F03DF5B3B25.pdf",
         "bytes": 340405,
         "sha256": "85c0a210fb71ed2d",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_9580F75A_5EFF_4919_85EF_4F03DF5B3B25_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_9580F75A_5EFF_4919_85EF_4F03DF5B3B25_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_9580F75A_5EFF_4919_85EF_4F03DF5B3B25_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/073A4587-C9C8-4666-B238-A2A31C2466D9.pdf",
         "bytes": 294899,
         "sha256": "a4e503111e6c9869",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_073A4587_C9C8_4666_B238_A2A31C2466D9_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_073A4587_C9C8_4666_B238_A2A31C2466D9_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_073A4587_C9C8_4666_B238_A2A31C2466D9_pdf.html"
       },
       {
         "url": "https://siga.madeira.gov.pt/storage/horarios_pdf/30F6EBE1-D975-4485-BCB4-78CBE5ED37D9.pdf",
         "bytes": 66957,
         "sha256": "5882234c19d06d04",
-        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_30F6EBE1_D975_4485_BCB4_78CBE5ED37D9_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_storage_horarios_pdf_30F6EBE1_D975_4485_BCB4_78CBE5ED37D9_pdf.txt",
+        "bbox": "pdf-bbox/siga_madeira_gov_pt_storage_horarios_pdf_30F6EBE1_D975_4485_BCB4_78CBE5ED37D9_pdf.html"
       },
       {
         "url": "https://www.madeira.gov.pt//Portals/21/Documentos/Transportes/Formulario-GIRO%20APROVADO.pdf",
@@ -1057,832 +1045,328 @@
         "text": "pdf-text/www_madeira_gov_pt_Portals_21_Documentos_Mobilidade_faq_20novos_20tarif_C3_A1rios_v3_pdf_ver_2019_05_08_103344_260.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/173CCB95-4440-455C-B49B-244343E85F87.pdf",
-        "bytes": 95917,
-        "sha256": "c09844c0cbf66a5e",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_173CCB95_4440_455C_B49B_244343E85F87_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/noticias/download/107",
+        "bytes": 622547,
+        "sha256": "c35cbf562fa6ade8",
+        "text": "pdf-text/siga_madeira_gov_pt_noticias_download_107.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/3CA4A08D-34DD-4EA6-BBA3-13C7E3D24B8A.pdf",
-        "bytes": 97199,
-        "sha256": "d87ea65ed9b52a2d",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_3CA4A08D_34DD_4EA6_BBA3_13C7E3D24B8A_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/noticias/download/108",
+        "bytes": 3345997,
+        "sha256": "8eee75e15f071324",
+        "text": "pdf-text/siga_madeira_gov_pt_noticias_download_108.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/833756D8-75A7-4F05-A643-0263F76F886E.pdf",
-        "bytes": 95598,
-        "sha256": "9d581216834bc11d",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_833756D8_75A7_4F05_A643_0263F76F886E_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/noticias/download/109",
+        "bytes": 169049,
+        "sha256": "94b6ae249e84702f",
+        "text": "pdf-text/siga_madeira_gov_pt_noticias_download_109.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/3BBBA4D0-DF09-47AA-8EB1-0BE970AB12A0.pdf",
-        "bytes": 96518,
-        "sha256": "34e2baf18d4546c2",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_3BBBA4D0_DF09_47AA_8EB1_0BE970AB12A0_pdf.txt"
+        "url": "https://www.madeira.gov.pt//Portals/21/Documentos/TIIM_Condi%c3%a7%c3%b5es%20Gerais%20de%20Emiss%c3%a3o%20e%20Utiliza%c3%a7%c3%a3o%20do%20GIRO_APROVADO%20DRTMT.pdf",
+        "bytes": 169049,
+        "sha256": "94b6ae249e84702f",
+        "text": "pdf-text/www_madeira_gov_pt_Portals_21_Documentos_TIIM_Condi_c3_a7_c3_b5es_20Gerais_20de_20Emiss_c3_a3o_20e_20Utiliza_c3_a7_c3_a3.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/9093CA3C-9CB2-46C9-8465-35250862867F.pdf",
-        "bytes": 96752,
-        "sha256": "99ea5078508b1fc2",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_9093CA3C_9CB2_46C9_8465_35250862867F_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/noticias/download/2186",
+        "bytes": 538138,
+        "sha256": "61245c7724c7ca3a",
+        "text": "pdf-text/siga_madeira_gov_pt_noticias_download_2186.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/FFB3A4AF-2B97-4770-901C-F15512723BE7.pdf",
-        "bytes": 97396,
-        "sha256": "e229467412ab9903",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_FFB3A4AF_2B97_4770_901C_F15512723BE7_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/noticias/download/1170",
+        "bytes": 473541,
+        "sha256": "270ea1a617e667c1",
+        "text": "pdf-text/siga_madeira_gov_pt_noticias_download_1170.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/7A2210BA-29B8-4D7A-961C-1081DE44F956.pdf",
-        "bytes": 96674,
-        "sha256": "7703daff7d27f561",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_7A2210BA_29B8_4D7A_961C_1081DE44F956_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/1868D233-026F-4307-8768-730D80CD8804.pdf",
-        "bytes": 97275,
-        "sha256": "1518816229dc968c",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_1868D233_026F_4307_8768_730D80CD8804_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/3FCA583E-495D-43AF-9D3A-4CE53541162C.pdf",
-        "bytes": 99501,
-        "sha256": "9fbbd67e65a7a26c",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_3FCA583E_495D_43AF_9D3A_4CE53541162C_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/5874D2B0-9F17-4910-8D6A-70EA5747106C.pdf",
-        "bytes": 96871,
-        "sha256": "798aa7846b3db8b7",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_5874D2B0_9F17_4910_8D6A_70EA5747106C_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/67D43AC4-655D-4E4A-91F9-22B160216A11.pdf",
-        "bytes": 95879,
-        "sha256": "c704e929e03b7b95",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_67D43AC4_655D_4E4A_91F9_22B160216A11_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/F3E1042C-CBD0-4E19-8B29-523D9F46E3D6.pdf",
-        "bytes": 97406,
-        "sha256": "d4e69b5444fbc0cf",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_F3E1042C_CBD0_4E19_8B29_523D9F46E3D6_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/300FDF7E-E5DD-490F-93AF-F438200F9E05.pdf",
-        "bytes": 95879,
-        "sha256": "f1b5b8389710c2eb",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_300FDF7E_E5DD_490F_93AF_F438200F9E05_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/41066FF7-FC6D-4E03-A173-A6FFBC751F44.pdf",
-        "bytes": 96612,
-        "sha256": "7552171a3aa7d767",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_41066FF7_FC6D_4E03_A173_A6FFBC751F44_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/3313FB1E-7B77-48A4-BBAD-62BAEE5B2884.pdf",
-        "bytes": 97725,
-        "sha256": "c8fa71273a16eccf",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_3313FB1E_7B77_48A4_BBAD_62BAEE5B2884_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/81563E35-9E0D-44F0-AE75-2E34B1F58D72.pdf",
-        "bytes": 97950,
-        "sha256": "00afa5fb35327214",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_81563E35_9E0D_44F0_AE75_2E34B1F58D72_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/336C83FC-5D97-417F-B8D0-DDF6C2D443D3.pdf",
-        "bytes": 96572,
-        "sha256": "e817f57f1826c380",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_336C83FC_5D97_417F_B8D0_DDF6C2D443D3_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/7E0F8122-1283-4A47-BF53-664CCA8A1718.pdf",
-        "bytes": 95981,
-        "sha256": "adc2ba7e39eed875",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_7E0F8122_1283_4A47_BF53_664CCA8A1718_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/4BE589B9-9FED-40B4-B742-1411177E839A.pdf",
-        "bytes": 94767,
-        "sha256": "dd227577ed1da018",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_4BE589B9_9FED_40B4_B742_1411177E839A_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/D4EB0C65-4142-40CC-A656-692564E1EF62.pdf",
-        "bytes": 94940,
-        "sha256": "5003fe6aef3a59fd",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_D4EB0C65_4142_40CC_A656_692564E1EF62_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/2078A094-887D-4BB6-9F91-E780F64A2D84.pdf",
-        "bytes": 96291,
-        "sha256": "51b2c7afb23f4e7f",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_2078A094_887D_4BB6_9F91_E780F64A2D84_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/76AC5213-3237-4E7D-AF2C-6B881068B48A.pdf",
-        "bytes": 91076,
-        "sha256": "d42508c4e1e95bde",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_76AC5213_3237_4E7D_AF2C_6B881068B48A_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/21AF3A25-4216-4F6A-BA09-47B825B615AE.pdf",
-        "bytes": 95773,
-        "sha256": "9a39733981a92e74",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_21AF3A25_4216_4F6A_BA09_47B825B615AE_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/C0783ED6-7440-406A-9941-FACCD6182902.pdf",
-        "bytes": 97697,
-        "sha256": "074c92a44290f69f",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_C0783ED6_7440_406A_9941_FACCD6182902_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/FE9638AD-FA09-45CA-A5E0-12D450AD5B96.pdf",
-        "bytes": 96150,
-        "sha256": "d35a9ea5769d12ac",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_FE9638AD_FA09_45CA_A5E0_12D450AD5B96_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/3B382F74-2820-45CA-B1A1-EC9F482431DF.pdf",
-        "bytes": 95573,
-        "sha256": "a3038f3e4ba0132c",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_3B382F74_2820_45CA_B1A1_EC9F482431DF_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/00BC7587-4293-4B09-BD49-9D6565690EF3.pdf",
-        "bytes": 96321,
-        "sha256": "79c143b5497121fc",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_00BC7587_4293_4B09_BD49_9D6565690EF3_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/1FE932BB-E189-4C6F-8521-303592D59E50.pdf",
-        "bytes": 96267,
-        "sha256": "33930fa9fbf9ebb6",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_1FE932BB_E189_4C6F_8521_303592D59E50_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/FD7FA670-47E0-4EC7-8DA9-E2C71F5AA4C4.pdf",
-        "bytes": 96201,
-        "sha256": "bacf4de0cc796335",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_FD7FA670_47E0_4EC7_8DA9_E2C71F5AA4C4_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/CE5CA223-BC63-4F9D-8588-4740E720BB3F.pdf",
-        "bytes": 95737,
-        "sha256": "a04236fb61366f38",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_CE5CA223_BC63_4F9D_8588_4740E720BB3F_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/86685A07-C576-4324-A98B-10AA12EAC15B.pdf",
-        "bytes": 91524,
-        "sha256": "a3832c3fd6c64f06",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_86685A07_C576_4324_A98B_10AA12EAC15B_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/303F50B8-B842-407E-B41A-4C1180B635AA.pdf",
-        "bytes": 96151,
-        "sha256": "f78712e68c993ba0",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_303F50B8_B842_407E_B41A_4C1180B635AA_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/24F6584E-EDF3-4E11-AA95-9E00C8B0688E.pdf",
-        "bytes": 95475,
-        "sha256": "4c6629f9274c9a9e",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_24F6584E_EDF3_4E11_AA95_9E00C8B0688E_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/45250D5E-A5D8-4AC8-812D-498BD6848745.pdf",
-        "bytes": 95113,
-        "sha256": "505c9e228cd7c766",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_45250D5E_A5D8_4AC8_812D_498BD6848745_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/D181E9F5-58D9-4570-9B53-1B7320B53514.pdf",
-        "bytes": 95710,
-        "sha256": "b2ea63495e570c3c",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_D181E9F5_58D9_4570_9B53_1B7320B53514_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/D3D62DFF-1E50-4DB3-B92C-BEE9F5AC64C3.pdf",
-        "bytes": 96727,
-        "sha256": "812ca02c091d1604",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_D3D62DFF_1E50_4DB3_B92C_BEE9F5AC64C3_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/180BB40E-229F-4B75-B7D3-2E84B6D0AB5B.pdf",
-        "bytes": 99960,
-        "sha256": "6389faba1f278afa",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_180BB40E_229F_4B75_B7D3_2E84B6D0AB5B_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/3C3B8E13-5C8D-4326-9D6F-3DDAD82F1061.pdf",
-        "bytes": 95512,
-        "sha256": "395479abb639aec5",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_3C3B8E13_5C8D_4326_9D6F_3DDAD82F1061_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/79B2826F-E3A5-4859-9245-DA3404FFBE95.pdf",
-        "bytes": 98687,
-        "sha256": "006db18c1c0b6d49",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_79B2826F_E3A5_4859_9245_DA3404FFBE95_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/8C479329-328D-4B48-A3FC-A4E27070418E.pdf",
-        "bytes": 100229,
-        "sha256": "7582683c7119b23f",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_8C479329_328D_4B48_A3FC_A4E27070418E_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/C26D0750-DCF1-4BA1-8895-2C78C45966EA.pdf",
-        "bytes": 182865,
-        "sha256": "617130ba95df8900",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_C26D0750_DCF1_4BA1_8895_2C78C45966EA_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/1D1D74C7-8A0C-49AC-AD75-A08F97D5A47E.pdf",
-        "bytes": 92492,
-        "sha256": "7ca7be5a597ea41d",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_1D1D74C7_8A0C_49AC_AD75_A08F97D5A47E_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/C94A7348-F847-4DA3-BD81-DF3EACD85A07.pdf",
-        "bytes": 95912,
-        "sha256": "a79b2ecb2723b11f",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_C94A7348_F847_4DA3_BD81_DF3EACD85A07_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/A2971ADC-2EF4-412D-9271-1EDF1FDE8635.pdf",
-        "bytes": 93201,
-        "sha256": "8f18a0323623d700",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_A2971ADC_2EF4_412D_9271_1EDF1FDE8635_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/BA2DC732-DC4F-4F96-A5C2-A879EED812D5.pdf",
-        "bytes": 95660,
-        "sha256": "efcaa14bb21b03a3",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_BA2DC732_DC4F_4F96_A5C2_A879EED812D5_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/B13DE4E4-54CE-4B4B-9480-E14F39A8E99B.pdf",
-        "bytes": 93848,
-        "sha256": "573a2eaaa9d73dc3",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_B13DE4E4_54CE_4B4B_9480_E14F39A8E99B_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/BD5AE3DD-8974-49CD-853F-13BDA258230F.pdf",
-        "bytes": 108642,
-        "sha256": "5cb4dfb2f11d02b6",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_BD5AE3DD_8974_49CD_853F_13BDA258230F_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/18235D5E-5BBA-4BD8-B86E-B9C894C5F3B4.pdf",
-        "bytes": 106615,
-        "sha256": "0a7f5b074e522f68",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_18235D5E_5BBA_4BD8_B86E_B9C894C5F3B4_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/D15EFA77-B12A-4F78-8C15-2926BFE47D96.pdf",
-        "bytes": 97166,
-        "sha256": "e78a8794dce0af9b",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_D15EFA77_B12A_4F78_8C15_2926BFE47D96_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/5CCF65C6-D00C-475B-A0DD-8E53D129E48C.pdf",
-        "bytes": 98967,
-        "sha256": "4c4f4980b59c3641",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_5CCF65C6_D00C_475B_A0DD_8E53D129E48C_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/57F61DCF-10FF-486E-AEC3-2F6BE4876DB8.pdf",
-        "bytes": 96146,
-        "sha256": "619788a4613fa570",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_57F61DCF_10FF_486E_AEC3_2F6BE4876DB8_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/EC0A738B-3A47-4CC1-A7A2-1302FE1135F1.pdf",
-        "bytes": 95655,
-        "sha256": "0db59a63413c6c96",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_EC0A738B_3A47_4CC1_A7A2_1302FE1135F1_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/96F581D6-384C-4E5F-9131-EDCEE624462B.pdf",
-        "bytes": 97027,
-        "sha256": "ece56101f17ce28d",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_96F581D6_384C_4E5F_9131_EDCEE624462B_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/5BCE8B18-50BB-4773-B78D-335E8F0E0B08.pdf",
-        "bytes": 626493,
-        "sha256": "590ffc8a0cbcc8cf",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_5BCE8B18_50BB_4773_B78D_335E8F0E0B08_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/111.pdf",
-        "bytes": 463298,
-        "sha256": "ea6490f0b2ea1c9b",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_111_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/112.pdf",
-        "bytes": 78189,
-        "sha256": "e5785e9962c6e8a5",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_112_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/CCA02DC2-A77F-43D2-805E-C78895944973.pdf",
-        "bytes": 620928,
-        "sha256": "dd9bca7e721d5465",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_CCA02DC2_A77F_43D2_805E_C78895944973_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/114.pdf",
-        "bytes": 410763,
-        "sha256": "bd0586ebb98fa0bf",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_114_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/129.pdf",
-        "bytes": 444403,
-        "sha256": "6b174dd59f68fa75",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_129_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/77.pdf",
-        "bytes": 563435,
-        "sha256": "666fec4d2528a63d",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_77_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/EA5F137E-7D09-4706-B6F9-A925A0FEECC3.pdf",
-        "bytes": 194557,
-        "sha256": "5145d79d1e1c8428",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_EA5F137E_7D09_4706_B6F9_A925A0FEECC3_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/85.pdf",
-        "bytes": 447650,
-        "sha256": "716f6e91b5419685",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_85_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/4DE51252-FEC6-4017-82B5-72CC10B464A2.pdf",
-        "bytes": 94661,
-        "sha256": "33fe167442812e83",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_4DE51252_FEC6_4017_82B5_72CC10B464A2_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/EE265927-773F-485C-8376-8DD403A49E15.pdf",
-        "bytes": 95368,
-        "sha256": "d1b62432249640ac",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_EE265927_773F_485C_8376_8DD403A49E15_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/B0EA67C3-ECA9-4322-BBD7-0374E8E447C5.pdf",
-        "bytes": 94333,
-        "sha256": "ea8dc119baca466d",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_B0EA67C3_ECA9_4322_BBD7_0374E8E447C5_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/5EF8B9EE-C970-41DC-8DA8-B9F2639902E4.pdf",
-        "bytes": 94161,
-        "sha256": "46f900c07c26cd6a",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_5EF8B9EE_C970_41DC_8DA8_B9F2639902E4_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/38E141EA-54A5-415E-9D2F-BB06C2BB21CC.pdf",
-        "bytes": 93077,
-        "sha256": "832a99f88a1fdae0",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_38E141EA_54A5_415E_9D2F_BB06C2BB21CC_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/C0F44B90-2EA2-4469-A053-72E9C6CBB2FC.pdf",
-        "bytes": 99666,
-        "sha256": "9d9f1a5db1cd93e2",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_C0F44B90_2EA2_4469_A053_72E9C6CBB2FC_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/rod_1.pdf",
-        "bytes": 388043,
-        "sha256": "b17cb87ea5cd0793",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_rod_1_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/59E61085-687E-4431-8D9C-E3B6A1BEC3DE.pdf",
-        "bytes": 119605,
-        "sha256": "73940d29a449cc86",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_59E61085_687E_4431_8D9C_E3B6A1BEC3DE_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/rod_4miradouro.pdf",
-        "bytes": 277962,
-        "sha256": "e0b74a0f3280f85a",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_rod_4miradouro_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/rod_4funchal.pdf",
-        "bytes": 352420,
-        "sha256": "72c37ebec339e79d",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_rod_4funchal_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/rod_6.pdf",
-        "bytes": 520114,
-        "sha256": "4499408198231a03",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_rod_6_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/rod_7furna.pdf",
-        "bytes": 260657,
-        "sha256": "9aa4025fe8513fe3",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_rod_7furna_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/rod_7funchal.pdf",
-        "bytes": 307851,
-        "sha256": "e7153290dbb46adf",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_rod_7funchal_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/rod_8.pdf",
-        "bytes": 255285,
-        "sha256": "c2d6de8253c25499",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_rod_8_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/3617EC3F-7EB9-42D8-9471-65BD27A4BD17.pdf",
+        "url": "https://siga.madeira.gov.pt/noticias/download/1167",
         "bytes": 179474,
         "sha256": "c82a0433dbf416f7",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_3617EC3F_7EB9_42D8_9471_65BD27A4BD17_pdf.txt"
+        "text": "pdf-text/siga_madeira_gov_pt_noticias_download_1167.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/6B1E0B53-B03C-4ED6-96C5-B7A43462413E.pdf",
-        "bytes": 150799,
-        "sha256": "fd3a529aa92a4ea1",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_6B1E0B53_B03C_4ED6_96C5_B7A43462413E_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/noticias/download/1156",
+        "bytes": 393074,
+        "sha256": "343dcfbd20e4eb5c",
+        "text": "pdf-text/siga_madeira_gov_pt_noticias_download_1156.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/471E790A-3436-48E4-9679-DAC75FBD3F66.pdf",
-        "bytes": 163126,
-        "sha256": "eacd584d3602e074",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_471E790A_3436_48E4_9679_DAC75FBD3F66_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/noticias/download/136",
+        "bytes": 66871,
+        "sha256": "5c62f19073228471",
+        "text": "pdf-text/siga_madeira_gov_pt_noticias_download_136.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/rod_100.pdf",
-        "bytes": 230721,
-        "sha256": "3356749f9b14db08",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_rod_100_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/noticias/download/132",
+        "bytes": 622547,
+        "sha256": "c35cbf562fa6ade8",
+        "text": "pdf-text/siga_madeira_gov_pt_noticias_download_132.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/rod_107.pdf",
-        "bytes": 300662,
-        "sha256": "d5b6d7357863cdae",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_rod_107_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/noticias/download/133",
+        "bytes": 3345997,
+        "sha256": "8eee75e15f071324",
+        "text": "pdf-text/siga_madeira_gov_pt_noticias_download_133.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/rod_115.pdf",
-        "bytes": 299631,
-        "sha256": "b42ab7ab9f3943b0",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_rod_115_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/noticias/download/134",
+        "bytes": 169049,
+        "sha256": "94b6ae249e84702f",
+        "text": "pdf-text/siga_madeira_gov_pt_noticias_download_134.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/rod_123.pdf",
-        "bytes": 268337,
-        "sha256": "540166ff4a11a65b",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_rod_123_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/noticias/download/123",
+        "bytes": 622547,
+        "sha256": "c35cbf562fa6ade8",
+        "text": "pdf-text/siga_madeira_gov_pt_noticias_download_123.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/rod_127.pdf",
-        "bytes": 389606,
-        "sha256": "b7d9719f2d83f657",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_rod_127_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/noticias/download/124",
+        "bytes": 3345997,
+        "sha256": "8eee75e15f071324",
+        "text": "pdf-text/siga_madeira_gov_pt_noticias_download_124.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/4D0FCAB9-3F92-4186-AF98-B498F3390675.pdf",
-        "bytes": 169577,
-        "sha256": "08f72d60576d128c",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_4D0FCAB9_3F92_4186_AF98_B498F3390675_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/noticias/download/125",
+        "bytes": 169049,
+        "sha256": "94b6ae249e84702f",
+        "text": "pdf-text/siga_madeira_gov_pt_noticias_download_125.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/A7986371-1A86-40CF-BD74-2B02A9B7BC6E.pdf",
-        "bytes": 337154,
-        "sha256": "c20b40bb827a019c",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_A7986371_1A86_40CF_BD74_2B02A9B7BC6E_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/noticias/download/116",
+        "bytes": 622547,
+        "sha256": "c35cbf562fa6ade8",
+        "text": "pdf-text/siga_madeira_gov_pt_noticias_download_116.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/rod_142.pdf",
-        "bytes": 626504,
-        "sha256": "8b8c4d271232890f",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_rod_142_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/noticias/download/117",
+        "bytes": 3345997,
+        "sha256": "8eee75e15f071324",
+        "text": "pdf-text/siga_madeira_gov_pt_noticias_download_117.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/rod_146.pdf",
-        "bytes": 377109,
-        "sha256": "c87e100d0bc0e161",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_rod_146_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/noticias/download/118",
+        "bytes": 169049,
+        "sha256": "94b6ae249e84702f",
+        "text": "pdf-text/siga_madeira_gov_pt_noticias_download_118.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/rod_148.pdf",
-        "bytes": 237194,
-        "sha256": "1f33dbc04247ba82",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_rod_148_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/noticias/download/111",
+        "bytes": 622547,
+        "sha256": "c35cbf562fa6ade8",
+        "text": "pdf-text/siga_madeira_gov_pt_noticias_download_111.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/rod_150.pdf",
-        "bytes": 318710,
-        "sha256": "34d121bd8e4aa900",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_rod_150_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/noticias/download/112",
+        "bytes": 3345997,
+        "sha256": "8eee75e15f071324",
+        "text": "pdf-text/siga_madeira_gov_pt_noticias_download_112.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/rod_154.pdf",
-        "bytes": 327841,
-        "sha256": "09fffa85fb1a3406",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_rod_154_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/noticias/download/113",
+        "bytes": 169049,
+        "sha256": "94b6ae249e84702f",
+        "text": "pdf-text/siga_madeira_gov_pt_noticias_download_113.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/rod_158.pdf",
-        "bytes": 324752,
-        "sha256": "d645902dabe1117f",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_rod_158_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/noticias/download/91",
+        "bytes": 622547,
+        "sha256": "c35cbf562fa6ade8",
+        "text": "pdf-text/siga_madeira_gov_pt_noticias_download_91.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/rod_159.pdf",
-        "bytes": 280308,
-        "sha256": "f9267bab43f99a1b",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_rod_159_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/noticias/download/92",
+        "bytes": 3345997,
+        "sha256": "8eee75e15f071324",
+        "text": "pdf-text/siga_madeira_gov_pt_noticias_download_92.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/rod_160.pdf",
-        "bytes": 255738,
-        "sha256": "75226345c121343e",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_rod_160_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/noticias/download/93",
+        "bytes": 169049,
+        "sha256": "94b6ae249e84702f",
+        "text": "pdf-text/siga_madeira_gov_pt_noticias_download_93.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/rod_161.pdf",
-        "bytes": 232760,
-        "sha256": "046a769938d116ac",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_rod_161_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/noticias/download/46",
+        "bytes": 204523,
+        "sha256": "2fb08d814826aca2",
+        "text": "pdf-text/siga_madeira_gov_pt_noticias_download_46.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/rod_162.pdf",
-        "bytes": 252936,
-        "sha256": "fc89218dafc4d581",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_rod_162_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/noticias/download/42",
+        "bytes": 622547,
+        "sha256": "c35cbf562fa6ade8",
+        "text": "pdf-text/siga_madeira_gov_pt_noticias_download_42.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/rod_163.pdf",
-        "bytes": 297601,
-        "sha256": "2df839aa94a13bfe",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_rod_163_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/noticias/download/43",
+        "bytes": 1852728,
+        "sha256": "426839a4a60021cf",
+        "text": "pdf-text/siga_madeira_gov_pt_noticias_download_43.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/rod_164.pdf",
-        "bytes": 387601,
-        "sha256": "e83ffee2d6ebb487",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_rod_164_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/2186",
+        "bytes": 538138,
+        "sha256": "61245c7724c7ca3a",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_2186.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/C2.pdf",
-        "bytes": 502157,
-        "sha256": "a4084e30bbafb92c",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_C2_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/2181",
+        "bytes": 57784,
+        "sha256": "6e554f6cab272783",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_2181.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/C87.pdf",
-        "bytes": 414614,
-        "sha256": "d2a025e86d8692c4",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_C87_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/1170",
+        "bytes": 473541,
+        "sha256": "270ea1a617e667c1",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_1170.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/C88.pdf",
-        "bytes": 409284,
-        "sha256": "1253afcd8979a175",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_C88_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/1167",
+        "bytes": 179474,
+        "sha256": "c82a0433dbf416f7",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_1167.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/C109.pdf",
-        "bytes": 442131,
-        "sha256": "6615a88c08d44a00",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_C109_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/1156",
+        "bytes": 393074,
+        "sha256": "343dcfbd20e4eb5c",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_1156.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/C109A.pdf",
-        "bytes": 378355,
-        "sha256": "be9117ae8f62c487",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_C109A_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/136",
+        "bytes": 66871,
+        "sha256": "5c62f19073228471",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_136.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/C136.pdf",
-        "bytes": 299666,
-        "sha256": "bec198dd4a02f6d0",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_C136_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/132",
+        "bytes": 622547,
+        "sha256": "c35cbf562fa6ade8",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_132.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/5F0B3170-0F43-431B-B018-784FE40DA06A.pdf",
-        "bytes": 275307,
-        "sha256": "f9f9152a77e2dd64",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_5F0B3170_0F43_431B_B018_784FE40DA06A_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/133",
+        "bytes": 3345997,
+        "sha256": "8eee75e15f071324",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_133.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/C157.pdf",
-        "bytes": 310399,
-        "sha256": "a79054c7322d014b",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_C157_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/134",
+        "bytes": 169049,
+        "sha256": "94b6ae249e84702f",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_134.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/sam_20.pdf",
-        "bytes": 1618860,
-        "sha256": "ab505679cc2ca585",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_sam_20_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/123",
+        "bytes": 622547,
+        "sha256": "c35cbf562fa6ade8",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_123.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/sam_23.pdf",
-        "bytes": 2392211,
-        "sha256": "e72367d0422aa0c0",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_sam_23_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/124",
+        "bytes": 3345997,
+        "sha256": "8eee75e15f071324",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_124.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/sam_25.pdf",
-        "bytes": 2388790,
-        "sha256": "891259434f7fc91f",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_sam_25_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/125",
+        "bytes": 169049,
+        "sha256": "94b6ae249e84702f",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_125.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/sam_53.pdf",
-        "bytes": 2621575,
-        "sha256": "e6162fe5dbfe07a0",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_sam_53_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/116",
+        "bytes": 622547,
+        "sha256": "c35cbf562fa6ade8",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_116.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/sam_60.pdf",
-        "bytes": 1516971,
-        "sha256": "f5dea6725bc8493e",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_sam_60_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/117",
+        "bytes": 3345997,
+        "sha256": "8eee75e15f071324",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_117.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/sam_78.pdf",
-        "bytes": 2425129,
-        "sha256": "76d93d5b32151b9b",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_sam_78_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/118",
+        "bytes": 169049,
+        "sha256": "94b6ae249e84702f",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_118.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/sam_111.pdf",
-        "bytes": 1473590,
-        "sha256": "dc04eb1def8a7c46",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_sam_111_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/111",
+        "bytes": 622547,
+        "sha256": "c35cbf562fa6ade8",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_111.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/sam_113.pdf",
-        "bytes": 2361684,
-        "sha256": "c9438599a9c88635",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_sam_113_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/112",
+        "bytes": 3345997,
+        "sha256": "8eee75e15f071324",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_112.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/sam_113rs.pdf",
-        "bytes": 2457491,
-        "sha256": "ad2dca55ceb795b1",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_sam_113rs_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/113",
+        "bytes": 169049,
+        "sha256": "94b6ae249e84702f",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_113.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/sam_128.pdf",
-        "bytes": 1522329,
-        "sha256": "450f87c3c8ddd6e9",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_sam_128_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/107",
+        "bytes": 622547,
+        "sha256": "c35cbf562fa6ade8",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_107.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/E962B8CA-504E-4D65-890F-707CACA5DDA8.pdf",
-        "bytes": 665132,
-        "sha256": "93ea30ef2bdc9dba",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_E962B8CA_504E_4D65_890F_707CACA5DDA8_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/108",
+        "bytes": 3345997,
+        "sha256": "8eee75e15f071324",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_108.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/sam_156.pdf",
-        "bytes": 2359283,
-        "sha256": "f09384bf984548e9",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_sam_156_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/109",
+        "bytes": 169049,
+        "sha256": "94b6ae249e84702f",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_109.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/sam_201.pdf",
-        "bytes": 2383856,
-        "sha256": "1a904a129bf390d9",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_sam_201_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/91",
+        "bytes": 622547,
+        "sha256": "c35cbf562fa6ade8",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_91.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/sam_202.pdf",
-        "bytes": 2371243,
-        "sha256": "339f228f6c19a08d",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_sam_202_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/92",
+        "bytes": 3345997,
+        "sha256": "8eee75e15f071324",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_92.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/sam_203.pdf",
-        "bytes": 1501063,
-        "sha256": "350b47a2bfaa8423",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_sam_203_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/93",
+        "bytes": 169049,
+        "sha256": "94b6ae249e84702f",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_93.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/sam_204.pdf",
-        "bytes": 1699724,
-        "sha256": "4b0c1349c9fab6b7",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_sam_204_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/46",
+        "bytes": 204523,
+        "sha256": "2fb08d814826aca2",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_46.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/sam_205.pdf",
-        "bytes": 1575581,
-        "sha256": "fc27fcfcbfc99f7f",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_sam_205_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/42",
+        "bytes": 622547,
+        "sha256": "c35cbf562fa6ade8",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_42.txt"
       },
       {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/sam_206.pdf",
-        "bytes": 2401386,
-        "sha256": "9059962418e235dc",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_sam_206_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/sam_207.pdf",
-        "bytes": 2373363,
-        "sha256": "f8a1c1e8f312ea8e",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_sam_207_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/sam_208.pdf",
-        "bytes": 2578106,
-        "sha256": "711d8b29a078377d",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_sam_208_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/sam_209.pdf",
-        "bytes": 2387801,
-        "sha256": "9a1900edf24515d1",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_sam_209_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/FC7C67CB-F2C9-413C-ACF2-CAE88280CCBD.pdf",
-        "bytes": 2415599,
-        "sha256": "04ada454754dfea9",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_FC7C67CB_F2C9_413C_ACF2_CAE88280CCBD_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/47BD00FC-805E-44CE-9FC1-BCF84150A768.pdf",
-        "bytes": 2104793,
-        "sha256": "57723233909da396",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_47BD00FC_805E_44CE_9FC1_BCF84150A768_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/96929967-4ACA-46EF-A219-E3D12770FAF7.pdf",
-        "bytes": 2104793,
-        "sha256": "57723233909da396",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_96929967_4ACA_46EF_A219_E3D12770FAF7_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/44398B04-BC0E-4791-902D-7802101575ED.pdf",
-        "bytes": 5579592,
-        "sha256": "6d87857df95f9d50",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_44398B04_BC0E_4791_902D_7802101575ED_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/17AB7997-EBB0-4808-B1B6-56F8B2516C6F.pdf",
-        "bytes": 5579592,
-        "sha256": "6d87857df95f9d50",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_17AB7997_EBB0_4808_B1B6_56F8B2516C6F_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/75592A82-1723-4DBB-B4A1-D89489C7201C.pdf",
-        "bytes": 5579592,
-        "sha256": "6d87857df95f9d50",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_75592A82_1723_4DBB_B4A1_D89489C7201C_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/6F124271-558F-4E2C-A067-DFC4E32AC70E.pdf",
-        "bytes": 296198,
-        "sha256": "9e3adb2626bcfd05",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_6F124271_558F_4E2C_A067_DFC4E32AC70E_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/09E84134-213E-4827-96B7-3DA6B1DFD935.pdf",
-        "bytes": 173828,
-        "sha256": "8b8f98bb55fccf44",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_09E84134_213E_4827_96B7_3DA6B1DFD935_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/9580F75A-5EFF-4919-85EF-4F03DF5B3B25.pdf",
-        "bytes": 340405,
-        "sha256": "85c0a210fb71ed2d",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_9580F75A_5EFF_4919_85EF_4F03DF5B3B25_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/073A4587-C9C8-4666-B238-A2A31C2466D9.pdf",
-        "bytes": 294899,
-        "sha256": "a4e503111e6c9869",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_073A4587_C9C8_4666_B238_A2A31C2466D9_pdf.txt"
-      },
-      {
-        "url": "https://siga.madeira.gov.pt/public/storage/horarios_pdf/30F6EBE1-D975-4485-BCB4-78CBE5ED37D9.pdf",
-        "bytes": 66957,
-        "sha256": "5882234c19d06d04",
-        "text": "pdf-text/siga_madeira_gov_pt_public_storage_horarios_pdf_30F6EBE1_D975_4485_BCB4_78CBE5ED37D9_pdf.txt"
+        "url": "https://siga.madeira.gov.pt/index.php/noticias/download/43",
+        "bytes": 1852728,
+        "sha256": "426839a4a60021cf",
+        "text": "pdf-text/siga_madeira_gov_pt_index_php_noticias_download_43.txt"
       }
     ],
     "errors": [
@@ -1893,18 +1377,6 @@
       {
         "url": "https://www.sam.pt/",
         "error": "TypeError: fetch failed"
-      },
-      {
-        "url": "http://www.horariosdofunchal.pt/index.php?option=com_content&task=view&id=35&Itemid=309",
-        "error": "TypeError: fetch failed"
-      },
-      {
-        "url": "http://www.horariosdofunchal.pt/",
-        "error": "TypeError: fetch failed"
-      },
-      {
-        "url": "https://www.horariosdofunchal.pt/index.php/en?Itemid=333",
-        "status": 404
       }
     ]
   }
