@@ -9,6 +9,7 @@ import {
 } from 'react';
 import { Network, type Itinerary } from '@madeirabus/engine';
 import { detectLang, I18nContext, makeI18n, type Lang } from '../i18n.ts';
+import { DEFAULT_LAYERS, type MapLayers } from '../lib/mapStyles.ts';
 import { load, save } from '../lib/storage.ts';
 import { PlannerClient } from '../worker/client.ts';
 
@@ -17,6 +18,7 @@ export interface Settings {
   payment: 'giro' | 'cash';
   /** m/s */
   walkSpeed: number;
+  map: MapLayers;
 }
 
 export interface ActiveTrip {
@@ -59,7 +61,15 @@ const SETTINGS_KEY = 'madeirabus.settings.v1';
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [settings, setSettingsState] = useState<Settings>(() =>
-    load<Settings>(SETTINGS_KEY, { lang: detectLang(), payment: 'giro', walkSpeed: 1.25 }),
+    (() => {
+      const stored = load<Settings>(SETTINGS_KEY, {
+        lang: detectLang(),
+        payment: 'giro',
+        walkSpeed: 1.25,
+        map: DEFAULT_LAYERS,
+      });
+      return { ...stored, map: { ...DEFAULT_LAYERS, ...stored.map } };
+    })(),
   );
   const [data, setData] = useState<DataState>({ status: 'loading' });
   const [trip, setTrip] = useState<ActiveTrip | undefined>();

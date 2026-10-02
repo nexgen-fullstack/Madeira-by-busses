@@ -38,6 +38,16 @@ export default defineConfig({
         navigateFallback: 'index.html',
         runtimeCaching: [
           {
+            // Open elevation tiles for the relief layer: also available offline once seen.
+            urlPattern: /^https:\/\/s3\.amazonaws\.com\/elevation-tiles-prod\//,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'terrain',
+              expiration: { maxEntries: 3000, maxAgeSeconds: 60 * 60 * 24 * 90 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          {
             // Basemap tiles, styles and fonts: cache what the user has seen for offline use.
             urlPattern: /^https:\/\/tiles\.openfreemap\.org\//,
             handler: 'CacheFirst',

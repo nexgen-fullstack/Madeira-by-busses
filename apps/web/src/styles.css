@@ -709,10 +709,16 @@ input[type='time'] {
   margin: 14px 0;
 }
 .detail__actions .button--primary {
-  flex: 1;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 .detail__actions .button {
   white-space: nowrap;
+}
+@media (min-width: 380px) {
+  .detail__actions {
+    flex-wrap: nowrap;
+  }
 }
 
 .timeline {
@@ -1116,4 +1122,169 @@ input[type='time'] {
 /* MapLibre attribution should not hide our controls on phones. */
 .maplibregl-ctrl-attrib {
   font-size: 10px;
+}
+
+/* ---------- Map chrome: layers, place card, controls ---------- */
+
+.map-wrap {
+  position: relative;
+  overflow: hidden;
+}
+/* Beats `.maplibregl-map { position: relative }`, which loads later with the map chunk. */
+.map-wrap > .map-canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.layers {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 3;
+}
+.layers__button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 0;
+  background: #fff;
+  color: #14181f;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 22%);
+  cursor: pointer;
+}
+.layers__panel {
+  /* Phones: a sheet above the tab bar, so it never outgrows the short map. */
+  position: fixed;
+  left: 8px;
+  right: 8px;
+  bottom: calc(70px + env(safe-area-inset-bottom));
+  z-index: 30;
+  max-height: calc(100dvh - 140px);
+  overflow-y: auto;
+  padding: 12px;
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 25%);
+}
+@media (min-width: 900px) {
+  .layers__panel {
+    position: absolute;
+    left: 0;
+    right: auto;
+    bottom: 52px;
+    width: 280px;
+  }
+}
+.layers__title {
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+.layers__bases {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.layers__base {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  border: 0;
+  background: none;
+  padding: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+}
+.layers__thumb {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 52px;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  color: #fff;
+}
+.layers__base--map .layers__thumb {
+  background: linear-gradient(135deg, #f3efe6 0 45%, #cde3c3 45% 70%, #a8d1e7 70%);
+  color: #36505e;
+}
+.layers__base--satellite .layers__thumb {
+  background: radial-gradient(circle at 30% 30%, #6f7d4a, #2f3d27 60%, #1b2a36);
+}
+.layers__base--relief .layers__thumb {
+  background: linear-gradient(160deg, #f3efe8, #d6c19c 40%, #cfe5c0 70%, #a8d1e7);
+  color: #4a3d2a;
+}
+.layers__base[aria-checked='true'] {
+  color: var(--brand);
+}
+.layers__base[aria-checked='true'] .layers__thumb {
+  border-color: var(--brand);
+}
+.layers__toggles {
+  display: grid;
+  gap: 2px;
+  border-top: 1px solid var(--border);
+  padding-top: 8px;
+}
+.layers__toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 2px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+}
+.layers__toggle span {
+  flex: 1;
+}
+.layers__toggle input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--brand);
+}
+
+.place-card {
+  position: absolute;
+  left: 64px;
+  right: 10px;
+  bottom: 10px;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 22%);
+}
+.place-card__text {
+  flex: 1 1 140px;
+  min-width: 0;
+}
+.place-card__text .strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.place-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.place-card .icon-button {
+  width: 32px;
+  height: 32px;
+}
+.maplibregl-ctrl-group {
+  border-radius: 10px !important;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 18%) !important;
 }

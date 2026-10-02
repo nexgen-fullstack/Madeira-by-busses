@@ -1,29 +1,49 @@
 import { useContext, useEffect, useRef, useState } from 'react';
+import { Flag, MapPin, X } from 'lucide-react';
 import {
+  GeolocateControl,
   LngLatBounds,
   Map as MapLibreMap,
+  NavigationControl,
+  ScaleControl,
   setWorkerUrl,
   type GeoJSONSource,
-  type MapLayerMouseEvent,
+  type MapMouseEvent,
   type StyleSpecification,
 } from 'maplibre-gl';
 import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import { useI18n } from '../i18n.ts';
+import { encodePlace } from '../lib/itinerary.ts';
 import type { MapContent } from '../lib/mapContent.ts';
-import { MapContentContext } from './mapContext.tsx';
+import {
+  buildingLayers,
+  demSource,
+  extrusionLayer,
+  fallbackStyle,
+  loadStyle,
+  placeLayerIds,
+  poiLabel,
+  type MapLayers,
+} from '../lib/mapStyles.ts';
 import { navigate } from '../lib/router.ts';
+import { useApp } from '../state/app.tsx';
+import { LayerSwitcher } from './LayerSwitcher.tsx';
+import { MapContentContext } from './mapContext.tsx';
 
 // MapLibre computes its worker URL at runtime, which bundlers cannot see; point it at the bundled worker.
 setWorkerUrl(maplibreWorkerUrl);
 
-/** Free OpenStreetMap vector basemap, no API key. Cached by the service worker for offline use. */
-const BASEMAP = 'https://tiles.openfreemap.org/styles/positron';
-const FALLBACK: StyleSpecification = {
-  version: 8,
-  sources: {},
-  layers: [{ id: 'background', type: 'background', paint: { 'background-color': '#dde8ee' } }],
-};
 const MADEIRA_CENTER: [number, number] = [-16.96, 32.75];
+
+interface PickedPlace {
+  name: string;
+  /** OpenMapTiles POI class / subclass, labelled at render time in the current language. */
+  klass?: string;
+  subclass?: string;
+  lat: number;
+  lon: number;
+}
 
 function toGeoJson(content: MapContent) {
   return {
@@ -140,21 +160,30 @@ function addOverlay(map: MapLibreMap) {
 
 export default function MapView({ className }: { className?: string }) {
   const { content } = useContext(MapContentContext);
+  const { settings, setSettings } = useApp();
+  const t = useI18n();
+  const layers = settings.map;
   const container = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const contentRef = useRef(content);
+  const layersRef = useRef(layers);
   const fittedKey = useRef<string | undefined>(undefined);
   const [ready, setReady] = useState(false);
+  const styleLoaded = useRef(false);
+  const shownStyle = useRef(`${layers.base}:fallback`);
+  const [picked, setPicked] = useState<PickedPlace | undefined>();
   contentRef.current = content;
+  layersRef.current = layers;
 
+  // Create the map once; start with the tile-free style so the island shows at once.
   useEffect(() => {
     if (!container.current) return;
-    let fellBack = false;
     const map = new MapLibreMap({
       container: container.current,
-      style: BASEMAP,
+      style: fallbackStyle(layersRef.current.base),
       center: MADEIRA_CENTER,
       zoom: 9.2,
+      maxPitch: 70,
       maxBounds: [
         [-18.2, 32.0],
         [-15.6, 33.5],
@@ -162,26 +191,51 @@ export default function MapView({ className }: { className?: string }) {
       attributionControl: { compact: true },
     });
     mapRef.current = map;
-    const fallback = () => {
-      if (fellBack || map.isStyleLoaded()) return;
-      fellBack = true;
-      map.setStyle(FALLBACK);
-    };
-    // Offline or tiles blocked: keep our overlay on a plain background.
-    const timer = window.setTimeout(fallback, 8000);
-    map.on('error', () => {
-      if (!map.isStyleLoaded()) fallback();
-    });
+    map.addControl(new NavigationControl({ visualizePitch: true }), 'top-right');
+    map.addControl(
+      new GeolocateControl({
+        positionOptions: { enableHighAccuracy: true },
+        trackUserLocation: true,
+      }),
+      'top-right',
+    );
+    map.addControl(new ScaleControl({ maxWidth: 90 }), 'bottom-right');
     map.on('style.load', () => {
-      window.clearTimeout(timer);
+      styleLoaded.current = true;
       addOverlay(map);
+      applyDetails(map, layersRef.current);
       fittedKey.current = undefined;
       setReady(true);
       apply(map, contentRef.current, fittedKey);
     });
-    map.on('click', 'mb-point', (e: MapLayerMouseEvent) => {
-      const stops = String(e.features?.[0]?.properties?.stops ?? '');
-      if (stops) navigate('stop', { ids: stops });
+    map.on('click', (e: MapMouseEvent) => {
+      const box: [[number, number], [number, number]] = [
+        [e.point.x - 8, e.point.y - 8],
+        [e.point.x + 8, e.point.y + 8],
+      ];
+      const features = map.queryRenderedFeatures(box);
+      const stop = features.find((f) => f.layer.id === 'mb-point' && f.properties?.stops);
+      if (stop) {
+        navigate('stop', { ids: String(stop.properties.stops) });
+        return;
+      }
+      const poi = features.find((f) => f.sourceLayer === 'poi' && f.properties?.name);
+      if (poi && poi.geometry.type === 'Point') {
+        const [lon, lat] = poi.geometry.coordinates as [number, number];
+        setPicked({
+          name: String(poi.properties.name),
+          klass: poi.properties.class as string | undefined,
+          subclass: poi.properties.subclass as string | undefined,
+          lat,
+          lon,
+        });
+        return;
+      }
+      setPicked(undefined);
+    });
+    // Long press / right click drops a pin anywhere.
+    map.on('contextmenu', (e: MapMouseEvent) => {
+      setPicked({ name: '', lat: e.lngLat.lat, lon: e.lngLat.lng });
     });
     map.on('mouseenter', 'mb-point', () => (map.getCanvas().style.cursor = 'pointer'));
     map.on('mouseleave', 'mb-point', () => (map.getCanvas().style.cursor = ''));
@@ -189,18 +243,121 @@ export default function MapView({ className }: { className?: string }) {
     ro.observe(container.current);
     return () => {
       ro.disconnect();
-      window.clearTimeout(timer);
       map.remove();
       mapRef.current = null;
     };
   }, []);
+
+  // Base layer: fetch the vector style (if reachable) and swap it in.
+  useEffect(() => {
+    let cancelled = false;
+    loadStyle(layers.base).then(({ style, vector }) => {
+      const map = mapRef.current;
+      if (cancelled || !map) return;
+      // The tile-free fallback for this base may already be on screen.
+      const key = `${layers.base}:${vector ? 'vector' : 'fallback'}`;
+      if (key === shownStyle.current) return;
+      shownStyle.current = key;
+      styleLoaded.current = false;
+      map.setStyle(style as StyleSpecification, { diff: false });
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [layers.base]);
+
+  // Overlays toggle in place.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (map && ready && styleLoaded.current) applyDetails(map, layers);
+  }, [layers, ready]);
 
   useEffect(() => {
     const map = mapRef.current;
     if (map && ready && map.getSource('mb-lines')) apply(map, content, fittedKey);
   }, [content, ready]);
 
-  return <div ref={container} className={className} role="region" aria-label="Map" />;
+  const pickedLabel = picked?.name || t.t('place.pin');
+  return (
+    <div className={`${className ?? ''} map-wrap`}>
+      <div ref={container} className="map-canvas" role="region" aria-label="Map" />
+      <LayerSwitcher value={layers} onChange={(map) => setSettings({ map })} />
+      {picked && (
+        <div className="place-card" role="dialog" aria-label={pickedLabel}>
+          <div className="place-card__text">
+            <div className="strong">{pickedLabel}</div>
+            <div className="muted small">
+              {poiLabel(settings.lang, picked.klass, picked.subclass) ??
+                `${picked.lat.toFixed(5)}, ${picked.lon.toFixed(5)}`}
+            </div>
+          </div>
+          <div className="place-card__actions">
+            <button
+              type="button"
+              className="button button--primary button--small"
+              onClick={() => {
+                planWith({ to: encodePlace({ ...picked, name: pickedLabel }) });
+                setPicked(undefined);
+              }}
+            >
+              <Flag size={14} /> {t.t('place.routeTo')}
+            </button>
+            <button
+              type="button"
+              className="button button--small"
+              onClick={() => {
+                planWith({ from: encodePlace({ ...picked, name: pickedLabel }) });
+                setPicked(undefined);
+              }}
+            >
+              <MapPin size={14} /> {t.t('place.routeFrom')}
+            </button>
+            <button
+              type="button"
+              className="icon-button"
+              aria-label={t.t('close')}
+              onClick={() => setPicked(undefined)}
+            >
+              <X size={16} />
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** Opens the planner keeping whatever origin/destination is already set. */
+function planWith(patch: Record<string, string>) {
+  const [path = '', query = ''] = location.hash.replace(/^#\/?/, '').split('?');
+  const current = path.startsWith('plan') ? Object.fromEntries(new URLSearchParams(query)) : {};
+  navigate('plan', { ...current, ...patch, i: undefined });
+}
+
+/** Shows or hides places, 3D buildings and 3D terrain on the current style. */
+function applyDetails(map: MapLibreMap, layers: MapLayers) {
+  const style = map.getStyle();
+  if (!style) return;
+  for (const id of placeLayerIds(style)) {
+    map.setLayoutProperty(id, 'visibility', layers.places ? 'visible' : 'none');
+  }
+  const buildings = buildingLayers(style);
+  if (layers.buildings3d && buildings.source && buildings.extrusions.length === 0) {
+    map.addLayer(extrusionLayer(buildings.source, layers.base === 'satellite'), 'mb-line-casing');
+    buildings.extrusions.push('mb-buildings-3d');
+  }
+  for (const id of buildings.extrusions) {
+    map.setLayoutProperty(id, 'visibility', layers.buildings3d ? 'visible' : 'none');
+  }
+  if (layers.terrain3d) {
+    if (!map.getSource('mb-dem-3d')) map.addSource('mb-dem-3d', demSource());
+    map.setTerrain({ source: 'mb-dem-3d', exaggeration: 1.3 });
+  } else if (map.getTerrain()) {
+    map.setTerrain(null);
+  }
+  const want3d = layers.buildings3d || layers.terrain3d;
+  if (want3d && map.getPitch() < 20) map.easeTo({ pitch: 55, duration: 900 });
+  if (!want3d && map.getPitch() > 0) map.easeTo({ pitch: 0, bearing: 0, duration: 700 });
 }
 
 function apply(map: MapLibreMap, content: MapContent, fittedKey: { current: string | undefined }) {

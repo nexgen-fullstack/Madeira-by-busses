@@ -10,9 +10,19 @@ export function fareRides(net: Network, it: Itinerary): FareRide[] {
   }));
 }
 
-/** Compact place encoding for shareable URLs: `s:1.2.3` (stops) or `p:lat,lon`. */
-export function encodePlace(p: { stops?: number[]; lat: number; lon: number }): string {
-  return p.stops?.length ? `s:${p.stops.join('.')}` : `p:${p.lat.toFixed(5)},${p.lon.toFixed(5)}`;
+/**
+ * Compact place encoding for shareable URLs: `s:1.2.3` (stops) or
+ * `p:lat,lon` with an optional `~name` (a shop, a hotel, a dropped pin).
+ */
+export function encodePlace(p: {
+  stops?: number[];
+  lat: number;
+  lon: number;
+  name?: string;
+}): string {
+  if (p.stops?.length) return `s:${p.stops.join('.')}`;
+  const point = `p:${p.lat.toFixed(5)},${p.lon.toFixed(5)}`;
+  return p.name ? `${point}~${p.name}` : point;
 }
 
 export function decodePlace(
@@ -36,9 +46,11 @@ export function decodePlace(
     return { name: first.name, lat, lon, stops, kind: 'stop' };
   }
   if (value.startsWith('p:')) {
-    const [lat, lon] = value.slice(2).split(',').map(Number);
-    if (Number.isFinite(lat) && Number.isFinite(lon))
-      return { name: myLocationLabel, lat: lat!, lon: lon!, kind: 'location' };
+    const [coords = '', ...name] = value.slice(2).split('~');
+    const [lat, lon] = coords.split(',').map(Number);
+    if (Number.isFinite(lat) && Number.isFinite(lon)) {
+      return { name: name.join('~') || myLocationLabel, lat: lat!, lon: lon!, kind: 'location' };
+    }
   }
   return undefined;
 }

@@ -9,7 +9,25 @@ const ctx = await browser.newContext({
   timezoneId: 'Atlantic/Madeira',
   geolocation: { latitude: 32.6475, longitude: -16.9065 },
   permissions: ['geolocation'],
+  serviceWorkers: 'block',
 });
+// RELAY_TILES=1: fetch elevation tiles from Node (for sandboxes where the browser has no network).
+async function relayTiles(context) {
+  if (!process.env.RELAY_TILES) return;
+  await context.route('https://s3.amazonaws.com/**', async (route) => {
+    try {
+      const r = await fetch(route.request().url());
+      await route.fulfill({
+        status: r.status,
+        body: Buffer.from(await r.arrayBuffer()),
+        headers: { 'content-type': 'image/png', 'access-control-allow-origin': '*' },
+      });
+    } catch {
+      await route.abort();
+    }
+  });
+}
+await relayTiles(ctx);
 const page = await ctx.newPage();
 page.on('pageerror', (e) => console.log('pageerror', e.message));
 await page.clock.setFixedTime(new Date('2026-10-07T08:00:00Z'));
@@ -54,6 +72,16 @@ await page.getByRole('button', { name: /D139/ }).click();
 await page.waitForSelector('.timetable');
 await page.waitForTimeout(1200);
 await page.screenshot({ path: OUT + 'line-detail.png' });
+await page.getByRole('button', { name: 'Шари карти' }).click();
+await page.waitForTimeout(400);
+await page.screenshot({ path: OUT + 'layers.png' });
+await page.getByRole('checkbox', { name: /3D-гори/ }).check();
+await page.locator('.view-title').click();
+await page.waitForTimeout(5000);
+await page.screenshot({ path: OUT + 'terrain3d.png' });
+await page.getByRole('button', { name: 'Шари карти' }).click();
+await page.getByRole('checkbox', { name: /3D-гори/ }).uncheck();
+await page.locator('.view-title').click();
 await page.goto(BASE + '#/nearby');
 await page.waitForSelector('.departures');
 await page.waitForTimeout(1500);
@@ -63,7 +91,9 @@ const desk = await browser.newContext({
   viewport: { width: 1440, height: 900 },
   locale: 'uk-UA',
   timezoneId: 'Atlantic/Madeira',
+  serviceWorkers: 'block',
 });
+await relayTiles(desk);
 const d = await desk.newPage();
 await d.clock.setFixedTime(new Date('2026-10-07T08:00:00Z'));
 await d.goto(BASE);
