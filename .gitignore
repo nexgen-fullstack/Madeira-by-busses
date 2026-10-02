@@ -1,0 +1,14 @@
+node_modules/
+dist/
+coverage/
+*.log
+.DS_Store
+.vite/
+# Generated data (rebuilt by `pnpm data`)
+apps/web/public/data/
+data/build/
+data/cache/
+data/demo/
+test-results/
+playwright-report/
+*.local.mjs

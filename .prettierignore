@@ -1,0 +1,6 @@
+pnpm-lock.yaml
+apps/web/public/data/
+data/build/
+data/demo/gtfs/
+dist/
+coverage/
