@@ -40,4 +40,11 @@ export class PlannerClient {
   lastConnection(request: PlanRequest): Promise<Itinerary | null> {
     return this.call({ method: 'last', request });
   }
+
+  /** Stops the worker; pending calls are rejected. */
+  dispose(): void {
+    this.worker.terminate();
+    for (const p of this.pending.values()) p.reject(new Error('Planner disposed'));
+    this.pending.clear();
+  }
 }

@@ -22,6 +22,11 @@ export interface PlanOptions {
   walkSpeed: number;
   /** Max walking distance to the first / from the last stop (m). */
   maxAccessWalk: number;
+  /**
+   * When a stop is chosen as origin or destination, other stops within this
+   * walk of it are used too (m): a bus round the corner may be the better one.
+   */
+  stopWalk: number;
   /** Buffer when changing buses at the same stop (s). */
   minTransferTime: number;
   /** Extra buffer after walking to another stop (s). */
@@ -29,16 +34,24 @@ export interface PlanOptions {
   /** How far ahead to look for alternatives (s). */
   window: number;
   maxResults: number;
+  /**
+   * Time an extra transfer must save to be worth showing (s): an itinerary is
+   * hidden when one with fewer transfers leaves no earlier and arrives at most
+   * this much later per transfer saved.
+   */
+  transferPenalty: number;
 }
 
 export const DEFAULT_PLAN_OPTIONS: PlanOptions = {
   maxTransfers: 3,
   walkSpeed: 1.25,
   maxAccessWalk: 1000,
+  stopWalk: 400,
   minTransferTime: 120,
   walkTransferSlack: 60,
   window: 3 * 3600,
   maxResults: 5,
+  transferPenalty: 600,
 };
 
 export interface PlanRequest {
@@ -140,7 +153,7 @@ export class Planner {
     const results = [...found.values()];
     const direct = this.directWalk(request, ctx.opts);
     if (direct) results.push(direct);
-    return paretoFilter(results)
+    return paretoFilter(results, ctx.opts.transferPenalty)
       .sort((a, b) => a.arrive - b.arrive || b.depart - a.depart)
       .slice(0, ctx.opts.maxResults);
   }
@@ -184,7 +197,19 @@ export class Planner {
 
   private access(place: Place, opts: PlanOptions): Access[] {
     if (place.stops && place.stops.length > 0) {
-      return place.stops.map((stop) => ({ stop, seconds: 0, distance: 0 }));
+      const best = new Map<number, Access>();
+      for (const stop of place.stops) best.set(stop, { stop, seconds: 0, distance: 0 });
+      if (opts.stopWalk > 0) {
+        for (const stop of place.stops) {
+          for (const h of this.net.nearbyStops(this.net.stops[stop]!, opts.stopWalk)) {
+            const seconds = walkSeconds(h.distance, opts.walkSpeed);
+            const known = best.get(h.stop);
+            if (!known || seconds < known.seconds)
+              best.set(h.stop, { stop: h.stop, seconds, distance: Math.round(h.distance) });
+          }
+        }
+      }
+      return [...best.values()];
     }
     let hits = this.net.nearbyStops(place, opts.maxAccessWalk);
     if (hits.length === 0) {
@@ -587,8 +612,9 @@ export class Planner {
 }
 
 /** Drops options that leave earlier, arrive later and need more rides than another. */
-export function paretoFilter(items: Itinerary[]): Itinerary[] {
-  return items.filter(
+export function paretoFilter(items: Itinerary[], transferPenalty = 0): Itinerary[] {
+  const transfers = (it: Itinerary) => Math.max(0, it.rides - 1);
+  const pareto = items.filter(
     (a) =>
       !items.some(
         (b) =>
@@ -597,6 +623,17 @@ export function paretoFilter(items: Itinerary[]): Itinerary[] {
           b.arrive <= a.arrive &&
           b.rides <= a.rides &&
           (b.depart > a.depart || b.arrive < a.arrive || b.rides < a.rides),
+      ),
+  );
+  if (transferPenalty <= 0) return pareto;
+  // A change of bus is a real cost: it must save enough time to be offered.
+  return pareto.filter(
+    (a) =>
+      !pareto.some(
+        (b) =>
+          transfers(b) < transfers(a) &&
+          b.depart >= a.depart &&
+          b.arrive <= a.arrive + transferPenalty * (transfers(a) - transfers(b)),
       ),
   );
 }

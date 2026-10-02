@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "predev": "test -f public/data/network.json || pnpm --filter @madeirabus/pipeline run demo",
+    "predev": "test -f public/data/demo.json || pnpm --filter @madeirabus/pipeline run demo",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",

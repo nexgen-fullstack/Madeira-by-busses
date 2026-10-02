@@ -4,11 +4,10 @@ import { madeiraNow } from '@madeirabus/engine';
 import { useMapContent } from '../components/mapContext.tsx';
 import { RouteBadge } from '../components/RouteBadge.tsx';
 import { useI18n } from '../i18n.ts';
+import { lineGroups } from '../lib/lines.ts';
 import { networkContent } from '../lib/mapContent.ts';
 import { navigate } from '../lib/router.ts';
 import { useNetwork } from '../state/app.tsx';
-
-const natural = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
 
 export function LinesView() {
   const t = useI18n();
@@ -25,44 +24,47 @@ export function LinesView() {
     return counts;
   }, [net, today]);
 
-  const byAgency = useMemo(
-    () =>
-      net.bundle.agencies.map((agency, a) => ({
-        agency,
-        routes: net.routes
-          .map((r, i) => ({ r, i }))
-          .filter(({ r }) => r.agency === a)
-          .sort((x, y) => natural.compare(x.r.short, y.r.short)),
-      })),
-    [net],
-  );
+  const byAgency = useMemo(() => {
+    const lines = lineGroups(net);
+    return net.bundle.agencies.map((agency, a) => ({
+      agency,
+      lines: lines.filter((l) => l.agency === a),
+    }));
+  }, [net]);
 
   return (
     <div className="lines">
       <h2 className="view-title">{t.t('lines.title')}</h2>
-      {byAgency.map(({ agency, routes }) =>
-        routes.length === 0 ? null : (
+      {byAgency.map(({ agency, lines }) =>
+        lines.length === 0 ? null : (
           <section key={agency.id} className="card">
             <h3 className="card__title">{agency.name}</h3>
             <ul className="line-list">
-              {routes.map(({ r, i }) => (
-                <li key={r.id}>
-                  <button
-                    type="button"
-                    className="line-list__row"
-                    onClick={() => navigate(`lines/${i}`)}
-                  >
-                    <RouteBadge route={r} />
-                    <span className="line-list__name">
-                      {r.long}
-                      <span className="muted small">
-                        {t.tn('lines.trips', tripsToday.get(i) ?? 0)}
+              {lines.map((line) => {
+                const main = line.routes[0]!;
+                const route = net.routes[main]!;
+                const trips = line.routes.reduce((n, r) => n + (tripsToday.get(r) ?? 0), 0);
+                return (
+                  <li key={main}>
+                    <button
+                      type="button"
+                      className="line-list__row"
+                      onClick={() => navigate(`lines/${main}`)}
+                    >
+                      <RouteBadge route={route} />
+                      <span className="line-list__name">
+                        {route.long}
+                        <span className="muted small">
+                          {t.tn('lines.trips', trips)}
+                          {line.routes.length > 1 &&
+                            ` · ${t.tn('lines.variants', line.routes.length)}`}
+                        </span>
                       </span>
-                    </span>
-                    <ChevronRight size={18} aria-hidden className="muted" />
-                  </button>
-                </li>
-              ))}
+                      <ChevronRight size={18} aria-hidden className="muted" />
+                    </button>
+                  </li>
+                );
+              })}
             </ul>
           </section>
         ),

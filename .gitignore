@@ -12,3 +12,4 @@ data/demo/
 test-results/
 playwright-report/
 *.local.mjs
+*.local.ts

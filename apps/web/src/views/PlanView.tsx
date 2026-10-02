@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowUpDown, Loader2, Sparkles } from 'lucide-react';
-import { madeiraNow, type Itinerary } from '@madeirabus/engine';
+import { madeiraNow, normalise, type Itinerary } from '@madeirabus/engine';
 import { ItineraryCard } from '../components/ItineraryCard.tsx';
 import { ItineraryDetail } from '../components/ItineraryDetail.tsx';
 import { useMapContent } from '../components/mapContext.tsx';
@@ -19,11 +19,18 @@ import { navigate, type Route } from '../lib/router.ts';
 import { useApp, useNetwork } from '../state/app.tsx';
 
 /** Popular trips offered on an empty screen (only those the network can serve). */
+/** Popular trips; the ones whose stops exist in the loaded network are offered. */
 const SUGGESTIONS: [string, string][] = [
+  // Demo network
   ['Aeroporto', 'Porto Moniz'],
   ['Funchal (Avenida', 'Santana'],
   ['Mercado dos Lavradores', 'Monte'],
   ['Funchal (Avenida', 'Curral das Freiras'],
+  // Horários do Funchal
+  ['Avenida Mar Alfândega', 'Igreja Curral das Freiras'],
+  ['Forum Madeira', 'Monte Tanque'],
+  ['Lido', 'Jardim Botânico'],
+  ['Madeira Shopping', 'Avenida Mar EEM'],
 ];
 
 export function PlanView({ route }: { route: Route }) {
@@ -114,13 +121,15 @@ export function PlanView({ route }: { route: Route }) {
   }, [net, selectedIt, results, from, to]);
   useMapContent(mapContent);
 
-  const suggestions = useMemo(
-    () =>
-      SUGGESTIONS.map(
-        ([a, b]) => [net.searchStops(a, 1)[0], net.searchStops(b, 1)[0]] as const,
-      ).filter((pair) => pair[0] && pair[1]),
-    [net],
-  );
+  const suggestions = useMemo(() => {
+    // Only a stop whose name starts with the query: "Aeroporto" must not pick
+    // "Estrada Aeroporto", a street in Funchal far from the airport.
+    const find = (q: string) =>
+      net.searchStops(q, 1).find((g) => normalise(g.name).startsWith(normalise(q)));
+    return SUGGESTIONS.map(([a, b]) => [find(a), find(b)] as const)
+      .filter((pair) => pair[0] && pair[1])
+      .slice(0, 4);
+  }, [net]);
 
   if (selectedIt) {
     return (

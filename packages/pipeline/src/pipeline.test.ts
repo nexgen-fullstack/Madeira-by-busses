@@ -1,17 +1,23 @@
 import { describe, expect, it } from 'vitest';
 import { strToU8, zipSync } from 'fflate';
+import { mkdtempSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import {
   buildBundle,
+  municipalityFromIne,
   Network,
   parseGtfs,
   Planner,
   SIGA_FARES_2026,
+  toCsv,
   type Itinerary,
   type RideLeg,
 } from '@madeirabus/engine';
 import { generateDemoGtfs } from './demo/generate.ts';
 import { DEMO_ROUTES } from './demo/network.ts';
-import { parseFeedArg, unzipFeed } from './load.ts';
+import { loadFeedFiles, parseFeedArg, unzipFeed } from './load.ts';
+import { prettyAgencyName, prettyRouteName, prettyStopName } from './names.ts';
 import { diffBundles, diffMarkdown } from './report.ts';
 import { validateBundle, validateFeed } from './validate.ts';
 
@@ -177,5 +183,85 @@ describe('pipeline utilities', () => {
     expect(d.changedRoutes).toHaveLength(1);
     expect(diffMarkdown(d)).toMatch(/Removed routes/);
     expect(diffMarkdown(diffBundles(bundle, bundle))).toBe('No timetable changes.\n');
+  });
+});
+
+describe('real Horários do Funchal conventions', () => {
+  it('turns stop names into readable ones', () => {
+    const name = (stop_desc: string, stop_name = 'x') => prettyStopName({ stop_name, stop_desc });
+    expect(name('CAM LMB Aguiares')).toBe('Caminho Lombo Aguiares');
+    expect(name('R ENG Ornelas Camacho')).toBe('Rua Eng. Ornelas Camacho');
+    expect(name('Depois Capela C Freiras')).toBe('Depois Capela Curral das Freiras');
+    expect(name('Centro Cívico S Martinho')).toBe('Centro Cívico São Martinho');
+    expect(name('AV Mar Alfândega')).toBe('Avenida Mar Alfândega');
+    expect(name('AV S Menor R Nova Alegria')).toBe('Avenida Santiago Menor Rua Nova Alegria');
+    expect(prettyRouteName({ route_long_name: 'Funchal - CFreiras (via FJ Cardos)' })).toBe(
+      'Funchal - Curral das Freiras (via Fajã Cardos)',
+    );
+    expect(prettyAgencyName({ agency_name: 'HF' })).toBe('Horários do Funchal');
+    expect(prettyAgencyName({ agency_name: 'Rodoeste' })).toBe('Rodoeste');
+    // Without a description, the name minus its stop code.
+    expect(prettyStopName({ stop_name: 'Fajã Escura-Final (CF19J)' })).toBe('Fajã Escura-Final');
+  });
+
+  it('reads INE municipality codes and pretty names when building', () => {
+    const files = {
+      'agency.txt': toCsv(
+        ['agency_name', 'agency_url', 'agency_timezone'],
+        [['HF', 'https://hf.pt', 'Atlantic/Madeira']],
+      ),
+      'stops.txt': toCsv(
+        ['stop_id', 'stop_name', 'stop_desc', 'stop_lat', 'stop_lon', 'municipality'],
+        [
+          ['1', 'AV Mar  E E M (11)', 'AV Mar EEM', 32.6469, -16.9086, '3103'],
+          // Near Funchal's seat but in Câmara de Lobos by its INE code.
+          ['2', 'ESCL Curral das Freiras (CF15)', 'ESCL Curral Freiras', 32.65, -16.91, '3102'],
+        ],
+      ),
+      'routes.txt': toCsv(['route_id', 'route_short_name', 'route_type'], [['181', '181', 3]]),
+      'trips.txt': toCsv(['route_id', 'service_id', 'trip_id'], [['181', 'S', 't']]),
+      'stop_times.txt': toCsv(
+        ['trip_id', 'arrival_time', 'departure_time', 'stop_id', 'stop_sequence'],
+        [
+          ['t', '10:00:00', '10:00:00', '1', 1],
+          ['t', '10:50:00', '10:50:00', '2', 2],
+        ],
+      ),
+      // Every Friday of June and July 2026.
+      'calendar_dates.txt': toCsv(
+        ['service_id', 'date', 'exception_type'],
+        ['0605', '0612', '0619', '0626', '0703', '0710', '0717', '0724', '0731'].map((d) => [
+          'S',
+          `2026${d}`,
+          1,
+        ]),
+      ),
+    };
+    const { bundle, report } = buildBundle([{ feed: parseGtfs(files), source: { name: 'hf' } }], {
+      demo: false,
+      fares: SIGA_FARES_2026,
+      stopName: prettyStopName,
+      extendUntil: '2026-10-31',
+      missingOperators: ['CAM'],
+    });
+    expect(bundle.stops.map((s) => [s.name, s.muni])).toEqual([
+      ['Avenida Mar EEM', 'FNC'],
+      ['Escola Curral das Freiras', 'CML'],
+    ]);
+    expect(report.guessedMunicipalities).toBe(0);
+    expect(municipalityFromIne('3201')).toBe('PST');
+    expect(municipalityFromIne('9999')).toBeUndefined();
+    // A Friday service whose feed ended on 31 July keeps running on Fridays.
+    expect(bundle.projected).toEqual({ officialUntil: '2026-07-31', until: '2026-10-31' });
+    expect(bundle.missingOperators).toEqual(['CAM']);
+    expect(new Network(bundle).isServiceActive(0, '2026-10-02')).toBe(true);
+    expect(new Network(bundle).isServiceActive(0, '2026-10-03')).toBe(false);
+  });
+
+  it('falls back to the next feed location', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'feed-'));
+    writeFileSync(join(dir, 'agency.txt'), files['agency.txt']!);
+    const loaded = await loadFeedFiles(`${join(dir, 'missing.zip')}|${dir}`);
+    expect(Object.keys(loaded)).toEqual(['agency.txt']);
   });
 });

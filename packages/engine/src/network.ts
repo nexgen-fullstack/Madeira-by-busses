@@ -74,7 +74,7 @@ export class Network {
   private readonly shapeCache = new Map<number, LatLon[]>();
   private readonly alongCache = new Map<number, { cum: number[]; stops: number[] }>();
   private readonly dayCache = new Map<string, DayTimetable>();
-  private readonly searchIndex: { key: string; group: StopGroup }[];
+  private readonly searchIndex: { key: string; words: string[]; group: StopGroup }[];
 
   constructor(
     readonly bundle: NetworkBundle,
@@ -257,19 +257,27 @@ export class Network {
     }));
   }
 
-  /** Accent-insensitive search over stop names, grouped by name and municipality. */
+  /**
+   * Accent-insensitive search over stop names, grouped by name and
+   * municipality. A name matches when it contains the query, or when every
+   * query word starts a word of the name in any order, ignoring linking words
+   * ("Curral das Freiras" finds "Igreja Curral Freiras").
+   */
   searchStops(query: string, limit = 8): StopGroup[] {
     const q = normalise(query);
     if (!q) return [];
+    const words = significantWords(q);
     const scored: { score: number; group: StopGroup }[] = [];
     for (const entry of this.searchIndex) {
       const idx = entry.key.indexOf(q);
-      if (idx < 0) continue;
-      const wordStart = idx === 0 || entry.key[idx - 1] === ' ';
-      scored.push({
-        score: (idx === 0 ? 0 : wordStart ? 1 : 2) * 1000 + entry.key.length,
-        group: entry.group,
-      });
+      let tier: number;
+      if (idx === 0) tier = 0;
+      else if (idx > 0 && entry.key[idx - 1] === ' ') tier = 1;
+      else if (words.length > 0 && words.every((w) => entry.words.some((k) => k.startsWith(w))))
+        tier = 2;
+      else if (idx > 0) tier = 3;
+      else continue;
+      scored.push({ score: tier * 1000 + entry.key.length, group: entry.group });
     }
     return scored
       .sort((a, b) => a.score - b.score)
@@ -283,6 +291,13 @@ export class Network {
   }
 }
 
+/** Portuguese linking words that stop names often leave out. */
+const LINKING_WORDS = new Set(['a', 'as', 'o', 'os', 'da', 'das', 'de', 'do', 'dos', 'e']);
+
+function significantWords(normalised: string): string[] {
+  return normalised.split(' ').filter((w) => w && !LINKING_WORDS.has(w));
+}
+
 export function normalise(s: string): string {
   return s
     .normalize('NFD')
@@ -292,7 +307,9 @@ export function normalise(s: string): string {
     .trim();
 }
 
-function buildSearchIndex(stops: readonly BStop[]): { key: string; group: StopGroup }[] {
+function buildSearchIndex(
+  stops: readonly BStop[],
+): { key: string; words: string[]; group: StopGroup }[] {
   const groups = new Map<string, StopGroup>();
   stops.forEach((s, i) => {
     const key = `${normalise(s.name)}|${s.muni}`;
@@ -306,6 +323,9 @@ function buildSearchIndex(stops: readonly BStop[]): { key: string; group: StopGr
     }
   });
   return [...groups.values()]
-    .map((group) => ({ key: normalise(group.name), group }))
+    .map((group) => {
+      const key = normalise(group.name);
+      return { key, words: significantWords(key), group };
+    })
     .sort((a, b) => a.key.localeCompare(b.key));
 }

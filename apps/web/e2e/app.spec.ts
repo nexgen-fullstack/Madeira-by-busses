@@ -1,7 +1,9 @@
+import { pinDemoData } from './demo.ts';
 import { expect, test } from '@playwright/test';
 
 // Wednesday 7 Oct 2026, 09:00 in Madeira (WEST = UTC+1). Demo data only.
 test.beforeEach(async ({ page }) => {
+  await pinDemoData(page);
   await page.clock.setFixedTime(new Date('2026-10-07T08:00:00Z'));
 });
 

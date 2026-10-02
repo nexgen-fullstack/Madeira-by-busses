@@ -19,8 +19,11 @@ export interface GtfsStop {
   parent_station?: string;
   zone_id?: string;
   stop_code?: string;
+  stop_desc?: string;
   /** Extension column `stop_elevation` (metres); not part of the GTFS spec. */
   elevation?: number;
+  /** Extension column `municipality` (Portuguese INE code, e.g. 3103 = Funchal). */
+  municipality?: string;
 }
 
 export interface GtfsRoute {
@@ -134,7 +137,9 @@ export function parseGtfs(files: GtfsFiles): GtfsFeed {
     parent_station: optional(r.parent_station),
     zone_id: optional(r.zone_id),
     stop_code: optional(r.stop_code),
+    stop_desc: optional(r.stop_desc),
     elevation: r.stop_elevation ? Number(r.stop_elevation) : undefined,
+    municipality: optional(r.municipality),
   }));
 
   const routes = file('routes.txt', true).map<GtfsRoute>((r) => ({

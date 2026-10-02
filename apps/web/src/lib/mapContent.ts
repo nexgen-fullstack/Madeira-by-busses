@@ -84,12 +84,14 @@ export function itineraryContent(net: Network, it: Itinerary): MapContent {
   };
 }
 
-export function routeContent(net: Network, route: number, highlight?: number): MapContent {
+/** A line on the map: all its route variants, with one pattern drawn bolder. */
+export function routeContent(net: Network, routes: number[], highlight?: number): MapContent {
   const lines: MapLine[] = [];
   const points = new Map<number, MapPoint>();
+  const route = routes[0]!;
   const color = routeColor(net, route);
   net.patterns.forEach((p, i) => {
-    if (p.route !== route) return;
+    if (!routes.includes(p.route)) return;
     lines.push({ coords: net.shape(i), color, width: i === highlight ? 6 : 4 });
     for (const s of p.stops) {
       const st = net.stops[s]!;

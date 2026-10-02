@@ -4,17 +4,17 @@ import { haversine, type LatLon } from './geo.ts';
  * approximate position of each seat. Fares depend on whether a trip stays
  * inside one municipality, so every stop is tagged with one of these codes. */
 export const MUNICIPALITIES = [
-  { code: 'FNC', name: 'Funchal', lat: 32.6497, lon: -16.9086 },
-  { code: 'CML', name: 'Câmara de Lobos', lat: 32.6486, lon: -16.9775 },
-  { code: 'RBR', name: 'Ribeira Brava', lat: 32.6733, lon: -17.0639 },
-  { code: 'PSO', name: 'Ponta do Sol', lat: 32.6811, lon: -17.1006 },
-  { code: 'CLT', name: 'Calheta', lat: 32.7213, lon: -17.1772 },
-  { code: 'PMZ', name: 'Porto Moniz', lat: 32.867, lon: -17.1695 },
-  { code: 'SVC', name: 'São Vicente', lat: 32.7963, lon: -17.043 },
-  { code: 'STN', name: 'Santana', lat: 32.8058, lon: -16.8822 },
-  { code: 'MCH', name: 'Machico', lat: 32.7179, lon: -16.767 },
-  { code: 'SCR', name: 'Santa Cruz', lat: 32.6878, lon: -16.793 },
-  { code: 'PST', name: 'Porto Santo', lat: 33.061, lon: -16.342 },
+  { code: 'CLT', ine: '3101', name: 'Calheta', lat: 32.7213, lon: -17.1772 },
+  { code: 'CML', ine: '3102', name: 'Câmara de Lobos', lat: 32.6486, lon: -16.9775 },
+  { code: 'FNC', ine: '3103', name: 'Funchal', lat: 32.6497, lon: -16.9086 },
+  { code: 'MCH', ine: '3104', name: 'Machico', lat: 32.7179, lon: -16.767 },
+  { code: 'PSO', ine: '3105', name: 'Ponta do Sol', lat: 32.6811, lon: -17.1006 },
+  { code: 'PMZ', ine: '3106', name: 'Porto Moniz', lat: 32.867, lon: -17.1695 },
+  { code: 'RBR', ine: '3107', name: 'Ribeira Brava', lat: 32.6733, lon: -17.0639 },
+  { code: 'SCR', ine: '3108', name: 'Santa Cruz', lat: 32.6878, lon: -16.793 },
+  { code: 'STN', ine: '3109', name: 'Santana', lat: 32.8058, lon: -16.8822 },
+  { code: 'SVC', ine: '3110', name: 'São Vicente', lat: 32.7963, lon: -17.043 },
+  { code: 'PST', ine: '3201', name: 'Porto Santo', lat: 33.061, lon: -16.342 },
 ] as const;
 
 export type MunicipalityCode = (typeof MUNICIPALITIES)[number]['code'];
@@ -23,6 +23,11 @@ const CODES = new Set<string>(MUNICIPALITIES.map((m) => m.code));
 
 export function isMunicipalityCode(value: string | undefined): value is MunicipalityCode {
   return value !== undefined && CODES.has(value.toUpperCase());
+}
+
+/** Our code for a Portuguese INE municipality code (as used in Portuguese GTFS feeds). */
+export function municipalityFromIne(ine: string | undefined): MunicipalityCode | undefined {
+  return MUNICIPALITIES.find((m) => m.ine === ine?.trim())?.code;
 }
 
 /**

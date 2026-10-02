@@ -1,8 +1,8 @@
 import type { FareTable } from './fares.ts';
 import { encodePolyline, haversine, type LatLon } from './geo.ts';
-import type { GtfsFeed, GtfsStopTime } from './gtfs.ts';
-import { isMunicipalityCode, nearestMunicipality } from './municipality.ts';
-import { gtfsDateToIso } from './time.ts';
+import type { GtfsAgency, GtfsFeed, GtfsRoute, GtfsStop, GtfsStopTime } from './gtfs.ts';
+import { isMunicipalityCode, municipalityFromIne, nearestMunicipality } from './municipality.ts';
+import { addDays, gtfsDateToIso, madeiraHolidays, weekday } from './time.ts';
 
 /**
  * The network bundle is the compact, JSON-serialisable form of the merged
@@ -17,6 +17,13 @@ export interface NetworkBundle {
   generatedAt: string;
   /** True when the timetable is synthetic demo data. */
   demo: boolean;
+  /**
+   * Set when the official timetable ended before today and the pipeline
+   * carried its weekly pattern forward: the app must say so.
+   */
+  projected?: { officialUntil: string; until: string };
+  /** Operators of the network that this bundle does not include yet. */
+  missingOperators?: string[];
   sources: BundleSource[];
   validity: { from: string; to: string };
   agencies: BAgency[];
@@ -110,10 +117,23 @@ export interface BuildOptions {
   demo: boolean;
   fares: FareTable;
   generatedAt?: string;
+  /** Display name for a stop (e.g. to expand abbreviations); defaults to stop_name. */
+  stopName?: (stop: GtfsStop) => string;
+  /** Display name for a route; defaults to route_long_name. */
+  routeName?: (route: GtfsRoute) => string;
+  /** Display name for an operator; defaults to agency_name. */
+  agencyName?: (agency: GtfsAgency) => string;
+  /** Display text for a trip headsign; defaults to trip_headsign. */
+  headsign?: (headsign: string) => string;
+  /** Carry an expired weekly pattern forward up to this ISO date (see `projectServices`). */
+  extendUntil?: string;
+  missingOperators?: string[];
 }
 
 export interface BuildReport {
   warnings: string[];
+  /** Services whose weekly pattern was carried past the feed's end. */
+  projectedServices: number;
   guessedMunicipalities: number;
   interpolatedTimes: number;
   expandedFrequencyTrips: number;
@@ -128,6 +148,7 @@ export function buildBundle(
 ): { bundle: NetworkBundle; report: BuildReport } {
   const report: BuildReport = {
     warnings: [],
+    projectedServices: 0,
     guessedMunicipalities: 0,
     interpolatedTimes: 0,
     expandedFrequencyTrips: 0,
@@ -151,7 +172,7 @@ export function buildBundle(
       agencyIndex.set(a.agency_id, agencies.length);
       agencies.push({
         id: id(a.agency_id || a.agency_name),
-        name: a.agency_name,
+        name: options.agencyName ? options.agencyName(a) : a.agency_name,
         url: a.agency_url,
         phone: a.agency_phone,
       });
@@ -168,17 +189,17 @@ export function buildBundle(
         report.warnings.push(`Stop ${s.stop_id} has no coordinates; skipped`);
         continue;
       }
-      const tagged = isMunicipalityCode(s.zone_id);
+      const tagged = isMunicipalityCode(s.zone_id)
+        ? (s.zone_id!.toUpperCase() as string)
+        : municipalityFromIne(s.municipality);
       if (!tagged) report.guessedMunicipalities++;
       stopIndex.set(s.stop_id, stops.length);
       stops.push({
         id: id(s.stop_id),
-        name: s.stop_name,
+        name: options.stopName ? options.stopName(s) : s.stop_name,
         lat: round6(s.stop_lat),
         lon: round6(s.stop_lon),
-        muni: tagged
-          ? s.zone_id!.toUpperCase()
-          : nearestMunicipality({ lat: s.stop_lat, lon: s.stop_lon }),
+        muni: tagged ?? nearestMunicipality({ lat: s.stop_lat, lon: s.stop_lon }),
         ...(tagged ? {} : { muniGuessed: true }),
         ...(s.parent_station ? { station: id(s.parent_station) } : {}),
         ...(s.stop_code ? { code: s.stop_code } : {}),
@@ -202,7 +223,7 @@ export function buildBundle(
         id: id(r.route_id),
         agency,
         short: r.route_short_name,
-        long: r.route_long_name,
+        long: options.routeName ? options.routeName(r) : r.route_long_name,
         color:
           normaliseColor(r.route_color) ?? DEFAULT_COLORS[routes.length % DEFAULT_COLORS.length]!,
         text: normaliseColor(r.route_text_color) ?? 'FFFFFF',
@@ -340,7 +361,9 @@ export function buildBundle(
         group = { route, stops: seq, trips: [] };
         groups.set(key, group);
       }
-      const headsign = trip.trip_headsign ?? stops[seq[seq.length - 1]!]!.name;
+      const headsign = trip.trip_headsign
+        ? (options.headsign?.(trip.trip_headsign) ?? trip.trip_headsign)
+        : stops[seq[seq.length - 1]!]!.name;
       const freqs = frequenciesByTrip.get(trip.trip_id);
       if (freqs) {
         const base = times[1]!;
@@ -405,6 +428,11 @@ export function buildBundle(
     }
   }
 
+  const projection = options.extendUntil
+    ? projectServices(services, options.extendUntil)
+    : undefined;
+  if (projection) report.projectedServices = projection.services;
+
   const usedServices = services.filter((s) => s.days !== 0 || s.add.length > 0);
   const validity = {
     from: usedServices.reduce((m, s) => (s.start < m ? s.start : m), '9999-12-31'),
@@ -416,6 +444,10 @@ export function buildBundle(
     version: 1,
     generatedAt: options.generatedAt ?? new Date().toISOString(),
     demo: options.demo,
+    ...(projection
+      ? { projected: { officialUntil: projection.officialUntil, until: options.extendUntil! } }
+      : {}),
+    ...(options.missingOperators?.length ? { missingOperators: options.missingOperators } : {}),
     sources,
     validity,
     agencies,
@@ -433,6 +465,90 @@ export function buildBundle(
     },
   };
   return { bundle, report };
+}
+
+/**
+ * Carries an expired timetable forward. Operators sometimes publish the next
+ * timetable late; rather than showing nothing, we repeat each service's
+ * weekly pattern after the feed's last day: a service keeps running on the
+ * weekdays it ran on in the last eight weeks, and Madeira's public holidays
+ * use whichever service ran on holidays (otherwise the Sunday one). The
+ * bundle records the official end date so the app can say so.
+ */
+export function projectServices(
+  services: BService[],
+  until: string,
+): { officialUntil: string; services: number } | undefined {
+  const lastOf = (s: BService) => {
+    const lastAdd = s.add[s.add.length - 1];
+    if (s.days === 0) return lastAdd;
+    return lastAdd && lastAdd > s.end ? lastAdd : s.end;
+  };
+  const officialUntil = services.map(lastOf).filter(Boolean).sort().pop();
+  if (!officialUntil || officialUntil >= until) return undefined;
+
+  const windowStart = addDays(officialUntil, -55);
+  const years = new Set([windowStart.slice(0, 4), officialUntil.slice(0, 4), until.slice(0, 4)]);
+  const holidays = new Set(
+    [...years].flatMap((y) => madeiraHolidays(Number(y)).map((h) => h.date)),
+  );
+  const isActive = (s: BService, d: string) =>
+    !s.rem.includes(d) &&
+    (s.add.includes(d) || (d >= s.start && d <= s.end && (s.days & (1 << weekday(d))) !== 0));
+
+  // Observed behaviour in the last eight weeks of the feed.
+  const days: string[] = [];
+  for (let d = windowStart; d <= officialUntil; d = addDays(d, 1)) days.push(d);
+  const holidayDays = days.filter((d) => holidays.has(d));
+  const plainDays = days.filter((d) => !holidays.has(d));
+
+  let projected = 0;
+  const holidayRunners: BService[] = [];
+  const masks = services.map((s) => {
+    let mask = 0;
+    for (let wd = 0; wd < 7; wd++) {
+      const sample = plainDays.filter((d) => weekday(d) === wd);
+      const active = sample.filter((d) => isActive(s, d)).length;
+      if (sample.length > 0 && active / sample.length >= 0.5) mask |= 1 << wd;
+    }
+    if (
+      holidayDays.length > 0 &&
+      holidayDays.filter((d) => isActive(s, d)).length / holidayDays.length >= 0.5
+    ) {
+      holidayRunners.push(s);
+    }
+    return mask;
+  });
+  // Without holidays in the window, the Sunday-only services run on holidays.
+  const runsOnHolidays = (s: BService, mask: number) =>
+    holidayDays.length > 0 ? holidayRunners.includes(s) : mask === 1 << 6;
+
+  services.forEach((s, i) => {
+    const mask = masks[i]!;
+    const onHolidays = runsOnHolidays(s, mask);
+    if (mask === 0 && !onHolidays) return;
+    const from = addDays(officialUntil, 1);
+    // Keep the official dates as explicit additions, then add the projected range.
+    if (s.days !== 0) {
+      for (let d = s.start; d <= s.end && d <= officialUntil; d = addDays(d, 1)) {
+        if (isActive(s, d) && !s.add.includes(d)) s.add.push(d);
+      }
+    }
+    s.add = s.add.filter((d) => d <= officialUntil);
+    s.rem = s.rem.filter((d) => d <= officialUntil);
+    s.days = mask;
+    s.start = from;
+    s.end = until;
+    for (const h of holidays) {
+      if (h < from || h > until) continue;
+      if (onHolidays) s.add.push(h);
+      else if (mask & (1 << weekday(h))) s.rem.push(h);
+    }
+    s.add.sort();
+    s.rem.sort();
+    projected++;
+  });
+  return { officialUntil, services: projected };
 }
 
 /** Fills missing times (non-timepoints) by distance between timed stops. */

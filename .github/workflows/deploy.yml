@@ -1,18 +1,21 @@
 name: Deploy website
 
-# Publishes the app to GitHub Pages on every push to the default branch.
+# Publishes the app to GitHub Pages on every push to the default branch, and
+# every night so the published timetable follows the operators' feeds.
 # One-time setup by a repository admin: Settings → Pages → Build and
 # deployment → Source: "GitHub Actions". Until then this workflow only builds
 # and leaves a notice instead of failing.
 on:
   push:
+  schedule:
+    - cron: '47 3 * * *'
   workflow_dispatch:
     inputs:
       data:
-        description: Timetable source
+        description: Timetables to publish (the demo network is always included)
         type: choice
-        options: [demo, real]
-        default: demo
+        options: [real, demo]
+        default: real
 
 permissions:
   contents: read
@@ -49,7 +52,12 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Build timetable data
-        run: pnpm ${{ inputs.data == 'real' && 'data:real' || 'data' }}
+        run: |
+          pnpm data
+          if [ "${{ inputs.data }}" != "demo" ]; then
+            # Without the real timetable the site still works on the demo network.
+            pnpm data:real || echo "::warning title=Real timetable unavailable::Published with the demo network only; see the log above."
+          fi
       - run: pnpm --filter @madeirabus/web build
       - uses: actions/upload-pages-artifact@v3
         if: steps.pages.outputs.enabled == 'true'

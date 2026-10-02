@@ -4,6 +4,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { gzipSync, strToU8 } from 'fflate';
 import {
+  addDays,
   buildBundle,
   madeiraNow,
   parseGtfs,
@@ -13,15 +14,18 @@ import {
 } from '@madeirabus/engine';
 import { generateDemoGtfs } from './demo/generate.ts';
 import { loadFeedFiles, parseFeedArg } from './load.ts';
+import { expandAbbreviations, prettyAgencyName, prettyRouteName, prettyStopName } from './names.ts';
 import { buildReportMarkdown, diffBundles, diffMarkdown } from './report.ts';
 import { validateBundle, validateFeed, type Issue } from './validate.ts';
 
 const USAGE = `madeirabus-pipeline <command>
 
   demo  --out <dir>                       write the synthetic demo network as GTFS
-  build --feed [name=]<dir|zip|url> …     build the app's network bundle
+  build --feed [name=]<dir|zip|url>[|fallback] …   build the app's network bundle
         --out <bundle.json> [--report <report.md>] [--diff <diff.md>]
-        [--demo] [--strict]
+        [--demo] [--strict] [--pretty-names]
+        [--extend-days <n>]          carry an expired timetable forward n days from today
+        [--missing <op1,op2>]        operators not covered yet (shown in the app)
   validate --feed [name=]<dir|zip|url> …  validate feeds only
   diff <old.json> <new.json>              summarise timetable changes
 `;
@@ -104,15 +108,41 @@ async function build(args: Args) {
   const out = flag(args, 'out');
   if (!out) throw new Error('--out is required');
   const { loaded, today } = await loadFeeds(args);
-  const errors = loaded.flatMap((l) => l.issues).filter((i) => i.severity === 'error');
+  const extendDays = flag(args, 'extend-days');
+  const extendUntil = extendDays ? addDays(today, Number(extendDays)) : undefined;
+  // An expired feed is expected when we are about to carry it forward.
+  const ignore = new Set(extendUntil ? ['feed-expired'] : []);
+  const errors = loaded
+    .flatMap((l) => l.issues)
+    .filter((i) => i.severity === 'error' && !ignore.has(i.code));
   if (errors.length > 0 && args.flags.has('strict')) {
     throw new Error(`${errors.length} kinds of errors in the feeds; refusing to build (--strict)`);
   }
 
   const { bundle, report } = buildBundle(
     loaded.map((l) => l.input),
-    { demo: args.flags.has('demo'), fares: SIGA_FARES_2026 },
+    {
+      demo: args.flags.has('demo'),
+      fares: SIGA_FARES_2026,
+      extendUntil,
+      ...(args.flags.has('pretty-names') && {
+        stopName: prettyStopName,
+        routeName: prettyRouteName,
+        agencyName: prettyAgencyName,
+        headsign: expandAbbreviations,
+      }),
+      missingOperators: flag(args, 'missing')
+        ?.split(',')
+        .map((s) => s.trim())
+        .filter(Boolean),
+    },
   );
+  if (bundle.projected) {
+    console.log(
+      `! Official timetable ended ${bundle.projected.officialUntil}; ` +
+        `${report.projectedServices} services carried forward to ${bundle.projected.until}`,
+    );
+  }
   const bundleIssues = validateBundle(bundle, today);
   printIssues('Network', bundleIssues);
 

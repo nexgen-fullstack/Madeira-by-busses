@@ -19,6 +19,8 @@ export interface Settings {
   /** m/s */
   walkSpeed: number;
   map: MapLayers;
+  /** Real timetables, or the invented whole-island demo network. */
+  dataset: 'real' | 'demo';
 }
 
 export interface ActiveTrip {
@@ -29,8 +31,15 @@ export interface ActiveTrip {
 
 type DataState =
   | { status: 'loading' }
-  | { status: 'error'; error: string }
-  | { status: 'ready'; net: Network; planner: PlannerClient };
+  | { status: 'error'; error: string; dataset?: Settings['dataset'] }
+  | {
+      status: 'ready';
+      dataset?: Settings['dataset'];
+      net: Network;
+      planner: PlannerClient;
+      /** The real timetable was asked for but is not part of this build. */
+      fallback?: boolean;
+    };
 
 interface AppValue {
   data: DataState;
@@ -58,6 +67,7 @@ export function useNetwork(): { net: Network; planner: PlannerClient } {
 }
 
 const SETTINGS_KEY = 'madeirabus.settings.v1';
+const LOADING: DataState = { status: 'loading' };
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [settings, setSettingsState] = useState<Settings>(() =>
@@ -67,16 +77,20 @@ export function AppProvider({ children }: { children: ReactNode }) {
         payment: 'giro',
         walkSpeed: 1.25,
         map: DEFAULT_LAYERS,
+        dataset: 'real',
       });
       return { ...stored, map: { ...DEFAULT_LAYERS, ...stored.map } };
     })(),
   );
   const [data, setData] = useState<DataState>({ status: 'loading' });
+  const dataset = settings.dataset;
   const [trip, setTrip] = useState<ActiveTrip | undefined>();
   const [online, setOnline] = useState(() => navigator.onLine);
   const [attempt, setAttempt] = useState(0);
 
   const setSettings = useCallback((patch: Partial<Settings>) => {
+    // Itineraries hold stop indices of the network they were planned on.
+    if (patch.dataset) setTrip(undefined);
     setSettingsState((s) => {
       const next = { ...s, ...patch };
       save(SETTINGS_KEY, next);
@@ -86,24 +100,37 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let cancelled = false;
+    let planner: PlannerClient | undefined;
     (async () => {
       try {
-        const res = await fetch(`${import.meta.env.BASE_URL}data/network.json`);
+        const fetchBundle = (name: string) => fetch(`${import.meta.env.BASE_URL}data/${name}.json`);
+        let res = dataset === 'real' ? await fetchBundle('network') : undefined;
+        // Builds without the real timetable (local dev, CI) still work on the demo.
+        // A dev server answers a missing file with the app page instead of a 404.
+        const fallback =
+          res !== undefined &&
+          (res.status === 404 || !(res.headers.get('content-type') ?? '').includes('json'));
+        if (!res || fallback) res = await fetchBundle('demo');
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.text();
         const net = new Network(JSON.parse(json));
-        const planner = new PlannerClient();
+        planner = new PlannerClient();
         await planner.init(json);
-        if (!cancelled) setData({ status: 'ready', net, planner });
+        if (!cancelled) setData({ status: 'ready', dataset, net, planner, fallback });
       } catch (err) {
         if (!cancelled)
-          setData({ status: 'error', error: err instanceof Error ? err.message : String(err) });
+          setData({
+            status: 'error',
+            dataset,
+            error: err instanceof Error ? err.message : String(err),
+          });
       }
     })();
     return () => {
       cancelled = true;
+      planner?.dispose();
     };
-  }, [attempt]);
+  }, [attempt, dataset]);
 
   useEffect(() => {
     const on = () => setOnline(true);
@@ -125,9 +152,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setData({ status: 'loading' });
     setAttempt((a) => a + 1);
   }, []);
+  // While another dataset loads, screens see "loading" rather than stale data.
+  const current: DataState = data.status !== 'loading' && data.dataset !== dataset ? LOADING : data;
   const value = useMemo<AppValue>(
-    () => ({ data, settings, setSettings, trip, setTrip, online, reload }),
-    [data, settings, setSettings, trip, online, reload],
+    () => ({ data: current, settings, setSettings, trip, setTrip, online, reload }),
+    [current, settings, setSettings, trip, online, reload],
   );
 
   return (

@@ -72,6 +72,24 @@ describe('Planner', () => {
     expect(walk.distance).toBeLessThan(260);
   });
 
+  it('also boards at stops a short walk from the chosen stop', () => {
+    // E is only a terminus; the R3 bus to G leaves from F, ~200 m away.
+    const plan = (stopWalk: number) =>
+      planner.plan({
+        from: place('E'),
+        to: place('G'),
+        date: WEEKDAY,
+        time: at(9, 30),
+        options: { stopWalk },
+      });
+    const [best] = plan(400);
+    expect(best!.legs.map((l) => l.kind)).toEqual(['walk', 'ride']);
+    expect(rides(best!).map(routeOf)).toEqual(['3']);
+    expect((best!.legs[0] as WalkLeg).distance).toBeGreaterThan(150);
+    // Without it, nothing leaves from E itself.
+    expect(plan(0)).toEqual([]);
+  });
+
   it('respects the service calendar', () => {
     const results = planner.plan({
       from: place('A'),
@@ -146,5 +164,16 @@ describe('paretoFilter', () => {
     const b = it0(90, 210, 1); // dominated by a
     const c = it0(120, 190, 2); // faster but one more ride: kept
     expect(paretoFilter([a, b, c])).toEqual([a, c]);
+  });
+
+  it('only offers an extra transfer when it saves enough time', () => {
+    const direct = it0(100, 1000, 1);
+    const quicker = it0(100, 500, 2); // saves 500 s with one change: kept
+    const marginal = it0(100, 900, 2); // saves 100 s: hidden
+    const twoChanges = it0(100, 400, 3); // vs `quicker`: saves 100 s with one more change
+    expect(paretoFilter([direct, quicker, marginal, twoChanges], 300)).toEqual([direct, quicker]);
+    // Walking only is not a transfer.
+    const walk = it0(100, 1050, 0);
+    expect(paretoFilter([walk, direct], 300)).toEqual([walk, direct]);
   });
 });

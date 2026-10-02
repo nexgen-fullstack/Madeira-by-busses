@@ -398,6 +398,24 @@ input:focus-visible {
   background: var(--surface-2);
   color: var(--muted);
 }
+.banner--info {
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.banner__close {
+  flex: none;
+  margin: -6px -6px -6px auto;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  color: var(--muted);
+}
+.banner__close:hover {
+  background: var(--border);
+}
 .banner--warn {
   background: var(--warn-bg);
   color: var(--warn);
@@ -471,12 +489,19 @@ input:focus-visible {
 }
 
 input[type='date'],
-input[type='time'] {
+input[type='time'],
+.select {
   border: 1px solid var(--border);
   background: var(--surface);
   border-radius: 10px;
   padding: 7px 10px;
   min-height: 40px;
+}
+
+.select {
+  width: 100%;
+  margin-bottom: 12px;
+  font-weight: 600;
 }
 
 /* ---------- Plan ---------- */
@@ -1287,4 +1312,24 @@ input[type='time'] {
 .maplibregl-ctrl-group {
   border-radius: 10px !important;
   box-shadow: 0 2px 10px rgb(0 0 0 / 18%) !important;
+}
+
+.lang-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.lang-grid button {
+  padding: 9px 6px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+.lang-grid button[aria-pressed='true'] {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
 }

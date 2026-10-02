@@ -1,3 +1,4 @@
+import { pinDemoData } from './demo.ts';
 import { expect, test, type Page } from '@playwright/test';
 
 // A 1×1 PNG used for imagery tiles.
@@ -48,6 +49,7 @@ async function stubMapServers(page: Page) {
 test.use({ serviceWorkers: 'block' });
 
 test.beforeEach(async ({ page }) => {
+  await pinDemoData(page);
   await page.clock.setFixedTime(new Date('2026-10-07T08:00:00Z'));
   await stubMapServers(page);
 });

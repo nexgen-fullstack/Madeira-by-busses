@@ -42,3 +42,13 @@ export function parseTimeInput(value: string): number {
 export function toTimeInput(seconds: number): string {
   return formatClock(seconds);
 }
+
+/** "31 July 2026" in the reader's language. */
+export function fullDate(t: I18n, iso: string): string {
+  return new Intl.DateTimeFormat(t.locale, {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(new Date(`${iso}T00:00:00Z`));
+}

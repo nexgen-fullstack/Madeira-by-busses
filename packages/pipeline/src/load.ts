@@ -3,8 +3,26 @@ import { join } from 'node:path';
 import { strFromU8, unzipSync } from 'fflate';
 import type { GtfsFiles } from '@madeirabus/engine';
 
-/** Loads a GTFS feed from a directory, a .zip file or an http(s) URL. */
+/**
+ * Loads a GTFS feed from a directory, a .zip file or an http(s) URL.
+ * Several locations separated by `|` are tried in order (e.g. the operator's
+ * URL first, then the Mobility Database mirror).
+ */
 export async function loadFeedFiles(location: string): Promise<GtfsFiles> {
+  const candidates = location.split('|').filter(Boolean);
+  let lastError: unknown;
+  for (const candidate of candidates) {
+    try {
+      return await loadOne(candidate);
+    } catch (err) {
+      lastError = err;
+      if (candidates.length > 1) console.warn(`  ${candidate} failed: ${(err as Error).message}`);
+    }
+  }
+  throw lastError instanceof Error ? lastError : new Error(String(lastError));
+}
+
+async function loadOne(location: string): Promise<GtfsFiles> {
   if (/^https?:\/\//.test(location)) {
     const res = await fetch(location, { headers: { 'user-agent': 'madeirabus-pipeline' } });
     if (!res.ok) throw new Error(`Download failed: ${res.status} ${res.statusText} (${location})`);

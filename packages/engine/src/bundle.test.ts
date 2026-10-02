@@ -1,10 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { buildBundle } from './bundle.ts';
+import { buildBundle, projectServices, type BService } from './bundle.ts';
 import { toCsv } from './csv.ts';
 import { SIGA_FARES_2026 } from './fares.ts';
 import { parseGtfs, type GtfsFiles } from './gtfs.ts';
 import { Network } from './network.ts';
 import { at, fixtureBundle, WEEKDAY } from './test-fixtures.ts';
+import { addDays, weekday } from './time.ts';
 
 function feed(extra: Partial<GtfsFiles> = {}): GtfsFiles {
   return {
@@ -128,5 +129,108 @@ describe('Network', () => {
   it('searches stops without accents or case', () => {
     expect(net.searchStops('stop c')[0]!.name).toBe('Stop C');
     expect(net.searchStops('')).toEqual([]);
+  });
+
+  it('finds stops by words in any order, ignoring linking words', () => {
+    const { bundle } = buildBundle(
+      [
+        {
+          feed: parseGtfs(
+            feed({
+              'stops.txt': toCsv(
+                ['stop_id', 'stop_name', 'stop_lat', 'stop_lon'],
+                [
+                  ['X', 'Igreja Curral Freiras', 32.72, -16.97],
+                  ['Y', 'Curral Romeiros', 32.67, -16.89],
+                  ['Z', 'Avenida do Mar', 32.6469, -16.9086],
+                ],
+              ),
+            }),
+          ),
+          source: { name: 't' },
+        },
+      ],
+      { demo: false, fares: SIGA_FARES_2026 },
+    );
+    const real = new Network(bundle);
+    const names = (q: string) => real.searchStops(q).map((g) => g.name);
+    expect(names('Curral das Freiras')).toEqual(['Igreja Curral Freiras']);
+    expect(names('curral')).toEqual(['Curral Romeiros', 'Igreja Curral Freiras']);
+    expect(names('Av Mar')).toEqual(['Avenida do Mar']);
+    expect(names('mar')).toEqual(['Avenida do Mar']);
+  });
+});
+
+describe('projectServices', () => {
+  // A feed whose official timetable ends on Friday 31 July 2026, as the
+  // Horários do Funchal feed did. Holidays in its last eight weeks: 10 June
+  // and 1 July, both Wednesdays, on which the Sunday service ran.
+  const services = (): BService[] => {
+    const saturdays: string[] = [];
+    for (let d = '2026-06-06'; d <= '2026-07-31'; d = addDays(d, 7)) saturdays.push(d);
+    return [
+      {
+        id: 'weekday',
+        days: 0b0011111,
+        start: '2026-04-13',
+        end: '2026-07-31',
+        add: [],
+        rem: ['2026-06-10', '2026-07-01'],
+      },
+      {
+        id: 'sunday',
+        days: 1 << 6,
+        start: '2026-04-13',
+        end: '2026-07-31',
+        add: ['2026-06-10', '2026-07-01'],
+        rem: [],
+      },
+      // calendar_dates only, like the real feed's services.
+      { id: 'saturday', days: 0, start: '', end: '', add: saturdays, rem: [] },
+      {
+        id: 'spring-only',
+        days: 0b0011111,
+        start: '2026-04-13',
+        end: '2026-05-29',
+        add: [],
+        rem: [],
+      },
+    ];
+  };
+  const active = (s: BService, d: string) =>
+    !s.rem.includes(d) &&
+    (s.add.includes(d) || (d >= s.start && d <= s.end && (s.days & (1 << weekday(d))) !== 0));
+
+  it('carries the weekly pattern forward and applies holidays', () => {
+    const list = services();
+    expect(projectServices(list, '2026-12-31')).toEqual({
+      officialUntil: '2026-07-31',
+      services: 3,
+    });
+    const [weekday_, sunday, saturday, spring] = list as [BService, BService, BService, BService];
+    // Ordinary days follow the weekday the service used to run on.
+    expect(active(weekday_, '2026-10-07')).toBe(true); // Wednesday
+    expect(active(weekday_, '2026-10-10')).toBe(false); // Saturday
+    expect(active(saturday, '2026-10-10')).toBe(true);
+    expect(active(sunday, '2026-10-11')).toBe(true);
+    // 5 October (Monday) and 15 August (Saturday) are holidays: Sunday service.
+    expect(active(weekday_, '2026-10-05')).toBe(false);
+    expect(active(sunday, '2026-10-05')).toBe(true);
+    expect(active(saturday, '2026-08-15')).toBe(false);
+    expect(active(sunday, '2026-08-15')).toBe(true);
+    // The official dates are untouched.
+    expect(active(weekday_, '2026-04-14')).toBe(true);
+    expect(active(weekday_, '2026-07-01')).toBe(false);
+    expect(active(saturday, '2026-07-25')).toBe(true);
+    // A service that had already ended is not revived.
+    expect(active(spring, '2026-10-07')).toBe(false);
+    // Nothing runs past the projection horizon.
+    expect(active(weekday_, '2027-01-04')).toBe(false);
+  });
+
+  it('leaves a current timetable alone', () => {
+    const list = services();
+    expect(projectServices(list, '2026-07-31')).toBeUndefined();
+    expect(list).toEqual(services());
   });
 });

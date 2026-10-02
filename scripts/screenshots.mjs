@@ -27,7 +27,16 @@ async function relayTiles(context) {
     }
   });
 }
+// The tour below shows the whole-island demo network; real data comes last.
+async function pinDemo(context) {
+  await context.addInitScript(() => {
+    const key = 'madeirabus.settings.v1';
+    const stored = JSON.parse(localStorage.getItem(key) ?? '{}');
+    localStorage.setItem(key, JSON.stringify({ ...stored, dataset: stored.dataset ?? 'demo' }));
+  });
+}
 await relayTiles(ctx);
+await pinDemo(ctx);
 const page = await ctx.newPage();
 page.on('pageerror', (e) => console.log('pageerror', e.message));
 await page.clock.setFixedTime(new Date('2026-10-07T08:00:00Z'));
@@ -94,6 +103,7 @@ const desk = await browser.newContext({
   serviceWorkers: 'block',
 });
 await relayTiles(desk);
+await pinDemo(desk);
 const d = await desk.newPage();
 await d.clock.setFixedTime(new Date('2026-10-07T08:00:00Z'));
 await d.goto(BASE);
@@ -104,5 +114,32 @@ await d.locator('.it-card').first().click();
 await d.waitForSelector('.timeline');
 await d.waitForTimeout(2500);
 await d.screenshot({ path: OUT + 'desktop.png' });
+
+// Real Horários do Funchal timetable (needs `pnpm data:real` before the build).
+const real = await browser.newContext({
+  ...devices['Pixel 7'],
+  locale: 'uk-UA',
+  timezoneId: 'Atlantic/Madeira',
+  serviceWorkers: 'block',
+});
+await relayTiles(real);
+const r = await real.newPage();
+await r.clock.setFixedTime(new Date('2026-10-07T08:00:00Z'));
+await r.goto(BASE);
+await r.waitForSelector('.plan');
+await r.getByRole('button', { name: /Igreja Curral das Freiras/ }).click();
+await r.waitForSelector('.it-card');
+await r.locator('.it-card').first().click();
+await r.waitForSelector('.timeline');
+await r.waitForTimeout(2500);
+await r.screenshot({ path: OUT + 'real-itinerary.png' });
+await r.goto(BASE + '#/lines');
+await r.waitForSelector('.line-list');
+await r.waitForTimeout(1500);
+await r.screenshot({ path: OUT + 'real-lines.png' });
+await r.getByRole('button', { name: /^181\b/ }).click();
+await r.waitForSelector('.timetable');
+await r.waitForTimeout(2500);
+await r.screenshot({ path: OUT + 'real-line.png' });
 await browser.close();
 console.log('done');
