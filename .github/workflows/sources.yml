@@ -1,0 +1,55 @@
+name: Collect timetable sources
+
+# Downloads the public sources for operators without a GTFS feed (CAM and
+# SIGA Rodoeste timetables from the SIGA and operator websites, bus routes and
+# stops from OpenStreetMap) and commits them to data/sources/ on the same
+# branch, for the pipeline to parse. Runs when the collector changes, or by
+# hand.
+on:
+  push:
+    paths:
+      - scripts/fetch-sources.mjs
+      - .github/workflows/sources.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sources-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: sudo apt-get update -q && sudo apt-get install -y -q poppler-utils
+      - name: Collect sources
+        run: |
+          rm -rf data/sources
+          node scripts/fetch-sources.mjs data/sources
+      - name: Summary
+        run: |
+          {
+            echo '### Timetable sources'
+            echo '```json'
+            jq '{fetchedAt, osm, pages: .web.pages, pdfs: (.web.pdfs | length), errors: (.web.errors | length)}' data/sources/manifest.json
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f data/sources
+          if git diff --cached --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git commit -q -m "Update timetable sources ($(date -u +%Y-%m-%d))"
+          git pull -q --rebase origin "${GITHUB_REF_NAME}"
+          git push -q origin "HEAD:${GITHUB_REF_NAME}"
