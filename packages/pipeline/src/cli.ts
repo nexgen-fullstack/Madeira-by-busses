@@ -15,6 +15,8 @@ import {
 import { generateDemoGtfs } from './demo/generate.ts';
 import { loadFeedFiles, parseFeedArg } from './load.ts';
 import { expandAbbreviations, prettyAgencyName, prettyRouteName, prettyStopName } from './names.ts';
+import { DEMO_PLACES } from './demo/places.ts';
+import { placesFromOsm } from './places.ts';
 import { buildReportMarkdown, diffBundles, diffMarkdown } from './report.ts';
 import { validateBundle, validateFeed, type Issue } from './validate.ts';
 
@@ -26,6 +28,7 @@ const USAGE = `madeirabus-pipeline <command>
         [--demo] [--strict] [--pretty-names]
         [--extend-days <n>]          carry an expired timetable forward n days from today
         [--missing <op1,op2>]        operators not covered yet (shown in the app)
+        [--places <osm.json>]        searchable places from an Overpass answer (skipped if absent)
   validate --feed [name=]<dir|zip|url> …  validate feeds only
   diff <old.json> <new.json>              summarise timetable changes
 `;
@@ -143,6 +146,14 @@ async function build(args: Args) {
         `${report.projectedServices} services carried forward to ${bundle.projected.until}`,
     );
   }
+  const placesPath = flag(args, 'places');
+  if (placesPath && existsSync(placesPath)) {
+    bundle.places = placesFromOsm(JSON.parse(await readFile(placesPath, 'utf8')));
+    console.log(`Places: ${bundle.places.length} from ${placesPath}`);
+  } else if (placesPath) {
+    console.log(`! No places file at ${placesPath}; searching stops only`);
+  }
+  if (!bundle.places && bundle.demo) bundle.places = DEMO_PLACES;
   const bundleIssues = validateBundle(bundle, today);
   printIssues('Network', bundleIssues);
 

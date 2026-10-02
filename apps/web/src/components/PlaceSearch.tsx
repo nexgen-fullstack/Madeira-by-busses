@@ -1,8 +1,9 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
-import { LocateFixed, MapPin, X } from 'lucide-react';
-import { municipalityName, type StopGroup } from '@madeirabus/engine';
+import { Bus, LocateFixed, MapPin, X } from 'lucide-react';
+import { municipalityName, type SearchHit } from '@madeirabus/engine';
 import { useI18n } from '../i18n.ts';
-import { useNetwork } from '../state/app.tsx';
+import { placeName, poiLabel } from '../lib/mapStyles.ts';
+import { useApp, useNetwork } from '../state/app.tsx';
 
 export interface PlaceValue {
   name: string;
@@ -23,7 +24,7 @@ interface Props {
   className?: string;
 }
 
-/** Accessible combobox over stops, with a "my location" shortcut. */
+/** Accessible combobox over stops and named places, with a "my location" shortcut. */
 export function PlaceSearch({
   label,
   value,
@@ -35,6 +36,7 @@ export function PlaceSearch({
 }: Props) {
   const t = useI18n();
   const { net } = useNetwork();
+  const { settings } = useApp();
   const [query, setQuery] = useState(value?.name ?? '');
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(0);
@@ -43,13 +45,20 @@ export function PlaceSearch({
 
   useEffect(() => setQuery(value?.name ?? ''), [value]);
 
-  const results = useMemo<StopGroup[]>(
-    () => (open && query && query !== value?.name ? net.searchStops(query, 8) : []),
+  const results = useMemo<SearchHit[]>(
+    () => (open && query && query !== value?.name ? net.search(query, 8) : []),
     [net, query, open, value],
   );
 
-  const pick = (g: StopGroup) => {
-    onChange({ name: g.name, lat: g.lat, lon: g.lon, stops: g.stops, kind: 'stop' });
+  const pick = (hit: SearchHit) => {
+    if (hit.kind === 'stop') {
+      const g = hit.group;
+      onChange({ name: g.name, lat: g.lat, lon: g.lon, stops: g.stops, kind: 'stop' });
+    } else {
+      // A place is a point: the planner walks to whichever stops serve it best.
+      const p = hit.place;
+      onChange({ name: placeName(p, settings.lang), lat: p.lat, lon: p.lon, kind: 'location' });
+    }
     setOpen(false);
     inputRef.current?.blur();
   };
@@ -116,19 +125,36 @@ export function PlaceSearch({
       </div>
       {results.length > 0 && (
         <ul className="place-search__list" role="listbox" id={listId}>
-          {results.map((g, i) => (
+          {results.map((hit, i) => (
             <li
-              key={`${g.name}|${g.muni}`}
+              key={
+                hit.kind === 'stop'
+                  ? `s|${hit.group.name}|${hit.group.muni}`
+                  : `p|${hit.place.name}|${hit.place.lat}|${hit.place.lon}`
+              }
               role="option"
               aria-selected={i === active}
               className={i === active ? 'is-active' : undefined}
               onMouseDown={(e) => {
                 e.preventDefault();
-                pick(g);
+                pick(hit);
               }}
             >
-              <span className="place-search__name">{g.name}</span>
-              <span className="place-search__muni">{municipalityName(g.muni)}</span>
+              {hit.kind === 'stop' ? (
+                <>
+                  <Bus size={16} aria-hidden className="place-search__kind" />
+                  <span className="place-search__name">{hit.group.name}</span>
+                  <span className="place-search__muni">{municipalityName(hit.group.muni)}</span>
+                </>
+              ) : (
+                <>
+                  <MapPin size={16} aria-hidden className="place-search__kind" />
+                  <span className="place-search__name">{placeName(hit.place, settings.lang)}</span>
+                  <span className="place-search__muni">
+                    {poiLabel(settings.lang, hit.place.kind)}
+                  </span>
+                </>
+              )}
             </li>
           ))}
         </ul>

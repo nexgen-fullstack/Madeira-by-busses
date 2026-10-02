@@ -18,6 +18,7 @@ import { generateDemoGtfs } from './demo/generate.ts';
 import { DEMO_ROUTES } from './demo/network.ts';
 import { loadFeedFiles, parseFeedArg, unzipFeed } from './load.ts';
 import { prettyAgencyName, prettyRouteName, prettyStopName } from './names.ts';
+import { placeKind, placesFromOsm, type OsmElement } from './places.ts';
 import { diffBundles, diffMarkdown } from './report.ts';
 import { validateBundle, validateFeed } from './validate.ts';
 
@@ -263,5 +264,83 @@ describe('real Horários do Funchal conventions', () => {
     writeFileSync(join(dir, 'agency.txt'), files['agency.txt']!);
     const loaded = await loadFeedFiles(`${join(dir, 'missing.zip')}|${dir}`);
     expect(Object.keys(loaded)).toEqual(['agency.txt']);
+  });
+});
+
+describe('places from OpenStreetMap', () => {
+  const osm: { elements: OsmElement[] } = {
+    elements: [
+      {
+        type: 'node',
+        id: 1,
+        lat: 32.6979,
+        lon: -16.7745,
+        tags: {
+          aeroway: 'aerodrome',
+          name: 'Aeroporto da Madeira',
+          'name:en': 'Madeira Airport',
+          'name:uk': 'Аеропорт Мадейри',
+          wikidata: 'Q1',
+        },
+      },
+      // The same airport mapped as an area: merged into the node.
+      {
+        type: 'way',
+        id: 2,
+        center: { lat: 32.6961, lon: -16.7755 },
+        tags: {
+          aeroway: 'aerodrome',
+          name: 'Aeroporto da Madeira',
+          'name:de': 'Flughafen Madeira',
+        },
+      },
+      {
+        type: 'node',
+        id: 3,
+        lat: 32.7203,
+        lon: -16.9686,
+        tags: { place: 'village', name: 'Curral das Freiras' },
+      },
+      // A wayside shrine without Wikidata: left out.
+      {
+        type: 'node',
+        id: 4,
+        lat: 32.65,
+        lon: -16.9,
+        tags: { historic: 'wayside_shrine', name: 'Alminhas' },
+      },
+      {
+        type: 'node',
+        id: 5,
+        lat: 32.65,
+        lon: -16.9,
+        tags: { shop: 'bakery', name: 'Pão' },
+      },
+    ],
+  };
+
+  it('keeps named destinations with their translations', () => {
+    const places = placesFromOsm(osm);
+    expect(places.map((p) => [p.name, p.kind])).toEqual([
+      ['Aeroporto da Madeira', 'aerodrome'],
+      ['Curral das Freiras', 'village'],
+    ]);
+    expect(places[0]!.names).toEqual({
+      en: 'Madeira Airport',
+      uk: 'Аеропорт Мадейри',
+      de: 'Flughafen Madeira',
+    });
+    expect(placeKind({ tourism: 'museum' })).toBe('museum');
+    expect(placeKind({ amenity: 'place_of_worship' })).toBeUndefined();
+  });
+
+  it('are searchable in any language', () => {
+    const withPlaces = new Network({ ...bundle, places: placesFromOsm(osm) });
+    const names = (q: string) => withPlaces.searchPlaces(q).map((p) => p.name);
+    expect(names('airport')).toEqual(['Aeroporto da Madeira']);
+    expect(names('Аеропорт')).toEqual(['Aeroporto da Madeira']);
+    expect(names('flughafen')).toEqual(['Aeroporto da Madeira']);
+    expect(names('curral freiras')).toEqual(['Curral das Freiras']);
+    expect(net.searchPlaces('airport')).toEqual([]);
   });
 });

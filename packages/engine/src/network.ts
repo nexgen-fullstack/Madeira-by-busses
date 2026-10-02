@@ -1,4 +1,4 @@
-import type { BPattern, BRoute, BStop, NetworkBundle } from './bundle.ts';
+import type { BPattern, BPlace, BRoute, BStop, NetworkBundle } from './bundle.ts';
 import {
   cumulativeDistances,
   decodePolyline,
@@ -52,6 +52,8 @@ export interface StopGroup {
   lon: number;
 }
 
+export type SearchHit = { kind: 'stop'; group: StopGroup } | { kind: 'place'; place: BPlace };
+
 export interface NetworkOptions {
   /** Reference walking speed for footpaths (m/s). */
   walkSpeed?: number;
@@ -75,6 +77,7 @@ export class Network {
   private readonly alongCache = new Map<number, { cum: number[]; stops: number[] }>();
   private readonly dayCache = new Map<string, DayTimetable>();
   private readonly searchIndex: { key: string; words: string[]; group: StopGroup }[];
+  private readonly placeIndex: { keys: { key: string; words: string[] }[]; place: BPlace }[];
 
   constructor(
     readonly bundle: NetworkBundle,
@@ -108,6 +111,13 @@ export class Network {
     });
 
     this.searchIndex = buildSearchIndex(this.stops);
+    this.placeIndex = (bundle.places ?? []).map((place) => ({
+      place,
+      keys: [...new Set([place.name, ...Object.values(place.names ?? {})])].map((n) => {
+        const key = normalise(n);
+        return { key, words: significantWords(key) };
+      }),
+    }));
   }
 
   shape(pattern: number): LatLon[] {
@@ -264,25 +274,67 @@ export class Network {
    * ("Curral das Freiras" finds "Igreja Curral Freiras").
    */
   searchStops(query: string, limit = 8): StopGroup[] {
+    return this.scored(
+      query,
+      this.searchIndex,
+      (e) => [e],
+      (e) => e.group,
+    )
+      .slice(0, limit)
+      .map((s) => s.value);
+  }
+
+  /** Same matching over named places, in any of their languages. */
+  searchPlaces(query: string, limit = 8): BPlace[] {
+    return this.scored(
+      query,
+      this.placeIndex,
+      (e) => e.keys,
+      (e) => e.place,
+    )
+      .slice(0, limit)
+      .map((s) => s.value);
+  }
+
+  /** Stops and places together, best match first. */
+  search(query: string, limit = 8): SearchHit[] {
+    const stops = this.scored(
+      query,
+      this.searchIndex,
+      (e) => [e],
+      (e) => e.group,
+    );
+    const places = this.scored(
+      query,
+      this.placeIndex,
+      (e) => e.keys,
+      (e) => e.place,
+    );
+    return [
+      ...stops.map((s) => ({ score: s.score, hit: { kind: 'stop', group: s.value } as const })),
+      ...places.map((s) => ({ score: s.score, hit: { kind: 'place', place: s.value } as const })),
+    ]
+      .sort((a, b) => a.score - b.score)
+      .slice(0, limit)
+      .map((s) => s.hit);
+  }
+
+  private scored<E, T>(
+    query: string,
+    entries: readonly E[],
+    keysOf: (e: E) => readonly { key: string; words: string[] }[],
+    valueOf: (e: E) => T,
+  ): { score: number; value: T }[] {
     const q = normalise(query);
     if (!q) return [];
     const words = significantWords(q);
-    const scored: { score: number; group: StopGroup }[] = [];
-    for (const entry of this.searchIndex) {
-      const idx = entry.key.indexOf(q);
-      let tier: number;
-      if (idx === 0) tier = 0;
-      else if (idx > 0 && entry.key[idx - 1] === ' ') tier = 1;
-      else if (words.length > 0 && words.every((w) => entry.words.some((k) => k.startsWith(w))))
-        tier = 2;
-      else if (idx > 0) tier = 3;
-      else continue;
-      scored.push({ score: tier * 1000 + entry.key.length, group: entry.group });
+    const scored: { score: number; value: T }[] = [];
+    for (const entry of entries) {
+      let best = Infinity;
+      for (const k of keysOf(entry)) best = Math.min(best, matchScore(q, words, k));
+      if (best < Infinity) scored.push({ score: best, value: valueOf(entry) });
     }
-    return scored
-      .sort((a, b) => a.score - b.score)
-      .slice(0, limit)
-      .map((s) => s.group);
+    return scored.sort((a, b) => a.score - b.score);
   }
 
   /** All stop groups (for browsing). */
@@ -294,17 +346,35 @@ export class Network {
 /** Portuguese linking words that stop names often leave out. */
 const LINKING_WORDS = new Set(['a', 'as', 'o', 'os', 'da', 'das', 'de', 'do', 'dos', 'e']);
 
+/**
+ * Lower is better: the name starts with the query, contains it at a word
+ * start, has every query word as a word prefix, or merely contains it.
+ */
+function matchScore(q: string, words: string[], k: { key: string; words: string[] }): number {
+  const idx = k.key.indexOf(q);
+  let tier: number;
+  if (idx === 0) tier = 0;
+  else if (idx > 0 && k.key[idx - 1] === ' ') tier = 1;
+  else if (words.length > 0 && words.every((w) => k.words.some((kw) => kw.startsWith(w)))) tier = 2;
+  else if (idx > 0) tier = 3;
+  else return Infinity;
+  return tier * 1000 + k.key.length;
+}
+
 function significantWords(normalised: string): string[] {
   return normalised.split(' ').filter((w) => w && !LINKING_WORDS.has(w));
 }
 
 export function normalise(s: string): string {
-  return s
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, ' ')
-    .trim();
+  return (
+    s
+      .normalize('NFD')
+      .replace(/[̀-ͯ]/g, '')
+      .toLowerCase()
+      // Any script: places carry Cyrillic, Polish and Czech names too.
+      .replace(/[^\p{L}\p{N}]+/gu, ' ')
+      .trim()
+  );
 }
 
 function buildSearchIndex(

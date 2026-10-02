@@ -197,12 +197,29 @@ async function osm() {
      out body;`,
   );
   writeFileSync(join(dir, 'bus-stops.json'), JSON.stringify(stops));
+  // Named places people travel to, with their names in other languages.
+  const places = await overpass(
+    `[out:json][timeout:300];
+     (nwr["place"~"^(city|town|village|suburb|neighbourhood|hamlet|locality)$"]["name"](${BBOX});
+      nwr["tourism"~"^(attraction|museum|viewpoint|zoo|theme_park|gallery|hotel)$"]["name"](${BBOX});
+      nwr["amenity"~"^(hospital|marketplace|university|college|townhall|ferry_terminal|bus_station|place_of_worship|theatre|casino)$"]["name"](${BBOX});
+      nwr["aeroway"="aerodrome"]["name"](${BBOX});
+      nwr["aerialway"="station"]["name"](${BBOX});
+      nwr["leisure"~"^(park|garden|stadium|marina|water_park)$"]["name"](${BBOX});
+      nwr["natural"~"^(beach|peak|cape|bay)$"]["name"](${BBOX});
+      nwr["shop"="mall"]["name"](${BBOX});
+      nwr["historic"]["name"](${BBOX});
+      nwr["highway"="trailhead"]["name"](${BBOX}););
+     out center tags;`,
+  );
+  writeFileSync(join(dir, 'places.json'), JSON.stringify(places));
   const relations = routes.elements.filter((e) => e.type === 'relation');
   return {
     routeRelations: relations.filter((r) => r.tags?.type === 'route').length,
     routeMasters: relations.filter((r) => r.tags?.type === 'route_master').length,
     operators: [...new Set(relations.map((r) => r.tags?.operator).filter(Boolean))],
     stops: stops.elements.length,
+    places: places.elements.length,
   };
 }
 

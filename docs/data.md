@@ -23,6 +23,15 @@
 
 У налаштуваннях можна перемкнути «Справжній» / «Демо» розклад; без `network.json` (локально, у CI) застосунок сам відкриває демо-мережу.
 
+## Джерела без GTFS: CAM, SIGA Rodoeste, місця
+
+Сайти SIGA й перевізників недоступні з середовища розробки, тому їх збирає workflow **Collect timetable sources** (`.github/workflows/sources.yml`, скрипт `scripts/fetch-sources.mjs`) на серверах GitHub і комітить результат у `data/sources/`:
+
+- сторінки сайтів SIGA, Rodoeste, SAM і HF (`pages.jsonl`: текст і посилання) та PDF-розклади як текст зі збереженою розкладкою колонок (`pdf-text/`);
+- з OpenStreetMap (Overpass API): автобусні маршрути з їхніми зупинками (`osm/bus-routes.json`), усі зупинки (`osm/bus-stops.json`) і названі місця з перекладами (`osm/places.json`).
+
+`pnpm data:real` додає місця в пакет (`--places`), і пошук у застосунку знаходить їх будь-якою мовою. Наступний крок — парсер PDF-розкладів CAM і Rodoeste у GTFS із прив'язкою зупинок до OpenStreetMap.
+
 ## Демо-мережа
 
 `packages/pipeline/src/demo/` — 36 зупинок і 16 маршрутів на весь острів, щоб застосунок можна було показати й протестувати без даних перевізників (`pnpm data` → `apps/web/public/data/demo.json`).

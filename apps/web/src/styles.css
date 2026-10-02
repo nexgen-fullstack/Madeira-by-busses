@@ -610,7 +610,7 @@ input[type='time'],
 }
 .place-search__list li {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
   gap: 8px;
   padding: 10px 10px;
   border-radius: 8px;
@@ -620,8 +620,14 @@ input[type='time'],
 .place-search__list li:hover {
   background: var(--brand-soft);
 }
+.place-search__kind {
+  flex: none;
+  color: var(--muted);
+}
 .place-search__name {
   font-weight: 600;
+  flex: 1;
+  min-width: 0;
 }
 .place-search__muni {
   color: var(--muted);

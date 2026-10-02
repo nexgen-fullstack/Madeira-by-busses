@@ -35,6 +35,18 @@ export interface NetworkBundle {
   patterns: BPattern[];
   fares: FareTable;
   stats: { stops: number; routes: number; patterns: number; trips: number };
+  /** Named places to search for besides stops (airport, museums, villages…). */
+  places?: BPlace[];
+}
+
+export interface BPlace {
+  name: string;
+  lat: number;
+  lon: number;
+  /** Category, e.g. "aerodrome", "museum", "village" (see the app's labels). */
+  kind: string;
+  /** Names in other languages, keyed by language code. */
+  names?: Record<string, string>;
 }
 
 export interface BundleSource {

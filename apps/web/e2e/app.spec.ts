@@ -45,3 +45,15 @@ test('shows a line timetable and switches language', async ({ page }) => {
   await page.getByRole('button', { name: 'English' }).click();
   await expect(page.getByRole('link', { name: 'Settings' })).toBeVisible();
 });
+
+test('finds places by their name in the reader’s language', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('combobox', { name: 'Куди' }).fill('аеропорт');
+  const option = page.getByRole('option', { name: /Аеропорт Мадейри/ });
+  await expect(option).toContainText('Аеропорт');
+  await option.click();
+  await page.getByRole('combobox', { name: 'Звідки' }).fill('Funchal (Av');
+  await page.getByRole('option').first().click();
+  await expect(page.getByRole('combobox', { name: 'Куди' })).toHaveValue('Аеропорт Мадейри');
+  await expect(page.locator('.it-card').first()).toContainText('09:00 – 09:44');
+});

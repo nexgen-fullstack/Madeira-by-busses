@@ -265,6 +265,16 @@ export function extrusionLayer(source: string, satellite: boolean): LayerSpecifi
 /** Human label for an OpenMapTiles POI class/subclass, in every app language. */
 // prettier-ignore
 const POI_LABELS: Record<string, Record<Lang, string>> = {
+  town: { uk: 'Місто', en: 'Town', pt: 'Cidade', es: 'Ciudad', it: 'Città', de: 'Stadt', cs: 'Město', pl: 'Miasto', ru: 'Город' },
+  village: { uk: 'Селище', en: 'Village', pt: 'Localidade', es: 'Pueblo', it: 'Paese', de: 'Ort', cs: 'Obec', pl: 'Miejscowość', ru: 'Посёлок' },
+  locality: { uk: 'Місцевість', en: 'Locality', pt: 'Sítio', es: 'Paraje', it: 'Località', de: 'Ortsteil', cs: 'Místo', pl: 'Okolica', ru: 'Местность' },
+  cable_car: { uk: 'Канатна дорога', en: 'Cable car', pt: 'Teleférico', es: 'Teleférico', it: 'Funivia', de: 'Seilbahn', cs: 'Lanovka', pl: 'Kolejka linowa', ru: 'Канатная дорога' },
+  marketplace: { uk: 'Ринок', en: 'Market', pt: 'Mercado', es: 'Mercado', it: 'Mercato', de: 'Markt', cs: 'Tržnice', pl: 'Targ', ru: 'Рынок' },
+  mall: { uk: 'Торговий центр', en: 'Shopping centre', pt: 'Centro comercial', es: 'Centro comercial', it: 'Centro commerciale', de: 'Einkaufszentrum', cs: 'Obchodní centrum', pl: 'Centrum handlowe', ru: 'Торговый центр' },
+  peak: { uk: 'Вершина', en: 'Peak', pt: 'Pico', es: 'Pico', it: 'Vetta', de: 'Gipfel', cs: 'Vrchol', pl: 'Szczyt', ru: 'Вершина' },
+  nature: { uk: 'Природа', en: 'Nature', pt: 'Natureza', es: 'Naturaleza', it: 'Natura', de: 'Natur', cs: 'Příroda', pl: 'Przyroda', ru: 'Природа' },
+  trailhead: { uk: 'Початок стежки', en: 'Trailhead', pt: 'Início de trilho', es: 'Inicio de sendero', it: 'Inizio sentiero', de: 'Wanderweg-Start', cs: 'Začátek stezky', pl: 'Początek szlaku', ru: 'Начало тропы' },
+  historic: { uk: 'Пам’ятка', en: 'Landmark', pt: 'Monumento', es: 'Monumento', it: 'Monumento', de: 'Sehenswürdigkeit', cs: 'Památka', pl: 'Zabytek', ru: 'Достопримечательность' },
   hospital: { uk: 'Лікарня', en: 'Hospital', pt: 'Hospital', es: 'Hospital', it: 'Ospedale', de: 'Krankenhaus', cs: 'Nemocnice', pl: 'Szpital', ru: 'Больница' },
   pharmacy: { uk: 'Аптека', en: 'Pharmacy', pt: 'Farmácia', es: 'Farmacia', it: 'Farmacia', de: 'Apotheke', cs: 'Lékárna', pl: 'Apteka', ru: 'Аптека' },
   school: { uk: 'Школа', en: 'School', pt: 'Escola', es: 'Escuela', it: 'Scuola', de: 'Schule', cs: 'Škola', pl: 'Szkoła', ru: 'Школа' },
@@ -302,6 +312,11 @@ const POI_LABELS: Record<string, Record<Lang, string>> = {
   stadium: { uk: 'Стадіон', en: 'Stadium', pt: 'Estádio', es: 'Estadio', it: 'Stadio', de: 'Stadion', cs: 'Stadion', pl: 'Stadion', ru: 'Стадион' },
   viewpoint: { uk: 'Оглядовий майданчик', en: 'Viewpoint', pt: 'Miradouro', es: 'Mirador', it: 'Belvedere', de: 'Aussichtspunkt', cs: 'Vyhlídka', pl: 'Punkt widokowy', ru: 'Смотровая площадка' },
 };
+
+/** A place's name in the reader's language when OpenStreetMap has one. */
+export function placeName(place: { name: string; names?: Record<string, string> }, lang: Lang) {
+  return place.names?.[lang] ?? place.name;
+}
 
 export function poiLabel(lang: Lang, klass?: string, subclass?: string): string | undefined {
   const hit = (subclass && POI_LABELS[subclass]) || (klass && POI_LABELS[klass]);
