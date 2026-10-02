@@ -1,0 +1,13 @@
+{
+  "name": "@madeirabus/engine",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Framework-free transit engine: GTFS parsing, compact network bundle, RAPTOR journey planner, SIGA fares and on-board GPS tracking.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  }
+}
