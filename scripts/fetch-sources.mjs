@@ -223,8 +223,32 @@ async function osm() {
   };
 }
 
+/** The official Horários do Funchal feed, which mirrors may lag behind. */
+async function hfFeed() {
+  const url = 'https://www.horariosdofunchal.pt/googletransit.zip';
+  const res = await get(url);
+  if (!res.ok) return { url, status: res.status };
+  const buf = Buffer.from(await res.arrayBuffer());
+  const dir = join(OUT, 'hf');
+  mkdirSync(dir, { recursive: true });
+  const file = join(dir, 'googletransit.zip');
+  writeFileSync(file, buf);
+  let feedInfo;
+  try {
+    feedInfo = execFileSync('unzip', ['-p', file, 'feed_info.txt']).toString('utf8').trim();
+  } catch {
+    feedInfo = undefined;
+  }
+  return { url, bytes: buf.length, sha256: sha(buf), feedInfo };
+}
+
 mkdirSync(OUT, { recursive: true });
 const manifest = { fetchedAt: new Date().toISOString(), seeds: SEEDS };
+try {
+  manifest.hf = await hfFeed();
+} catch (err) {
+  manifest.hf = { error: String(err) };
+}
 try {
   manifest.osm = await osm();
 } catch (err) {

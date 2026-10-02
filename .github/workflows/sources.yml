@@ -38,7 +38,7 @@ jobs:
           {
             echo '### Timetable sources'
             echo '```json'
-            jq '{fetchedAt, osm, pages: .web.pages, pdfs: (.web.pdfs | length), errors: (.web.errors | length)}' data/sources/manifest.json
+            jq '{fetchedAt, hf: (.hf.feedInfo // .hf), osm, pages: .web.pages, pdfs: (.web.pdfs | length), errors: (.web.errors | length)}' data/sources/manifest.json
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
       - name: Commit
