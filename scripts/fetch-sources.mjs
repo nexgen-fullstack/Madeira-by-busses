@@ -20,7 +20,6 @@ const SEEDS = [
   'https://siga.madeira.gov.pt/public/index.php/language/pt',
   'https://www.rodoeste.pt/',
   'https://www.sam.pt/',
-  'https://www.horariosdofunchal.pt/',
 ];
 const CRAWL_HOSTS = new Set(SEEDS.map((u) => new URL(u).host));
 const MAX_PAGES = 600;
@@ -44,7 +43,7 @@ async function get(url, init = {}) {
       const res = await fetch(url, {
         ...init,
         headers: { 'user-agent': UA, ...init.headers },
-        signal: AbortSignal.timeout(60_000),
+        signal: AbortSignal.timeout(init.method === 'POST' ? 360_000 : 60_000),
         redirect: 'follow',
       });
       return res;
@@ -81,14 +80,18 @@ function links(html, base) {
 }
 
 const isPdf = (url) => /\.pdf($|\?)/i.test(url);
+/** SIGA serves every page under /public/ too; crawl each once. */
+const canonical = (url) => url.replace('://siga.madeira.gov.pt/public/', '://siga.madeira.gov.pt/');
+/** Timetable PDFs, whose word positions the parser needs. */
+const isTimetablePdf = (url) => url.includes('/storage/horarios_pdf/');
 const isAsset = (url) =>
   /\.(png|jpe?g|gif|svg|webp|ico|css|js|woff2?|ttf|eot|mp4|mp3|zip)($|\?)/i.test(url);
 
 async function crawl() {
-  const pagesDir = join(OUT, 'pages');
   const textDir = join(OUT, 'pdf-text');
-  mkdirSync(pagesDir, { recursive: true });
+  const bboxDir = join(OUT, 'pdf-bbox');
   mkdirSync(textDir, { recursive: true });
+  mkdirSync(bboxDir, { recursive: true });
   const tmp = mkdtempSync(join(tmpdir(), 'pdf-'));
 
   const queue = [...SEEDS];
@@ -121,10 +124,8 @@ async function crawl() {
         links: found,
       };
       pages.push(record);
-      // Raw HTML of pages that look like timetables or line lists.
-      if (/hor[aá]rio|linha|carreira|percurso|paragen|route|line|schedule|timetable/i.test(url))
-        writeFileSync(join(pagesDir, `${slug(url)}.html`), html);
-      for (const link of found) {
+      for (const raw of found) {
+        const link = canonical(raw);
         if (isPdf(link)) pdfs.add(link);
         else if (!seen.has(link) && !isAsset(link) && CRAWL_HOSTS.has(new URL(link).host)) {
           seen.add(link);
@@ -153,10 +154,16 @@ async function crawl() {
       }
       const file = join(tmp, 'f.pdf');
       writeFileSync(file, buf);
-      const name = `${slug(url)}.txt`;
-      // -layout keeps timetable columns aligned, which the parser relies on.
-      execFileSync('pdftotext', ['-layout', '-enc', 'UTF-8', file, join(textDir, name)]);
-      pdfRecords.push({ url, bytes: buf.length, sha256: sha(buf), text: `pdf-text/${name}` });
+      const name = slug(url);
+      // -layout keeps timetable columns roughly aligned, for reading.
+      execFileSync('pdftotext', ['-layout', '-enc', 'UTF-8', file, join(textDir, `${name}.txt`)]);
+      const record = { url, bytes: buf.length, sha256: sha(buf), text: `pdf-text/${name}.txt` };
+      if (isTimetablePdf(url)) {
+        // Every word with its box: the parser rebuilds the tables from these.
+        execFileSync('pdftotext', ['-bbox-layout', file, join(bboxDir, `${name}.html`)]);
+        record.bbox = `pdf-bbox/${name}.html`;
+      }
+      pdfRecords.push(record);
     } catch (err) {
       pdfRecords.push({ url, error: String(err) });
     }
@@ -165,14 +172,30 @@ async function crawl() {
   return { pages: pages.length, pdfs: pdfRecords, errors };
 }
 
+const OVERPASS = [
+  'https://overpass-api.de/api/interpreter',
+  'https://overpass.kumi.systems/api/interpreter',
+  'https://overpass.private.coffee/api/interpreter',
+];
+
+/** Runs a query on the first Overpass server that answers. */
 async function overpass(query) {
-  const res = await get('https://overpass-api.de/api/interpreter', {
-    method: 'POST',
-    headers: { 'content-type': 'application/x-www-form-urlencoded' },
-    body: `data=${encodeURIComponent(query)}`,
-  });
-  if (!res.ok) throw new Error(`Overpass HTTP ${res.status}`);
-  return res.json();
+  const errors = [];
+  for (const endpoint of OVERPASS) {
+    try {
+      const res = await get(endpoint, {
+        method: 'POST',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        body: `data=${encodeURIComponent(query)}`,
+      });
+      if (res.ok) return await res.json();
+      errors.push(`${endpoint}: HTTP ${res.status}`);
+    } catch (err) {
+      errors.push(`${endpoint}: ${err}`);
+    }
+    await sleep(5000);
+  }
+  throw new Error(errors.join('; '));
 }
 
 async function osm() {
