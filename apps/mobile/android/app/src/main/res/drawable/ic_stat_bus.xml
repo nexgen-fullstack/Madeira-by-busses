@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Notification icon: the app's bus as a white silhouette. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="260"
+    android:viewportHeight="260">
+    <group
+        android:translateX="-126"
+        android:translateY="-103">
+        <path
+            android:fillColor="#FFFFFF"
+            android:fillType="evenOdd"
+            android:pathData="M186,118h140a40,40 0,0 1,40 40v116a40,40 0,0 1,-40 40h-140a40,40 0,0 1,-40 -40v-116a40,40 0,0 1,40 -40zM186,146h140a14,14 0,0 1,14 14v54a14,14 0,0 1,-14 14h-140a14,14 0,0 1,-14 -14v-54a14,14 0,0 1,14 -14z" />
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M182,304h14a10,10 0,0 1,10 10v24a10,10 0,0 1,-10 10h-14a10,10 0,0 1,-10 -10v-24a10,10 0,0 1,10 -10zM316,304h14a10,10 0,0 1,10 10v24a10,10 0,0 1,-10 10h-14a10,10 0,0 1,-10 -10v-24a10,10 0,0 1,10 -10z" />
+    </group>
+</vector>

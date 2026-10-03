@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The bus of public/icon.svg (512 units), scaled into the adaptive icon's safe zone. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+    <group
+        android:pivotX="256"
+        android:pivotY="256"
+        android:scaleX="0.78"
+        android:scaleY="0.78"
+        android:translateY="-6">
+        <path
+            android:pathData="M96,408c64,-28 122,-28 176,0s112,28 144,8"
+            android:strokeWidth="22"
+            android:strokeColor="#7FD6BF"
+            android:strokeLineCap="round" />
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M186,118h140a40,40 0,0 1,40 40v116a40,40 0,0 1,-40 40h-140a40,40 0,0 1,-40 -40v-116a40,40 0,0 1,40 -40z" />
+        <path
+            android:fillColor="#0E7C66"
+            android:pathData="M186,146h140a14,14 0,0 1,14 14v54a14,14 0,0 1,-14 14h-140a14,14 0,0 1,-14 -14v-54a14,14 0,0 1,14 -14z" />
+        <path
+            android:fillColor="#F2A900"
+            android:pathData="M181,270a17,17 0,1 0,34 0a17,17 0,1 0,-34 0zM297,270a17,17 0,1 0,34 0a17,17 0,1 0,-34 0z" />
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M182,314h14a10,10 0,0 1,10 10v14a10,10 0,0 1,-10 10h-14a10,10 0,0 1,-10 -10v-14a10,10 0,0 1,10 -10zM316,314h14a10,10 0,0 1,10 10v14a10,10 0,0 1,-10 10h-14a10,10 0,0 1,-10 -10v-14a10,10 0,0 1,10 -10z" />
+    </group>
+</vector>

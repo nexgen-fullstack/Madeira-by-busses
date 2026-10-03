@@ -1,0 +1,75 @@
+apply plugin: 'com.android.application'
+
+// Release signing: your own key from the environment (CI secrets), otherwise
+// the public test key in this folder, so every build installs over the last.
+def env = System.getenv()
+def ownKey = env.MADEIRABUS_KEYSTORE && file(env.MADEIRABUS_KEYSTORE).exists()
+
+android {
+    namespace = "io.github.nexgenfullstack.madeirabus"
+    compileSdk = rootProject.ext.compileSdkVersion
+    defaultConfig {
+        applicationId "io.github.nexgenfullstack.madeirabus"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode((env.MADEIRABUS_VERSION_CODE ?: "1") as int)
+        versionName env.MADEIRABUS_VERSION_NAME ?: "1.0.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        aaptOptions {
+             // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
+             // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
+            ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
+        }
+    }
+    signingConfigs {
+        release {
+            if (ownKey) {
+                storeFile file(env.MADEIRABUS_KEYSTORE)
+                storePassword env.MADEIRABUS_KEYSTORE_PASSWORD
+                keyAlias env.MADEIRABUS_KEY_ALIAS
+                keyPassword env.MADEIRABUS_KEY_PASSWORD
+            } else {
+                storeFile file('madeirabus-public.keystore')
+                storePassword 'madeirabus'
+                keyAlias 'madeirabus'
+                keyPassword 'madeirabus'
+            }
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+repositories {
+    flatDir{
+        dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
+    implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"
+    implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
+    implementation project(':capacitor-android')
+    testImplementation "junit:junit:$junitVersion"
+    androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
+    implementation project(':capacitor-cordova-android-plugins')
+}
+
+apply from: 'capacitor.build.gradle'
+
+try {
+    def servicesJSON = file('google-services.json')
+    if (servicesJSON.text) {
+        apply plugin: 'com.google.gms.google-services'
+    }
+} catch(Exception e) {
+    logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
+}
