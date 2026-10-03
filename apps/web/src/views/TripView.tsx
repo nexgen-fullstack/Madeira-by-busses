@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   BellRing,
   Bus,
@@ -10,149 +10,33 @@ import {
   TriangleAlert,
   X,
 } from 'lucide-react';
-import { madeiraNow, RideTracker, type TrackedStop, type TrackState } from '@madeirabus/engine';
 import { useMapContent } from '../components/mapContext.tsx';
 import { RouteBadge } from '../components/RouteBadge.tsx';
 import { useI18n } from '../i18n.ts';
-import { askNotify, canNotify, isNative, keepScreenOn, notify, vibrate } from '../lib/device.ts';
+import { isNative } from '../lib/device.ts';
 import { clock } from '../lib/format.ts';
-import { useGeolocation } from '../lib/geolocation.ts';
-import { encodePlace, ridesOf } from '../lib/itinerary.ts';
+import { encodePlace } from '../lib/itinerary.ts';
 import type { MapContent, MapPoint } from '../lib/mapContent.ts';
 import { goBack, navigate } from '../lib/router.ts';
-import { RideSimulator } from '../lib/simulator.ts';
 import { useApp, useNetwork } from '../state/app.tsx';
+import { useTripTracking } from '../state/trip.tsx';
 
-const SPEEDUP = 20;
-
+/** The ride being followed (the following itself runs in state/trip.tsx). */
 export function TripView() {
   const t = useI18n();
   const { net } = useNetwork();
   const { trip, setTrip } = useApp();
-  const [rideIndex, setRideIndex] = useState(() => trip?.ride ?? 0);
-  const [phase, setPhase] = useState<'ride' | 'transfer' | 'done'>('ride');
-  const [state, setState] = useState<TrackState | undefined>();
+  const tracking = useTripTracking();
   const [driver, setDriver] = useState(false);
-  const [notifyOn, setNotifyOn] = useState(false);
-
-  const rides = useMemo(() => (trip ? ridesOf(trip.itinerary) : []), [trip]);
-  const ride = rides[rideIndex];
-  const nextRide = rides[rideIndex + 1];
-  const finalStop = rides[rides.length - 1]?.to.name ?? '';
-  // In the phone app, the ride is followed with the screen off too.
-  const geo = useGeolocation(true, {
-    title: t.t('trip.bgTitle'),
-    text: t.t('trip.bgText', { stop: finalStop }),
-  });
-
-  useEffect(() => {
-    void canNotify().then(setNotifyOn);
-  }, []);
-
-  // The screen stays on while a ride is followed.
-  const active = Boolean(trip);
-  useEffect(() => (active ? keepScreenOn() : undefined), [active]);
-
-  // A reopened app resumes at the same ride.
-  useEffect(() => {
-    if (trip && !trip.simulate && trip.ride !== rideIndex) setTrip({ ...trip, ride: rideIndex });
-  }, [trip, rideIndex, setTrip]);
-
-  const setup = useMemo(() => {
-    if (!ride) return undefined;
-    const stops: TrackedStop[] = ride.stops.map((s) => {
-      const st = net.stops[s.stop]!;
-      return { name: st.name, lat: st.lat, lon: st.lon, arr: s.arr, dep: s.dep };
-    });
-    const shape = net.rideShape(ride.pattern, ride.boardPos, ride.alightPos);
-    return {
-      stops,
-      shape,
-      tracker: new RideTracker(stops, shape),
-      sim: new RideSimulator(stops, shape),
-    };
-  }, [ride, net]);
-
-  // Real GPS: start watching unless simulating.
-  useEffect(() => {
-    if (trip && !trip.simulate) geo.request();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [trip?.simulate]);
-
-  const alertUser = useCallback(
-    (s: TrackState) => {
-      if (!s.alert || !setup) return;
-      const pattern = s.alert === 'next' ? [400, 150, 400, 150, 400] : [200, 100, 200];
-      vibrate(pattern);
-      const stopName = setup.stops[setup.stops.length - 1]!.name;
-      const text =
-        s.alert === 'next'
-          ? t.t('trip.getOff')
-          : s.alert === 'prepare'
-            ? t.t('trip.prepare')
-            : s.alert === 'arrived'
-              ? t.t('trip.arrived')
-              : t.t('trip.offRoute');
-      if (notifyOn && document.hidden) void notify(text, stopName);
-    },
-    [notifyOn, setup, t],
-  );
-
-  // Simulation clock: 20× real time, starting 45 s before departure.
-  const simStart = useRef<number>(0);
-  useEffect(() => {
-    if (!trip?.simulate || !setup || phase !== 'ride') return;
-    simStart.current = performance.now();
-    const t0 = setup.stops[0]!.dep - 45;
-    const id = window.setInterval(() => {
-      const now = t0 + ((performance.now() - simStart.current) / 1000) * SPEEDUP;
-      const fix = setup.sim.fixAt(now);
-      const s = fix ? setup.tracker.update(fix) : setup.tracker.tick(now);
-      setState(s);
-      alertUser(s);
-    }, 250);
-    return () => window.clearInterval(id);
-  }, [trip?.simulate, setup, phase, alertUser]);
-
-  // Real GPS fixes.
-  useEffect(() => {
-    if (trip?.simulate || !setup || phase !== 'ride' || !geo.position) return;
-    const s = setup.tracker.update({ ...geo.position, time: madeiraNow().time });
-    setState(s);
-    alertUser(s);
-  }, [geo.position, trip?.simulate, setup, phase, alertUser]);
-
-  // Real mode heartbeat: keeps going on the timetable when GPS goes quiet.
-  useEffect(() => {
-    if (trip?.simulate || !setup || phase !== 'ride') return;
-    const id = window.setInterval(() => {
-      const s = setup.tracker.tick(madeiraNow().time);
-      setState(s);
-      alertUser(s);
-    }, 5000);
-    return () => window.clearInterval(id);
-  }, [trip?.simulate, setup, phase, alertUser]);
-
-  // Arrival → transfer or done.
-  useEffect(() => {
-    if (state?.status !== 'arrived' || phase !== 'ride') return;
-    const id = window.setTimeout(
-      () => setPhase(nextRide ? 'transfer' : 'done'),
-      trip?.simulate ? 1500 : 3000,
-    );
-    return () => window.clearTimeout(id);
-  }, [state?.status, phase, nextRide, trip?.simulate]);
-
-  // In the simulation, board the next bus automatically.
-  useEffect(() => {
-    if (phase !== 'transfer' || !trip?.simulate) return;
-    const id = window.setTimeout(() => {
-      setRideIndex((i) => i + 1);
-      setState(undefined);
-      setPhase('ride');
-    }, 3500);
-    return () => window.clearTimeout(id);
-  }, [phase, trip?.simulate]);
+  const {
+    rides = [],
+    rideIndex = 0,
+    ride,
+    nextRide,
+    setup,
+    state,
+    phase = 'ride',
+  } = tracking ?? {};
 
   const content = useMemo<MapContent | undefined>(() => {
     if (!setup || !ride) return undefined;
@@ -174,7 +58,7 @@ export function TripView() {
   }, [setup, ride, net, state, rideIndex]);
   useMapContent(content);
 
-  if (!trip || !ride || !setup) {
+  if (!trip || !tracking || !ride || !setup) {
     return (
       <div className="trip">
         <p className="muted">{t.t('trip.done')}</p>
@@ -265,7 +149,7 @@ export function TripView() {
             )}
             {!state && !trip.simulate && (
               <div className="trip__facts">
-                {geo.error ? t.t('trip.gpsDenied') : t.t('trip.gpsWaiting')}
+                {tracking.gpsError ? t.t('trip.gpsDenied') : t.t('trip.gpsWaiting')}
               </div>
             )}
             {state?.source === 'timetable' && (
@@ -287,8 +171,8 @@ export function TripView() {
                   const dest =
                     last.kind === 'ride' ? { ...last.to, stops: [last.to.stop!] } : last.to;
                   navigate('plan', {
-                    from: encodePlace({ ...ride.to, stops: [ride.to.stop!] }),
-                    to: encodePlace(dest),
+                    from: encodePlace({ ...ride.to, stops: [ride.to.stop!] }, net),
+                    to: encodePlace(dest, net),
                     t: clock(state!.eta),
                     d: trip.date,
                   });
@@ -324,12 +208,8 @@ export function TripView() {
             >
               <Bus size={18} /> {t.t('trip.showDriver')}
             </button>
-            {!notifyOn && (isNative() || typeof Notification !== 'undefined') && (
-              <button
-                type="button"
-                className="button"
-                onClick={async () => setNotifyOn(await askNotify())}
-              >
+            {!tracking.notifyOn && (isNative() || typeof Notification !== 'undefined') && (
+              <button type="button" className="button" onClick={tracking.enableNotify}>
                 <BellRing size={18} /> {t.t('trip.notify')}
               </button>
             )}
@@ -365,15 +245,7 @@ export function TripView() {
           </div>
           <div className="muted">{nextRide.from.name}</div>
           {!trip.simulate && (
-            <button
-              type="button"
-              className="button button--primary"
-              onClick={() => {
-                setRideIndex((i) => i + 1);
-                setState(undefined);
-                setPhase('ride');
-              }}
-            >
+            <button type="button" className="button button--primary" onClick={tracking.board}>
               <Bus size={18} /> {t.t('detail.board')}
             </button>
           )}

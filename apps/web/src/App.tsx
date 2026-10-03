@@ -5,6 +5,7 @@ import { MapProvider } from './components/mapContext.tsx';
 import { useI18n, type Key } from './i18n.ts';
 import { navigate, useRoute } from './lib/router.ts';
 import { AppProvider, useApp } from './state/app.tsx';
+import { TripProvider } from './state/trip.tsx';
 import { LineDetail } from './views/LineDetail.tsx';
 import { LinesView } from './views/LinesView.tsx';
 import { NearbyView } from './views/NearbyView.tsx';
@@ -122,7 +123,9 @@ export function App() {
   return (
     <AppProvider>
       <MapProvider>
-        <Shell />
+        <TripProvider>
+          <Shell />
+        </TripProvider>
       </MapProvider>
     </AppProvider>
   );
