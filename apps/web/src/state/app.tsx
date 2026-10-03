@@ -176,13 +176,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
     (async () => {
       try {
         const { json, fallback } = await loadBundleText(dataset);
-        // The worker parses its own copy; both run at the same time.
+        // The worker parses its own copy meanwhile; searches queue up behind it.
         planner = new PlannerClient();
-        const ready = planner.init(json);
+        planner.init(json).catch(() => undefined);
         const net = new Network(JSON.parse(json));
-        await ready;
         if (cancelled) return;
         setData({ status: 'ready', dataset, net, planner, fallback });
+        // Index stop and place names before the first keystroke.
+        (window.requestIdleCallback ?? window.setTimeout)(() => net.search('a', 1));
         const resumed = resumableTrip(net);
         if (resumed) setTripState(resumed);
         if (dataset === 'real' && !fallback) void refreshRemote(net.bundle.generatedAt);

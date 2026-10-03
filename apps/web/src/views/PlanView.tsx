@@ -54,6 +54,8 @@ export function PlanView({ route }: { route: Route }) {
   // Bumped to plan again when "now" moves past the first option.
   const [refresh, setRefresh] = useState(0);
   const wantLocation = useRef(false);
+  const resultsRef = useRef<HTMLDivElement>(null);
+  const shownSearch = useRef('');
 
   const now = useNow();
   const date = dateParam ?? now.date;
@@ -81,10 +83,11 @@ export function PlanView({ route }: { route: Route }) {
   }, [geo.position, setParams]);
 
   // Plan whenever both ends are known.
-  const searchKey =
+  const baseKey =
     from && to
-      ? `${encodePlace(from)}>${encodePlace(to)}@${date}T${timeParam ?? 'now'}|${settings.walkSpeed}|${refresh}`
+      ? `${encodePlace(from)}>${encodePlace(to)}@${date}T${timeParam ?? 'now'}|${settings.walkSpeed}`
       : '';
+  const searchKey = baseKey && `${baseKey}|${refresh}`;
   useEffect(() => {
     if (!from || !to) {
       setResults(undefined);
@@ -129,6 +132,13 @@ export function PlanView({ route }: { route: Route }) {
   useEffect(() => {
     if (firstGone && selected === undefined) setRefresh((r) => r + 1);
   }, [firstGone, selected]);
+
+  // A new search (not the automatic refresh) brings its first result into view.
+  useEffect(() => {
+    if (!results?.length || loading || shownSearch.current === baseKey) return;
+    shownSearch.current = baseKey;
+    resultsRef.current?.firstElementChild?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }, [results, loading, baseKey]);
 
   const selectedIt = selected !== undefined ? results?.[selected] : undefined;
 
@@ -283,7 +293,7 @@ export function PlanView({ route }: { route: Route }) {
       )}
 
       {results && results.length > 0 && (
-        <div className="results" aria-live="polite" aria-busy={loading}>
+        <div className="results" aria-live="polite" aria-busy={loading} ref={resultsRef}>
           {results.map((it, i) => (
             <ItineraryCard
               key={`${it.key}@${it.depart}`}

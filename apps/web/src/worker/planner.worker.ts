@@ -19,8 +19,11 @@ self.onmessage = (e: MessageEvent<WorkerRequest>) => {
     (self as unknown as DedicatedWorkerGlobalScope).postMessage(r);
   try {
     if (msg.method === 'init') {
-      planner = new Planner(new Network(JSON.parse(msg.json)));
+      const net = new Network(JSON.parse(msg.json));
+      planner = new Planner(net);
       reply({ id: msg.id, ok: true, result: true });
+      // Build the walking transfers now rather than during the first search.
+      void net.footpaths;
       return;
     }
     if (!planner) throw new Error('Planner not initialised');

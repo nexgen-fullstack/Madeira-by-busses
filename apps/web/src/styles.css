@@ -750,17 +750,12 @@ input[type='time'],
   gap: 8px;
   margin: 14px 0;
 }
-.detail__actions .button--primary {
-  flex: 1 1 auto;
-  min-width: 0;
-}
+/* Buttons share a row while their labels fit, and wrap rather than cut a label. */
 .detail__actions .button {
   white-space: nowrap;
 }
-@media (min-width: 380px) {
-  .detail__actions {
-    flex-wrap: nowrap;
-  }
+.detail__actions .button--primary {
+  flex: 1 1 auto;
 }
 
 .timeline {
@@ -1370,6 +1365,7 @@ input[type='time'],
   color: var(--muted);
 }
 .star--on,
+.icon-button.star--on,
 .place-search__kind--saved {
   color: var(--accent);
 }

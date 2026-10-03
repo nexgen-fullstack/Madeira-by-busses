@@ -31,13 +31,15 @@ export function NearbyView() {
     if (!here) return [];
     const byStop = new Map<number, StopGroup>();
     for (const g of net.stopGroups()) for (const s of g.stops) byStop.set(s, g);
+    // Saved stops are listed above already.
+    const starredKeys = new Set(starred.map((g) => g.stops.join('.')));
     const seen = new Map<StopGroup, number>();
     for (const hit of net.nearbyStops(here, RADIUS)) {
       const g = byStop.get(hit.stop)!;
-      if (!seen.has(g)) seen.set(g, hit.distance);
+      if (!seen.has(g) && !starredKeys.has(g.stops.join('.'))) seen.set(g, hit.distance);
     }
     return [...seen.entries()].slice(0, 6);
-  }, [net, here]);
+  }, [net, here, starred]);
 
   const content = useMemo(
     () =>
@@ -74,7 +76,8 @@ export function NearbyView() {
       {starred.length > 0 && (
         <>
           <h2 className="view-title">
-            <Star size={18} aria-hidden className="star--on" /> {t.t('saved.title')}
+            <Star size={18} aria-hidden className="star--on" fill="currentColor" />{' '}
+            {t.t('saved.title')}
           </h2>
           {starred.map((g) => card(g))}
         </>
