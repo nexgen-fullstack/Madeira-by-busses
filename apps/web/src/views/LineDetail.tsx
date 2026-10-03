@@ -135,7 +135,7 @@ export function LineDetail({ routeIndex }: { routeIndex: number }) {
           <h3 className="card__title">{t.t('lines.timetable', { date: longDate(t, date) })}</h3>
           <input
             type="date"
-            aria-label="Date"
+            aria-label={t.t('time.date')}
             value={date}
             onChange={(e) => e.target.value && setDate(e.target.value)}
           />

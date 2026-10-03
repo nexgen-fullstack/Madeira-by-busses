@@ -15,3 +15,11 @@ export function save(key: string, value: unknown): void {
     // Storage unavailable: settings simply won't persist.
   }
 }
+
+export function remove(key: string): void {
+  try {
+    localStorage.removeItem(key);
+  } catch {
+    // Storage unavailable: nothing was stored either.
+  }
+}

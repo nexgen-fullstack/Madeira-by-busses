@@ -10,17 +10,30 @@ export function fareRides(net: Network, it: Itinerary): FareRide[] {
   }));
 }
 
+const stopIndexById = new WeakMap<Network, Map<string, number>>();
+
+/** Index of a stop by its feed id; ids stay the same across timetable updates. */
+export function stopIndex(net: Network, id: string): number | undefined {
+  let map = stopIndexById.get(net);
+  if (!map) {
+    map = new Map(net.stops.map((s, i) => [s.id, i]));
+    stopIndexById.set(net, map);
+  }
+  return map.get(id);
+}
+
 /**
- * Compact place encoding for shareable URLs: `s:1.2.3` (stops) or
+ * Compact place encoding for shareable URLs: `i:00225,00563` (stop ids, which
+ * survive timetable updates), `s:1.2.3` (stop indices, older links) or
  * `p:lat,lon` with an optional `~name` (a shop, a hotel, a dropped pin).
  */
-export function encodePlace(p: {
-  stops?: number[];
-  lat: number;
-  lon: number;
-  name?: string;
-}): string {
-  if (p.stops?.length) return `s:${p.stops.join('.')}`;
+export function encodePlace(
+  p: { stops?: number[]; lat: number; lon: number; name?: string },
+  net?: Network,
+): string {
+  if (p.stops?.length) {
+    return net ? `i:${p.stops.map((s) => net.stops[s]!.id).join(',')}` : `s:${p.stops.join('.')}`;
+  }
   const point = `p:${p.lat.toFixed(5)},${p.lon.toFixed(5)}`;
   return p.name ? `${point}~${p.name}` : point;
 }
@@ -33,12 +46,18 @@ export function decodePlace(
   | { name: string; lat: number; lon: number; stops?: number[]; kind: 'stop' | 'location' }
   | undefined {
   if (!value) return undefined;
-  if (value.startsWith('s:')) {
-    const stops = value
-      .slice(2)
-      .split('.')
-      .map(Number)
-      .filter((n) => Number.isInteger(n) && n >= 0 && n < net.stops.length);
+  const indices = value.startsWith('i:')
+    ? value
+        .slice(2)
+        .split(',')
+        .map((id) => stopIndex(net, id))
+    : value.startsWith('s:')
+      ? value.slice(2).split('.').map(Number)
+      : undefined;
+  if (indices) {
+    const stops = indices.filter(
+      (n): n is number => Number.isInteger(n) && n! >= 0 && n! < net.stops.length,
+    );
     if (stops.length === 0) return undefined;
     const first = net.stops[stops[0]!]!;
     const lat = stops.reduce((a, s) => a + net.stops[s]!.lat, 0) / stops.length;

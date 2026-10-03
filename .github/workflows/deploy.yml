@@ -2,9 +2,12 @@ name: Deploy website
 
 # Publishes the app to GitHub Pages on every push to the default branch, and
 # every night so the published timetable follows the operators' feeds.
-# One-time setup by a repository admin: Settings → Pages → Build and
-# deployment → Source: "GitHub Actions". Until then this workflow only builds
-# and leaves a notice instead of failing.
+#
+# Works with either Pages setting (Settings → Pages → Build and deployment):
+# - "Deploy from a branch", gh-pages / (root): the site is pushed to the
+#   gh-pages branch (also done while Pages is still off, so turning it on
+#   publishes the site at once);
+# - "GitHub Actions": the site is deployed as a Pages artifact.
 on:
   push:
   schedule:
@@ -18,7 +21,7 @@ on:
         default: real
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -31,20 +34,17 @@ jobs:
     if: github.event_name == 'workflow_dispatch' || github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
     outputs:
-      pages: ${{ steps.pages.outputs.enabled }}
+      mode: ${{ steps.pages.outputs.mode }}
     steps:
       - uses: actions/checkout@v4
-      - name: Is GitHub Pages enabled?
+      - name: How is GitHub Pages set up?
         id: pages
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if gh api "repos/${{ github.repository }}/pages" --silent 2>/dev/null; then
-            echo "enabled=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "enabled=false" >> "$GITHUB_OUTPUT"
-            echo "::notice title=GitHub Pages is off::Enable it once: Settings → Pages → Source: GitHub Actions, then re-run this workflow."
-          fi
+          mode=$(gh api "repos/${{ github.repository }}/pages" --jq .build_type 2>/dev/null || echo off)
+          echo "mode=$mode" >> "$GITHUB_OUTPUT"
+          echo "GitHub Pages: $mode"
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
@@ -59,14 +59,33 @@ jobs:
             pnpm data:real || echo "::warning title=Real timetable unavailable::Published with the demo network only; see the log above."
           fi
       - run: pnpm --filter @madeirabus/web build
+
+      - name: Publish to the gh-pages branch
+        if: steps.pages.outputs.mode != 'workflow'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        working-directory: apps/web/dist
+        run: |
+          # One commit, replaced every time: the branch never grows.
+          touch .nojekyll
+          git init -q -b gh-pages
+          git add -A
+          git -c user.name="github-actions[bot]" \
+              -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit -q -m "Website from ${GITHUB_SHA::7} ($(date -u +%Y-%m-%d))"
+          git push -q -f "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" gh-pages
+          if [ "${{ steps.pages.outputs.mode }}" = "off" ]; then
+            echo "::notice title=GitHub Pages is off::The site is ready on the gh-pages branch. Turn it on once: Settings → Pages → Deploy from a branch → gh-pages, / (root)."
+          fi
+
       - uses: actions/upload-pages-artifact@v3
-        if: steps.pages.outputs.enabled == 'true'
+        if: steps.pages.outputs.mode == 'workflow'
         with:
           path: apps/web/dist
 
   deploy:
     needs: build
-    if: needs.build.outputs.pages == 'true'
+    if: needs.build.outputs.mode == 'workflow'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

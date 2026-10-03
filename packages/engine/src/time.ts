@@ -48,8 +48,11 @@ export function weekday(iso: string): number {
 }
 
 /** Current date and seconds-after-midnight in Madeira, whatever the device zone. */
+let madeiraClock: Intl.DateTimeFormat | undefined;
+
 export function madeiraNow(now: Date = new Date()): { date: string; time: number } {
-  const parts = new Intl.DateTimeFormat('en-GB', {
+  // Creating a formatter is slow; screens ask for the time on every render.
+  madeiraClock ??= new Intl.DateTimeFormat('en-GB', {
     timeZone: MADEIRA_TZ,
     year: 'numeric',
     month: '2-digit',
@@ -58,7 +61,8 @@ export function madeiraNow(now: Date = new Date()): { date: string; time: number
     minute: '2-digit',
     second: '2-digit',
     hourCycle: 'h23',
-  }).formatToParts(now);
+  });
+  const parts = madeiraClock.formatToParts(now);
   const get = (type: string) => parts.find((p) => p.type === type)?.value ?? '0';
   return {
     date: `${get('year')}-${get('month')}-${get('day')}`,

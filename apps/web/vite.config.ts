@@ -1,17 +1,28 @@
+import { existsSync, readFileSync } from 'node:fs';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
+/** When the timetable built into the app was generated (the phone app compares downloads with it). */
+function bundledData(): string {
+  const path = new URL('public/data/network.json', import.meta.url);
+  if (!existsSync(path)) return '';
+  const head = readFileSync(path, 'utf8').slice(0, 400);
+  return /"generatedAt":"([^"]+)"/.exec(head)?.[1] ?? '';
+}
+
 export default defineConfig({
   // Relative base: the build works from any sub-path (e.g. GitHub Pages).
   base: './',
+  define: { __BUNDLED_DATA__: JSON.stringify(bundledData()) },
   worker: { format: 'es' },
   // The map library is a single ~1 MB chunk that loads lazily after the UI.
   build: { chunkSizeWarningLimit: 1100 },
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
+      // Updates wait for a quiet moment (see src/lib/pwa.ts).
+      registerType: 'prompt',
       includeAssets: ['icon.svg'],
       manifest: {
         name: 'MadeiraBus — buses of Madeira',

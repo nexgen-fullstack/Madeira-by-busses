@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Launch screen before Android 12: the brand colour with the bus in the middle. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/brand" />
+    <item
+        android:width="180dp"
+        android:height="180dp"
+        android:drawable="@drawable/ic_launcher_foreground"
+        android:gravity="center" />
+</layer-list>

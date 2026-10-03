@@ -17,6 +17,7 @@ export const DEMO_PLACES: BPlace[] = [
       ru: 'Аэропорт Мадейры',
       de: 'Flughafen Madeira',
       es: 'Aeropuerto de Madeira',
+      fr: 'Aéroport de Madère',
       it: 'Aeroporto di Madeira',
       cs: 'Letiště Madeira',
       pl: 'Port lotniczy Madera',
@@ -30,6 +31,7 @@ export const DEMO_PLACES: BPlace[] = [
     kind: 'marketplace',
     names: {
       en: "Farmers' Market",
+      fr: 'Marché des Laboureurs',
       uk: 'Ринок Меркаду-душ-Лаврадореш',
       ru: 'Рынок Меркаду-дуж-Лаврадореш',
       de: 'Bauernmarkt',
@@ -46,6 +48,7 @@ export const DEMO_PLACES: BPlace[] = [
       ru: 'Канатная дорога Фуншала',
       de: 'Seilbahn Funchal',
       es: 'Teleférico de Funchal',
+      fr: 'Téléphérique de Funchal',
       it: 'Funivia di Funchal',
       cs: 'Lanovka Funchal',
       pl: 'Kolejka linowa Funchal',

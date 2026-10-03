@@ -1,17 +1,21 @@
 import { useMemo } from 'react';
-import { ArrowLeft, Flag, MapPin } from 'lucide-react';
-import { madeiraNow, municipalityName } from '@madeirabus/engine';
+import { ArrowLeft, Flag, MapPin, Star } from 'lucide-react';
+import { municipalityName } from '@madeirabus/engine';
 import { DepartureList } from '../components/DepartureList.tsx';
 import { useMapContent } from '../components/mapContext.tsx';
 import { useI18n } from '../i18n.ts';
 import { encodePlace } from '../lib/itinerary.ts';
 import { stopsContent } from '../lib/mapContent.ts';
-import { navigate, type Route } from '../lib/router.ts';
-import { useNetwork } from '../state/app.tsx';
+import { goBack, navigate, type Route } from '../lib/router.ts';
+import { isSaved, toSaved } from '../lib/saved.ts';
+import { useNow } from '../lib/useNow.ts';
+import { useApp, useNetwork } from '../state/app.tsx';
 
 export function StopView({ route }: { route: Route }) {
   const t = useI18n();
   const { net } = useNetwork();
+  const { saved, toggleSaved } = useApp();
+  const now = useNow();
   const ids = useMemo(
     () =>
       (route.query.get('ids') ?? '')
@@ -42,23 +46,33 @@ export function StopView({ route }: { route: Route }) {
   );
 
   if (!group) return <p className="error">?</p>;
-  const now = madeiraNow();
-  const place = encodePlace(group);
+  const place = encodePlace(group, net);
+  const starred = isSaved(net, saved, group.stops);
   return (
     <div className="stop-view">
       <div className="detail__header">
         <button
           type="button"
           className="icon-button"
-          onClick={() => history.back()}
+          onClick={() => goBack('nearby')}
           aria-label={t.t('back')}
         >
           <ArrowLeft size={20} />
         </button>
-        <div>
+        <div className="detail__grow">
           <h2 className="view-title">{group.name}</h2>
           <div className="muted small">{municipalityName(group.muni)}</div>
         </div>
+        <button
+          type="button"
+          className={`icon-button star ${starred ? 'star--on' : ''}`}
+          aria-pressed={starred}
+          aria-label={t.t(starred ? 'saved.remove' : 'saved.add')}
+          title={t.t(starred ? 'saved.remove' : 'saved.add')}
+          onClick={() => toggleSaved(toSaved(net, group))}
+        >
+          <Star size={22} fill={starred ? 'currentColor' : 'none'} />
+        </button>
       </div>
       <div className="detail__actions">
         <button type="button" className="button" onClick={() => navigate('plan', { from: place })}>

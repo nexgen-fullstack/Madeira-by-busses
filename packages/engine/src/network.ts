@@ -63,21 +63,27 @@ export interface NetworkOptions {
 
 export const DEFAULT_WALK_SPEED = 1.25;
 
-/** Runtime view of a bundle with the indexes the planner needs. */
+/**
+ * Runtime view of a bundle with the indexes the planner needs. Indexes that
+ * only some callers use (walking transfers for the planner, name search for
+ * the app) are built on first use, so the app and its planner worker each
+ * pay only for their own.
+ */
 export class Network {
   readonly stops: readonly BStop[];
   readonly routes: readonly BRoute[];
   readonly patterns: readonly BPattern[];
   /** For each stop, the patterns serving it and the stop's position in them. */
   readonly stopPatterns: { pattern: number; pos: number }[][];
-  readonly footpaths: Footpath[][];
   readonly grid: GridIndex;
   readonly walkSpeed: number;
+  private readonly transferRadius: number;
   private readonly shapeCache = new Map<number, LatLon[]>();
   private readonly alongCache = new Map<number, { cum: number[]; stops: number[] }>();
   private readonly dayCache = new Map<string, DayTimetable>();
-  private readonly searchIndex: { key: string; words: string[]; group: StopGroup }[];
-  private readonly placeIndex: { keys: { key: string; words: string[] }[]; place: BPlace }[];
+  private footpathCache?: Footpath[][];
+  private searchCache?: { key: string; words: string[]; group: StopGroup }[];
+  private placeCache?: { keys: { key: string; words: string[] }[]; place: BPlace }[];
 
   constructor(
     readonly bundle: NetworkBundle,
@@ -90,17 +96,20 @@ export class Network {
     this.routes = bundle.routes;
     this.patterns = bundle.patterns;
     this.walkSpeed = options.walkSpeed ?? DEFAULT_WALK_SPEED;
+    this.transferRadius = options.transferRadius ?? 400;
     this.grid = new GridIndex(this.stops);
 
     this.stopPatterns = this.stops.map(() => []);
     this.patterns.forEach((p, pattern) =>
       p.stops.forEach((s, pos) => this.stopPatterns[s]!.push({ pattern, pos })),
     );
+  }
 
-    const radius = options.transferRadius ?? 400;
-    this.footpaths = this.stops.map((s, i) => {
+  /** Walking transfers from each stop to the stops around it. */
+  get footpaths(): Footpath[][] {
+    this.footpathCache ??= this.stops.map((s, i) => {
       const out: Footpath[] = [];
-      for (const hit of this.grid.within(s, radius)) {
+      for (const hit of this.grid.within(s, this.transferRadius)) {
         if (hit.index === i) continue;
         const t = this.stops[hit.index]!;
         // At least 30 s even across the street; keeps walk chains strictly increasing.
@@ -109,15 +118,23 @@ export class Network {
       }
       return out;
     });
+    return this.footpathCache;
+  }
 
-    this.searchIndex = buildSearchIndex(this.stops);
-    this.placeIndex = (bundle.places ?? []).map((place) => ({
+  private get searchIndex() {
+    this.searchCache ??= buildSearchIndex(this.stops);
+    return this.searchCache;
+  }
+
+  private get placeIndex() {
+    this.placeCache ??= (this.bundle.places ?? []).map((place) => ({
       place,
       keys: [...new Set([place.name, ...Object.values(place.names ?? {})])].map((n) => {
         const key = normalise(n);
         return { key, words: significantWords(key) };
       }),
     }));
+    return this.placeCache;
   }
 
   shape(pattern: number): LatLon[] {

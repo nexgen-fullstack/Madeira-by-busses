@@ -1,8 +1,9 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
-import { Bus, LocateFixed, MapPin, X } from 'lucide-react';
+import { Bus, LocateFixed, MapPin, Star, X } from 'lucide-react';
 import { municipalityName, type SearchHit } from '@madeirabus/engine';
 import { useI18n } from '../i18n.ts';
 import { placeName, poiLabel } from '../lib/mapStyles.ts';
+import { savedGroups } from '../lib/saved.ts';
 import { useApp, useNetwork } from '../state/app.tsx';
 
 export interface PlaceValue {
@@ -36,7 +37,7 @@ export function PlaceSearch({
 }: Props) {
   const t = useI18n();
   const { net } = useNetwork();
-  const { settings } = useApp();
+  const { settings, saved } = useApp();
   const [query, setQuery] = useState(value?.name ?? '');
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(0);
@@ -45,9 +46,16 @@ export function PlaceSearch({
 
   useEffect(() => setQuery(value?.name ?? ''), [value]);
 
+  // An empty field offers the saved stops; typing searches stops and places.
+  const showSaved = open && !query && !value;
   const results = useMemo<SearchHit[]>(
-    () => (open && query && query !== value?.name ? net.search(query, 8) : []),
-    [net, query, open, value],
+    () =>
+      showSaved
+        ? savedGroups(net, saved).map((group) => ({ kind: 'stop', group }))
+        : open && query && query !== value?.name
+          ? net.search(query, 8)
+          : [],
+    [net, query, open, value, saved, showSaved],
   );
 
   const pick = (hit: SearchHit) => {
@@ -101,7 +109,7 @@ export function PlaceSearch({
           <button
             type="button"
             className="icon-button"
-            aria-label="Clear"
+            aria-label={t.t('place.clear')}
             onClick={() => {
               onChange(undefined);
               setQuery('');
@@ -142,7 +150,15 @@ export function PlaceSearch({
             >
               {hit.kind === 'stop' ? (
                 <>
-                  <Bus size={16} aria-hidden className="place-search__kind" />
+                  {showSaved ? (
+                    <Star
+                      size={16}
+                      aria-hidden
+                      className="place-search__kind place-search__kind--saved"
+                    />
+                  ) : (
+                    <Bus size={16} aria-hidden className="place-search__kind" />
+                  )}
                   <span className="place-search__name">{hit.group.name}</span>
                   <span className="place-search__muni">{municipalityName(hit.group.muni)}</span>
                 </>

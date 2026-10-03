@@ -5,3 +5,4 @@ data/demo/gtfs/
 dist/
 coverage/
 data/sources/
+apps/mobile/android/

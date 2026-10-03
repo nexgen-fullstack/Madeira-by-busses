@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
+  AlarmClock,
   AlertTriangle,
   ArrowLeft,
   Clock,
   Footprints,
+  MapPin,
   Navigation,
   PlayCircle,
   RotateCcw,
@@ -12,8 +14,10 @@ import {
 } from 'lucide-react';
 import { adviseTicket, type Itinerary } from '@madeirabus/engine';
 import { useI18n, type Key } from '../i18n.ts';
+import { isNative, remind } from '../lib/device.ts';
 import { clock, duration, price } from '../lib/format.ts';
 import { fareRides } from '../lib/itinerary.ts';
+import { useNow } from '../lib/useNow.ts';
 import { useApp, useNetwork } from '../state/app.tsx';
 import { RouteBadge } from './RouteBadge.tsx';
 
@@ -33,6 +37,8 @@ export function ItineraryDetail({ it, date, onBack, onStart, onShare }: Props) {
   const [lastBack, setLastBack] = useState<{ state: 'loading' } | { state: 'done'; time?: number }>(
     { state: 'loading' },
   );
+  const [reminder, setReminder] = useState<number | undefined>();
+  const now = useNow();
 
   const firstLeg = it.legs[0]!;
   const lastLeg = it.legs[it.legs.length - 1]!;
@@ -70,6 +76,26 @@ export function ItineraryDetail({ it, date, onBack, onStart, onShare }: Props) {
   );
   const total = settings.payment === 'cash' ? it.fare.cash : it.fare.giro;
 
+  // The phone app can remind the passenger to leave 5 minutes before setting off.
+  const firstRide = it.legs.find((l) => l.kind === 'ride');
+  const remindAt = it.depart - 300;
+  const canRemind =
+    isNative() && firstRide !== undefined && date === now.date && remindAt > now.time;
+  const setReminderFor = async () => {
+    if (!firstRide || firstRide.kind !== 'ride') return;
+    const when = new Date(Date.now() + (remindAt - now.time) * 1000);
+    const id = await remind(
+      when,
+      t.t('remind.title'),
+      t.t('remind.body', {
+        route: net.routes[firstRide.route]!.short,
+        t: clock(firstRide.start),
+        stop: firstRide.from.name,
+      }),
+    );
+    if (id !== undefined) setReminder(remindAt);
+  };
+
   const toggle = (i: number) =>
     setExpanded((s) => {
       const n = new Set(s);
@@ -101,6 +127,15 @@ export function ItineraryDetail({ it, date, onBack, onStart, onShare }: Props) {
       </div>
 
       <ol className="timeline">
+        {firstLeg.kind === 'walk' && (
+          <li className="timeline__origin">
+            <span className="timeline__time strong">{clock(it.depart)}</span>
+            <span className="timeline__icon">
+              <MapPin size={16} />
+            </span>
+            <div className="strong">{firstLeg.from.name}</div>
+          </li>
+        )}
         {it.legs.map((leg, i) => {
           if (leg.kind === 'walk') {
             const minutes = Math.max(1, Math.round((leg.end - leg.start) / 60));
@@ -216,6 +251,20 @@ export function ItineraryDetail({ it, date, onBack, onStart, onShare }: Props) {
             <Share2 size={18} />
           </button>
         </div>
+      )}
+
+      {canRemind && (
+        <button
+          type="button"
+          className="button button--block"
+          onClick={() => void setReminderFor()}
+          disabled={reminder !== undefined}
+        >
+          <AlarmClock size={18} />{' '}
+          {reminder !== undefined
+            ? t.t('detail.reminded', { t: clock(reminder) })
+            : t.t('detail.remind')}
+        </button>
       )}
 
       {it.rides > 0 && (

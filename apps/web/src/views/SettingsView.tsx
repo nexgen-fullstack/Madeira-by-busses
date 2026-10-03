@@ -1,8 +1,48 @@
-import { Database, Info } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Database, Download, Info, Smartphone } from 'lucide-react';
 import { useI18n, LANGS } from '../i18n.ts';
+import { isNative } from '../lib/device.ts';
 import { fullDate, shortDate } from '../lib/format.ts';
 import { lineGroups } from '../lib/lines.ts';
+import { canInstall, install, isStandalone, onInstallChange } from '../lib/pwa.ts';
 import { useApp } from '../state/app.tsx';
+
+/** The latest Android build, published by the "Android app" workflow. */
+const APK_URL =
+  import.meta.env.VITE_ANDROID_APK ||
+  'https://github.com/nexgen-fullstack/madeirabus/releases/latest/download/MadeiraBus.apk';
+
+/** Install the website as an app, or download the Android app. */
+function InstallCard() {
+  const t = useI18n();
+  const [installable, setInstallable] = useState(canInstall);
+  useEffect(() => onInstallChange(() => setInstallable(canInstall())), []);
+  if (isNative()) return null;
+  const ua = navigator.userAgent;
+  const ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+  return (
+    <section className="card">
+      <h3 className="card__title">
+        <Smartphone size={16} aria-hidden /> {t.t('install.title')}
+      </h3>
+      <p>{t.t('install.text')}</p>
+      <div className="detail__actions">
+        {installable && (
+          <button type="button" className="button button--primary" onClick={() => void install()}>
+            <Download size={18} /> {t.t('install.button')}
+          </button>
+        )}
+        {!ios && (
+          <a className="button" href={APK_URL} rel="noopener">
+            <Download size={18} /> {t.t('install.android')}
+          </a>
+        )}
+      </div>
+      {!ios && <p className="muted small">{t.t('install.androidHint')}</p>}
+      {ios && !isStandalone() && <p className="muted small">{t.t('install.ios')}</p>}
+    </section>
+  );
+}
 
 const PACES = [
   { value: 1.0, key: 'settings.slow' },
@@ -37,6 +77,7 @@ export function SettingsView() {
           ))}
         </div>
       </section>
+      <InstallCard />
       <section className="card">
         <h3 className="card__title">{t.t('settings.payment')}</h3>
         <div className="segmented" role="group" aria-label={t.t('settings.payment')}>

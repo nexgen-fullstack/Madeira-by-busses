@@ -22,11 +22,15 @@ test('real timetable: notice, journey, grouped lines and the demo switch', async
   await page
     .getByRole('button', { name: /Avenida Mar Alfândega → Igreja Curral das Freiras/ })
     .click();
-  await expect(page.locator('.it-card').first()).toContainText('181');
+  // Curral das Freiras is served by one line (numbered 181 or 81 depending on the release).
+  const badge = page.locator('.it-card').first().locator('.route-badge').first();
+  await expect(badge).toHaveText(/^1?81$/);
+  const line = (await badge.textContent())!;
 
   await page.getByRole('link', { name: 'Лінії' }).click();
-  await expect(page.getByRole('button', { name: /^181\b/ })).toHaveCount(1);
-  await page.getByRole('button', { name: /^181\b/ }).click();
+  const row = page.getByRole('button', { name: new RegExp(`^${line}\\b`) });
+  await expect(row).toHaveCount(1);
+  await row.click();
   await expect(page.getByRole('combobox', { name: 'Напрямок' })).toBeVisible();
   await expect(page.locator('.stop-line li').first()).toBeVisible();
 
