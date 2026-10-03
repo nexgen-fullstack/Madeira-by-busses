@@ -61,13 +61,28 @@ export function expandAbbreviations(name: string): string {
 }
 
 /**
+ * Notes that Horários do Funchal appends to a stop name after a double space
+ * and that mean nothing to passengers: the side of the road ("D", "S"), the
+ * terminus of a line ("T-04 83", "T") and bay numbers ("C8").
+ */
+const STOP_NOTE = /^(?:[DS]|T(?:-.*)?|C\d+)$/;
+
+/** Drops the internal notes of a stop name ("Monte  Tanque  D" → "Monte Tanque"). */
+function withoutNotes(name: string): string {
+  const [head = '', ...notes] = name.trim().split(/\s{2,}/);
+  return [head, ...notes.filter((n) => !STOP_NOTE.test(n)).map((n) => n.replace(/^E E M$/, 'EEM'))]
+    .join(' ')
+    .trim();
+}
+
+/**
  * Human-friendly stop name: prefers the descriptive `stop_desc`, drops the
- * trailing stop code ("… (675)") and expands the common abbreviations
- * ("CAM LMB Aguiares" → "Caminho Lombo Aguiares").
+ * trailing stop code ("… (675)") and internal notes, and expands the common
+ * abbreviations ("CAM LMB Aguiares" → "Caminho Lombo Aguiares").
  */
 export function prettyStopName(stop: Pick<GtfsStop, 'stop_name' | 'stop_desc'>): string {
   return expandAbbreviations(
-    stop.stop_desc?.trim() || stop.stop_name.replace(/\s*\([^)]*\)\s*$/, ''),
+    withoutNotes(stop.stop_desc?.trim() || stop.stop_name.replace(/\s*\([^)]*\)\s*$/, '')),
   );
 }
 

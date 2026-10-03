@@ -1,53 +1,59 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { watchPosition, type Position } from './device.ts';
 
 export interface GeoState {
-  position?: { lat: number; lon: number; accuracy: number; timestamp: number };
+  position?: Position;
   error?: 'denied' | 'unavailable';
   pending: boolean;
 }
 
-/** One-shot or continuous browser geolocation. */
-export function useGeolocation(watch = false): GeoState & { request: () => void } {
+/**
+ * One-shot or continuous geolocation. With `background`, the app keeps
+ * receiving positions with the screen off (see `watchPosition`).
+ */
+export function useGeolocation(
+  watch = false,
+  background?: { title: string; text: string },
+): GeoState & { request: () => void } {
   const [state, setState] = useState<GeoState>({ pending: false });
-  const watchId = useRef<number | undefined>(undefined);
+  const stop = useRef<(() => void) | undefined>(undefined);
+  const backgroundRef = useRef(background);
+  backgroundRef.current = background;
 
-  const onPos = useCallback((p: GeolocationPosition) => {
-    setState({
-      pending: false,
-      position: {
-        lat: p.coords.latitude,
-        lon: p.coords.longitude,
-        accuracy: p.coords.accuracy,
-        timestamp: p.timestamp,
-      },
-    });
+  const onPos = useCallback((position: Position) => {
+    setState({ pending: false, position });
   }, []);
-  const onErr = useCallback((e: GeolocationPositionError) => {
-    setState((s) => ({
-      ...s,
-      pending: false,
-      error: e.code === e.PERMISSION_DENIED ? 'denied' : 'unavailable',
-    }));
+  const onErr = useCallback((error: 'denied' | 'unavailable') => {
+    setState((s) => ({ ...s, pending: false, error }));
   }, []);
 
   const request = useCallback(() => {
-    if (!('geolocation' in navigator)) {
-      setState({ pending: false, error: 'unavailable' });
+    setState((s) => ({ ...s, pending: true }));
+    if (watch) {
+      stop.current ??= watchPosition(onPos, onErr, backgroundRef.current);
       return;
     }
-    setState((s) => ({ ...s, pending: true }));
-    const opts = { enableHighAccuracy: true, maximumAge: 5000, timeout: 20000 };
-    if (watch) {
-      if (watchId.current === undefined)
-        watchId.current = navigator.geolocation.watchPosition(onPos, onErr, opts);
-    } else {
-      navigator.geolocation.getCurrentPosition(onPos, onErr, opts);
+    if (!('geolocation' in navigator)) {
+      onErr('unavailable');
+      return;
     }
+    navigator.geolocation.getCurrentPosition(
+      (p) =>
+        onPos({
+          lat: p.coords.latitude,
+          lon: p.coords.longitude,
+          accuracy: p.coords.accuracy,
+          timestamp: p.timestamp,
+        }),
+      (e) => onErr(e.code === e.PERMISSION_DENIED ? 'denied' : 'unavailable'),
+      { enableHighAccuracy: true, maximumAge: 30_000, timeout: 20_000 },
+    );
   }, [watch, onPos, onErr]);
 
   useEffect(
     () => () => {
-      if (watchId.current !== undefined) navigator.geolocation.clearWatch(watchId.current);
+      stop.current?.();
+      stop.current = undefined;
     },
     [],
   );

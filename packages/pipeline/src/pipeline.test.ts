@@ -203,6 +203,14 @@ describe('real Horários do Funchal conventions', () => {
     expect(prettyAgencyName({ agency_name: 'Rodoeste' })).toBe('Rodoeste');
     // Without a description, the name minus its stop code.
     expect(prettyStopName({ stop_name: 'Fajã Escura-Final (CF19J)' })).toBe('Fajã Escura-Final');
+    // Internal notes: side of the road, terminus, bay; landmarks stay.
+    expect(name('Monte  Tanque  D ')).toBe('Monte Tanque');
+    expect(name('ESCL S Martinho  T-04 83 ')).toBe('Escola São Martinho');
+    expect(name('Igreja STO Amaro  C8  S ')).toBe('Igreja Santo Amaro');
+    expect(name('AV Mar  E E M ')).toBe('Avenida Mar EEM');
+    expect(name('Monte  Centro Saúde  D ')).toBe('Monte Centro Saúde');
+    expect(name('Rua Vale Ajuda  S1A ')).toBe('Rua Vale Ajuda S1A');
+    expect(prettyStopName({ stop_name: 'Ponta Laranjeira  T-01 (871)' })).toBe('Ponta Laranjeira');
   });
 
   it('reads INE municipality codes and pretty names when building', () => {

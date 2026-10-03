@@ -7,10 +7,12 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import { Network, type Itinerary } from '@madeirabus/engine';
+import { madeiraNow, Network, type Itinerary } from '@madeirabus/engine';
 import { detectLang, I18nContext, makeI18n, type Lang } from '../i18n.ts';
+import { loadBundleText, refreshRemote } from '../lib/data.ts';
 import { DEFAULT_LAYERS, type MapLayers } from '../lib/mapStyles.ts';
-import { load, save } from '../lib/storage.ts';
+import { setBusy } from '../lib/pwa.ts';
+import { load, remove, save } from '../lib/storage.ts';
 import { PlannerClient } from '../worker/client.ts';
 
 export interface Settings {
@@ -27,6 +29,25 @@ export interface ActiveTrip {
   itinerary: Itinerary;
   date: string;
   simulate: boolean;
+  /** The timetable the itinerary was planned on (its stop indices belong to it). */
+  generatedAt?: string;
+  /** Index of the ride in progress, so a reopened app resumes where it was. */
+  ride?: number;
+}
+
+/** A recent search, places encoded as in URLs (see encodePlace). */
+export interface RecentTrip {
+  from: string;
+  to: string;
+  fromName: string;
+  toName: string;
+}
+
+/** A stop the user starred, by feed ids (stable across timetable updates). */
+export interface SavedStop {
+  ids: string[];
+  name: string;
+  muni: string;
 }
 
 type DataState =
@@ -47,6 +68,10 @@ interface AppValue {
   setSettings: (patch: Partial<Settings>) => void;
   trip?: ActiveTrip;
   setTrip: (trip?: ActiveTrip) => void;
+  recent: RecentTrip[];
+  addRecent: (r: RecentTrip) => void;
+  saved: SavedStop[];
+  toggleSaved: (stop: SavedStop) => void;
   online: boolean;
   reload: () => void;
 }
@@ -67,33 +92,80 @@ export function useNetwork(): { net: Network; planner: PlannerClient } {
 }
 
 const SETTINGS_KEY = 'madeirabus.settings.v1';
+const TRIP_KEY = 'madeirabus.trip.v1';
+const RECENT_KEY = 'madeirabus.recent.v1';
+const SAVED_KEY = 'madeirabus.saved.v1';
+const MAX_RECENT = 6;
 const LOADING: DataState = { status: 'loading' };
 
+/** A stored ride that is still worth resuming on this timetable. */
+function resumableTrip(net: Network): ActiveTrip | undefined {
+  const stored = load<{ trip?: ActiveTrip }>(TRIP_KEY, {}).trip;
+  if (!stored || stored.simulate || stored.generatedAt !== net.bundle.generatedAt) return undefined;
+  const now = madeiraNow();
+  // Half an hour of slack after the planned arrival.
+  const over =
+    stored.date < now.date ||
+    (stored.date === now.date && stored.itinerary.arrive + 1800 < now.time);
+  return over ? undefined : stored;
+}
+
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [settings, setSettingsState] = useState<Settings>(() =>
-    (() => {
-      const stored = load<Settings>(SETTINGS_KEY, {
-        lang: detectLang(),
-        payment: 'giro',
-        walkSpeed: 1.25,
-        map: DEFAULT_LAYERS,
-        dataset: 'real',
-      });
-      return { ...stored, map: { ...DEFAULT_LAYERS, ...stored.map } };
-    })(),
-  );
+  const [settings, setSettingsState] = useState<Settings>(() => {
+    const stored = load<Settings>(SETTINGS_KEY, {
+      lang: detectLang(),
+      payment: 'giro',
+      walkSpeed: 1.25,
+      map: DEFAULT_LAYERS,
+      dataset: 'real',
+    });
+    return { ...stored, map: { ...DEFAULT_LAYERS, ...stored.map } };
+  });
   const [data, setData] = useState<DataState>({ status: 'loading' });
   const dataset = settings.dataset;
-  const [trip, setTrip] = useState<ActiveTrip | undefined>();
+  const [trip, setTripState] = useState<ActiveTrip | undefined>();
+  const [recent, setRecent] = useState<RecentTrip[]>(() => load(RECENT_KEY, { list: [] }).list);
+  const [saved, setSaved] = useState<SavedStop[]>(() => load(SAVED_KEY, { list: [] }).list);
   const [online, setOnline] = useState(() => navigator.onLine);
   const [attempt, setAttempt] = useState(0);
 
-  const setSettings = useCallback((patch: Partial<Settings>) => {
-    // Itineraries hold stop indices of the network they were planned on.
-    if (patch.dataset) setTrip(undefined);
-    setSettingsState((s) => {
-      const next = { ...s, ...patch };
-      save(SETTINGS_KEY, next);
+  const setTrip = useCallback((next?: ActiveTrip) => {
+    setTripState(next);
+    if (next && !next.simulate) save(TRIP_KEY, { trip: next });
+    else remove(TRIP_KEY);
+  }, []);
+
+  const setSettings = useCallback(
+    (patch: Partial<Settings>) => {
+      // Itineraries hold stop indices of the network they were planned on.
+      if (patch.dataset) setTrip(undefined);
+      setSettingsState((s) => {
+        const next = { ...s, ...patch };
+        save(SETTINGS_KEY, next);
+        return next;
+      });
+    },
+    [setTrip],
+  );
+
+  const addRecent = useCallback((r: RecentTrip) => {
+    setRecent((list) => {
+      const next = [r, ...list.filter((x) => x.from !== r.from || x.to !== r.to)].slice(
+        0,
+        MAX_RECENT,
+      );
+      save(RECENT_KEY, { list: next });
+      return next;
+    });
+  }, []);
+
+  const toggleSaved = useCallback((stop: SavedStop) => {
+    setSaved((list) => {
+      const key = stop.ids.join(',');
+      const next = list.some((s) => s.ids.join(',') === key)
+        ? list.filter((s) => s.ids.join(',') !== key)
+        : [...list, stop];
+      save(SAVED_KEY, { list: next });
       return next;
     });
   }, []);
@@ -103,20 +175,17 @@ export function AppProvider({ children }: { children: ReactNode }) {
     let planner: PlannerClient | undefined;
     (async () => {
       try {
-        const fetchBundle = (name: string) => fetch(`${import.meta.env.BASE_URL}data/${name}.json`);
-        let res = dataset === 'real' ? await fetchBundle('network') : undefined;
-        // Builds without the real timetable (local dev, CI) still work on the demo.
-        // A dev server answers a missing file with the app page instead of a 404.
-        const fallback =
-          res !== undefined &&
-          (res.status === 404 || !(res.headers.get('content-type') ?? '').includes('json'));
-        if (!res || fallback) res = await fetchBundle('demo');
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = await res.text();
-        const net = new Network(JSON.parse(json));
+        const { json, fallback } = await loadBundleText(dataset);
+        // The worker parses its own copy; both run at the same time.
         planner = new PlannerClient();
-        await planner.init(json);
-        if (!cancelled) setData({ status: 'ready', dataset, net, planner, fallback });
+        const ready = planner.init(json);
+        const net = new Network(JSON.parse(json));
+        await ready;
+        if (cancelled) return;
+        setData({ status: 'ready', dataset, net, planner, fallback });
+        const resumed = resumableTrip(net);
+        if (resumed) setTripState(resumed);
+        if (dataset === 'real' && !fallback) void refreshRemote(net.bundle.generatedAt);
       } catch (err) {
         if (!cancelled)
           setData({
@@ -131,6 +200,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
       planner?.dispose();
     };
   }, [attempt, dataset]);
+
+  useEffect(() => {
+    setBusy(Boolean(trip && !trip.simulate));
+  }, [trip]);
 
   useEffect(() => {
     const on = () => setOnline(true);
@@ -155,8 +228,32 @@ export function AppProvider({ children }: { children: ReactNode }) {
   // While another dataset loads, screens see "loading" rather than stale data.
   const current: DataState = data.status !== 'loading' && data.dataset !== dataset ? LOADING : data;
   const value = useMemo<AppValue>(
-    () => ({ data: current, settings, setSettings, trip, setTrip, online, reload }),
-    [current, settings, setSettings, trip, online, reload],
+    () => ({
+      data: current,
+      settings,
+      setSettings,
+      trip,
+      setTrip,
+      recent,
+      addRecent,
+      saved,
+      toggleSaved,
+      online,
+      reload,
+    }),
+    [
+      current,
+      settings,
+      setSettings,
+      trip,
+      setTrip,
+      recent,
+      addRecent,
+      saved,
+      toggleSaved,
+      online,
+      reload,
+    ],
   );
 
   return (

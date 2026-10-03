@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowUpDown, Loader2, Sparkles } from 'lucide-react';
+import { ArrowUpDown, History, Loader2, Sparkles } from 'lucide-react';
 import { madeiraNow, normalise, type Itinerary } from '@madeirabus/engine';
 import { ItineraryCard } from '../components/ItineraryCard.tsx';
 import { ItineraryDetail } from '../components/ItineraryDetail.tsx';
@@ -16,9 +16,9 @@ import {
   type MapContent,
 } from '../lib/mapContent.ts';
 import { navigate, type Route } from '../lib/router.ts';
+import { useNow } from '../lib/useNow.ts';
 import { useApp, useNetwork } from '../state/app.tsx';
 
-/** Popular trips offered on an empty screen (only those the network can serve). */
 /** Popular trips; the ones whose stops exist in the loaded network are offered. */
 const SUGGESTIONS: [string, string][] = [
   // Demo network
@@ -36,7 +36,7 @@ const SUGGESTIONS: [string, string][] = [
 export function PlanView({ route }: { route: Route }) {
   const t = useI18n();
   const { net, planner } = useNetwork();
-  const { settings, setTrip } = useApp();
+  const { settings, setTrip, recent, addRecent } = useApp();
   const geo = useGeolocation(false);
   const q = route.query;
 
@@ -51,9 +51,11 @@ export function PlanView({ route }: { route: Route }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
   const [toast, setToast] = useState<string | undefined>();
+  // Bumped to plan again when "now" moves past the first option.
+  const [refresh, setRefresh] = useState(0);
   const wantLocation = useRef(false);
 
-  const now = madeiraNow();
+  const now = useNow();
   const date = dateParam ?? now.date;
   const time = timeParam ? parseTimeInput(timeParam) : now.time;
 
@@ -64,6 +66,10 @@ export function PlanView({ route }: { route: Route }) {
       navigate('plan', next);
     },
     [q],
+  );
+  const encode = useCallback(
+    (p: { stops?: number[]; lat: number; lon: number; name?: string }) => encodePlace(p, net),
+    [net],
   );
 
   // "My location" resolves asynchronously.
@@ -77,7 +83,7 @@ export function PlanView({ route }: { route: Route }) {
   // Plan whenever both ends are known.
   const searchKey =
     from && to
-      ? `${encodePlace(from)}>${encodePlace(to)}@${date}T${timeParam ?? 'now'}|${settings.walkSpeed}`
+      ? `${encodePlace(from)}>${encodePlace(to)}@${date}T${timeParam ?? 'now'}|${settings.walkSpeed}|${refresh}`
       : '';
   useEffect(() => {
     if (!from || !to) {
@@ -95,7 +101,15 @@ export function PlanView({ route }: { route: Route }) {
         time: timeParam ? parseTimeInput(timeParam) : madeiraNow().time,
         options: { walkSpeed: settings.walkSpeed },
       })
-      .then((r) => !cancelled && setResults(r))
+      .then((r) => {
+        if (cancelled) return;
+        setResults(r);
+        // Remember named trips ("my location" changes, so it is left out).
+        const named = (p: PlaceValue) => p.kind === 'stop' || p.name !== myLocation;
+        if (r.length > 0 && named(from) && named(to)) {
+          addRecent({ from: encode(from), to: encode(to), fromName: from.name, toName: to.name });
+        }
+      })
       .catch((e: unknown) => !cancelled && setError(e instanceof Error ? e.message : String(e)))
       .finally(() => !cancelled && setLoading(false));
     return () => {
@@ -103,6 +117,18 @@ export function PlanView({ route }: { route: Route }) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchKey, planner]);
+
+  // Leaving "now" open: once the first option has left, look again.
+  const firstGone =
+    !timeParam &&
+    !loading &&
+    date === now.date &&
+    results !== undefined &&
+    results.length > 0 &&
+    results[0]!.depart < now.time - 60;
+  useEffect(() => {
+    if (firstGone && selected === undefined) setRefresh((r) => r + 1);
+  }, [firstGone, selected]);
 
   const selectedIt = selected !== undefined ? results?.[selected] : undefined;
 
@@ -131,6 +157,15 @@ export function PlanView({ route }: { route: Route }) {
       .slice(0, 4);
   }, [net]);
 
+  // Recent trips whose places still exist in this timetable.
+  const recentTrips = useMemo(
+    () =>
+      recent.filter(
+        (r) => decodePlace(net, r.from, myLocation) && decodePlace(net, r.to, myLocation),
+      ),
+    [recent, net, myLocation],
+  );
+
   if (selectedIt) {
     return (
       <ItineraryDetail
@@ -138,7 +173,12 @@ export function PlanView({ route }: { route: Route }) {
         date={date}
         onBack={() => setParams({ i: undefined })}
         onStart={(simulate) => {
-          setTrip({ itinerary: selectedIt, date, simulate });
+          setTrip({
+            itinerary: selectedIt,
+            date,
+            simulate,
+            generatedAt: net.bundle.generatedAt,
+          });
           navigate('trip');
         }}
         onShare={async () => {
@@ -165,7 +205,7 @@ export function PlanView({ route }: { route: Route }) {
           className="plan__from"
           label={t.t('from')}
           value={from}
-          onChange={(v) => setParams({ from: v ? encodePlace(v) : undefined, i: undefined })}
+          onChange={(v) => setParams({ from: v ? encode(v) : undefined, i: undefined })}
           onUseLocation={() => {
             wantLocation.current = true;
             geo.request();
@@ -191,7 +231,7 @@ export function PlanView({ route }: { route: Route }) {
           className="plan__to"
           label={t.t('to')}
           value={to}
-          onChange={(v) => setParams({ to: v ? encodePlace(v) : undefined, i: undefined })}
+          onChange={(v) => setParams({ to: v ? encode(v) : undefined, i: undefined })}
         />
         {geo.error && <p className="error small">{t.t('place.denied')}</p>}
         <div className="plan__time">
@@ -215,7 +255,7 @@ export function PlanView({ route }: { route: Route }) {
             <>
               <input
                 type="date"
-                aria-label="Date"
+                aria-label={t.t('time.date')}
                 value={date}
                 min={net.bundle.validity.from}
                 max={net.bundle.validity.to}
@@ -232,7 +272,7 @@ export function PlanView({ route }: { route: Route }) {
         </div>
       </form>
 
-      {loading && (
+      {loading && !results?.length && (
         <p className="plan__status" role="status">
           <Loader2 size={16} className="spin" aria-hidden /> {t.t('searching')}
         </p>
@@ -243,7 +283,7 @@ export function PlanView({ route }: { route: Route }) {
       )}
 
       {results && results.length > 0 && (
-        <div className="results" aria-live="polite">
+        <div className="results" aria-live="polite" aria-busy={loading}>
           {results.map((it, i) => (
             <ItineraryCard
               key={`${it.key}@${it.depart}`}
@@ -258,20 +298,40 @@ export function PlanView({ route }: { route: Route }) {
       {!from && !to && (
         <div className="plan__empty">
           <p className="muted">{t.t('results.hint')}</p>
-          <div className="chips">
-            {suggestions.map(([a, b]) => (
-              <button
-                key={`${a!.name}>${b!.name}`}
-                type="button"
-                className="chip"
-                onClick={() =>
-                  setParams({ from: encodePlace(a!), to: encodePlace(b!), i: undefined })
-                }
-              >
-                <Sparkles size={14} aria-hidden /> {a!.name} → {b!.name}
-              </button>
-            ))}
-          </div>
+          {recentTrips.length > 0 && (
+            <>
+              <h3 className="plan__subtitle">{t.t('plan.recent')}</h3>
+              <div className="chips">
+                {recentTrips.map((r) => (
+                  <button
+                    key={`${r.from}>${r.to}`}
+                    type="button"
+                    className="chip"
+                    onClick={() => setParams({ from: r.from, to: r.to, i: undefined })}
+                  >
+                    <History size={14} aria-hidden /> {r.fromName} → {r.toName}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+          {suggestions.length > 0 && (
+            <>
+              {recentTrips.length > 0 && <h3 className="plan__subtitle">{t.t('plan.ideas')}</h3>}
+              <div className="chips">
+                {suggestions.map(([a, b]) => (
+                  <button
+                    key={`${a!.name}>${b!.name}`}
+                    type="button"
+                    className="chip"
+                    onClick={() => setParams({ from: encode(a!), to: encode(b!), i: undefined })}
+                  >
+                    <Sparkles size={14} aria-hidden /> {a!.name} → {b!.name}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       )}
       {toast && (

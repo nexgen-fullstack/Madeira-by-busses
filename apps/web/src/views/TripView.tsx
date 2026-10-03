@@ -4,6 +4,7 @@ import {
   Bus,
   Flag,
   Footprints,
+  Info,
   Megaphone,
   Satellite,
   TriangleAlert,
@@ -13,11 +14,12 @@ import { madeiraNow, RideTracker, type TrackedStop, type TrackState } from '@mad
 import { useMapContent } from '../components/mapContext.tsx';
 import { RouteBadge } from '../components/RouteBadge.tsx';
 import { useI18n } from '../i18n.ts';
+import { askNotify, canNotify, isNative, keepScreenOn, notify, vibrate } from '../lib/device.ts';
 import { clock } from '../lib/format.ts';
 import { useGeolocation } from '../lib/geolocation.ts';
 import { encodePlace, ridesOf } from '../lib/itinerary.ts';
 import type { MapContent, MapPoint } from '../lib/mapContent.ts';
-import { navigate } from '../lib/router.ts';
+import { goBack, navigate } from '../lib/router.ts';
 import { RideSimulator } from '../lib/simulator.ts';
 import { useApp, useNetwork } from '../state/app.tsx';
 
@@ -27,18 +29,34 @@ export function TripView() {
   const t = useI18n();
   const { net } = useNetwork();
   const { trip, setTrip } = useApp();
-  const [rideIndex, setRideIndex] = useState(0);
+  const [rideIndex, setRideIndex] = useState(() => trip?.ride ?? 0);
   const [phase, setPhase] = useState<'ride' | 'transfer' | 'done'>('ride');
   const [state, setState] = useState<TrackState | undefined>();
   const [driver, setDriver] = useState(false);
-  const [notify, setNotify] = useState(
-    () => typeof Notification !== 'undefined' && Notification.permission === 'granted',
-  );
-  const geo = useGeolocation(true);
+  const [notifyOn, setNotifyOn] = useState(false);
 
   const rides = useMemo(() => (trip ? ridesOf(trip.itinerary) : []), [trip]);
   const ride = rides[rideIndex];
   const nextRide = rides[rideIndex + 1];
+  const finalStop = rides[rides.length - 1]?.to.name ?? '';
+  // In the phone app, the ride is followed with the screen off too.
+  const geo = useGeolocation(true, {
+    title: t.t('trip.bgTitle'),
+    text: t.t('trip.bgText', { stop: finalStop }),
+  });
+
+  useEffect(() => {
+    void canNotify().then(setNotifyOn);
+  }, []);
+
+  // The screen stays on while a ride is followed.
+  const active = Boolean(trip);
+  useEffect(() => (active ? keepScreenOn() : undefined), [active]);
+
+  // A reopened app resumes at the same ride.
+  useEffect(() => {
+    if (trip && !trip.simulate && trip.ride !== rideIndex) setTrip({ ...trip, ride: rideIndex });
+  }, [trip, rideIndex, setTrip]);
 
   const setup = useMemo(() => {
     if (!ride) return undefined;
@@ -65,7 +83,7 @@ export function TripView() {
     (s: TrackState) => {
       if (!s.alert || !setup) return;
       const pattern = s.alert === 'next' ? [400, 150, 400, 150, 400] : [200, 100, 200];
-      navigator.vibrate?.(pattern);
+      vibrate(pattern);
       const stopName = setup.stops[setup.stops.length - 1]!.name;
       const text =
         s.alert === 'next'
@@ -75,15 +93,9 @@ export function TripView() {
             : s.alert === 'arrived'
               ? t.t('trip.arrived')
               : t.t('trip.offRoute');
-      if (notify && document.hidden && typeof Notification !== 'undefined') {
-        try {
-          new Notification(text, { body: stopName, tag: 'madeirabus-trip' });
-        } catch {
-          // Some mobile browsers only allow notifications from a service worker.
-        }
-      }
+      if (notifyOn && document.hidden) void notify(text, stopName);
     },
-    [notify, setup, t],
+    [notifyOn, setup, t],
   );
 
   // Simulation clock: 20× real time, starting 45 s before departure.
@@ -177,7 +189,7 @@ export function TripView() {
   const alightName = setup.stops[setup.stops.length - 1]!.name;
   const end = () => {
     setTrip(undefined);
-    history.back();
+    goBack('plan');
   };
 
   const walkBefore = nextRide
@@ -312,19 +324,22 @@ export function TripView() {
             >
               <Bus size={18} /> {t.t('trip.showDriver')}
             </button>
-            {typeof Notification !== 'undefined' && !notify && (
+            {!notifyOn && (isNative() || typeof Notification !== 'undefined') && (
               <button
                 type="button"
                 className="button"
-                onClick={async () =>
-                  setNotify((await Notification.requestPermission()) === 'granted')
-                }
+                onClick={async () => setNotifyOn(await askNotify())}
               >
                 <BellRing size={18} /> {t.t('trip.notify')}
               </button>
             )}
           </div>
           {trip.simulate && <p className="muted small">{t.t('trip.simulateHint')}</p>}
+          {!trip.simulate && !isNative() && (
+            <p className="muted small trip__note">
+              <Info size={14} aria-hidden /> {t.t('trip.keepOpen')}
+            </p>
+          )}
         </>
       )}
 

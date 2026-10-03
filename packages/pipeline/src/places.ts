@@ -11,7 +11,7 @@ export interface OsmElement {
 }
 
 /** Languages of the app; their OSM `name:xx` tags become searchable names. */
-const LANGS = ['uk', 'en', 'pt', 'es', 'it', 'de', 'cs', 'pl', 'ru'];
+const LANGS = ['uk', 'en', 'pt', 'es', 'fr', 'it', 'de', 'cs', 'pl', 'ru'];
 /** Other OSM names people may type. */
 const ALT_NAMES = ['alt_name', 'short_name', 'official_name', 'old_name', 'int_name'];
 

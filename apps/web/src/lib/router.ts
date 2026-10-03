@@ -27,4 +27,20 @@ export function navigate(path: string, query?: Record<string, string | undefined
   for (const [k, v] of Object.entries(query ?? {})) if (v !== undefined && v !== '') q.set(k, v);
   const qs = q.toString();
   location.hash = `#/${path}${qs ? `?${qs}` : ''}`;
+  // Marks the entry as reached from inside the app, so "back" can return to it.
+  try {
+    history.replaceState({ ...(history.state as object | null), inApp: true }, '');
+  } catch {
+    // History state unavailable (sandboxed frames): back falls back to the planner.
+  }
+}
+
+/**
+ * Goes back when the current screen was opened from inside the app, or to
+ * `fallback` when it was opened directly (a shared link, a restored tab), so
+ * "back" never leaves the app.
+ */
+export function goBack(fallback = 'plan'): void {
+  if ((history.state as { inApp?: boolean } | null)?.inApp) history.back();
+  else navigate(fallback);
 }

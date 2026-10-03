@@ -44,6 +44,8 @@ describe('translations', () => {
     expect(makeI18n('pl').tn('detail.stops', 22)).toBe('22 przystanki');
     expect(makeI18n('cs').tn('it.transfers', 3)).toBe('3 přestupy');
     expect(makeI18n('de').tn('it.transfers', 1)).toBe('1 Umstieg');
+    expect(makeI18n('fr').tn('it.transfers', 1)).toBe('1 correspondance');
+    expect(makeI18n('fr').tn('it.transfers', 2)).toBe('2 correspondances');
   });
 });
 
@@ -52,7 +54,9 @@ describe('detectLang', () => {
     expect(detectLang(['de-AT', 'en'])).toBe('de');
     expect(detectLang(['uk-UA'])).toBe('uk');
     expect(detectLang(['ru-RU', 'uk'])).toBe('ru');
-    expect(detectLang(['fr-FR', 'es-ES'])).toBe('es');
+    expect(detectLang(['fr-FR', 'es-ES'])).toBe('fr');
+    expect(detectLang(['fr-CA'])).toBe('fr');
+    expect(detectLang(['nl-NL', 'es-ES'])).toBe('es');
     expect(detectLang(['ja-JP'])).toBe('en');
     expect(detectLang([])).toBe('en');
   });

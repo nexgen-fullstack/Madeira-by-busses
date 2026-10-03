@@ -280,7 +280,7 @@ export default function MapView({ className }: { className?: string }) {
   const pickedLabel = picked?.name || t.t('place.pin');
   return (
     <div className={`${className ?? ''} map-wrap`}>
-      <div ref={container} className="map-canvas" role="region" aria-label="Map" />
+      <div ref={container} className="map-canvas" role="region" aria-label={t.t('map.label')} />
       <LayerSwitcher value={layers} onChange={(map) => setSettings({ map })} />
       {picked && (
         <div className="place-card" role="dialog" aria-label={pickedLabel}>

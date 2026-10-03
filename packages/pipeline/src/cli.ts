@@ -96,7 +96,8 @@ async function loadFeeds(args: Args) {
         feed,
         source: {
           name,
-          url: /^https?:/.test(location) ? location : undefined,
+          // The first of the `|`-separated locations is the operator's own.
+          url: location.split('|').find((l) => /^https?:/.test(l)),
           fetchedAt: new Date().toISOString(),
         },
         prefix: feedArgs.length > 1 ? `${name}:` : '',

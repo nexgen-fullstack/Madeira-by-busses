@@ -183,8 +183,19 @@ h3 {
   border-radius: 12px;
   border: 1px solid var(--border);
   background: var(--surface);
+  color: var(--text);
   font-weight: 600;
+  text-decoration: none;
   cursor: pointer;
+}
+.button:disabled {
+  cursor: default;
+  opacity: 0.75;
+}
+.button--block {
+  display: flex;
+  width: 100%;
+  margin: 0 0 12px;
 }
 .button:hover {
   background: var(--surface-2);
@@ -762,6 +773,7 @@ input[type='time'],
   padding: 12px 12px 12px 4px;
   box-shadow: var(--shadow);
 }
+.timeline__origin,
 .timeline__walk,
 .timeline__end,
 .timeline__stop {
@@ -1338,4 +1350,38 @@ input[type='time'],
   background: var(--brand);
   border-color: var(--brand);
   color: #fff;
+}
+
+/* ---------- Saved stops, recent trips ---------- */
+
+.plan__subtitle {
+  margin: 16px 0 8px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.detail__grow {
+  flex: 1;
+  min-width: 0;
+}
+.star {
+  color: var(--muted);
+}
+.star--on,
+.place-search__kind--saved {
+  color: var(--accent);
+}
+.view-title .star--on {
+  vertical-align: -2px;
+}
+.trip__note {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+}
+.trip__note svg {
+  flex: none;
+  margin-top: 2px;
 }
