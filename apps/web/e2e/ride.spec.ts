@@ -1,10 +1,12 @@
 import { pinDemoData } from './demo.ts';
 import { expect, test } from '@playwright/test';
 
-// A fake clock that only moves when told to: Wednesday 7 Oct 2026, 09:00 in Madeira.
+// A clock that only moves when told to: Wednesday 7 Oct 2026, 08:59:30 in
+// Madeira, half a minute before the 09:00 bus the test rides.
 test.beforeEach(async ({ page }) => {
   await pinDemoData(page);
-  await page.clock.install({ time: new Date('2026-10-07T08:00:00Z') });
+  await page.clock.install({ time: new Date('2026-10-07T07:58:00Z') });
+  await page.clock.pauseAt(new Date('2026-10-07T07:59:30Z'));
 });
 
 test('the ride keeps being followed on other screens', async ({ page }) => {
