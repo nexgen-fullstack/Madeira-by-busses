@@ -1,10 +1,10 @@
-import { useMemo, useState, type CSSProperties, type ReactNode } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { ArrowLeft, Download, Loader2, Printer, Share2 } from 'lucide-react';
 import { stopDepartures } from '@madeirabus/engine';
 import { HourTable } from '../components/HourTable.tsx';
 import { useMapContent } from '../components/mapContext.tsx';
+import { RouteBadge } from '../components/RouteBadge.tsx';
 import { useI18n } from '../i18n.ts';
-import { lineColors } from '../lib/color.ts';
 import { canPrint, canShareFiles, printPdf, saveFile, shareFile } from '../lib/files.ts';
 import { clock, longDate } from '../lib/format.ts';
 import { lineDirections, lineOf } from '../lib/lines.ts';
@@ -108,7 +108,7 @@ export function LineDetail({ routeIndex }: { routeIndex: number }) {
 
   return (
     <div className="line-detail">
-      <div className="line-hero" style={lineColors(`#${line.color}`) as CSSProperties}>
+      <div className="line-hero">
         <button
           type="button"
           className="icon-button line-hero__back"
@@ -117,7 +117,9 @@ export function LineDetail({ routeIndex }: { routeIndex: number }) {
         >
           <ArrowLeft size={20} />
         </button>
-        <span className="line-hero__number">{line.short}</span>
+        <span className="line-hero__number">
+          <RouteBadge route={line} size="xl" />
+        </span>
         <div className="line-hero__text">
           <h2 className="line-hero__name">{line.long}</h2>
           <div className="line-hero__meta">

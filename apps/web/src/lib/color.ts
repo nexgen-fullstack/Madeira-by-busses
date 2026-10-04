@@ -57,27 +57,3 @@ export function inkOn(hex: string, bg: string, ratio = 4.5): string {
   }
   return towards === 0 ? DARK : WHITE;
 }
-
-/**
- * CSS custom properties that paint something in a line's colour: a light
- * tint behind it and the colour itself, darkened or lightened just enough to
- * read as text on that tint, for the light and the dark theme.
- */
-export function lineColors(hex: string): Record<string, string> {
-  const light = tint(hex, 0.13);
-  const dark = mix(hex, '#161B22', 0.22);
-  return {
-    '--line': hex,
-    '--line-bg': light,
-    '--line-ink': inkOn(hex, light, 3.2),
-    '--line-bg-dark': dark,
-    '--line-ink-dark': inkOn(hex, dark, 3.2),
-  };
-}
-
-/** `a` mixed into `b`: 0 is `b`, 1 is `a`. */
-function mix(a: string, b: string, amount: number): string {
-  const ca = channels(a);
-  const cb = channels(b);
-  return toHex(cb.map((v, i) => v + (ca[i]! - v) * amount));
-}

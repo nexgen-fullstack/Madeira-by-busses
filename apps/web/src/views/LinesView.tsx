@@ -1,9 +1,9 @@
-import { useMemo, useState, type CSSProperties } from 'react';
-import { Search, X } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { ChevronRight, Search, X } from 'lucide-react';
 import { madeiraNow } from '@madeirabus/engine';
 import { useMapContent } from '../components/mapContext.tsx';
+import { RouteBadge } from '../components/RouteBadge.tsx';
 import { useI18n } from '../i18n.ts';
-import { lineColors } from '../lib/color.ts';
 import { lineGroups, lineMatches } from '../lib/lines.ts';
 import { networkContent } from '../lib/mapContent.ts';
 import { navigate, type Route } from '../lib/router.ts';
@@ -81,10 +81,12 @@ export function LinesView({ route }: { route: Route }) {
                     <button
                       type="button"
                       className="line-tile"
-                      style={lineColors(`#${r.color}`) as CSSProperties}
                       onClick={() => navigate(`lines/${main}`)}
                     >
-                      <span className="line-tile__number">{r.short}</span>
+                      <span className="line-tile__head">
+                        <RouteBadge route={r} size="xl" />
+                        <ChevronRight size={18} className="line-tile__go" aria-hidden />
+                      </span>
                       {r.formerly && (
                         <span className="line-tile__was">
                           {t.t('lines.formerly', { n: r.formerly })}
