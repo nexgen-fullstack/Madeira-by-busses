@@ -197,4 +197,107 @@ export const pl: Dict = {
   'remind.title': 'Czas wyjść na autobus',
   'remind.body': '{route} o {t} z przystanku „{stop}”',
   'map.label': 'Mapa',
+  'scenic.curral.tag': 'Dolina zakonnic',
+  'scenic.curral.text':
+    'Wioska na dnie głębokiej wulkanicznej doliny otoczonej szczytami. Autobus wspina się tu z Funchal tunelami i serpentynami; spróbuj ciasta z kasztanów.',
+  'scenic.eira.tag': 'Punkt widokowy nad doliną',
+  'scenic.eira.text':
+    'Balkon na wysokości 1000 m tuż nad Curral das Freiras. Niektóre autobusy do doliny zatrzymują się przy samym punkcie widokowym.',
+  'scenic.monte.tag': 'Ogrody i wiklinowe sanie',
+  'scenic.monte.text':
+    'Dzielnica na zboczu nad Funchal z ogrodem tropikalnym Monte Palace i kościołem Matki Bożej. Zjedź na dół wiklinowymi saniami albo wróć kolejką linową.',
+  'scenic.botanico.tag': 'Kwietne dywany z widokiem',
+  'scenic.botanico.text':
+    'Wzorzyste rabaty, kaktusy i rodzime rośliny na tarasach z szerokim widokiem na zatokę Funchal.',
+  'scenic.palheiro.tag': 'Kamelie i stare drzewa',
+  'scenic.palheiro.text':
+    'Zabytkowy ogród dawnej posiadłości z kameliami, różami i cichą kaplicą wśród stuletnich drzew.',
+  'scenic.barcelos.tag': 'Funchal u twoich stóp',
+  'scenic.barcelos.text':
+    'Punkt widokowy na wysokości 355 m z całym amfiteatrem Funchal w dole – najpiękniej o zachodzie słońca.',
+  'scenic.formosa.tag': 'Promenada i baseny',
+  'scenic.formosa.text':
+    'Najdłuższa plaża Funchal z ciemnych otoczaków, promenada do Câmara de Lobos i baseny z wodą morską przy Doca do Cavacas.',
+  'scenic.cidade.tag': 'Malowane drzwi i kolejka',
+  'scenic.cidade.text':
+    'Rua de Santa Maria z malowanymi drzwiami, fort nad morzem i kolejka linowa, która płynie w górę do Monte.',
+  'scenic.cabo-girao.tag': 'Szklany taras widokowy',
+  'scenic.cabo-girao.text':
+    'Jeden z najwyższych klifów morskich Europy, 580 m nad falami, ze szklaną podłogą, przez którą widać przepaść.',
+  'scenic.camara-lobos.tag': 'Rybackie miasteczko',
+  'scenic.camara-lobos.text':
+    'Kolorowe łodzie, domy na klifie i zatoka, którą lubił malować Churchill – tuż na zachód od Funchal.',
+  'scenic.porto-moniz.tag': 'Naturalne baseny lawowe',
+  'scenic.porto-moniz.text':
+    'Popływaj w basenach z wodą morską utworzonych przez lawę na północno-zachodnim krańcu wyspy, gdzie fale Atlantyku rozbijają się o skały.',
+  'scenic.santana.tag': 'Trójkątne domki kryte strzechą',
+  'scenic.santana.text':
+    'Małe trójkątne domki kryte strzechą, pomalowane na czerwono, biało i niebiesko – symbol Madery na zielonym północnym wybrzeżu.',
+  'scenic.sao-lourenco.tag': 'Czerwone klify na wschodzie',
+  'scenic.sao-lourenco.text':
+    'Nagi półwysep czerwonych i ochrowych klifów między dwoma morzami z jednym z najpiękniejszych szlaków wyspy.',
+  'scenic.balcoes.tag': 'Balkon nad lasem wawrzynowym',
+  'scenic.balcoes.text':
+    'Łatwy, płaski spacer wzdłuż lewady przez las wawrzynowy z listy UNESCO do balkonu z widokiem na góry.',
+  'tab.explore': 'Widoki',
+  'detail.wayBack': 'Powrót',
+  'scenic.title': 'Popularne trasy z pięknymi widokami',
+  'scenic.hint':
+    'Dotknij miejsca: zaplanuję podróż i pokażę wszystkie autobusy dnia, od pierwszego do ostatniego.',
+  'scenic.later': 'Dalej na wyspie',
+  'scenic.laterHint':
+    'Tu kursują autobusy {operators}, których rozkładów nie ma jeszcze w aplikacji. Trasy pojawią się, gdy tylko będą.',
+  'scenic.soon': 'Wkrótce',
+  'scenic.centre': 'Centrum Funchal',
+  'scenic.fromCentre': 'Z centrum',
+  'scenic.fromHere': 'Stąd',
+  'scenic.getThere': 'Jak dojechać',
+  'scenic.minutes': '≈{m} min z centrum',
+  'scenic.lastBack': 'ostatni z powrotem o {t}',
+  'scenic.there': 'Tam',
+  'scenic.noDirect':
+    'Brak bezpośredniego autobusu z centrum: skorzystaj z trasy z przesiadką powyżej.',
+  'scenic.noTrips': 'Dziś nie ma już autobusów w tamto miejsce. Zobacz rozkład poniżej.',
+  'scenic.openPlanner': 'Więcej opcji w planerze',
+  'scenic.photo': 'Zdjęcie: {author}, {license}',
+  'scenic.walk': '{m} min pieszo z centrum – autobus niepotrzebny',
+  'scenic.boardsAt': 'odjeżdża z przystanku „{stop}”',
+  'scenic.credits': 'Zdjęcia',
+  'scenic.creditsHint':
+    'Zdjęcia z Wikimedia Commons na wolnych licencjach; przycięte i pomniejszone.',
+  'plan.scenic': 'Piękne widoki',
+  'scenic.all': 'Wszystkie',
+  'lines.formerly': 'dawniej {n}',
+  'lines.search': 'Numer lub nazwa linii',
+  'lines.none': 'Żadna linia nie pasuje do „{q}”',
+  'lines.buses': {
+    one: '{n} autobus',
+    few: '{n} autobusy',
+    many: '{n} autobusów',
+    other: '{n} autobusu',
+  },
+  'lines.firstLast': 'Pierwszy o {first} · ostatni o {last}',
+  'print.card': 'Rozkład do druku',
+  'print.hint':
+    'PDF w formacie A4: dni robocze, soboty, niedziele i święta oraz czas jazdy do każdego przystanku.',
+  'print.from': 'Odjazdy z przystanku',
+  'print.back': 'Dodaj kierunek powrotny',
+  'print.download': 'Pobierz PDF',
+  'print.print': 'Drukuj',
+  'print.share': 'Udostępnij',
+  'print.saved': 'PDF zapisany',
+  'print.failed': 'Nie udało się utworzyć PDF',
+  'print.title': 'Linia {n} — {name}',
+  'print.kind': 'Rozkład jazdy autobusu',
+  'print.daily': 'Codziennie',
+  'print.withHolidays': '{days} i święta',
+  'print.closed': 'Brak autobusów: {days}',
+  'print.endsAt': 'tylko do przystanku „{stop}”',
+  'print.hour': 'Godz.',
+  'print.none': 'W najbliższych tygodniach z tego przystanku nie odjeżdżają autobusy.',
+  'print.stops': 'Przystanki i minuty od „{stop}”',
+  'print.continued': 'ciąg dalszy',
+  'print.page': 'Strona {n} z {total}',
+  'print.basis': 'Rozkład na {from} – {to}. Godziny mogą się zmienić — sprawdź na przystanku.',
+  'print.source': 'Źródło: {source}. Wydrukowano {date} w MadeiraBus.',
 };

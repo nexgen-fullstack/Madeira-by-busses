@@ -172,4 +172,101 @@ export const fr: Dict = {
   'remind.title': 'C’est l’heure de partir pour le bus',
   'remind.body': '{route} à {t} depuis « {stop} »',
   'map.label': 'Carte',
+  'scenic.curral.tag': 'La vallée des nonnes',
+  'scenic.curral.text':
+    'Un village au fond d’une profonde vallée volcanique cernée de pics. Le bus y monte depuis Funchal par des tunnels et des lacets ; goûtez le gâteau à la châtaigne.',
+  'scenic.eira.tag': 'Belvédère sur la vallée',
+  'scenic.eira.text':
+    'Un balcon à 1 000 m d’altitude juste au-dessus de Curral das Freiras. Certains bus vers la vallée s’arrêtent au belvédère.',
+  'scenic.monte.tag': 'Jardins et luges en osier',
+  'scenic.monte.text':
+    'Quartier perché au-dessus de Funchal, avec le jardin tropical Monte Palace et l’église Notre-Dame. Descendez en luge d’osier ou rentrez en téléphérique.',
+  'scenic.botanico.tag': 'Tapis de fleurs avec vue',
+  'scenic.botanico.text':
+    'Parterres dessinés, cactus et plantes indigènes en terrasses, avec une large vue sur la baie de Funchal.',
+  'scenic.palheiro.tag': 'Camélias et arbres anciens',
+  'scenic.palheiro.text':
+    'Le jardin historique d’un domaine, avec camélias, roses et une chapelle paisible parmi des arbres centenaires.',
+  'scenic.barcelos.tag': 'Funchal à vos pieds',
+  'scenic.barcelos.text':
+    'Un belvédère à 355 m avec tout l’amphithéâtre de Funchal en contrebas — le plus beau au coucher du soleil.',
+  'scenic.formosa.tag': 'Promenade et piscines',
+  'scenic.formosa.text':
+    'La plus longue plage de Funchal, en galets sombres, la promenade jusqu’à Câmara de Lobos et les piscines de Doca do Cavacas.',
+  'scenic.cidade.tag': 'Portes peintes et téléphérique',
+  'scenic.cidade.text':
+    'La Rua de Santa Maria et ses portes peintes, le fort au bord de l’eau et le téléphérique qui monte jusqu’à Monte.',
+  'scenic.cabo-girao.tag': 'Plateforme de verre',
+  'scenic.cabo-girao.text':
+    'L’une des plus hautes falaises maritimes d’Europe, 580 m au-dessus des vagues, avec un plancher de verre pour regarder droit en bas.',
+  'scenic.camara-lobos.tag': 'Village de pêcheurs',
+  'scenic.camara-lobos.text':
+    'Barques colorées, maisons sur la falaise et la baie que Churchill aimait peindre, à deux pas à l’ouest de Funchal.',
+  'scenic.porto-moniz.tag': 'Piscines naturelles de lave',
+  'scenic.porto-moniz.text':
+    'Baignez-vous dans des bassins d’eau de mer creusés par la lave à la pointe nord-ouest de l’île, où l’Atlantique se brise sur les rochers.',
+  'scenic.santana.tag': 'Maisons au toit de chaume',
+  'scenic.santana.text':
+    'De petites maisons triangulaires au toit de chaume, peintes en rouge, blanc et bleu : un symbole de Madère sur la verte côte nord.',
+  'scenic.sao-lourenco.tag': 'Falaises rouges à l’est',
+  'scenic.sao-lourenco.text':
+    'Une péninsule nue de falaises rouges et ocre entre deux mers, avec l’une des plus belles randonnées de l’île.',
+  'scenic.balcoes.tag': 'Balcon sur la laurisylve',
+  'scenic.balcoes.text':
+    'Une promenade facile et plate le long d’une levada dans la forêt de laurisylve, classée à l’UNESCO, jusqu’à un balcon sur les montagnes.',
+  'tab.explore': 'Paysages',
+  'detail.wayBack': 'Retour',
+  'scenic.title': 'Trajets populaires aux beaux paysages',
+  'scenic.hint':
+    'Touchez un lieu : je prépare le trajet et montre tous les bus de la journée, du premier au dernier.',
+  'scenic.later': 'Plus loin sur l’île',
+  'scenic.laterHint':
+    'Ces lieux sont desservis par {operators}, dont les horaires ne sont pas encore dans l’application. Les trajets apparaîtront dès qu’ils y seront.',
+  'scenic.soon': 'Bientôt',
+  'scenic.centre': 'Centre de Funchal',
+  'scenic.fromCentre': 'Du centre',
+  'scenic.fromHere': 'D’ici',
+  'scenic.getThere': 'Y aller',
+  'scenic.minutes': '≈{m} min du centre',
+  'scenic.lastBack': 'dernier retour à {t}',
+  'scenic.there': 'Aller',
+  'scenic.noDirect':
+    'Pas de bus direct depuis le centre : prenez un trajet avec correspondance ci-dessus.',
+  'scenic.noTrips': 'Plus de bus pour y aller aujourd’hui. Voir les horaires ci-dessous.',
+  'scenic.openPlanner': 'Plus d’options dans le planificateur',
+  'scenic.photo': 'Photo : {author}, {license}',
+  'scenic.walk': '{m} min à pied du centre, pas besoin de bus',
+  'scenic.boardsAt': 'part de « {stop} »',
+  'scenic.credits': 'Photos',
+  'scenic.creditsHint': 'Photos de Wikimedia Commons sous licences libres ; recadrées et réduites.',
+  'plan.scenic': 'Beaux paysages',
+  'scenic.all': 'Tout voir',
+  'lines.formerly': 'ex-{n}',
+  'lines.search': 'Numéro ou nom de ligne',
+  'lines.none': 'Aucune ligne ne correspond à « {q} »',
+  'lines.buses': { one: '{n} bus', other: '{n} bus' },
+  'lines.firstLast': 'Premier à {first} · dernier à {last}',
+  'print.card': 'Horaire à imprimer',
+  'print.hint':
+    'PDF au format A4 : semaine, samedi, dimanche et jours fériés, avec le temps jusqu’à chaque arrêt.',
+  'print.from': 'Départs de',
+  'print.back': 'Ajouter le retour',
+  'print.download': 'Télécharger le PDF',
+  'print.print': 'Imprimer',
+  'print.share': 'Partager',
+  'print.saved': 'PDF enregistré',
+  'print.failed': 'Impossible de créer le PDF',
+  'print.title': 'Ligne {n} — {name}',
+  'print.kind': 'Horaire du bus',
+  'print.daily': 'Tous les jours',
+  'print.withHolidays': '{days} et jours fériés',
+  'print.closed': 'Pas de bus : {days}',
+  'print.endsAt': 'seulement jusqu’à « {stop} »',
+  'print.hour': 'Heure',
+  'print.none': 'Aucun bus ne part de cet arrêt dans les semaines à venir.',
+  'print.stops': 'Arrêts et minutes depuis « {stop} »',
+  'print.continued': 'suite',
+  'print.page': 'Page {n} sur {total}',
+  'print.basis': 'Horaires du {from} au {to}. Ils peuvent changer : vérifiez à l’arrêt.',
+  'print.source': 'Source : {source}. Imprimé le {date} avec MadeiraBus.',
 };

@@ -1,44 +1,41 @@
-import { useMemo, useState } from 'react';
-import { ArrowLeft } from 'lucide-react';
-import { madeiraNow } from '@madeirabus/engine';
+import { useMemo, useState, type CSSProperties, type ReactNode } from 'react';
+import { ArrowLeft, Download, Loader2, Printer, Share2 } from 'lucide-react';
+import { stopDepartures } from '@madeirabus/engine';
+import { HourTable } from '../components/HourTable.tsx';
 import { useMapContent } from '../components/mapContext.tsx';
-import { RouteBadge } from '../components/RouteBadge.tsx';
 import { useI18n } from '../i18n.ts';
+import { lineColors } from '../lib/color.ts';
+import { canPrint, canShareFiles, printPdf, saveFile, shareFile } from '../lib/files.ts';
 import { clock, longDate } from '../lib/format.ts';
-import { lineOf } from '../lib/lines.ts';
+import { lineDirections, lineOf } from '../lib/lines.ts';
 import { routeContent } from '../lib/mapContent.ts';
-import { navigate } from '../lib/router.ts';
+import { boardingStops, returnOf, terminusMarks } from '../lib/printable.ts';
+import { goBack, navigate } from '../lib/router.ts';
+import { lineUrl } from '../lib/site.ts';
+import { useNow } from '../lib/useNow.ts';
 import { useNetwork } from '../state/app.tsx';
+
+type PdfAction = 'save' | 'print' | 'share';
 
 export function LineDetail({ routeIndex }: { routeIndex: number }) {
   const t = useI18n();
   const { net } = useNetwork();
-  const [date, setDate] = useState(madeiraNow().date);
+  const now = useNow();
+  const today = now.date;
+  const [date, setDate] = useState(today);
   const [dirIndex, setDirIndex] = useState(0);
+  const [chosenStop, setChosenStop] = useState<number | undefined>();
+  const [back, setBack] = useState(true);
+  const [busy, setBusy] = useState<PdfAction | undefined>();
+  const [toast, setToast] = useState<string | undefined>();
   const route = net.routes[routeIndex];
   // All variants of the line, as the feed may publish each one as a route.
   const variants = useMemo(() => lineOf(net, routeIndex), [net, routeIndex]);
-
-  // Directions = patterns grouped by terminus pair.
-  const directions = useMemo(() => {
-    const groups = new Map<string, number[]>();
-    net.patterns.forEach((p, i) => {
-      if (!variants.includes(p.route)) return;
-      const key = `${net.stops[p.stops[0]!]!.name} → ${net.stops[p.stops[p.stops.length - 1]!]!.name}`;
-      groups.set(key, [...(groups.get(key) ?? []), i]);
-    });
-    // Busiest by stops served, so the main route comes before local runs.
-    const weight = (p: number) => net.patterns[p]!.trips.length * net.patterns[p]!.stops.length;
-    const trips = (patterns: number[]) => patterns.reduce((n, p) => n + weight(p), 0);
-    return [...groups.entries()]
-      .map(([label, patterns]) => ({
-        label,
-        patterns: patterns.sort((a, b) => weight(b) - weight(a)),
-      }))
-      .sort((a, b) => trips(b.patterns) - trips(a.patterns));
-  }, [net, variants]);
+  const directions = useMemo(() => lineDirections(net, variants), [net, variants]);
   const dir = directions[Math.min(dirIndex, directions.length - 1)];
   const main = dir?.patterns[0];
+  const stops = useMemo(() => (dir ? boardingStops(net, dir) : []), [net, dir]);
+  const stop = chosenStop !== undefined && stops.includes(chosenStop) ? chosenStop : stops[0];
 
   useMapContent(
     useMemo(
@@ -47,51 +44,85 @@ export function LineDetail({ routeIndex }: { routeIndex: number }) {
     ),
   );
 
-  const times = useMemo(() => {
-    if (!dir) return [];
-    const day = net.timetable(date);
-    return dir.patterns
-      .flatMap((p) =>
-        day.patterns[p]!.start.map((_, j) => net.departureAt(p, day.patterns[p]!, j, 0)),
-      )
-      .sort((a, b) => a - b);
-  }, [net, dir, date]);
+  // Every bus of this direction that stops here, short runs marked with a letter.
+  const timetable = useMemo(() => {
+    if (!dir || stop === undefined) return undefined;
+    const departures = stopDepartures(net, dir.patterns, stop, date);
+    const marks = terminusMarks(net, dir, departures);
+    const entries = departures.map((d) => ({ time: d.time, mark: marks.get(d.terminus) }));
+    return { departures, marks, entries };
+  }, [net, dir, stop, date]);
 
-  const byHour = useMemo(() => {
-    const m = new Map<number, number[]>();
-    for (const s of times) {
-      const h = Math.floor(s / 3600);
-      m.set(h, [...(m.get(h) ?? []), s]);
-    }
-    return [...m.entries()];
-  }, [times]);
-
-  if (!route || !dir || main === undefined) return <p className="error">?</p>;
+  if (!route || !dir || main === undefined || stop === undefined || !timetable) {
+    return <p className="error">?</p>;
+  }
   const agency = net.bundle.agencies[route.agency]!;
-  // The variant of the selected direction, named when it is not the main one.
-  const shown = {
-    route: net.patterns[main]!.route,
-    long: net.routes[net.patterns[main]!.route]!.long,
+  const line = net.routes[variants[0]!]!;
+  const { departures } = timetable;
+  const mainStops = net.patterns[main]!.stops;
+
+  const switchDirection = (i: number) => {
+    // Stay at the same stop across the road when the other direction has one.
+    const next = directions[i]!;
+    const there = returnOf(net, variants, dir, stop);
+    setDirIndex(i);
+    setChosenStop(
+      there && there.direction.patterns[0] === next.patterns[0] ? there.stop : undefined,
+    );
   };
-  const stops = net.patterns[main]!.stops;
+
+  const pdf = async (action: PdfAction) => {
+    setBusy(action);
+    try {
+      const { makeTimetablePdf } = await import('../lib/pdf/make.ts');
+      const { timetable: tt, bytes } = await makeTimetablePdf(
+        net,
+        t,
+        { route: routeIndex, direction: dir, stop, back, from: date, url: lineUrl(line.short) },
+        today,
+      );
+      if (action === 'print') await printPdf(bytes, tt.fileName);
+      else if (action === 'share') await shareFile(bytes, tt.fileName, tt.title);
+      else if (await saveFile(bytes, tt.fileName)) flash(t.t('print.saved'));
+    } catch {
+      flash(t.t('print.failed'));
+    } finally {
+      setBusy(undefined);
+    }
+  };
+  const flash = (message: string) => {
+    setToast(message);
+    window.setTimeout(() => setToast(undefined), 2500);
+  };
+  const pdfButton = (action: PdfAction, label: string, icon: ReactNode, primary = false) => (
+    <button
+      type="button"
+      className={`button ${primary ? 'button--primary' : ''}`}
+      onClick={() => void pdf(action)}
+      disabled={busy !== undefined}
+      aria-busy={busy === action}
+    >
+      {busy === action ? <Loader2 size={18} className="spin" aria-hidden /> : icon} {label}
+    </button>
+  );
 
   return (
     <div className="line-detail">
-      <div className="detail__header">
+      <div className="line-hero" style={lineColors(`#${line.color}`) as CSSProperties}>
         <button
           type="button"
-          className="icon-button"
-          onClick={() => navigate('lines')}
+          className="icon-button line-hero__back"
+          onClick={() => goBack('lines')}
           aria-label={t.t('back')}
         >
           <ArrowLeft size={20} />
         </button>
-        <RouteBadge route={route} size="lg" />
-        <div>
-          <h2 className="view-title">{net.routes[variants[0]!]!.long}</h2>
-          <div className="muted small">
+        <span className="line-hero__number">{line.short}</span>
+        <div className="line-hero__text">
+          <h2 className="line-hero__name">{line.long}</h2>
+          <div className="line-hero__meta">
             {agency.name}
-            {shown.route !== variants[0] && ` · ${shown.long}`}
+            {line.formerly && <> · {t.t('lines.formerly', { n: line.formerly })}</>}
           </div>
         </div>
       </div>
@@ -101,10 +132,10 @@ export function LineDetail({ routeIndex }: { routeIndex: number }) {
           className="select"
           aria-label={t.t('lines.direction')}
           value={directions.indexOf(dir)}
-          onChange={(e) => setDirIndex(Number(e.target.value))}
+          onChange={(e) => switchDirection(Number(e.target.value))}
         >
           {directions.map((d, i) => (
-            <option key={d.label} value={i}>
+            <option key={d.patterns[0]} value={i}>
               {d.label}
             </option>
           ))}
@@ -112,16 +143,16 @@ export function LineDetail({ routeIndex }: { routeIndex: number }) {
       ) : (
         directions.length > 1 && (
           <div
-            className="segmented segmented--wrap"
+            className="segmented segmented--wrap segmented--stack"
             role="group"
             aria-label={t.t('lines.direction')}
           >
             {directions.map((d, i) => (
               <button
-                key={d.label}
+                key={d.patterns[0]}
                 type="button"
                 aria-pressed={d === dir}
-                onClick={() => setDirIndex(i)}
+                onClick={() => switchDirection(i)}
               >
                 {d.label}
               </button>
@@ -131,40 +162,80 @@ export function LineDetail({ routeIndex }: { routeIndex: number }) {
       )}
 
       <section className="card">
-        <div className="card__row">
+        <div className="card__row card__row--wrap">
           <h3 className="card__title">{t.t('lines.timetable', { date: longDate(t, date) })}</h3>
           <input
             type="date"
             aria-label={t.t('time.date')}
             value={date}
+            min={net.bundle.validity.from}
+            max={net.bundle.validity.to}
             onChange={(e) => e.target.value && setDate(e.target.value)}
           />
         </div>
-        {times.length === 0 ? (
+        <label className="field">
+          <span className="field__label">{t.t('print.from')}</span>
+          <select
+            className="select select--inline"
+            value={stop}
+            onChange={(e) => setChosenStop(Number(e.target.value))}
+          >
+            {stops.map((s) => (
+              <option key={s} value={s}>
+                {net.stops[s]!.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        {departures.length === 0 ? (
           <p className="muted">{t.t('lines.noService')}</p>
         ) : (
-          <table className="timetable">
-            <tbody>
-              {byHour.map(([h, list]) => (
-                <tr key={h}>
-                  <th scope="row">{String(h % 24).padStart(2, '0')}</th>
-                  <td>
-                    {list.map((s) => (
-                      <span key={s}>{clock(s).slice(3)}</span>
-                    ))}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <>
+            <p className="first-last">
+              {t.t('lines.firstLast', {
+                first: clock(departures[0]!.time),
+                last: clock(departures[departures.length - 1]!.time),
+              })}{' '}
+              · {t.tn('lines.buses', departures.length)}
+            </p>
+            <HourTable entries={timetable.entries} now={date === today ? now.time : undefined} />
+            {timetable.marks.size > 0 && (
+              <ul className="legend">
+                {[...timetable.marks.entries()].map(([s, mark]) => (
+                  <li key={s}>
+                    <sup className="timetable__mark">{mark}</sup>{' '}
+                    {t.t('print.endsAt', { stop: net.stops[s]!.name })}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </>
         )}
+      </section>
+
+      <section className="card print-card">
+        <h3 className="card__title">
+          <Printer size={16} aria-hidden /> {t.t('print.card')}
+        </h3>
+        <p className="muted small">{t.t('print.hint')}</p>
+        {directions.length > 1 && (
+          <label className="check">
+            <input type="checkbox" checked={back} onChange={(e) => setBack(e.target.checked)} />
+            <span>{t.t('print.back')}</span>
+          </label>
+        )}
+        <div className="detail__actions">
+          {pdfButton('save', t.t('print.download'), <Download size={18} />, true)}
+          {canPrint() && pdfButton('print', t.t('print.print'), <Printer size={18} />)}
+          {canShareFiles() && pdfButton('share', t.t('print.share'), <Share2 size={18} />)}
+        </div>
       </section>
 
       <section className="card">
         <h3 className="card__title">{t.t('lines.stops')}</h3>
-        <ol className="stop-line" style={{ ['--route' as string]: `#${route.color}` }}>
-          {stops.map((s, i) => (
-            <li key={`${s}-${i}`}>
+        <ol className="stop-line" style={{ ['--route' as string]: `#${line.color}` }}>
+          {mainStops.map((s, i) => (
+            <li key={`${s}-${i}`} className={s === stop ? 'is-chosen' : undefined}>
               <button type="button" onClick={() => navigate('stop', { ids: String(s) })}>
                 {net.stops[s]!.name}
               </button>
@@ -172,6 +243,11 @@ export function LineDetail({ routeIndex }: { routeIndex: number }) {
           ))}
         </ol>
       </section>
+      {toast && (
+        <div className="toast" role="status">
+          {toast}
+        </div>
+      )}
     </div>
   );
 }

@@ -195,4 +195,106 @@ export const cs: Dict = {
   'remind.title': 'Čas vyrazit na autobus',
   'remind.body': '{route} v {t} ze zastávky „{stop}“',
   'map.label': 'Mapa',
+  'scenic.curral.tag': 'Údolí jeptišek',
+  'scenic.curral.text':
+    'Vesnice na dně hlubokého sopečného údolí obklopeného štíty. Autobus sem stoupá z Funchalu tunely a serpentinami; ochutnejte kaštanový koláč.',
+  'scenic.eira.tag': 'Vyhlídka nad údolím',
+  'scenic.eira.text':
+    'Balkon ve výšce 1000 m přímo nad Curral das Freiras. Některé autobusy do údolí zastavují přímo u vyhlídky.',
+  'scenic.monte.tag': 'Zahrady a proutěné sáně',
+  'scenic.monte.text':
+    'Čtvrť na svahu nad Funchalem s tropickou zahradou Monte Palace a kostelem Panny Marie. Sjeďte dolů v proutěných saních, nebo se vraťte lanovkou.',
+  'scenic.botanico.tag': 'Květinové koberce s výhledem',
+  'scenic.botanico.text':
+    'Vzorované záhony, kaktusy a domácí rostliny na terasách se širokým výhledem na záliv Funchalu.',
+  'scenic.palheiro.tag': 'Kamélie a staré stromy',
+  'scenic.palheiro.text':
+    'Historická zahrada statku s kaméliemi, růžemi a tichou kaplí mezi staletými stromy.',
+  'scenic.barcelos.tag': 'Funchal jako na dlani',
+  'scenic.barcelos.text':
+    'Vyhlídka ve výšce 355 m s celým amfiteátrem Funchalu pod vámi – nejkrásnější při západu slunce.',
+  'scenic.formosa.tag': 'Promenáda a bazény',
+  'scenic.formosa.text':
+    'Nejdelší pláž Funchalu z tmavých oblázků, promenáda do Câmara de Lobos a mořské bazény Doca do Cavacas.',
+  'scenic.cidade.tag': 'Malované dveře a lanovka',
+  'scenic.cidade.text':
+    'Ulice Rua de Santa Maria s malovanými dveřmi, pevnost u moře a lanovka, která pluje nahoru na Monte.',
+  'scenic.cabo-girao.tag': 'Skleněná vyhlídka',
+  'scenic.cabo-girao.text':
+    'Jeden z nejvyšších mořských útesů Evropy, 580 m nad vlnami, se skleněnou podlahou pro pohled přímo dolů.',
+  'scenic.camara-lobos.tag': 'Rybářské městečko',
+  'scenic.camara-lobos.text':
+    'Barevné loďky, domy na útesu a zátoka, kterou rád maloval Churchill, kousek na západ od Funchalu.',
+  'scenic.porto-moniz.tag': 'Přírodní lávové bazény',
+  'scenic.porto-moniz.text':
+    'Koupejte se v bazénech s mořskou vodou, které vytvořila láva na severozápadním cípu ostrova, kde se tříští vlny Atlantiku.',
+  'scenic.santana.tag': 'Trojúhelníkové doškové domky',
+  'scenic.santana.text':
+    'Malé trojúhelníkové domky s doškovou střechou, natřené červeně, bíle a modře – symbol Madeiry na zeleném severním pobřeží.',
+  'scenic.sao-lourenco.tag': 'Rudé útesy na východě',
+  'scenic.sao-lourenco.text':
+    'Holý poloostrov rudých a okrových útesů mezi dvěma moři s jednou z nejkrásnějších tras ostrova.',
+  'scenic.balcoes.tag': 'Balkon nad vavřínovým lesem',
+  'scenic.balcoes.text':
+    'Snadná rovná procházka podél levády vavřínovým lesem z dědictví UNESCO na balkon s výhledem na hory.',
+  'tab.explore': 'Výhledy',
+  'detail.wayBack': 'Zpět',
+  'scenic.title': 'Oblíbené cesty s krásnými výhledy',
+  'scenic.hint':
+    'Klepněte na místo: naplánuji cestu a ukážu všechny autobusy dne, od prvního po poslední.',
+  'scenic.later': 'Dál po ostrově',
+  'scenic.laterHint':
+    'Sem jezdí autobusy {operators}, jejichž jízdní řády v aplikaci zatím nejsou. Trasy se objeví, jakmile budou.',
+  'scenic.soon': 'Brzy',
+  'scenic.centre': 'Centrum Funchalu',
+  'scenic.fromCentre': 'Z centra',
+  'scenic.fromHere': 'Odsud',
+  'scenic.getThere': 'Jak se tam dostat',
+  'scenic.minutes': '≈{m} min z centra',
+  'scenic.lastBack': 'poslední zpět v {t}',
+  'scenic.there': 'Tam',
+  'scenic.noDirect': 'Z centra nejede přímý autobus: použijte trasu s přestupem výše.',
+  'scenic.noTrips': 'Dnes už tam nic nejede. Podívejte se na jízdní řád níže.',
+  'scenic.openPlanner': 'Další možnosti v plánovači',
+  'scenic.photo': 'Foto: {author}, {license}',
+  'scenic.walk': '{m} min pěšky z centra – autobus netřeba',
+  'scenic.boardsAt': 'odjíždí ze zastávky „{stop}“',
+  'scenic.credits': 'Fotografie',
+  'scenic.creditsHint':
+    'Fotografie z Wikimedia Commons pod svobodnými licencemi; oříznuté a zmenšené.',
+  'plan.scenic': 'Krásné výhledy',
+  'scenic.all': 'Vše',
+  'lines.formerly': 'dříve {n}',
+  'lines.search': 'Číslo nebo název linky',
+  'lines.none': 'Žádná linka neodpovídá „{q}“',
+  'lines.buses': {
+    one: '{n} autobus',
+    few: '{n} autobusy',
+    many: '{n} autobusu',
+    other: '{n} autobusů',
+  },
+  'lines.firstLast': 'První v {first} · poslední v {last}',
+  'print.card': 'Jízdní řád k tisku',
+  'print.hint':
+    'PDF ve formátu A4: pracovní dny, soboty, neděle a svátky a doba jízdy ke každé zastávce.',
+  'print.from': 'Odjezdy ze zastávky',
+  'print.back': 'Přidat zpáteční směr',
+  'print.download': 'Stáhnout PDF',
+  'print.print': 'Tisk',
+  'print.share': 'Sdílet',
+  'print.saved': 'PDF uloženo',
+  'print.failed': 'PDF se nepodařilo vytvořit',
+  'print.title': 'Linka {n} — {name}',
+  'print.kind': 'Jízdní řád autobusu',
+  'print.daily': 'Denně',
+  'print.withHolidays': '{days} a svátky',
+  'print.closed': 'Autobusy nejezdí: {days}',
+  'print.endsAt': 'jen do zastávky „{stop}“',
+  'print.hour': 'Hod.',
+  'print.none': 'V příštích týdnech z této zastávky žádný autobus nejede.',
+  'print.stops': 'Zastávky a minuty od „{stop}“',
+  'print.continued': 'pokračování',
+  'print.page': 'Strana {n} z {total}',
+  'print.basis': 'Jízdní řád na {from} – {to}. Časy se mohou změnit – ověřte si je na zastávce.',
+  'print.source': 'Zdroj: {source}. Vytištěno {date} v aplikaci MadeiraBus.',
 };

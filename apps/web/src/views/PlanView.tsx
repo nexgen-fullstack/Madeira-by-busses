@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowUpDown, History, Loader2, Sparkles } from 'lucide-react';
+import { ArrowUpDown, ChevronRight, History, Loader2, Sparkles } from 'lucide-react';
 import { madeiraNow, normalise, type Itinerary } from '@madeirabus/engine';
 import { ItineraryCard } from '../components/ItineraryCard.tsx';
 import { ItineraryDetail } from '../components/ItineraryDetail.tsx';
 import { useMapContent } from '../components/mapContext.tsx';
 import { PlaceSearch, type PlaceValue } from '../components/PlaceSearch.tsx';
+import { ScenicCard } from '../components/ScenicCard.tsx';
 import { useI18n } from '../i18n.ts';
 import { parseTimeInput, toTimeInput } from '../lib/format.ts';
 import { useGeolocation } from '../lib/geolocation.ts';
@@ -16,6 +17,7 @@ import {
   type MapContent,
 } from '../lib/mapContent.ts';
 import { navigate, type Route } from '../lib/router.ts';
+import { DESTINATIONS, reachable } from '../lib/scenic.ts';
 import { useNow } from '../lib/useNow.ts';
 import { useApp, useNetwork } from '../state/app.tsx';
 
@@ -166,6 +168,9 @@ export function PlanView({ route }: { route: Route }) {
       .filter((pair) => pair[0] && pair[1])
       .slice(0, 4);
   }, [net]);
+
+  // Places with a view that this timetable's buses reach, for the start screen.
+  const scenic = useMemo(() => DESTINATIONS.filter((d) => reachable(net, d)), [net]);
 
   // Recent trips whose places still exist in this timetable.
   const recentTrips = useMemo(
@@ -340,6 +345,23 @@ export function PlanView({ route }: { route: Route }) {
                   </button>
                 ))}
               </div>
+            </>
+          )}
+          {scenic.length > 0 && (
+            <>
+              <div className="plan__row">
+                <h3 className="plan__subtitle">{t.t('plan.scenic')}</h3>
+                <a className="plan__more" href="#/explore">
+                  {t.t('scenic.all')} <ChevronRight size={14} aria-hidden />
+                </a>
+              </div>
+              <ul className="scenic-strip">
+                {scenic.map((d) => (
+                  <li key={d.id}>
+                    <ScenicCard d={d} size="small" />
+                  </li>
+                ))}
+              </ul>
             </>
           )}
         </div>
