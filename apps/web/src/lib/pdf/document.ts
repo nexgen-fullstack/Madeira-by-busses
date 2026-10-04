@@ -14,6 +14,8 @@ export interface DocumentInfo {
   title: string;
   author?: string;
   subject?: string;
+  /** The program that made the file. */
+  creator?: string;
   /** BCP 47 language of the text, e.g. "uk". */
   lang?: string;
   /** Defaults to now. */
@@ -105,7 +107,10 @@ export class PdfDocument {
       `<< /Title ${pdfString(this.info.title)}` +
         (this.info.author ? ` /Author ${pdfString(this.info.author)}` : '') +
         (this.info.subject ? ` /Subject ${pdfString(this.info.subject)}` : '') +
-        ` /Creator (MadeiraBus) /Producer (MadeiraBus) /CreationDate ${created} >>`,
+        (this.info.creator
+          ? ` /Creator ${pdfString(this.info.creator)} /Producer ${pdfString(this.info.creator)}`
+          : '') +
+        ` /CreationDate ${created} >>`,
     );
     return out.finish(catalog, info);
   }

@@ -18,6 +18,7 @@ import {
 } from '../lib/mapContent.ts';
 import { navigate, type Route } from '../lib/router.ts';
 import { DESTINATIONS, reachable } from '../lib/scenic.ts';
+import { APP_NAME } from '../lib/site.ts';
 import { useNow } from '../lib/useNow.ts';
 import { useApp, useNetwork } from '../state/app.tsx';
 
@@ -199,7 +200,7 @@ export function PlanView({ route }: { route: Route }) {
         onShare={async () => {
           const url = location.href;
           try {
-            if (navigator.share) await navigator.share({ title: 'MadeiraBus', url });
+            if (navigator.share) await navigator.share({ title: APP_NAME, url });
             else {
               await navigator.clipboard.writeText(url);
               setToast(t.t('detail.shared'));

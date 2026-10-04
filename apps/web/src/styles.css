@@ -1,9 +1,12 @@
 :root {
-  --brand: #0e7c66;
-  --brand-strong: #0a5e4e;
-  --brand-soft: #e3f3ee;
-  --accent: #f2a900;
-  --bg: #f4f6f8;
+  /* The blues and the sun of the Madeira by busses logo. */
+  --brand: #0a5bc4;
+  --brand-strong: #073f94;
+  --brand-soft: #e6f0fc;
+  --accent: #ffb61c;
+  --navy: #0b3a8e;
+  --sky: #33b4ff;
+  --bg: #f4f6fa;
   --surface: #ffffff;
   --surface-2: #f0f3f6;
   --text: #14181f;
@@ -22,9 +25,10 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --brand: #3dbb9c;
-    --brand-strong: #6fd3b8;
-    --brand-soft: #12302a;
+    --brand: #5aa9ff;
+    --brand-strong: #8cc4ff;
+    --brand-soft: #10264a;
+    --navy: #082a6a;
     --bg: #0d1117;
     --surface: #161b22;
     --surface-2: #1d232c;
@@ -91,10 +95,11 @@ h3 {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 16px;
-  padding-top: max(10px, env(safe-area-inset-top));
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
+  padding: 8px 16px;
+  padding-top: max(8px, env(safe-area-inset-top));
+  /* The logo's tile: bright sky blue at the top left, deep blue below. */
+  background: linear-gradient(115deg, #0a6fd8 0%, var(--navy) 55%, #072a6b 100%);
+  color: #fff;
   z-index: 2;
 }
 .map {
@@ -138,22 +143,19 @@ h3 {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--text);
-  text-decoration: none;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-}
-.brand__logo {
-  display: grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 9px;
-  background: var(--brand);
+  min-width: 0;
   color: #fff;
+  text-decoration: none;
 }
-.brand__name {
-  font-size: 17px;
+.brand img {
+  display: block;
+  width: auto;
+}
+.brand__mark {
+  height: 36px;
+}
+.brand__words {
+  height: 34px;
 }
 
 .tabbar__item {
@@ -508,6 +510,51 @@ input:focus-visible {
   gap: 8px;
   padding: 48px 16px;
   text-align: center;
+}
+.about {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 4px 0 8px;
+}
+.about__logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 15px;
+  flex: none;
+}
+.about__name {
+  margin: 0 0 2px;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--navy);
+}
+@media (prefers-color-scheme: dark) {
+  .about__name {
+    color: var(--text);
+  }
+}
+.about p.muted {
+  margin: 0;
+}
+
+.splash__logo {
+  width: 112px;
+  height: 112px;
+  border-radius: 26px;
+  box-shadow: 0 10px 30px rgb(7 42 107 / 30%);
+  animation: breathe 1.8s ease-in-out infinite;
+}
+@keyframes breathe {
+  50% {
+    transform: scale(0.94);
+    opacity: 0.8;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .splash__logo {
+    animation: none;
+  }
 }
 
 .toast {

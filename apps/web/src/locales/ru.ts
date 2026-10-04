@@ -128,6 +128,8 @@ export const ru: Dict = {
   'settings.about': 'О приложении',
   'settings.aboutText':
     'Планировщик поездок по всей автобусной сети Мадейры. Работает без интернета; ваша геопозиция не покидает телефон.',
+  'settings.slogan': 'Путешествуйте по Мадейре легко',
+  'settings.privacy': 'Политика конфиденциальности',
   'layers.title': 'Слои карты',
   'layers.map': 'Карта',
   'layers.satellite': 'Спутник',
@@ -186,7 +188,7 @@ export const ru: Dict = {
   'install.android': 'Скачать для Android',
   'install.androidHint': 'Приложение для Android предупредит о выходе даже с выключенным экраном.',
   'install.ios': 'На iPhone: в Safari нажмите «Поделиться» → «На экран „Домой“».',
-  'trip.bgTitle': 'MadeiraBus следит за поездкой',
+  'trip.bgTitle': 'Madeira by busses следит за поездкой',
   'trip.bgText': 'Предупрежу, когда выходить: {stop}',
   'trip.keepOpen':
     'Не выключайте экран: с выключенным экраном браузер останавливает GPS. Приложение для Android предупредит и так.',
@@ -295,5 +297,5 @@ export const ru: Dict = {
   'print.continued': 'продолжение',
   'print.page': 'Страница {n} из {total}',
   'print.basis': 'Расписание на {from} – {to}; время может измениться — проверяйте на остановке.',
-  'print.source': 'Источник: {source}. Напечатано {date} в MadeiraBus.',
+  'print.source': 'Источник: {source}. Напечатано {date} в приложении Madeira by busses.',
 };

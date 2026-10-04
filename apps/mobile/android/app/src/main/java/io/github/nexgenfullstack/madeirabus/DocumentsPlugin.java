@@ -134,9 +134,9 @@ public class DocumentsPlugin extends Plugin {
 
     /** A plain file name: no folders, nothing a file system could trip over. */
     private static String fileName(PluginCall call) {
-        String name = call.getString("fileName", "MadeiraBus.pdf");
+        String name = call.getString("fileName", "Madeira-by-busses.pdf");
         name = name.replaceAll("[\\\\/:*?\"<>|\\p{Cntrl}]", "_").trim();
-        return name.isEmpty() ? "MadeiraBus.pdf" : name;
+        return name.isEmpty() ? "Madeira-by-busses.pdf" : name;
     }
 
     /** Feeds a finished PDF to the print framework as it is. */

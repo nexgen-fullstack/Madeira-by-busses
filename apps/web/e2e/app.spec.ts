@@ -9,6 +9,8 @@ test.beforeEach(async ({ page }) => {
 
 test('plans a trip with transfers, fares and the last bus back', async ({ page }) => {
   await page.goto('./');
+  await expect(page).toHaveTitle('Madeira by busses');
+  await expect(page.getByRole('link', { name: 'Madeira by busses' })).toBeVisible();
   await expect(page.getByText(/Демо-дані/)).toBeVisible();
   await page.getByRole('button', { name: /Aeroporto da Madeira → Porto Moniz/ }).click();
 

@@ -108,6 +108,8 @@ export const it: Dict = {
   'settings.about': 'Informazioni',
   'settings.aboutText':
     'Pianificatore di viaggi per tutta la rete di autobus di Madeira. Funziona offline; la tua posizione non lascia mai il telefono.',
+  'settings.slogan': 'Esplora Madeira con facilità',
+  'settings.privacy': 'Informativa sulla privacy',
   'layers.title': 'Livelli della mappa',
   'layers.map': 'Mappa',
   'layers.satellite': 'Satellite',
@@ -161,7 +163,7 @@ export const it: Dict = {
   'install.android': 'Scarica per Android',
   'install.androidHint': 'L’app Android avvisa quando scendere anche a schermo spento.',
   'install.ios': 'Su iPhone: in Safari tocca Condividi → Aggiungi alla schermata Home.',
-  'trip.bgTitle': 'MadeiraBus segue il tuo viaggio',
+  'trip.bgTitle': 'Madeira by busses segue il tuo viaggio',
   'trip.bgText': 'Ti avviso quando scendere: {stop}',
   'trip.keepOpen':
     'Tieni lo schermo acceso: il browser sospende il GPS a schermo spento. L’app Android avvisa comunque.',
@@ -265,5 +267,5 @@ export const it: Dict = {
   'print.continued': 'continua',
   'print.page': 'Pagina {n} di {total}',
   'print.basis': 'Orario dal {from} al {to}. Può cambiare: controlla alla fermata.',
-  'print.source': 'Fonte: {source}. Stampato il {date} con MadeiraBus.',
+  'print.source': 'Fonte: {source}. Stampato il {date} con Madeira by busses.',
 };

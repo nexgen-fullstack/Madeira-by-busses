@@ -1,38 +1,39 @@
-# MadeiraBus
+<p align="center"><img src="branding/logo.jpg" alt="Madeira by busses" width="180"></p>
 
-Планувальник поїздок для всієї автобусної мережі Мадейри (SIGA: Horários do Funchal, CAM, SIGA Rodoeste, Aerobus).
+# Madeira by busses
+
+**Explore Madeira with ease.** Планувальник поїздок автобусами Мадейри (SIGA: Horários do Funchal, CAM, SIGA Rodoeste, Aerobus).
 Він будує маршрут «від дверей до дверей» з пересадками, показує розклад, очікування й ціну поїздки, а під час поїздки за GPS підказує, коли виходити.
 Працює без інтернету.
 
 > **Статус:** працює на **справжньому розкладі Horários do Funchal** (офіційний фід, діє до 30.11.2026): 1 742 зупинки, 60 ліній, 10 656 рейсів. Сайт і застосунок оновлюють дані щоночі.
 > Номери ліній — ті, що на автобусі з 2026 року (**110**, а не старий 10A; **181**, а не 81), старий номер показано поруч.
-> Розклади CAM і SIGA Rodoeste — наступний крок (див. [docs/data.md](docs/data.md)). Поки їх немає, застосунок прямо про це каже.
+> Розклади CAM і SIGA Rodoeste — наступний крок (див. [docs/NEXT.md](docs/NEXT.md) і [docs/data.md](docs/data.md)). Поки їх немає, застосунок прямо про це каже.
 > Для показу всього острова в налаштуваннях є **демо-мережа**: місця справжні, розклад вигаданий, позначена банером «ДЕМО».
 
-**Сайт:** https://nexgen-fullstack.github.io/madeirabus/ (GitHub Pages; як увімкнути — у розділі [Розгортання](#розгортання)).
+**Сайт:** https://nexgen-fullstack.github.io/madeirabus/
 
-**Застосунок для Android:** [завантажити MadeiraBus.apk](https://github.com/nexgen-fullstack/madeirabus/releases/latest/download/MadeiraBus.apk) — відкрийте посилання на телефоні, встановіть файл і дозвольте встановлення з цього джерела. Нові версії ставляться поверх старої.
+**Застосунок для Android:** [завантажити Madeira-by-busses.apk](https://github.com/nexgen-fullstack/madeirabus/releases/latest/download/Madeira-by-busses.apk) — відкрийте посилання на телефоні, встановіть файл і дозвольте встановлення з цього джерела. Нові версії ставляться поверх старої (і поверх давнього MadeiraBus).
+**Для Google Play:** [Madeira-by-busses.aab](https://github.com/nexgen-fullstack/madeirabus/releases/latest/download/Madeira-by-busses.aab) — пакет для Play Console; іконка, банер, скриншоти й тексти сторінки — у [branding/play](branding/play/README.md).
 **iPhone:** відкрийте сайт у Safari → «Поділитися» → «На початковий екран».
 
-Справжній розклад Horários do Funchal:
+| Старт                                | Краєвиди                                  | Curral das Freiras: маршрут і розклад                     |
+| ------------------------------------ | ----------------------------------------- | --------------------------------------------------------- |
+| ![Старт](docs/screenshots/home.webp) | ![Краєвиди](docs/screenshots/scenic.webp) | ![Curral das Freiras](docs/screenshots/scenic-place.webp) |
 
-| Краєвиди                                  | Curral das Freiras: маршрут і розклад                     | Маршрут: усі автобуси дня                                    |
-| ----------------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------ |
-| ![Краєвиди](docs/screenshots/scenic.webp) | ![Curral das Freiras](docs/screenshots/scenic-place.webp) | ![Розклад на весь день](docs/screenshots/day-timetable.webp) |
+| Маршрут і ціна                              | Усі автобуси дня                                             | GPS-супровід: «виходьте на наступній»  |
+| ------------------------------------------- | ------------------------------------------------------------ | -------------------------------------- |
+| ![Маршрут](docs/screenshots/itinerary.webp) | ![Розклад на весь день](docs/screenshots/day-timetable.webp) | ![Поїздка](docs/screenshots/trip.webp) |
 
-| Усі лінії: номери з 2026 року                 | Лінія 110: усі рейси й друк                   | Розклад для друку (PDF A4)                                      |
-| --------------------------------------------- | --------------------------------------------- | --------------------------------------------------------------- |
-| ![Лінії HF](docs/screenshots/real-lines.webp) | ![Лінія 110](docs/screenshots/real-line.webp) | ![Розклад лінії 110 у PDF](docs/screenshots/timetable-pdf.webp) |
+| Усі лінії: номери з 2026 року         | Лінія 110: усі рейси й друк              | Розклад для друку (PDF A4)                                      |
+| ------------------------------------- | ---------------------------------------- | --------------------------------------------------------------- |
+| ![Лінії](docs/screenshots/lines.webp) | ![Лінія 110](docs/screenshots/line.webp) | ![Розклад лінії 110 у PDF](docs/screenshots/timetable-pdf.webp) |
 
-Демо-мережа на весь острів:
+Демо-мережа на весь острів і сайт на комп'ютері:
 
-| Маршрут із пересадками                                  | Деталі, ціна, останній автобус назад               | GPS-супровід                                  |
-| ------------------------------------------------------- | -------------------------------------------------- | --------------------------------------------- |
-| ![Результати пошуку](docs/screenshots/plan-results.png) | ![Деталі маршруту](docs/screenshots/itinerary.png) | ![Поїздка](docs/screenshots/trip-prepare.png) |
-
-| Шари карти                                 | 3D-гори                                      | Сайт на комп'ютері                       |
-| ------------------------------------------ | -------------------------------------------- | ---------------------------------------- |
-| ![Шари карти](docs/screenshots/layers.png) | ![3D-рельєф](docs/screenshots/terrain3d.png) | ![Десктоп](docs/screenshots/desktop.png) |
+| Маршрути з пересадками                                   | 3D-гори                                       | Сайт на комп'ютері                        |
+| -------------------------------------------------------- | --------------------------------------------- | ----------------------------------------- |
+| ![Результати пошуку](docs/screenshots/demo-results.webp) | ![3D-рельєф](docs/screenshots/terrain3d.webp) | ![Десктоп](docs/screenshots/desktop.webp) |
 
 ## Що вміє
 
@@ -97,7 +98,9 @@ packages/engine    рушій без залежностей: GTFS, компак�
 packages/pipeline  конвеєр даних: завантаження, перевірка, зведення фідів, звіт, порівняння версій, демо-мережа
 apps/web           застосунок: React + Vite + MapLibre, PWA, пошук маршрутів у Web Worker
 apps/mobile        застосунок для Android (Capacitor): той самий сайт + GPS із вимкненим екраном, сповіщення, нагадування
-docs/              архітектура, дані, скриншоти
+docs/              архітектура, дані, план наступних кроків (NEXT.md), скриншоти
+branding/          логотип, промо-постер, матеріали для Google Play
+scripts/           збирачі джерел розкладу, іконки з логотипа, скриншоти
 ```
 
 Детальніше:
@@ -119,14 +122,26 @@ Workflow **Deploy website** публікує його на GitHub Pages при �
 
 ### Android
 
-Workflow **Android app** збирає APK зі справжнім розкладом при кожній зміні застосунку і в гілці за замовчуванням публікує його як GitHub Release; посилання `releases/latest/download/MadeiraBus.apk` завжди веде на найновішу версію.
-Застосунок сам завантажує свіжий розклад із сайту (раз на 6 годин, коли є інтернет) і переходить на нього при наступному запуску.
+Workflow **Android app** збирає застосунок зі справжнім розкладом при кожній зміні і в гілці за замовчуванням публікує GitHub Release з трьома файлами:
+
+- `Madeira-by-busses.apk` — для встановлення на телефон; посилання `releases/latest/download/Madeira-by-busses.apk` завжди веде на найновішу версію;
+- `Madeira-by-busses.aab` — пакет для Google Play;
+- `MadeiraBus.apk` — той самий APK під давньою назвою, щоб працювали старі посилання.
+  Застосунок сам завантажує свіжий розклад із сайту (раз на 6 годин, коли є інтернет) і переходить на нього при наступному запуску.
 
 APK підписано **публічним тестовим ключем** (`apps/mobile/android/app/madeirabus-public.keystore`): його достатньо, щоб встановлювати й оновлювати застосунок не з Google Play.
 Для Google Play чи щоб ніхто інший не міг підписати «оновлення», створіть власний ключ і додайте секрети репозиторію (Settings → Secrets and variables → Actions):
 `ANDROID_KEYSTORE_BASE64` (файл ключа в base64), `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`. Після переходу на свій ключ стару версію треба один раз видалити.
 
-Локально: `pnpm --filter @madeirabus/mobile build`, потім `apps/mobile/android` в Android Studio або `./gradlew assembleRelease`.
+Локально: `pnpm --filter @madeirabus/mobile build`, потім `apps/mobile/android` в Android Studio або `./gradlew assembleRelease bundleRelease`.
+
+Ідентифікатор застосунку лишився `io.github.nexgenfullstack.madeirabus`: користувачі не бачать його, а з ним нова версія ставиться поверх уже встановленої.
+
+### Логотип та іконки
+
+Логотип — `branding/logo.jpg`, промо-постер — `branding/promo.jpg`.
+Усі іконки (сайт, PWA, Android: звичайна, кругла, адаптивна, тематична, заставка) і матеріали для Google Play збирає з логотипа скрипт `python3 scripts/brand-assets.py` (потрібні Pillow і NumPy).
+Скриншоти для README і Google Play: `node scripts/screenshots.mjs` на зібраному сайті (`pnpm --filter @madeirabus/web preview`).
 
 Супутникові знімки за замовчуванням беруться з Esri World Imagery (з атрибуцією).
 Для комерційного запуску задайте власне джерело у змінних `VITE_SATELLITE_TILES` і `VITE_SATELLITE_ATTRIBUTION`, наприклад MapTiler або Esri з ключем.

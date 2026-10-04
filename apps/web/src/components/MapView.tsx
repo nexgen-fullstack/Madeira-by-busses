@@ -61,7 +61,7 @@ function toGeoJson(content: MapContent) {
         type: 'Feature' as const,
         properties: {
           kind: p.kind,
-          color: p.color ?? '#0E7C66',
+          color: p.color ?? '#0B3A8E',
           label: p.label ?? '',
           stops: (p.stops ?? []).join(','),
         },

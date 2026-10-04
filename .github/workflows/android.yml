@@ -1,9 +1,12 @@
 name: Android app
 
 # Builds the Android app (apps/mobile) with the real timetable on every push
-# that touches the app. On the default branch it publishes the APK as a
-# GitHub release, so https://github.com/<repo>/releases/latest/download/MadeiraBus.apk
-# always points at the newest build.
+# that touches the app. On the default branch it publishes a GitHub release:
+# - Madeira-by-busses.apk, to install on a phone; the link
+#   https://github.com/<repo>/releases/latest/download/Madeira-by-busses.apk
+#   always points at the newest build (and so does .../MadeiraBus.apk, the
+#   name of the first releases, so older links keep working);
+# - Madeira-by-busses.aab, the bundle to upload to Google Play.
 #
 # Signing: add the repository secrets ANDROID_KEYSTORE_BASE64 (the keystore
 # file, base64-encoded), ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS and
@@ -66,7 +69,7 @@ jobs:
             echo "::notice title=Public test key::Signed with the public test key; add the ANDROID_KEYSTORE_* secrets to use your own."
           fi
 
-      - name: Build APK
+      - name: Build APK and Play bundle
         working-directory: apps/mobile/android
         env:
           MADEIRABUS_VERSION_CODE: ${{ github.run_number }}
@@ -76,14 +79,18 @@ jobs:
           MADEIRABUS_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
           chmod +x gradlew
-          ./gradlew --no-daemon assembleRelease
-          cp app/build/outputs/apk/release/app-release.apk "$GITHUB_WORKSPACE/MadeiraBus.apk"
-          ls -la "$GITHUB_WORKSPACE/MadeiraBus.apk"
+          ./gradlew --no-daemon assembleRelease bundleRelease
+          cp app/build/outputs/apk/release/app-release.apk "$GITHUB_WORKSPACE/Madeira-by-busses.apk"
+          cp app/build/outputs/bundle/release/app-release.aab "$GITHUB_WORKSPACE/Madeira-by-busses.aab"
+          cp "$GITHUB_WORKSPACE/Madeira-by-busses.apk" "$GITHUB_WORKSPACE/MadeiraBus.apk"
+          ls -la "$GITHUB_WORKSPACE"/*.apk "$GITHUB_WORKSPACE"/*.aab
 
       - uses: actions/upload-artifact@v4
         with:
-          name: MadeiraBus-${{ env.VERSION }}
-          path: MadeiraBus.apk
+          name: Madeira-by-busses-${{ env.VERSION }}
+          path: |
+            Madeira-by-busses.apk
+            Madeira-by-busses.aab
           retention-days: 30
 
       - name: Publish release
@@ -91,14 +98,19 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: android-v${{ env.VERSION }}
-          name: MadeiraBus для Android ${{ env.VERSION }}
+          name: Madeira by busses для Android ${{ env.VERSION }}
           make_latest: true
-          files: MadeiraBus.apk
+          files: |
+            Madeira-by-busses.apk
+            Madeira-by-busses.aab
+            MadeiraBus.apk
           body: |
-            **Як встановити:** відкрийте цю сторінку на телефоні, завантажте `MadeiraBus.apk`, відкрийте файл і дозвольте встановлення з цього джерела. Нові версії встановлюються поверх старої.
+            **Як встановити:** відкрийте цю сторінку на телефоні, завантажте `Madeira-by-busses.apk`, відкрийте файл і дозвольте встановлення з цього джерела. Нові версії встановлюються поверх старої.
+
+            **Google Play:** `Madeira-by-busses.aab` — файл для Play Console. `MadeiraBus.apk` — той самий застосунок під старою назвою, щоб працювали давні посилання.
 
             Застосунок працює без інтернету, знає розклад Horários do Funchal і попереджає, коли виходити, навіть із вимкненим екраном. Новий розклад завантажує сам.
 
-            **How to install:** open this page on your Android phone, download `MadeiraBus.apk`, open it and allow installing from this source. New versions install over the old one.
+            **How to install:** open this page on your Android phone, download `Madeira-by-busses.apk`, open it and allow installing from this source. New versions install over the old one. `Madeira-by-busses.aab` is the bundle for Google Play.
 
             Built from ${{ github.sha }}.

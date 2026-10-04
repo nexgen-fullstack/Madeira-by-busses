@@ -129,6 +129,8 @@ export const pl: Dict = {
   'settings.about': 'O aplikacji',
   'settings.aboutText':
     'Planer podróży po całej sieci autobusowej Madery. Działa offline; Twoja lokalizacja nigdy nie opuszcza telefonu.',
+  'settings.slogan': 'Odkrywaj Maderę z łatwością',
+  'settings.privacy': 'Polityka prywatności',
   'layers.title': 'Warstwy mapy',
   'layers.map': 'Mapa',
   'layers.satellite': 'Satelita',
@@ -188,7 +190,7 @@ export const pl: Dict = {
   'install.androidHint':
     'Aplikacja na Androida powie, kiedy wysiąść, nawet przy wyłączonym ekranie.',
   'install.ios': 'Na iPhonie: w Safari stuknij Udostępnij → Do ekranu początkowego.',
-  'trip.bgTitle': 'MadeiraBus śledzi przejazd',
+  'trip.bgTitle': 'Madeira by busses śledzi przejazd',
   'trip.bgText': 'Powiem, kiedy wysiąść: {stop}',
   'trip.keepOpen':
     'Nie wyłączaj ekranu: przeglądarka wstrzymuje GPS przy wyłączonym ekranie. Aplikacja na Androida ostrzeże i tak.',
@@ -299,5 +301,5 @@ export const pl: Dict = {
   'print.continued': 'ciąg dalszy',
   'print.page': 'Strona {n} z {total}',
   'print.basis': 'Rozkład na {from} – {to}. Godziny mogą się zmienić — sprawdź na przystanku.',
-  'print.source': 'Źródło: {source}. Wydrukowano {date} w MadeiraBus.',
+  'print.source': 'Źródło: {source}. Wydrukowano {date} w aplikacji Madeira by busses.',
 };

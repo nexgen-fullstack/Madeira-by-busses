@@ -109,6 +109,8 @@ export const en: Dict = {
   'settings.about': 'About',
   'settings.aboutText':
     'Journey planner for the whole Madeira bus network. Works offline; your location never leaves your phone.',
+  'settings.slogan': 'Explore Madeira with ease',
+  'settings.privacy': 'Privacy policy',
   'layers.title': 'Map layers',
   'layers.map': 'Map',
   'layers.satellite': 'Satellite',
@@ -162,7 +164,7 @@ export const en: Dict = {
   'install.android': 'Download for Android',
   'install.androidHint': 'The Android app tells you when to get off even with the screen off.',
   'install.ios': 'On iPhone: in Safari tap Share → Add to Home Screen.',
-  'trip.bgTitle': 'MadeiraBus is following your ride',
+  'trip.bgTitle': 'Madeira by busses is following your ride',
   'trip.bgText': 'I will tell you when to get off: {stop}',
   'trip.keepOpen':
     'Keep the screen on: browsers pause GPS when it is off. The Android app warns you either way.',
@@ -264,5 +266,5 @@ export const en: Dict = {
   'print.continued': 'continued',
   'print.page': 'Page {n} of {total}',
   'print.basis': 'Timetable for {from} – {to}. Times can change — check at the stop.',
-  'print.source': 'Source: {source}. Printed {date} with MadeiraBus.',
+  'print.source': 'Source: {source}. Printed {date} with Madeira by busses.',
 };

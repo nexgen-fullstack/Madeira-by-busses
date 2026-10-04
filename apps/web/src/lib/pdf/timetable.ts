@@ -2,6 +2,7 @@ import { formatClock } from '@madeirabus/engine';
 import type { I18n } from '../../i18n.ts';
 import { inkOn, readableOn, tint } from '../color.ts';
 import type { PrintableTimetable, PrintSection } from '../printable.ts';
+import { APP_NAME } from '../site.ts';
 import { A4, PdfDocument, type PdfPage } from './document.ts';
 import type { TrueTypeFont } from './truetype.ts';
 
@@ -29,7 +30,8 @@ export async function timetablePdf(
   const doc = new PdfDocument({
     title: tt.title,
     subject: tt.operator,
-    author: 'MadeiraBus',
+    author: APP_NAME,
+    creator: APP_NAME,
     lang: t.lang,
     created,
   });
@@ -90,7 +92,7 @@ function header(page: PdfPage, tt: PrintableTimetable, t: I18n): number {
     color: ink,
   });
   const x = M + 20 + Math.max(numberW, 64) + 16;
-  const brand = 'MadeiraBus';
+  const brand = APP_NAME;
   const brandW = page.measure(brand, B, 9);
   const width = M + W - 20 - brandW - 16 - x;
   const name = page.wrap(tt.name, B, 15, width).slice(0, 2);

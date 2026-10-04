@@ -6,12 +6,13 @@ import { fullDate, shortDate } from '../lib/format.ts';
 import { lineGroups } from '../lib/lines.ts';
 import { canInstall, install, isStandalone, onInstallChange } from '../lib/pwa.ts';
 import { DESTINATIONS } from '../lib/scenic.ts';
+import { APP_NAME } from '../lib/site.ts';
 import { useApp } from '../state/app.tsx';
 
 /** The latest Android build, published by the "Android app" workflow. */
 const APK_URL =
   import.meta.env.VITE_ANDROID_APK ||
-  'https://github.com/nexgen-fullstack/madeirabus/releases/latest/download/MadeiraBus.apk';
+  'https://github.com/nexgen-fullstack/madeirabus/releases/latest/download/Madeira-by-busses.apk';
 
 /** Install the website as an app, or download the Android app. */
 function InstallCard() {
@@ -188,7 +189,19 @@ export function SettingsView() {
         <h3 className="card__title">
           <Info size={16} aria-hidden /> {t.t('settings.about')}
         </h3>
+        <div className="about">
+          <img className="about__logo" src="logo.png" alt="" width={64} height={64} />
+          <div>
+            <p className="about__name">{APP_NAME}</p>
+            <p className="muted small">{t.t('settings.slogan')}</p>
+          </div>
+        </div>
         <p>{t.t('settings.aboutText')}</p>
+        <p className="small">
+          <a href="privacy.html" target="_blank" rel="noopener noreferrer">
+            {t.t('settings.privacy')}
+          </a>
+        </p>
         <p className="muted small">© OpenStreetMap contributors · OpenFreeMap</p>
       </section>
     </div>

@@ -111,6 +111,8 @@ export const de: Dict = {
   'settings.about': 'Über die App',
   'settings.aboutText':
     'Reiseplaner für das gesamte Busnetz Madeiras. Funktioniert offline; Ihr Standort verlässt nie Ihr Telefon.',
+  'settings.slogan': 'Madeira ganz einfach entdecken',
+  'settings.privacy': 'Datenschutzerklärung',
   'layers.title': 'Kartenebenen',
   'layers.map': 'Karte',
   'layers.satellite': 'Satellit',
@@ -166,7 +168,7 @@ export const de: Dict = {
   'install.androidHint':
     'Die Android-App sagt Bescheid, wann Sie aussteigen müssen – auch bei ausgeschaltetem Bildschirm.',
   'install.ios': 'Auf dem iPhone: in Safari auf Teilen → Zum Home-Bildschirm tippen.',
-  'trip.bgTitle': 'MadeiraBus verfolgt Ihre Fahrt',
+  'trip.bgTitle': 'Madeira by busses verfolgt Ihre Fahrt',
   'trip.bgText': 'Ich sage Bescheid, wann Sie aussteigen: {stop}',
   'trip.keepOpen':
     'Lassen Sie den Bildschirm an: Browser pausieren das GPS bei ausgeschaltetem Bildschirm. Die Android-App warnt trotzdem.',
@@ -272,5 +274,5 @@ export const de: Dict = {
   'print.page': 'Seite {n} von {total}',
   'print.basis':
     'Fahrplan vom {from} bis {to}. Zeiten können sich ändern – bitte an der Haltestelle prüfen.',
-  'print.source': 'Quelle: {source}. Gedruckt am {date} mit MadeiraBus.',
+  'print.source': 'Quelle: {source}. Gedruckt am {date} mit Madeira by busses.',
 };

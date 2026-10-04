@@ -23,24 +23,28 @@ export default defineConfig({
     VitePWA({
       // Updates wait for a quiet moment (see src/lib/pwa.ts).
       registerType: 'prompt',
-      includeAssets: ['icon.svg'],
+      includeAssets: ['favicon-32.png', 'favicon-64.png', 'apple-touch-icon.png'],
       manifest: {
-        name: 'MadeiraBus — buses of Madeira',
-        short_name: 'MadeiraBus',
+        name: 'Madeira by busses',
+        short_name: 'Madeira by busses',
         description:
-          'Routes with transfers, fares, timetables and GPS get-off alerts for the whole Madeira bus network.',
+          'Explore Madeira with ease: routes with transfers, fares, timetables and GPS get-off alerts for the Madeira buses.',
         lang: 'uk',
         start_url: '.',
         scope: '.',
         display: 'standalone',
         orientation: 'portrait',
-        theme_color: '#0E7C66',
-        background_color: '#F6F7F9',
+        theme_color: '#0B3A8E',
+        background_color: '#F4F6FA',
         icons: [
           { src: 'icon-192.png', sizes: '192x192', type: 'image/png' },
           { src: 'icon-512.png', sizes: '512x512', type: 'image/png' },
-          { src: 'icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
-          { src: 'icon.svg', sizes: 'any', type: 'image/svg+xml' },
+          {
+            src: 'icon-maskable-512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable',
+          },
         ],
       },
       workbox: {

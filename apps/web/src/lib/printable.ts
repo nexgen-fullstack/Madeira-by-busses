@@ -9,6 +9,7 @@ import {
 import type { I18n } from '../i18n.ts';
 import { fullDate } from './format.ts';
 import { directionStops, lineDirections, lineOf, type Direction } from './lines.ts';
+import { FILE_PREFIX } from './site.ts';
 
 /**
  * A line's timetable as it is printed for a bus stop: the departures from one
@@ -226,7 +227,7 @@ export function printableTimetable(
   }
   return {
     title: t.t('print.title', { n: route.short, name: route.long }),
-    fileName: `MadeiraBus-${route.short}-${slug(net.stops[req.stop]!.name)}.pdf`,
+    fileName: `${FILE_PREFIX}-${route.short}-${slug(net.stops[req.stop]!.name)}.pdf`,
     number: route.short,
     formerly: route.formerly,
     name: route.long,

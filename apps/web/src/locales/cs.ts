@@ -128,6 +128,8 @@ export const cs: Dict = {
   'settings.about': 'O aplikaci',
   'settings.aboutText':
     'Plánovač cest po celé autobusové síti Madeiry. Funguje offline; vaše poloha nikdy neopustí telefon.',
+  'settings.slogan': 'Objevujte Madeiru snadno',
+  'settings.privacy': 'Zásady ochrany soukromí',
   'layers.title': 'Vrstvy mapy',
   'layers.map': 'Mapa',
   'layers.satellite': 'Satelit',
@@ -186,7 +188,7 @@ export const cs: Dict = {
   'install.android': 'Stáhnout pro Android',
   'install.androidHint': 'Aplikace pro Android upozorní na výstup i při vypnuté obrazovce.',
   'install.ios': 'Na iPhonu: v Safari klepněte na Sdílet → Přidat na plochu.',
-  'trip.bgTitle': 'MadeiraBus sleduje vaši jízdu',
+  'trip.bgTitle': 'Madeira by busses sleduje vaši jízdu',
   'trip.bgText': 'Upozorním, kdy vystoupit: {stop}',
   'trip.keepOpen':
     'Nechte obrazovku zapnutou: prohlížeč při vypnuté obrazovce pozastaví GPS. Aplikace pro Android upozorní i tak.',
@@ -296,5 +298,5 @@ export const cs: Dict = {
   'print.continued': 'pokračování',
   'print.page': 'Strana {n} z {total}',
   'print.basis': 'Jízdní řád na {from} – {to}. Časy se mohou změnit – ověřte si je na zastávce.',
-  'print.source': 'Zdroj: {source}. Vytištěno {date} v aplikaci MadeiraBus.',
+  'print.source': 'Zdroj: {source}. Vytištěno {date} v aplikaci Madeira by busses.',
 };

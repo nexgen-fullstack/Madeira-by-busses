@@ -107,7 +107,7 @@ describe('printable timetable', () => {
     expect(tt.sections[1]!.stop).toBe('Barreira');
     expect(tt.title).toBe('Line 110 — Centro - Barreira');
     expect(tt.formerly).toBe('10A');
-    expect(tt.fileName).toBe('MadeiraBus-110-Centro.pdf');
+    expect(tt.fileName).toBe('Madeira-by-busses-110-Centro.pdf');
     expect(tt.footer[1]).toContain('Horários do Funchal (GTFS 1)');
   });
 

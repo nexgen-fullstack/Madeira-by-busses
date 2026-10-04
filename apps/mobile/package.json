@@ -2,7 +2,7 @@
   "name": "@madeirabus/mobile",
   "version": "1.0.0",
   "private": true,
-  "description": "MadeiraBus for Android (and iOS): the web app in a Capacitor shell with background GPS get-off alerts.",
+  "description": "Madeira by busses for Android (and iOS): the web app in a Capacitor shell with background GPS get-off alerts.",
   "type": "module",
   "scripts": {
     "web": "pnpm --filter @madeirabus/web exec vite build --mode app",

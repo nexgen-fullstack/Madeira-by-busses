@@ -131,6 +131,8 @@ export const uk = {
   'settings.about': 'Про застосунок',
   'settings.aboutText':
     'Планувальник поїздок усією автобусною мережею Мадейри. Працює без інтернету; ваша геопозиція не залишає телефон.',
+  'settings.slogan': 'Подорожуйте Мадейрою легко',
+  'settings.privacy': 'Політика конфіденційності',
   'layers.title': 'Шари карти',
   'layers.map': 'Карта',
   'layers.satellite': 'Супутник',
@@ -189,7 +191,7 @@ export const uk = {
   'install.android': 'Завантажити для Android',
   'install.androidHint': 'Застосунок для Android попереджає про вихід навіть із вимкненим екраном.',
   'install.ios': 'На iPhone: у Safari натисніть «Поділитися» → «На початковий екран».',
-  'trip.bgTitle': 'MadeiraBus стежить за поїздкою',
+  'trip.bgTitle': 'Madeira by busses стежить за поїздкою',
   'trip.bgText': 'Попереджу, коли виходити: {stop}',
   'trip.keepOpen':
     'Тримайте екран увімкненим: із вимкненим екраном браузер зупиняє GPS. Застосунок для Android попереджає й без цього.',
@@ -299,7 +301,7 @@ export const uk = {
   'print.continued': 'продовження',
   'print.page': 'Сторінка {n} з {total}',
   'print.basis': 'Розклад на {from} – {to}; час може змінитися — перевіряйте на зупинці.',
-  'print.source': 'Джерело: {source}. Надруковано {date} у MadeiraBus.',
+  'print.source': 'Джерело: {source}. Надруковано {date} у застосунку Madeira by busses.',
 } satisfies Record<string, Entry>;
 
 export type Key = keyof typeof uk;

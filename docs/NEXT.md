@@ -4,24 +4,30 @@
 
 ## Мета власника
 
-**Повністю нова зібрана версія з усіма автобусами Мадейри**: Horários do Funchal, CAM і SIGA Rodoeste, а також Aerobus. Її треба перевірити на телефоні (Android APK) і в браузері (сайт). Потім — публікація в Google Play під назвою **«Madeira-by-bus»**.
+**Madeira by busses** — один головний застосунок з усіма автобусами Мадейри: Horários do Funchal, CAM, SIGA Rodoeste й Aerobus. Сайт і APK для телефона, потім публікація в Google Play під назвою **«Madeira by busses»** (так на логотипі; назву обрав власник, вона відрізняється від сайту-путівника «Madeira by Bus»).
 
 ## Стан на 4.10.2026
 
-Уся робота лежить у гілці `claude/peaceful-archimedes-xp6xvt` і запушена, але **ще не злита** в основну гілку `claude/ecstatic-knuth-std4r7`. Тому сайт https://nexgen-fullstack.github.io/madeirabus/ і APK https://github.com/nexgen-fullstack/madeirabus/releases/latest/download/MadeiraBus.apk досі показують **стару** версію.
+Уся робота зібрана в основній гілці `claude/ecstatic-knuth-std4r7`; з неї щоразу оновлюються:
 
-Що вже зроблено в гілці:
+- сайт https://nexgen-fullstack.github.io/madeirabus/ (workflow **Deploy website**);
+- застосунок https://github.com/nexgen-fullstack/madeirabus/releases/latest/download/Madeira-by-busses.apk і пакет для Google Play `Madeira-by-busses.aab` (workflow **Android app**). Давнє посилання `…/MadeiraBus.apk` теж веде на новий застосунок.
 
-- номери ліній як на автобусі (110, «раніше 10A»);
-- сітка всіх ліній з пошуком, екран лінії з розкладом від будь-якої зупинки;
+Що зроблено:
+
+- номери ліній як на автобусі (110, «раніше 10A»); сітка всіх ліній з пошуком, екран лінії з розкладом від будь-якої зупинки;
 - PDF для друку, завантаження й надсилання, зокрема нативно в Android (`DocumentsPlugin.java`);
-- вкладка «Краєвиди» з фото й маршрутом туди й назад;
-- розклад на весь день у деталях поїздки;
-- картки ліній у стилі застосунку.
+- вкладка «Краєвиди» з фото й маршрутом туди й назад; розклад на весь день у деталях поїздки;
+- **нова назва «Madeira by busses»** скрізь: шапка, `<title>`, PWA, Android (`app_name`, `appName`), PDF і назва файлу (`Madeira-by-busses-110-….pdf`), сповіщення, 10 мов, README, назва APK і релізу;
+- **новий логотип** (`branding/logo.jpg`) і **сині кольори** з нього: шапка — синій градієнт із білим знаком і написом; іконки сайту, PWA (звичайна й maskable), Apple, Android (звичайна, кругла, адаптивна, тематична для Android 13+), заставка Android і завантаження в застосунку. Усе збирає `python3 scripts/brand-assets.py`;
+- **Google Play:** іконка 512, банер 1024×500, 8 скриншотів англійською, описи 10 мовами — у `branding/play/`; сторінка `privacy.html` з політикою конфіденційності;
+- **GPS-супровід після тунелю:** на детальних трасах HF (наприклад, 181 у Curral das Freiras) трекер після втрати GPS шукав автобус біля останньої точки сигналу й застрягав на «автобус їде іншим маршрутом». Тепер вікно пошуку йде за розкладом, а після тунелю чи об'їзду трекер шукає автобус уздовж усього решти маршруту (тести в `tracker.test.ts`).
 
-Перевірка: `pnpm check` (113 тестів) і 17/17 e2e-тестів проходять, релізна збірка Android збирається.
+Ідентифікатор Android `io.github.nexgenfullstack.madeirabus` лишився: його не видно користувачам, а нова версія ставиться поверх старої. Після першої публікації в Play його вже не змінити.
 
-## Завдання 1. Автобуси всього острова (головне)
+Перевірка: `pnpm check`, e2e-тести й релізна збірка Android (APK і AAB) проходять.
+
+## Наступне завдання: автобуси всього острова
 
 Зараз у реальних даних є лише HF: 60 ліній, Funchal. CAM і Rodoeste публікують тільки PDF. Тому 6 місць у «Краєвидах» мають позначку «Скоро», а застосунок показує повідомлення «Ще не додано: CAM, SIGA Rodoeste».
 
@@ -50,42 +56,16 @@
 
 Конкурент «Madeira Bus» (madeirabus.com) уже має 84 маршрути від усіх трьох перевізників, тож це реально зробити.
 
-## Завдання 2. Перейменування на «Madeira-by-bus»
+## Публікація в Google Play
 
-Рішення власника: назва в Google Play — **Madeira-by-bus**.
+Готово: пакет `.aab` у кожному релізі, графіка, скриншоти, описи й відповіді для анкет у [branding/play/README.md](../branding/play/README.md), політика конфіденційності https://nexgen-fullstack.github.io/madeirabus/privacy.html.
 
-- Замінити «MadeiraBus» в усіх місцях:
-  - назва в застосунку (topbar);
-  - `<title>`;
-  - PWA manifest (`apps/web/vite.config.ts`);
-  - Android `strings.xml` (`app_name`, `title_activity_main`);
-  - `capacitor.config` (`appName`);
-  - назва файлу PDF (`MadeiraBus-110-….pdf`) і підпис у PDF;
-  - тексти всіма 10 мовами в `apps/web/src/locales/*.ts`;
-  - `README.md`;
-  - назва APK у `.github/workflows/android.yml`.
-- Пакет Android `io.github.nexgenfullstack.madeirabus` можна залишити, бо в Play його не видно. Якщо міняти, то **до** першої публікації в Play, бо потім змінити вже не вийде. Уже встановлені APK тоді не оновляться.
-- **Попередити власника про ризик:** «Madeira by Bus» уже використовує як бренд сайт-путівник https://madeira-by-bus.com: платна книга й PDF, Facebook «madeira.by.bus». Застосунку з такою назвою в Google Play немає, але власник бренду може поскаржитися. Інші зайняті назви:
-  - «Madeira Bus» — Google Play, `com.brianopedal.madeira.bus`, сайти madeirabus.com і madeirabus.app;
-  - «GiroBus» — офіційний застосунок HF;
-  - «SAM Madeira Bus».
+Лишилося власникові:
 
-  Раніше пропонувалася назва «IlhaBus: Madeira Bus Routes». Остаточно вирішує власник.
-
-- Для Google Play: локалізовані назви й короткі описи для кожної мови. Не використовувати SIGA, HF, CAM, Rodoeste чи «official» у назві.
-
-## Завдання 3. Нова версія, яку можна відкрити
-
-1. Злити гілку `claude/peaceful-archimedes-xp6xvt` в основну через PR, якщо власник погодиться. Альтернатива — запустити `deploy.yml` через workflow_dispatch з гілки: тоді сайт тимчасово, до нічного перевидання, показує гілку.
-2. Після злиття `deploy.yml` оновить сайт, а `android.yml` збере новий APK у Releases.
-3. Дати власнику **робочі** посилання й перевірити, що там нова версія: є вкладка «Краєвиди», 110 замість 10A, автобуси всього острова.
-
-## Підготовка до Google Play (після завдань 1–3)
-
-- Підписаний AAB замість APK.
-- Іконка 512×512, банер 1024×500, скріншоти телефона.
-- Політика конфіденційності: геолокація лишається на телефоні.
-- Опис усіма мовами.
+1. Акаунт розробника Google Play (одноразовий внесок) і новий застосунок «Madeira by busses».
+2. **До першого завантаження** — власний ключ підпису: створити keystore і додати секрети `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD` (README → Android). Інакше ключем завантаження стане публічний тестовий ключ.
+3. Завантажити `Madeira-by-busses.aab` спершу у внутрішнє тестування, заповнити анкети (Data safety, вікова категорія, foreground service «location» з коротким відео).
+4. Краще публікувати після розкладів CAM і Rodoeste: тоді опис «усі автобуси Мадейри» буде правдою.
 
 ## Корисне
 

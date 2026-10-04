@@ -59,7 +59,7 @@ test('finds a line by its number and downloads its timetable as a PDF', async ({
     page.waitForEvent('download'),
     page.getByRole('button', { name: 'Завантажити PDF' }).click(),
   ]);
-  expect(download.suggestedFilename()).toMatch(/^MadeiraBus-D81-.+\.pdf$/);
+  expect(download.suggestedFilename()).toMatch(/^Madeira-by-busses-D81-.+\.pdf$/);
   const file = readFileSync((await download.path())!);
   expect(file.subarray(0, 8).toString('latin1')).toBe('%PDF-1.7');
   await expect(page.getByRole('status')).toHaveText('PDF збережено');

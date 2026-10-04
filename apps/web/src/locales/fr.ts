@@ -109,6 +109,8 @@ export const fr: Dict = {
   'settings.about': 'À propos',
   'settings.aboutText':
     'Calculateur d’itinéraires pour tout le réseau de bus de Madère. Fonctionne hors ligne ; votre position ne quitte jamais votre téléphone.',
+  'settings.slogan': 'Explorez Madère en toute simplicité',
+  'settings.privacy': 'Politique de confidentialité',
   'layers.title': 'Calques de la carte',
   'layers.map': 'Plan',
   'layers.satellite': 'Satellite',
@@ -163,7 +165,7 @@ export const fr: Dict = {
   'install.android': 'Télécharger pour Android',
   'install.androidHint': 'L’application Android vous prévient quand descendre même écran éteint.',
   'install.ios': 'Sur iPhone : dans Safari, touchez Partager → Sur l’écran d’accueil.',
-  'trip.bgTitle': 'MadeiraBus suit votre trajet',
+  'trip.bgTitle': 'Madeira by busses suit votre trajet',
   'trip.bgText': 'Je vous préviens quand descendre : {stop}',
   'trip.keepOpen':
     'Gardez l’écran allumé : le navigateur suspend le GPS écran éteint. L’application Android vous prévient dans tous les cas.',
@@ -268,5 +270,5 @@ export const fr: Dict = {
   'print.continued': 'suite',
   'print.page': 'Page {n} sur {total}',
   'print.basis': 'Horaires du {from} au {to}. Ils peuvent changer : vérifiez à l’arrêt.',
-  'print.source': 'Source : {source}. Imprimé le {date} avec MadeiraBus.',
+  'print.source': 'Source : {source}. Imprimé le {date} avec Madeira by busses.',
 };
