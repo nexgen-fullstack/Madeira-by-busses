@@ -33,6 +33,11 @@ export class PlannerClient {
     return this.call({ method: 'init', json });
   }
 
+  /** Loads the walking network (walk.bin) for street distances and drawn walks. */
+  loadWalk(url: string): Promise<true> {
+    return this.call({ method: 'walk', url });
+  }
+
   plan(request: PlanRequest): Promise<Itinerary[]> {
     return this.call({ method: 'plan', request });
   }

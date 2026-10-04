@@ -23,7 +23,10 @@ export const pl: Dict = {
   'place.myLocation': 'Moja lokalizacja',
   'place.locating': 'Ustalam lokalizację…',
   'place.denied': 'Brak dostępu do lokalizacji',
-  'place.pickOnMap': 'Punkt na mapie',
+  'place.pickOnMap': 'Wybierz na mapie',
+  'place.pickFrom': 'Dotknij na mapie miejsca startu',
+  'place.pickTo': 'Dotknij na mapie celu podróży',
+  'place.near': 'W pobliżu: {name}',
   'time.now': 'Teraz',
   'time.depart': 'Odjazd',
   search: 'Znajdź trasę',
@@ -31,6 +34,8 @@ export const pl: Dict = {
   'results.none': 'Brak połączeń. Spróbuj innej godziny lub pobliskiego przystanku.',
   'results.hint':
     'Wybierz, skąd i dokąd jedziesz – pokażę autobusy, przesiadki, czas oczekiwania i cenę.',
+  'plan.mapTip':
+    'Skąd i dokąd może być dowolne miejsce – kawiarnia, hotel lub punkt na mapie (przycisk mapy przy każdym polu). Aplikacja wybierze najlepszy przystanek i pokaże drogę pieszo ulicami.',
   'it.leaveIn': 'wyjdź za {n} min',
   'it.leaveNow': 'wyjdź teraz',
   'it.direct': 'bez przesiadek',

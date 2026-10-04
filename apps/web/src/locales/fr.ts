@@ -23,7 +23,10 @@ export const fr: Dict = {
   'place.myLocation': 'Ma position',
   'place.locating': 'Localisation…',
   'place.denied': 'Pas d’accès à la localisation',
-  'place.pickOnMap': 'Point sur la carte',
+  'place.pickOnMap': 'Choisir sur la carte',
+  'place.pickFrom': 'Touchez la carte à l’endroit du départ',
+  'place.pickTo': 'Touchez la carte à l’endroit où vous allez',
+  'place.near': 'Près de {name}',
   'time.now': 'Maintenant',
   'time.depart': 'Départ à',
   search: 'Trouver un itinéraire',
@@ -31,6 +34,8 @@ export const fr: Dict = {
   'results.none': 'Aucun itinéraire trouvé. Essayez une autre heure ou un arrêt voisin.',
   'results.hint':
     'Choisissez le départ et l’arrivée — je vous montre les bus, les correspondances, l’attente et le prix.',
+  'plan.mapTip':
+    'Départ et arrivée peuvent être n’importe quel lieu : un café, un hôtel ou un point sur la carte (bouton carte à côté de chaque champ). L’appli choisit le meilleur arrêt et montre le chemin à pied par les rues.',
   'it.leaveIn': 'partez dans {n} min',
   'it.leaveNow': 'partez maintenant',
   'it.direct': 'direct',

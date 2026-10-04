@@ -23,7 +23,10 @@ export const en: Dict = {
   'place.myLocation': 'My location',
   'place.locating': 'Locating…',
   'place.denied': 'No access to location',
-  'place.pickOnMap': 'Point on the map',
+  'place.pickOnMap': 'Choose on the map',
+  'place.pickFrom': 'Tap the map where you start from',
+  'place.pickTo': 'Tap the map where you are going',
+  'place.near': 'Near {name}',
   'time.now': 'Now',
   'time.depart': 'Depart',
   search: 'Find a route',
@@ -31,6 +34,8 @@ export const en: Dict = {
   'results.none': 'No routes found. Try another time or a nearby stop.',
   'results.hint':
     'Choose where from and where to — I will show buses, transfers, waits and the fare.',
+  'plan.mapTip':
+    'From and to can be any place — a café, a hotel or just a point on the map (the map button by each field). The app picks the best stop and shows the walk to it along the streets.',
   'it.leaveIn': 'leave in {n} min',
   'it.leaveNow': 'leave now',
   'it.direct': 'direct',

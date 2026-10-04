@@ -23,7 +23,10 @@ export const de: Dict = {
   'place.myLocation': 'Mein Standort',
   'place.locating': 'Standort wird ermittelt…',
   'place.denied': 'Kein Zugriff auf den Standort',
-  'place.pickOnMap': 'Punkt auf der Karte',
+  'place.pickOnMap': 'Auf der Karte wählen',
+  'place.pickFrom': 'Tippen Sie auf der Karte auf den Startpunkt',
+  'place.pickTo': 'Tippen Sie auf der Karte auf Ihr Ziel',
+  'place.near': 'Bei {name}',
   'time.now': 'Jetzt',
   'time.depart': 'Abfahrt',
   search: 'Route suchen',
@@ -32,6 +35,8 @@ export const de: Dict = {
     'Keine Verbindung gefunden. Versuchen Sie eine andere Uhrzeit oder eine Haltestelle in der Nähe.',
   'results.hint':
     'Wählen Sie Start und Ziel – ich zeige Busse, Umstiege, Wartezeiten und den Preis.',
+  'plan.mapTip':
+    'Start und Ziel können jeder Ort sein – ein Café, ein Hotel oder ein Punkt auf der Karte (Kartensymbol neben jedem Feld). Die App wählt die beste Haltestelle und zeigt den Fußweg durch die Straßen.',
   'it.leaveIn': 'in {n} Min. losgehen',
   'it.leaveNow': 'jetzt losgehen',
   'it.direct': 'direkt',

@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowUpDown, ChevronRight, History, Loader2, Sparkles } from 'lucide-react';
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { ArrowUpDown, ChevronRight, History, Loader2, MapPinned, Sparkles } from 'lucide-react';
 import { madeiraNow, normalise, type Itinerary } from '@madeirabus/engine';
 import { ItineraryCard } from '../components/ItineraryCard.tsx';
 import { ItineraryDetail } from '../components/ItineraryDetail.tsx';
-import { useMapContent } from '../components/mapContext.tsx';
+import { MapContentContext, useMapContent } from '../components/mapContext.tsx';
 import { PlaceSearch, type PlaceValue } from '../components/PlaceSearch.tsx';
 import { ScenicCard } from '../components/ScenicCard.tsx';
 import { useI18n } from '../i18n.ts';
@@ -42,6 +42,9 @@ export function PlanView({ route }: { route: Route }) {
   const { settings, setTrip, recent, addRecent } = useApp();
   const geo = useGeolocation(false);
   const q = route.query;
+  // "Choose on the map" ends when the planner closes.
+  const { setPick } = useContext(MapContentContext);
+  useEffect(() => () => setPick(undefined), [setPick]);
 
   const myLocation = t.t('place.myLocation');
   const from = useMemo(() => decodePlace(net, q.get('from'), myLocation), [net, q, myLocation]);
@@ -227,6 +230,7 @@ export function PlanView({ route }: { route: Route }) {
             geo.request();
           }}
           locating={geo.pending}
+          onPickOnMap={() => setPick('from')}
         />
         <button
           type="button"
@@ -248,6 +252,7 @@ export function PlanView({ route }: { route: Route }) {
           label={t.t('to')}
           value={to}
           onChange={(v) => setParams({ to: v ? encode(v) : undefined, i: undefined })}
+          onPickOnMap={() => setPick('to')}
         />
         {geo.error && <p className="error small">{t.t('place.denied')}</p>}
         <div className="plan__time">
@@ -314,6 +319,9 @@ export function PlanView({ route }: { route: Route }) {
       {!from && !to && (
         <div className="plan__empty">
           <p className="muted">{t.t('results.hint')}</p>
+          <p className="plan__tip small">
+            <MapPinned size={16} aria-hidden /> {t.t('plan.mapTip')}
+          </p>
           {recentTrips.length > 0 && (
             <>
               <h3 className="plan__subtitle">{t.t('plan.recent')}</h3>

@@ -1,6 +1,7 @@
 import { quoteFare, type FareQuote, type FareRide } from './fares.ts';
 import { haversine, walkSeconds, type LatLon } from './geo.ts';
 import type { DayTimetable, Network } from './network.ts';
+import type { WalkGraph, WalkHit } from './walk.ts';
 
 /**
  * Journey planner based on RAPTOR (Delling, Pajor, Werneck — "Round-Based
@@ -76,6 +77,8 @@ export interface WalkLeg {
   start: number;
   end: number;
   distance: number;
+  /** The way along the streets, when the walking network is known. */
+  path?: LatLon[];
 }
 
 export interface RideStop {
@@ -134,8 +137,36 @@ const ACCESS = 1;
 const RIDE = 2;
 const WALK = 3;
 
+/** Street metres allowed to a stop, against `maxAccessWalk` metres as the crow flies. */
+const STREET_ALLOWANCE = 1.35;
+
 export class Planner {
-  constructor(private readonly net: Network) {}
+  private walk?: WalkGraph;
+  private stopHits?: (WalkHit | undefined)[];
+
+  constructor(
+    private readonly net: Network,
+    walk?: WalkGraph,
+  ) {
+    if (walk) this.setWalk(walk);
+  }
+
+  /**
+   * Streets, steps and paths to walk on: from now on the way to and from the
+   * stops is measured along them and every walk comes with its path.
+   */
+  setWalk(walk: WalkGraph): void {
+    this.walk = walk;
+    this.stopHits = undefined;
+    this.hits();
+  }
+
+  /** Where each stop meets the walking network. */
+  private hits(): (WalkHit | undefined)[] {
+    const walk = this.walk!;
+    this.stopHits ??= this.net.stops.map((s) => walk.snap(s, 120));
+    return this.stopHits;
+  }
 
   plan(request: PlanRequest): Itinerary[] {
     const ctx = this.context(request);
@@ -155,7 +186,23 @@ export class Planner {
     if (direct) results.push(direct);
     return paretoFilter(results, ctx.opts.transferPenalty)
       .sort((a, b) => a.arrive - b.arrive || b.depart - a.depart)
-      .slice(0, ctx.opts.maxResults);
+      .slice(0, ctx.opts.maxResults)
+      .map((it) => this.withPaths(it));
+  }
+
+  /** Draws each walk of an itinerary along the streets. */
+  private withPaths(it: Itinerary): Itinerary {
+    const walk = this.walk;
+    if (!walk) return it;
+    const legs = it.legs.map((leg) => {
+      if (leg.kind !== 'walk' || leg.path) return leg;
+      const route = walk.route(leg.from, leg.to);
+      // A walk that the streets make far longer than planned is better left straight.
+      if (!route || route.length > leg.distance * 3 + 300) return leg;
+      return { ...leg, path: route.path, distance: Math.round(route.length) };
+    });
+    const walkDistance = legs.reduce((d, l) => d + (l.kind === 'walk' ? l.distance : 0), 0);
+    return { ...it, legs, walkDistance };
   }
 
   /**
@@ -181,7 +228,8 @@ export class Planner {
         hi = mid;
       }
     }
-    return found.sort((a, b) => b.depart - a.depart || a.arrive - b.arrive)[0];
+    const last = found.sort((a, b) => b.depart - a.depart || a.arrive - b.arrive)[0];
+    return last && this.withPaths(last);
   }
 
   private context(request: PlanRequest) {
@@ -211,6 +259,8 @@ export class Planner {
       }
       return [...best.values()];
     }
+    const walked = this.walkAccess(place, opts);
+    if (walked && walked.length > 0) return walked;
     let hits = this.net.nearbyStops(place, opts.maxAccessWalk);
     if (hits.length === 0) {
       // Nothing within walking range: allow a longer walk to the 3 nearest stops.
@@ -223,6 +273,33 @@ export class Planner {
       distance: Math.round(h.distance),
       seconds: walkSeconds(h.distance, opts.walkSpeed),
     }));
+  }
+
+  /** The stops around a point and the walk to each along the streets. */
+  private walkAccess(place: LatLon, opts: PlanOptions): Access[] | undefined {
+    const walk = this.walk;
+    if (!walk) return undefined;
+    const start = walk.snap(place, 400);
+    if (!start) return undefined;
+    const max = opts.maxAccessWalk * STREET_ALLOWANCE;
+    const hits = this.hits();
+    const near = this.net.nearbyStops(place, max).filter((h) => hits[h.stop]);
+    const found = walk.distances(
+      start,
+      near.map((h) => hits[h.stop]!),
+      max,
+    );
+    const out: Access[] = [];
+    near.forEach((h, i) => {
+      const d = found[i];
+      if (!d) return;
+      out.push({
+        stop: h.stop,
+        distance: Math.round(d.length),
+        seconds: Math.round(d.cost / opts.walkSpeed),
+      });
+    });
+    return out;
   }
 
   private search(
@@ -577,9 +654,14 @@ export class Planner {
   }
 
   private directWalk(request: PlanRequest, opts: PlanOptions): Itinerary | undefined {
-    const distance = haversine(request.from, request.to);
-    if (distance > opts.maxAccessWalk * 1.5) return undefined;
-    const seconds = walkSeconds(distance, opts.walkSpeed);
+    const straight = haversine(request.from, request.to);
+    if (straight > opts.maxAccessWalk * 1.5) return undefined;
+    const route = this.walk?.route(request.from, request.to);
+    if (route && route.length > opts.maxAccessWalk * 1.5 * STREET_ALLOWANCE) return undefined;
+    const distance = route ? route.length : straight * 1.25;
+    const seconds = route
+      ? Math.round(route.cost / opts.walkSpeed)
+      : walkSeconds(straight, opts.walkSpeed);
     const from: PlaceRef = {
       name: request.from.name ?? '',
       lat: request.from.lat,
@@ -595,7 +677,8 @@ export class Planner {
           to,
           start: request.time,
           end: request.time + seconds,
-          distance: Math.round(distance * 1.25),
+          distance: Math.round(distance),
+          ...(route ? { path: route.path } : {}),
         },
       ],
       depart: request.time,
@@ -603,7 +686,7 @@ export class Planner {
       duration: seconds,
       rides: 0,
       transfers: 0,
-      walkDistance: Math.round(distance * 1.25),
+      walkDistance: Math.round(distance),
       waitTime: 0,
       fare: quoteFare([], this.net.bundle.fares),
       risky: false,

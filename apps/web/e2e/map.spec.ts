@@ -94,3 +94,19 @@ test('a dropped pin becomes the destination', async ({ page }) => {
   await expect(page).toHaveURL(/to=p%3A/);
   await expect(page.getByRole('combobox', { name: 'Куди' })).toHaveValue('Точка на карті');
 });
+
+test('the start of a trip can be chosen on the map', async ({ page }) => {
+  await page.goto('./#/plan');
+  await page.waitForSelector('.map-canvas canvas');
+  await page.waitForTimeout(1000);
+  // The empty planner says that any place will do.
+  await expect(page.locator('.plan__tip')).toContainText('кафе, готель чи точка на карті');
+  await page.getByRole('button', { name: 'Вибрати на карті' }).first().click();
+  const banner = page.locator('.map-pick');
+  await expect(banner).toHaveText('Торкніться на карті місця, звідки їдете');
+  // Out at sea, away from stops and places (a stop or a café would be taken by name).
+  await page.locator('.map-canvas canvas').click({ position: { x: 40, y: 110 } });
+  await expect(page).toHaveURL(/from=p%3A/);
+  await expect(page.getByRole('combobox', { name: 'Звідки' })).toHaveValue('Точка на карті');
+  await expect(banner).toHaveCount(0);
+});

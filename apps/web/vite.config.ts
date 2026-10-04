@@ -49,7 +49,7 @@ export default defineConfig({
       },
       workbox: {
         // Photos of the scenic trips and the fonts of printable timetables work offline too.
-        globPatterns: ['**/*.{js,css,html,svg,png,json,webmanifest,webp,ttf}'],
+        globPatterns: ['**/*.{js,css,html,svg,png,json,webmanifest,webp,ttf,bin}'],
         maximumFileSizeToCacheInBytes: 15 * 1024 * 1024,
         navigateFallback: 'index.html',
         runtimeCaching: [

@@ -1,10 +1,10 @@
 name: Collect timetable sources
 
 # Downloads the public sources for operators without a GTFS feed (CAM and
-# SIGA Rodoeste timetables from the SIGA and operator websites, bus routes and
-# stops from OpenStreetMap) and commits them to data/sources/ on the same
-# branch, for the pipeline to parse. Runs when the collector changes, or by
-# hand.
+# SIGA Rodoeste timetables from the SIGA and operator websites; bus routes,
+# stops and the walkable ways, built into walk.bin, from OpenStreetMap) and
+# commits them to data/sources/ on the same branch, for the pipeline to parse.
+# Runs when the collector changes, or by hand.
 on:
   push:
     paths:
@@ -25,14 +25,27 @@ jobs:
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
       - run: sudo apt-get update -q && sudo apt-get install -y -q poppler-utils
       - name: Collect sources
         run: |
           rm -rf data/sources
           node scripts/fetch-sources.mjs data/sources
+      - name: Walking network
+        run: |
+          if [ -f data/sources/osm/walk-ways.json ]; then
+            pnpm --filter @madeirabus/pipeline cli walk \
+              --osm ../../data/sources/osm/walk-ways.json --out ../../data/sources/osm/walk.bin
+            rm data/sources/osm/walk-ways.json
+          else
+            echo "::warning title=Walking network not refreshed::No ways from Overpass; keeping the previous walk.bin."
+            git checkout HEAD -- data/sources/osm/walk.bin || true
+          fi
       - name: Summary
         run: |
           {

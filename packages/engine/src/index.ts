@@ -9,3 +9,4 @@ export * from './raptor.ts';
 export * from './time.ts';
 export * from './timetable.ts';
 export * from './tracker.ts';
+export * from './walk.ts';

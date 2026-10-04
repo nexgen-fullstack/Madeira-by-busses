@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import { Flag, MapPin, X } from 'lucide-react';
+import { Crosshair, Flag, MapPin, X } from 'lucide-react';
 import {
   GeolocateControl,
   LngLatBounds,
@@ -26,6 +26,7 @@ import {
   poiLabel,
   type MapLayers,
 } from '../lib/mapStyles.ts';
+import { pointName } from '../lib/pointName.ts';
 import { navigate } from '../lib/router.ts';
 import { useApp } from '../state/app.tsx';
 import { LayerSwitcher } from './LayerSwitcher.tsx';
@@ -102,7 +103,7 @@ function addOverlay(map: MapLibreMap) {
     source: 'mb-lines',
     filter: ['get', 'dashed'],
     layout: { 'line-cap': 'round' },
-    paint: { 'line-color': ['get', 'color'], 'line-width': 3, 'line-dasharray': [0.4, 1.8] },
+    paint: { 'line-color': ['get', 'color'], 'line-width': 4.5, 'line-dasharray': [0.3, 1.6] },
   });
   map.addLayer({
     id: 'mb-point',
@@ -159,9 +160,18 @@ function addOverlay(map: MapLibreMap) {
 }
 
 export default function MapView({ className }: { className?: string }) {
-  const { content } = useContext(MapContentContext);
-  const { settings, setSettings } = useApp();
+  const { content, pick, setPick } = useContext(MapContentContext);
+  const { settings, setSettings, data } = useApp();
   const t = useI18n();
+  // The map's handlers are set up once; they read these.
+  const pickRef = useRef(pick);
+  pickRef.current = pick;
+  const setPickRef = useRef(setPick);
+  setPickRef.current = setPick;
+  const netRef = useRef(data.status === 'ready' ? data.net : undefined);
+  netRef.current = data.status === 'ready' ? data.net : undefined;
+  const tRef = useRef(t);
+  tRef.current = t;
   const layers = settings.map;
   const container = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
@@ -215,6 +225,27 @@ export default function MapView({ className }: { className?: string }) {
       ];
       const features = map.queryRenderedFeatures(box);
       const stop = features.find((f) => f.layer.id === 'mb-point' && f.properties?.stops);
+      const field = pickRef.current;
+      if (field) {
+        // Choosing "from" or "to" on the map: a stop, a named place or just the point.
+        const named = features.find((f) => f.sourceLayer === 'poi' && f.properties?.name);
+        const net = netRef.current;
+        let value: string;
+        if (stop && stop.geometry.type === 'Point') {
+          const [lon, lat] = stop.geometry.coordinates as [number, number];
+          const stops = String(stop.properties.stops).split(',').map(Number);
+          value = encodePlace({ stops, lat, lon, name: String(stop.properties.label ?? '') }, net);
+        } else if (named && named.geometry.type === 'Point') {
+          const [lon, lat] = named.geometry.coordinates as [number, number];
+          value = encodePlace({ name: String(named.properties.name), lat, lon });
+        } else {
+          const p = { lat: e.lngLat.lat, lon: e.lngLat.lng };
+          value = encodePlace({ ...p, name: pointName(net, p, tRef.current) });
+        }
+        setPickRef.current(undefined);
+        planWith({ [field]: value });
+        return;
+      }
       if (stop) {
         navigate('stop', { ids: String(stop.properties.stops) });
         return;
@@ -235,7 +266,8 @@ export default function MapView({ className }: { className?: string }) {
     });
     // Long press / right click drops a pin anywhere.
     map.on('contextmenu', (e: MapMouseEvent) => {
-      setPicked({ name: '', lat: e.lngLat.lat, lon: e.lngLat.lng });
+      const p = { lat: e.lngLat.lat, lon: e.lngLat.lng };
+      setPicked({ name: pointName(netRef.current, p, tRef.current), ...p });
     });
     map.on('mouseenter', 'mb-point', () => (map.getCanvas().style.cursor = 'pointer'));
     map.on('mouseleave', 'mb-point', () => (map.getCanvas().style.cursor = ''));
@@ -277,10 +309,32 @@ export default function MapView({ className }: { className?: string }) {
     if (map && ready && map.getSource('mb-lines')) apply(map, content, fittedKey);
   }, [content, ready]);
 
+  // Escape leaves "choose on the map".
+  useEffect(() => {
+    if (!pick) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setPick(undefined);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [pick, setPick]);
+
   const pickedLabel = picked?.name || t.t('place.pin');
   return (
-    <div className={`${className ?? ''} map-wrap`}>
+    <div className={`${className ?? ''} map-wrap${pick ? ' map-wrap--picking' : ''}`}>
       <div ref={container} className="map-canvas" role="region" aria-label={t.t('map.label')} />
+      {pick && (
+        <div className="map-pick" role="status">
+          <Crosshair size={18} aria-hidden />
+          <span>{t.t(pick === 'from' ? 'place.pickFrom' : 'place.pickTo')}</span>
+          <button
+            type="button"
+            className="icon-button"
+            aria-label={t.t('close')}
+            onClick={() => setPick(undefined)}
+          >
+            <X size={16} />
+          </button>
+        </div>
+      )}
       <LayerSwitcher value={layers} onChange={(map) => setSettings({ map })} />
       {picked && (
         <div className="place-card" role="dialog" aria-label={pickedLabel}>
