@@ -36,7 +36,8 @@ export function itineraryContent(net: Network, it: Itinerary): MapContent {
   const points: MapPoint[] = [];
   it.legs.forEach((leg, i) => {
     if (leg.kind === 'walk') {
-      lines.push({ coords: [leg.from, leg.to], color: '#5B6573', dashed: true });
+      // Along the streets when the walking network is loaded.
+      lines.push({ coords: leg.path ?? [leg.from, leg.to], color: '#0B3A8E', dashed: true });
       return;
     }
     const color = routeColor(net, leg.route);

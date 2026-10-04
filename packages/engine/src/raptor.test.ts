@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { paretoFilter, Planner, type Itinerary, type RideLeg, type WalkLeg } from './raptor.ts';
+import { haversine, type LatLon } from './geo.ts';
 import { at, fixtureNetwork, SATURDAY, STOPS, stopIndex, WEEKDAY } from './test-fixtures.ts';
+import { encodeWalkGraph, WalkGraph, WALK_STREET } from './walk.ts';
 
 const net = fixtureNetwork();
 const planner = new Planner(net);
@@ -121,6 +123,41 @@ describe('Planner', () => {
     expect(ride.start).toBe(at(10, 0));
     expect(ride.wait).toBe(0);
     expect(best!.depart).toBe(ride.start - (best!.legs[0]!.end - best!.legs[0]!.start));
+  });
+
+  it('walks to the stop along the streets and brings the way to draw', () => {
+    // A hotel 300 m north and 200 m east of stop A; the only street goes south
+    // from it to the main road (A–B–C–D), then west to A: 500 m, not 360 m.
+    const off = (p: LatLon, east: number, north: number): LatLon => ({
+      lat: p.lat + north / 110_574,
+      lon: p.lon + east / (111_320 * Math.cos((p.lat * Math.PI) / 180)),
+    });
+    const hotel = off(STOPS.A, 200, 300);
+    const corner = off(STOPS.A, 200, 0);
+    const walk = WalkGraph.decode(
+      encodeWalkGraph({
+        nodes: [hotel, corner, STOPS.A, STOPS.B, STOPS.D],
+        edges: [
+          { from: 0, to: 1, kind: WALK_STREET, points: [] },
+          { from: 1, to: 2, kind: WALK_STREET, points: [] },
+          { from: 1, to: 3, kind: WALK_STREET, points: [] },
+          { from: 3, to: 4, kind: WALK_STREET, points: [] },
+        ],
+      }),
+    );
+    const streets = new Planner(net, walk);
+    const from = { ...hotel, name: 'Hotel' };
+    const [best] = streets.plan({ from, to: place('D'), date: WEEKDAY, time: at(7, 50) });
+    expect(rides(best!).map(routeOf)).toEqual(['4X']);
+    const first = best!.legs[0] as WalkLeg;
+    expect(first.kind).toBe('walk');
+    expect(first.distance).toBeGreaterThan(495);
+    expect(first.distance).toBeLessThan(510);
+    expect(haversine(first.path![0]!, hotel)).toBeLessThan(1);
+    expect(first.path!.some((p) => haversine(p, corner) < 2)).toBe(true);
+    // As the crow flies it would have been ~360 m.
+    const [straight] = planner.plan({ from, to: place('D'), date: WEEKDAY, time: at(7, 50) });
+    expect((straight!.legs[0] as WalkLeg).path).toBeUndefined();
   });
 
   it('prices rides by municipality', () => {

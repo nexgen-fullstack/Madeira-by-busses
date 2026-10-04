@@ -23,7 +23,10 @@ export const pt: Dict = {
   'place.myLocation': 'A minha localização',
   'place.locating': 'A localizar…',
   'place.denied': 'Sem acesso à localização',
-  'place.pickOnMap': 'Ponto no mapa',
+  'place.pickOnMap': 'Escolher no mapa',
+  'place.pickFrom': 'Toque no mapa no local de partida',
+  'place.pickTo': 'Toque no mapa no local de destino',
+  'place.near': 'Perto de {name}',
   'time.now': 'Agora',
   'time.depart': 'Partida',
   search: 'Procurar rota',
@@ -31,6 +34,8 @@ export const pt: Dict = {
   'results.none': 'Sem rotas. Experimente outra hora ou uma paragem próxima.',
   'results.hint':
     'Escolha de onde e para onde vai — mostro autocarros, transbordos, esperas e preço.',
+  'plan.mapTip':
+    'Origem e destino podem ser qualquer lugar — um café, um hotel ou um ponto no mapa (botão do mapa junto a cada campo). A app escolhe a melhor paragem e mostra o caminho a pé pelas ruas.',
   'it.leaveIn': 'saia daqui a {n} min',
   'it.leaveNow': 'saia agora',
   'it.direct': 'direto',

@@ -30,7 +30,7 @@
 Сайти SIGA й перевізників недоступні з середовища розробки, тому їх збирає workflow **Collect timetable sources** (`.github/workflows/sources.yml`, скрипт `scripts/fetch-sources.mjs`) на серверах GitHub і комітить результат у `data/sources/`:
 
 - сторінки сайтів SIGA, Rodoeste, SAM і HF (`pages.jsonl`: текст і посилання) та PDF-розклади як текст зі збереженою розкладкою колонок (`pdf-text/`);
-- з OpenStreetMap (Overpass API): автобусні маршрути з їхніми зупинками (`osm/bus-routes.json`), усі зупинки (`osm/bus-stops.json`) і названі місця з перекладами (`osm/places.json`).
+- з OpenStreetMap (Overpass API): автобусні маршрути з їхніми зупинками (`osm/bus-routes.json`), усі зупинки (`osm/bus-stops.json`), названі місця з перекладами (`osm/places.json`) і мережа для пішоходів (`osm/walk.bin`: збирається з усіх доріг і стежок, сам сирий файл не зберігається).
 
 `pnpm data:real` додає місця в пакет (`--places`), і пошук у застосунку знаходить їх будь-якою мовою. Наступний крок — парсер PDF-розкладів CAM і Rodoeste у GTFS із прив'язкою зупинок до OpenStreetMap.
 

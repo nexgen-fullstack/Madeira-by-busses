@@ -1359,6 +1359,51 @@ input[type='time'],
   accent-color: var(--brand);
 }
 
+/* "Choose on the map": what to tap, over the map. */
+.map-pick {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 60px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 6px 8px 12px;
+  border-radius: 14px;
+  background: var(--navy);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgb(7 42 107 / 35%);
+}
+.map-pick span {
+  flex: 1;
+  min-width: 0;
+}
+.map-pick .icon-button {
+  width: 32px;
+  height: 32px;
+  color: #fff;
+}
+.map-wrap--picking .maplibregl-canvas {
+  cursor: crosshair;
+}
+.plan__tip {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--brand-soft);
+  color: var(--text);
+}
+.plan__tip svg {
+  flex: none;
+  margin-top: 1px;
+  color: var(--brand);
+}
+
 .place-card {
   position: absolute;
   left: 64px;

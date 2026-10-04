@@ -179,6 +179,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
         // The worker parses its own copy meanwhile; searches queue up behind it.
         planner = new PlannerClient();
         planner.init(json).catch(() => undefined);
+        // Streets for walking: the same for every timetable, loaded once the planner is up.
+        const walkUrl = new URL(`${import.meta.env.BASE_URL}data/walk.bin`, document.baseURI).href;
+        planner.loadWalk(walkUrl).catch(() => undefined);
         const net = new Network(JSON.parse(json));
         if (cancelled) return;
         setData({ status: 'ready', dataset, net, planner, fallback });

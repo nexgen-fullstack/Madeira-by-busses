@@ -9,6 +9,8 @@ import {
   madeiraNow,
   parseGtfs,
   SIGA_FARES_2026,
+  encodeWalkGraph,
+  WalkGraph,
   type FeedInput,
   type NetworkBundle,
 } from '@madeirabus/engine';
@@ -24,6 +26,7 @@ import {
 import { DEMO_PLACES } from './demo/places.ts';
 import { placesFromOsm } from './places.ts';
 import { buildReportMarkdown, diffBundles, diffMarkdown } from './report.ts';
+import { buildWalkGraph, type OsmWay } from './walk.ts';
 import { validateBundle, validateFeed, type Issue } from './validate.ts';
 
 const USAGE = `madeirabus-pipeline <command>
@@ -35,8 +38,10 @@ const USAGE = `madeirabus-pipeline <command>
         [--extend-days <n>]          carry an expired timetable forward n days from today
         [--missing <op1,op2>]        operators not covered yet (shown in the app)
         [--places <osm.json>]        searchable places from an Overpass answer (skipped if absent)
+        [--walk <walk.bin>]          the walking network, copied next to the bundle (skipped if absent)
   validate --feed [name=]<dir|zip|url> …  validate feeds only
   diff <old.json> <new.json>              summarise timetable changes
+  walk  --osm <overpass.json> --out <walk.bin>   the walking network from OpenStreetMap ways
 `;
 
 interface Args {
@@ -195,6 +200,20 @@ async function build(args: Args) {
     await writeText(diffPath, diffMarkdown(diffBundles(previous, bundle)));
     console.log(`Diff written to ${diffPath}`);
   }
+
+  // The walking network goes next to the timetable, as walk.bin.
+  const walkPath = flag(args, 'walk');
+  if (walkPath && existsSync(walkPath)) {
+    const bytes = await readFile(walkPath);
+    const g = WalkGraph.decode(bytes);
+    const target = join(dirname(out), 'walk.bin');
+    await writeFile(target, bytes);
+    console.log(
+      `Walking network copied to ${target}: ${g.nodeCount} junctions, ${g.edgeCount} links`,
+    );
+  } else if (walkPath) {
+    console.log(`! No walking network at ${walkPath}; walks are drawn as the crow flies`);
+  }
 }
 
 async function validate(args: Args) {
@@ -210,10 +229,38 @@ async function diff(args: Args) {
   process.stdout.write(diffMarkdown(diffBundles(before, after)));
 }
 
+async function walk(args: Args) {
+  const input = flag(args, 'osm');
+  const out = flag(args, 'out');
+  if (!input || !out) throw new Error('walk needs --osm <overpass.json> and --out <walk.bin>');
+  const json = JSON.parse(await readFile(input, 'utf8')) as {
+    elements?: OsmWay[] & { type?: string }[];
+  };
+  const ways = (json.elements ?? []).filter((e) => (e as { type?: string }).type !== 'node');
+  const { graph, stats } = buildWalkGraph(ways);
+  const bytes = encodeWalkGraph(graph);
+  // Read it back: the app must be able to.
+  WalkGraph.decode(bytes);
+  await mkdir(dirname(out), { recursive: true });
+  await writeFile(out, bytes);
+  const kb = (n: number) => `${Math.round(n / 1024)} KiB`;
+  console.log(
+    `Walking network: ${stats.walkable} of ${stats.ways} ways, ${stats.km} km, ` +
+      `${stats.nodes} junctions, ${stats.edges} links (${stats.droppedComponents} isolated pieces left out)`,
+  );
+  console.log(`Written to ${out}: ${kb(bytes.length)} (${kb(gzipSync(bytes).length)} gzipped)`);
+}
+
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   const command = args._[0];
-  const commands: Record<string, (a: Args) => Promise<void>> = { demo, build, validate, diff };
+  const commands: Record<string, (a: Args) => Promise<void>> = {
+    demo,
+    build,
+    validate,
+    diff,
+    walk,
+  };
   const run = command ? commands[command] : undefined;
   if (!run) {
     console.log(USAGE);

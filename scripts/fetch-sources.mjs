@@ -176,6 +176,7 @@ const OVERPASS = [
   'https://overpass-api.de/api/interpreter',
   'https://overpass.kumi.systems/api/interpreter',
   'https://overpass.private.coffee/api/interpreter',
+  'https://maps.mail.ru/osm/tools/overpass/api/interpreter',
 ];
 
 /** Runs a query on the first Overpass server that answers. */
@@ -236,6 +237,14 @@ async function osm() {
      out center tags;`,
   );
   writeFileSync(join(dir, 'places.json'), JSON.stringify(places));
+  // Every way one might walk on, with its shape, for the walking network
+  // (`madeirabus-pipeline walk` turns it into walk.bin; the file itself is not kept).
+  const ways = await overpass(
+    `[out:json][timeout:300];
+     way["highway"]["highway"!~"^(motorway|motorway_link|construction|proposed|raceway|bus_guideway|platform|elevator|via_ferrata|abandoned|disused|razed|no)$"]["area"!="yes"](${BBOX});
+     out geom qt;`,
+  );
+  writeFileSync(join(dir, 'walk-ways.json'), JSON.stringify(ways));
   const relations = routes.elements.filter((e) => e.type === 'relation');
   return {
     routeRelations: relations.filter((r) => r.tags?.type === 'route').length,

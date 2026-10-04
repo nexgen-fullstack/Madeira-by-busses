@@ -9,8 +9,8 @@
   },
   "scripts": {
     "cli": "tsx src/cli.ts",
-    "demo": "tsx src/cli.ts demo --out ../../data/demo/gtfs && tsx src/cli.ts build --demo --feed demo=../../data/demo/gtfs --out ../../apps/web/public/data/demo.json --report ../../data/build/demo-report.md",
-    "real": "tsx src/cli.ts build --strict --pretty-names --extend-days 120 --missing 'CAM,SIGA Rodoeste' --places ../../data/sources/osm/places.json --feed 'hf=https://www.horariosdofunchal.pt/googletransit.zip|../../data/sources/hf/googletransit.zip|https://storage.googleapis.com/storage/v1/b/mdb-latest/o/pt-regiao-autonoma-da-madeira-horarios-do-funchal-transportes-publicos-gtfs-3104.zip?alt=media' --out ../../apps/web/public/data/network.json --report ../../data/build/report.md --diff ../../data/build/diff.md",
+    "demo": "tsx src/cli.ts demo --out ../../data/demo/gtfs && tsx src/cli.ts build --demo --feed demo=../../data/demo/gtfs --out ../../apps/web/public/data/demo.json --report ../../data/build/demo-report.md --walk ../../data/sources/osm/walk.bin",
+    "real": "tsx src/cli.ts build --strict --pretty-names --extend-days 120 --missing 'CAM,SIGA Rodoeste' --places ../../data/sources/osm/places.json --feed 'hf=https://www.horariosdofunchal.pt/googletransit.zip|../../data/sources/hf/googletransit.zip|https://storage.googleapis.com/storage/v1/b/mdb-latest/o/pt-regiao-autonoma-da-madeira-horarios-do-funchal-transportes-publicos-gtfs-3104.zip?alt=media' --out ../../apps/web/public/data/network.json --report ../../data/build/report.md --diff ../../data/build/diff.md --walk ../../data/sources/osm/walk.bin",
     "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {

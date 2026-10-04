@@ -1,5 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
-import { Bus, LocateFixed, MapPin, Star, X } from 'lucide-react';
+import { Bus, LocateFixed, MapPin, MapPinned, Star, X } from 'lucide-react';
 import { municipalityName, type SearchHit } from '@madeirabus/engine';
 import { useI18n } from '../i18n.ts';
 import { placeName, poiLabel } from '../lib/mapStyles.ts';
@@ -20,6 +20,8 @@ interface Props {
   value?: PlaceValue;
   onChange: (v: PlaceValue | undefined) => void;
   onUseLocation?: () => void;
+  /** Offers "choose on the map" (a café, a hotel, any point). */
+  onPickOnMap?: () => void;
   locating?: boolean;
   autoFocus?: boolean;
   className?: string;
@@ -31,6 +33,7 @@ export function PlaceSearch({
   value,
   onChange,
   onUseLocation,
+  onPickOnMap,
   locating,
   autoFocus,
   className,
@@ -117,6 +120,17 @@ export function PlaceSearch({
             }}
           >
             <X size={16} />
+          </button>
+        )}
+        {onPickOnMap && (
+          <button
+            type="button"
+            className="icon-button"
+            aria-label={t.t('place.pickOnMap')}
+            title={t.t('place.pickOnMap')}
+            onClick={onPickOnMap}
+          >
+            <MapPinned size={18} />
           </button>
         )}
         {onUseLocation && (
