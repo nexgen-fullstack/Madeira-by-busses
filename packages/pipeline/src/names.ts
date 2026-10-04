@@ -91,6 +91,28 @@ export function prettyRouteName(route: Pick<GtfsRoute, 'route_long_name'>): stri
   return expandAbbreviations(route.route_long_name);
 }
 
+/** Ignores the zero padding of line numbers: "01" and "001" are both line 1. */
+const unpadded = (n: string) => n.replace(/^0+(?=.)/, '');
+
+/**
+ * The number on the front of the bus, and the one it replaced. SIGA gave
+ * Madeira's lines three-digit numbers on 9 March 2026 (10A became 110, 81
+ * became 181). Horários do Funchal's feed carries the new number as the
+ * GTFS-PT `line_id` but still the old one as `route_short_name`, so a
+ * timetable showing `route_short_name` announced a "10A" when the 110 came.
+ */
+export function sigaRouteNumber(route: Pick<GtfsRoute, 'route_short_name' | 'line_id'>): {
+  short: string;
+  formerly?: string;
+} {
+  const old = route.route_short_name.trim();
+  const current = route.line_id?.trim();
+  if (!current || !/^\d{3}$/.test(current)) return { short: old };
+  return old && unpadded(old) !== unpadded(current)
+    ? { short: current, formerly: old }
+    : { short: current };
+}
+
 /** Operators that feeds name by their initials. */
 const AGENCIES: Record<string, string> = {
   HF: 'Horários do Funchal',

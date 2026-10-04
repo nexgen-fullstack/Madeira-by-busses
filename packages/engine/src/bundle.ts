@@ -82,7 +82,10 @@ export interface BStop {
 export interface BRoute {
   id: string;
   agency: number;
+  /** The number on the bus. */
   short: string;
+  /** The number the line had before a renumbering ("10A" for today's 110). */
+  formerly?: string;
   long: string;
   /** Hex colour without '#'. */
   color: string;
@@ -133,6 +136,8 @@ export interface BuildOptions {
   stopName?: (stop: GtfsStop) => string;
   /** Display name for a route; defaults to route_long_name. */
   routeName?: (route: GtfsRoute) => string;
+  /** The number on the bus and the one it replaced; defaults to route_short_name. */
+  routeNumber?: (route: GtfsRoute) => { short: string; formerly?: string };
   /** Display name for an operator; defaults to agency_name. */
   agencyName?: (agency: GtfsAgency) => string;
   /** Display text for a trip headsign; defaults to trip_headsign. */
@@ -231,10 +236,12 @@ export function buildBundle(
       }
       routeIndex.set(r.route_id, routes.length);
       const agencyName = agencies[agency]!.name;
+      const number = options.routeNumber?.(r) ?? { short: r.route_short_name };
       routes.push({
         id: id(r.route_id),
         agency,
-        short: r.route_short_name,
+        short: number.short,
+        ...(number.formerly ? { formerly: number.formerly } : {}),
         long: options.routeName ? options.routeName(r) : r.route_long_name,
         color:
           normaliseColor(r.route_color) ?? DEFAULT_COLORS[routes.length % DEFAULT_COLORS.length]!,

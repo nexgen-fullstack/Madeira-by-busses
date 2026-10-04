@@ -34,6 +34,12 @@ export interface GtfsRoute {
   route_type: number;
   route_color?: string;
   route_text_color?: string;
+  /**
+   * GTFS-PT extension (Portugal's profile): the line this route variant
+   * belongs to. Horários do Funchal puts the line's current public number
+   * here ("110") and still the pre-2026 one in `route_short_name` ("10A").
+   */
+  line_id?: string;
 }
 
 export interface GtfsTrip {
@@ -150,6 +156,7 @@ export function parseGtfs(files: GtfsFiles): GtfsFeed {
     route_type: num(r.route_type, 3),
     route_color: optional(r.route_color),
     route_text_color: optional(r.route_text_color),
+    line_id: optional(r.line_id),
   }));
 
   const trips = file('trips.txt', true).map<GtfsTrip>((r) => ({
