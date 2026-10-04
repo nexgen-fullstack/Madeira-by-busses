@@ -96,4 +96,57 @@ describe('RideTracker', () => {
     expect(near.status).toBe('next');
     expect(near.alert).toBe('next');
   });
+
+  // A mountain road drawn in detail: a point every ~9 m, like the operators' shapes.
+  const detailed = Array.from({ length: 401 }, (_, i) => ({
+    lat: 32.65,
+    lon: -16.95 + i * 0.0001,
+  }));
+
+  it('finds the bus again after a long tunnel on a detailed road', () => {
+    const t = new RideTracker(stops, detailed);
+    t.update(at(0.01, T0 + 120)); // on time at S1
+    t.tick(T0 + 260); // into the tunnel: the timetable carries on
+    // Out of the tunnel a little behind the timetable's guess, near S3.
+    const out = [0, 5, 10].map((dt) => t.update(at(0.029 + dt * 0.00001, T0 + 300 + dt)));
+    expect(out.map((s) => s.status)).not.toContain('off-route');
+    expect(out[2]!.source).toBe('gps');
+    expect(out[2]!.progress).toBeGreaterThan(2650);
+    expect(out[2]!.progress).toBeLessThan(2800);
+    expect(out[2]!.status).toBe('prepare');
+  });
+
+  it('picks the ride up again when the bus comes back from a detour', () => {
+    const t = new RideTracker(stops, detailed);
+    t.update(at(0.005, T0 + 60));
+    const away = { lat: 32.66, lon: -16.94, accuracy: 10 };
+    for (const dt of [70, 80, 90]) t.update({ ...away, time: T0 + dt });
+    expect(t.update({ ...away, time: T0 + 100 }).status).toBe('off-route');
+    // Back on the road 2 km further on.
+    const back = t.update(at(0.025, T0 + 290));
+    expect(back.status).not.toBe('off-route');
+    expect(back.progress).toBeGreaterThan(2300);
+  });
+
+  it('on a loop, takes the pass of the road the timetable expects', () => {
+    // Out east along one street and back west along the next one, 155 m away.
+    const out = Array.from({ length: 201 }, (_, i) => ({ lat: 32.65, lon: -16.95 + i * 0.0001 }));
+    const back = out.map((p) => ({ lat: 32.6514, lon: p.lon })).reverse();
+    const loop: TrackedStop[] = [
+      { name: 'A', lat: 32.65, lon: -16.95, arr: T0, dep: T0 },
+      { name: 'B', lat: 32.65, lon: -16.93, arr: T0 + 300, dep: T0 + 300 },
+      { name: 'C', lat: 32.6514, lon: -16.94, arr: T0 + 450, dep: T0 + 450 },
+      { name: 'D', lat: 32.6514, lon: -16.95, arr: T0 + 600, dep: T0 + 600 },
+    ];
+    const t = new RideTracker(loop, [...out, ...back]);
+    t.update(at(0.002, T0 + 30));
+    const away = { lat: 32.647, lon: -16.945, accuracy: 10 };
+    for (const dt of [40, 50, 60]) t.update({ ...away, time: T0 + dt });
+    // Back from the detour between the two streets, a little nearer the way
+    // home: the timetable says the bus is still on its way out, so no "get off".
+    const backOnRoute = t.update({ lat: 32.6508, lon: -16.94, time: T0 + 150, accuracy: 10 });
+    expect(backOnRoute.status).toBe('riding');
+    expect(backOnRoute.progress).toBeGreaterThan(850);
+    expect(backOnRoute.progress).toBeLessThan(1050);
+  });
 });
