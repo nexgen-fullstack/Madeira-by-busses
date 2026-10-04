@@ -1,0 +1,114 @@
+{
+  "line": "553",
+  "formerly": "109",
+  "operator": "CAM",
+  "name": "Funchal - Moinhos (Fontes)",
+  "source": {
+    "pdf": "https://siga.madeira.gov.pt/storage/horarios_pdf/C109.pdf",
+    "sha256": "6615a88c08d44a00",
+    "checked": "2026-10-05"
+  },
+  "notes": {
+    "a": {
+      "text": "via Garajau",
+      "via": true
+    },
+    "b": {
+      "text": "via Figueirinhas",
+      "via": true
+    },
+    "c": {
+      "text": "Entre a Vargem e as Fontes",
+      "skip": true
+    },
+    "d": {
+      "text": "Entre as Fontes e a Vargem",
+      "skip": true
+    }
+  },
+  "directions": [
+    {
+      "to": "Moinhos (Fontes)",
+      "stops": [
+        {
+          "name": "Funchal",
+          "stop": "00025"
+        },
+        {
+          "name": "Moinhos (Fontes)",
+          "stop": "67923"
+        }
+      ],
+      "variants": {
+        "a": [
+          "6807:0"
+        ],
+        "b": [
+          "6808:0"
+        ]
+      },
+      "weekdays": [
+        "09:15 c",
+        "11:15 a",
+        "12:15 b",
+        "13:15 a",
+        "16:40 b",
+        "18:20 a",
+        "19:15 b",
+        "20:20 a"
+      ],
+      "saturdays": [
+        "12:15 b",
+        "13:15 a",
+        "16:30 b",
+        "19:15 b"
+      ],
+      "sundays": [
+        "09:00 a",
+        "12:00 a",
+        "18:30 a"
+      ]
+    },
+    {
+      "to": "Funchal",
+      "stops": [
+        {
+          "name": "Moinhos (Fontes)",
+          "stop": "67924"
+        },
+        {
+          "name": "Funchal",
+          "stop": "00025"
+        }
+      ],
+      "variants": {
+        "a": [
+          "6812:1"
+        ],
+        "b": [
+          "6813:1"
+        ]
+      },
+      "weekdays": [
+        "06:40 b",
+        "07:40 a",
+        "09:30 d",
+        "12:15 a",
+        "13:15 b",
+        "14:20 a",
+        "17:50 a",
+        "19:10 a"
+      ],
+      "saturdays": [
+        "06:50 b",
+        "07:50 a",
+        "13:15 b",
+        "14:20 a"
+      ],
+      "sundays": [
+        "07:15 b",
+        "12:45 a"
+      ]
+    }
+  ]
+}

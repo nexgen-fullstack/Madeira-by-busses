@@ -47,6 +47,10 @@ export interface Note {
   pass?: string;
   /** Trips with this mark never lie on a SIGA variant (an express that skips most stops). */
   variant?: false;
+  /** The trip starts at this stop (SIGA code), not at its first column's place: its first time is there. */
+  from?: string;
+  /** The trip ends at this stop (SIGA code) instead of the direction's last place. */
+  to?: string;
   /** Weekdays of term time only, or of the school holidays only. */
   school?: 'school' | 'holidays';
   /** Only on these days of the week (0 = Monday … 6 = Sunday). */
@@ -71,6 +75,8 @@ export interface TimingPoint {
 export interface Direction {
   /** Where the buses go (the headsign). */
   to: string;
+  /** Footnotes that mean something else in this direction ("to Rochão" / "from Rochão"). */
+  notes?: Record<string, Note>;
   /** The columns, in the order the bus passes them. */
   stops: TimingPoint[];
   /**

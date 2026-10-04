@@ -1,0 +1,88 @@
+{
+  "line": "604",
+  "formerly": "113",
+  "operator": "CAM",
+  "name": "Camacha - Santa Cruz (via Gaula)",
+  "source": {
+    "pdf": "https://siga.madeira.gov.pt/storage/horarios_pdf/CCA02DC2-A77F-43D2-805E-C78895944973.pdf",
+    "sha256": "dd9bca7e721d5465",
+    "checked": "2026-10-05"
+  },
+  "notes": {
+    "a": {
+      "text": "via Ribeiro Serrão",
+      "via": true
+    },
+    "PE": {
+      "text": "Período escolar",
+      "school": "school"
+    },
+    "PNE": {
+      "text": "Férias escolares",
+      "school": "holidays"
+    }
+  },
+  "directions": [
+    {
+      "to": "Santa Cruz",
+      "stops": [
+        {
+          "name": "Camacha",
+          "stop": "68113"
+        },
+        {
+          "name": "Santa Cruz",
+          "stop": "68252"
+        }
+      ],
+      "weekdays": [
+        "07:15 PE",
+        "08:15 a PE",
+        "10:30 PE",
+        "12:15 a PE",
+        "15:00 PE",
+        "17:30 a PE",
+        "08:15 a PNE",
+        "10:30 PNE",
+        "13:00 a PNE",
+        "17:30 a PNE"
+      ],
+      "saturdays": [
+        "09:30"
+      ],
+      "sundays": [
+        "09:30"
+      ]
+    },
+    {
+      "to": "Camacha",
+      "stops": [
+        {
+          "name": "Santa Cruz",
+          "stop": "68252"
+        },
+        {
+          "name": "Camacha",
+          "stop": "68113"
+        }
+      ],
+      "weekdays": [
+        "08:20 PE",
+        "09:30 PE",
+        "11:15 a PE",
+        "13:30 PE",
+        "16:00 PE",
+        "18:50 a PE",
+        "09:30 PNE",
+        "11:15 a PNE",
+        "18:15 a PNE"
+      ],
+      "saturdays": [
+        "18:00"
+      ],
+      "sundays": [
+        "18:00"
+      ]
+    }
+  ]
+}

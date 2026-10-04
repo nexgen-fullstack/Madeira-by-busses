@@ -1,6 +1,7 @@
 import {
   haversine,
   isoToGtfsDate,
+  weekday,
   type GtfsFeed,
   type GtfsStop,
   type LatLon,
@@ -8,6 +9,7 @@ import {
 import {
   calendarFor,
   datesOf,
+  isHoliday,
   schoolCalendarKnown,
   type DayRule,
   type DayType,
@@ -57,6 +59,8 @@ const SAME_PLACE = 250;
 const SAME_END = 500;
 /** The most a variant's running time may differ from the printed one, per section (min). */
 const TIME_SLACK = 15;
+/** The same for a variant SIGA was seen running trips with the same marks on. */
+const SEEN_TIME_SLACK = 30;
 
 export interface LineReport {
   file: string;
@@ -272,8 +276,16 @@ function readMarks(cells: readonly Cell[], notes: Record<string, Note>) {
   const unknown: string[] = [];
   let skip: string | undefined;
   let noVariant = false;
+  let from: string | undefined;
+  let to: string | undefined;
+  let line: string | undefined;
   cells.forEach((cell, i) => {
     for (const mark of cell.marks) {
+      // "#850": the line of this trip, on sheets with several.
+      if (mark.startsWith('#')) {
+        line = mark.slice(1);
+        continue;
+      }
       const note = notes[mark];
       if (!note) {
         unknown.push(mark);
@@ -282,6 +294,8 @@ function readMarks(cells: readonly Cell[], notes: Record<string, Note>) {
       all.add(mark);
       if (note.skip) skip = `${mark}: ${note.text}`;
       if (note.variant === false) noVariant = true;
+      if (note.from) from = note.from;
+      if (note.to) to = note.to;
       if (note.via) via.add(mark);
       if (note.change) change.push(i);
       if (note.school) rule.school = note.school;
@@ -290,7 +304,18 @@ function readMarks(cells: readonly Cell[], notes: Record<string, Note>) {
       if (note.except) rule.except = [...(rule.except ?? []), ...note.except];
     }
   });
-  return { via: [...via].sort().join(' '), all, rule, change, skip, unknown, noVariant };
+  return {
+    via: [...via].sort().join(' '),
+    all,
+    rule,
+    change,
+    skip,
+    unknown,
+    noVariant,
+    from,
+    to,
+    line,
+  };
 }
 
 const ruleKey = (type: DayType, rule: Omit<DayRule, 'type'>) =>
@@ -340,6 +365,103 @@ function withLocality(name: string, p: LatLon, localities: readonly Locality[]):
   }
   if (!best || plain(name).includes(plain(best.name))) return name;
   return `${name}, ${best.name}`;
+}
+
+/** The minutes variants seen on SIGA take from one stop to another: the shortest, or the median. */
+function usualDuration(
+  src: Sources,
+  candidates: readonly SigaVariant[],
+  fromCode: string,
+  toCode: string,
+  median = false,
+): number | undefined {
+  const a = src.point(fromCode);
+  const b = src.point(toCode);
+  if (!a || !b) return undefined;
+  const found: number[] = [];
+  for (const v of candidates) {
+    const i = v.stops.findIndex(([c]) => {
+      const p = src.point(c);
+      return p !== undefined && haversine(p, a) <= SAME_PLACE;
+    });
+    if (i < 0) continue;
+    const j = v.stops.findIndex(([c], k) => {
+      const p = k > i ? src.point(c) : undefined;
+      return p !== undefined && haversine(p, b) <= SAME_PLACE;
+    });
+    if (j < 0) continue;
+    const d = v.stops[j]![1] - v.stops[i]![1];
+    if (d > 0) found.push(d);
+  }
+  if (found.length === 0) return undefined;
+  found.sort((a, b) => a - b);
+  return median ? found[Math.floor(found.length / 2)] : found[0];
+}
+
+/** Trips that start or end elsewhere are told apart from the others with the same via-marks. */
+const evidenceKey = (marks: { via: string; from?: string; to?: string; line?: string }) =>
+  marks.from || marks.to || marks.line
+    ? `${marks.via}|${marks.from ?? ''}|${marks.to ?? ''}|${marks.line ?? ''}`
+    : marks.via;
+
+const dayTypeOf = (date: string): DayType =>
+  isHoliday(date) || weekday(date) === 6
+    ? 'sundays'
+    : weekday(date) === 5
+      ? 'saturdays'
+      : 'weekdays';
+
+/**
+ * The variants SIGA showed running a printed trip: same kind of day, same
+ * departure from the same place. They tell which variant trips with those
+ * marks drive, by the marks sorted and joined like `Direction.variants`.
+ */
+function seenVariants(
+  src: Sources,
+  candidates: readonly SigaVariant[],
+  dir: Direction,
+  notes: Record<string, Note>,
+  report: LineReport,
+): Map<string, string[]> {
+  const out = new Map<string, string[]>();
+  for (const type of DAY_TYPES) {
+    const rows = (dir[type] ?? []).flatMap((row) => {
+      try {
+        const cells = parseRow(row, dir.stops.length);
+        const first = cells.findIndex((c) => c.time !== undefined);
+        const start = first < 0 ? 0 : cells[first]!.time! % (24 * 60);
+        const hhmm = `${String(Math.floor(start / 60)).padStart(2, '0')}:${String(start % 60).padStart(2, '0')}`;
+        return first < 0 ? [] : [{ cells, first, hhmm }];
+      } catch {
+        return [];
+      }
+    });
+    for (const { cells, first, hhmm } of rows) {
+      // Two printed trips leaving at that minute: no telling which one SIGA showed.
+      if (rows.filter((o) => o.hhmm === hhmm && o.first === first).length > 1) continue;
+      const marks = readMarks(cells, notes);
+      if (marks.unknown.length > 0 || marks.noVariant || marks.skip) continue;
+      const place = src.point(marks.from ?? dir.stops[first]!.stop);
+      for (const v of candidates) {
+        if (marks.line && v.line !== marks.line) continue;
+        if (v.start !== hhmm || !(v.dates ?? [v.seen]).some((date) => dayTypeOf(date) === type)) {
+          continue;
+        }
+        const at = src.point(v.stops[0]![0]);
+        if (!place || !at || haversine(place, at) > SAME_PLACE) continue;
+        const key = evidenceKey(marks);
+        const list = out.get(key) ?? [];
+        if (!list.includes(v.id)) list.push(v.id);
+        out.set(key, list);
+      }
+    }
+  }
+  for (const [key, ids] of out) {
+    if (ids.length > 1 && !dir.variants?.[key]) {
+      report.warnings.push(`${dir.to}: marks "${key}" seen on ${ids.join(', ')}`);
+    }
+  }
+  return out;
 }
 
 /** Builds the feed. `files` are [file name, contents] of data/timetables/*.json. */
@@ -428,13 +550,13 @@ export function buildTimetableFeed(
     }
     agencies.add(tt.operator);
     const closed = tt.closed ?? ['12-25'];
-    const notes = tt.notes ?? {};
-    if (!schoolCalendarKnown(to) && Object.values(notes).some((n) => n.school)) {
+    const fileNotes = tt.notes ?? {};
+    if (!schoolCalendarKnown(to) && Object.values(fileNotes).some((n) => n.school)) {
       report.warnings.push('School terms after the published calendar are estimated');
     }
     const sigaLines = tt.lines ?? [tt.line];
     const candidates = sigaLines.flatMap((l) => src.byLine.get(l) ?? []);
-    const landmarks = Object.entries(notes).flatMap(([mark, n]) =>
+    const landmarks = Object.entries(fileNotes).flatMap(([mark, n]) =>
       n.pass ? [[mark, n.pass] as const] : [],
     );
     for (const [mark, code] of landmarks) {
@@ -443,6 +565,9 @@ export function buildTimetableFeed(
 
     tt.directions.forEach((dir: Direction, d) => {
       const destination = src.point(dir.stops[dir.stops.length - 1]!.stop);
+      const notes = { ...fileNotes, ...dir.notes };
+      const seen = seenVariants(src, candidates, dir, notes, report);
+      const claimed = new Set([...seen.values()].flat());
       for (const type of DAY_TYPES) {
         (dir[type] ?? []).forEach((row, r) => {
           const where = `${dir.to}, ${type}, row ${r + 1}`;
@@ -480,18 +605,25 @@ export function buildTimetableFeed(
           }
           const service = serviceFor(type, marks.rule, closed);
           if (!service) return; // e.g. holidays only, and none before `to`
+          // A trip that starts or ends off the printed places ("from Rochão").
+          const points = dir.stops.map((p, i) =>
+            marks.from && i === timed[0] ? { name: p.name, stop: marks.from } : p,
+          );
+          const end = marks.to ? src.point(marks.to) : destination;
 
           // The variant: the one named for the marks, or the line's one that passes the
           // printed places in about the printed times and agrees with the marks' landmarks.
-          const named = dir.variants?.[marks.via];
+          // Named in the file, or seen by SIGA running such a trip (then it must also fit the times).
+          const explicit = dir.variants?.[marks.via];
+          const named = explicit ?? seen.get(evidenceKey(marks));
           const choices: { variant: SigaVariant; at: (number | undefined)[] }[] = [];
           const consider = (variant: SigaVariant | undefined) => {
             if (!variant) return;
-            const at = locate(src, variant, dir.stops, cells);
+            const at = locate(src, variant, points, cells);
             if (!at) return;
-            if (timed.length === 1) {
-              const end = src.point(variant.stops[variant.stops.length - 1]![0]);
-              if (!end || !destination || haversine(end, destination) > SAME_END) return;
+            if (timed.length === 1 || marks.to) {
+              const last = src.point(variant.stops[variant.stops.length - 1]![0]);
+              if (!last || !end || haversine(last, end) > SAME_END) return;
             }
             choices.push({ variant, at });
           };
@@ -502,8 +634,11 @@ export function buildTimetableFeed(
               consider(src.variant(id));
               if (choices.length > 0) break;
             }
-          } else {
+          } else if (timed.length > 1) {
+            // A variant seen running trips with other marks drives those, not these. With
+            // only the departure printed nothing shows which way the trip goes: no guess.
             for (const v of candidates) {
+              if (claimed.has(v.id) || (marks.line && v.line !== marks.line)) continue;
               const agrees = landmarks.every(
                 ([mark, code]) => marks.all.has(mark) === src.passes(v, code),
               );
@@ -515,7 +650,9 @@ export function buildTimetableFeed(
               const known = timed.map((i) => ({ index: c.at[i]!, time: cells[i]!.time! }));
               return { ...c, known, off: misfit(c.variant, known) };
             })
-            .filter((c) => named || c.off <= TIME_SLACK)
+            // A variant SIGA showed running such a trip may keep rougher times than one
+            // picked by its fit alone.
+            .filter((c) => explicit || c.off <= (named ? SEEN_TIME_SLACK : TIME_SLACK))
             .sort((a, b) => a.off - b.off || a.variant.id.localeCompare(b.variant.id));
           const best = scored[0];
           if (!named && best && timed.length === 1) {
@@ -529,32 +666,45 @@ export function buildTimetableFeed(
           }
 
           let stops: TripStop[];
-          let line = tt.line;
+          let line = marks.line ?? tt.line;
           if (best) {
-            if (sigaLines.includes(best.variant.line)) line = best.variant.line;
+            if (!marks.line && sigaLines.includes(best.variant.line)) line = best.variant.line;
             stops = layOnVariant(best.variant, best.known);
             report.full++;
           } else {
             // Not seen on SIGA yet: the printed places only.
             stops = timed.map((i) => ({
-              code: dir.stops[i]!.stop,
+              code: points[i]!.stop,
               time: cells[i]!.time!,
               index: -1,
             }));
             const id = named?.[0];
             const route = id ? src.route(id) : undefined;
-            if (route && sigaLines.includes(route.line)) line = route.line;
+            if (route && !marks.line && sigaLines.includes(route.line)) line = route.line;
             if (timed.length === 1) {
-              const duration = id ? src.duration(id) : undefined;
-              const last = dir.stops[dir.stops.length - 1]!;
-              if (duration === undefined || timed[0] === dir.stops.length - 1) {
+              // The arrival from SIGA's running time: the named variant's, or the
+              // line's usual time between the two places.
+              const lastCode = marks.to ?? dir.stops[dir.stops.length - 1]!.stop;
+              // Plain trips' variants first: a detour SIGA has not shown is closer to
+              // the plain way than to the express one.
+              const plain = dir.variants?.[''] ?? seen.get(evidenceKey({ ...marks, via: '' }));
+              const duration =
+                (id ? src.duration(id) : undefined) ??
+                usualDuration(
+                  src,
+                  plain?.flatMap((p) => src.variant(p) ?? []) ?? [],
+                  points[timed[0]!]!.stop,
+                  lastCode,
+                ) ??
+                usualDuration(src, candidates, points[timed[0]!]!.stop, lastCode, true);
+              if (duration === undefined || (!marks.to && timed[0] === dir.stops.length - 1)) {
                 report.skipped.push(
                   `${where}: only the departure is printed and SIGA has no variant for it yet`,
                 );
                 return;
               }
               stops.push({
-                code: last.stop,
+                code: lastCode,
                 time: stops[0]!.time + Math.round(duration),
                 index: -1,
               });

@@ -1,0 +1,61 @@
+{
+  "line": "502",
+  "formerly": "85",
+  "operator": "CAM",
+  "name": "Funchal - Boqueirão (via Palheiro Ferreiro)",
+  "source": {
+    "pdf": "https://siga.madeira.gov.pt/storage/horarios_pdf/85.pdf",
+    "sha256": "716f6e91b5419685",
+    "checked": "2026-10-05"
+  },
+  "directions": [
+    {
+      "to": "Boqueirão (Fonte Almocreves)",
+      "stops": [
+        {
+          "name": "Funchal",
+          "stop": "00025"
+        },
+        {
+          "name": "Fonte Almocreves",
+          "stop": "68137"
+        }
+      ],
+      "variants": {
+        "": [
+          "6758:0"
+        ]
+      },
+      "weekdays": [
+        "06:35"
+      ],
+      "saturdays": [
+        "06:35"
+      ]
+    },
+    {
+      "to": "Funchal",
+      "stops": [
+        {
+          "name": "Fonte Almocreves",
+          "stop": "68137"
+        },
+        {
+          "name": "Funchal",
+          "stop": "00025"
+        }
+      ],
+      "variants": {
+        "": [
+          "6759:1"
+        ]
+      },
+      "weekdays": [
+        "05:45"
+      ],
+      "saturdays": [
+        "05:45"
+      ]
+    }
+  ]
+}

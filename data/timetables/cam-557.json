@@ -1,0 +1,67 @@
+{
+  "line": "557",
+  "formerly": "136",
+  "operator": "CAM",
+  "name": "Funchal - Vargem (Mãe de Deus), via Garajau",
+  "source": {
+    "pdf": "https://siga.madeira.gov.pt/storage/horarios_pdf/C136.pdf",
+    "sha256": "bec198dd4a02f6d0",
+    "checked": "2026-10-05"
+  },
+  "directions": [
+    {
+      "to": "Vargem (Mãe de Deus)",
+      "stops": [
+        {
+          "name": "Funchal",
+          "stop": "00025"
+        },
+        {
+          "name": "Vargem (Mãe de Deus)",
+          "stop": "68064"
+        }
+      ],
+      "variants": {
+        "": [
+          "6826:0"
+        ]
+      },
+      "weekdays": [
+        "08:50",
+        "17:10"
+      ],
+      "saturdays": [
+        "08:50"
+      ]
+    },
+    {
+      "to": "Funchal",
+      "stops": [
+        {
+          "name": "Vargem (Mãe de Deus)",
+          "stop": "68064"
+        },
+        {
+          "name": "Funchal",
+          "stop": "00025"
+        }
+      ],
+      "variants": {
+        "": [
+          "6827:1"
+        ]
+      },
+      "weekdays": [
+        "07:15",
+        "08:25",
+        "09:30"
+      ],
+      "saturdays": [
+        "09:30"
+      ],
+      "sundays": [
+        "09:30"
+      ]
+    }
+  ]
+}
