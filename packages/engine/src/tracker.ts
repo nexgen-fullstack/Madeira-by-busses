@@ -4,6 +4,7 @@ import {
   pointAlong,
   projectOnPolyline,
   type LatLon,
+  type Projection,
 } from './geo.ts';
 
 /**
@@ -92,6 +93,9 @@ const RANK: Record<TrackStatus, number> = {
   'off-route': 1,
 };
 
+/** Faster than any bus on Madeira's roads (m/s), to bound how far one can have gone. */
+const MAX_SPEED = 30;
+
 type Alert = NonNullable<TrackState['alert']>;
 const isAlert = (s: TrackStatus): s is Alert =>
   s === 'prepare' || s === 'next' || s === 'arrived' || s === 'off-route';
@@ -110,6 +114,10 @@ export class RideTracker {
   private lastPosition: LatLon;
   private offRouteCount = 0;
   private status: TrackStatus = 'waiting';
+  /** The position since the last fix is the timetable's guess, not GPS. */
+  private reckoned = false;
+  /** Where and when the last fix on the route was. */
+  private lastOnRoute = { along: 0, time: -Infinity };
 
   constructor(
     readonly stops: readonly TrackedStop[],
@@ -140,13 +148,18 @@ export class RideTracker {
     if ((fix.accuracy ?? 0) > this.opts.maxAccuracy) return this.tick(fix.time);
     // Search a window around the current position; allow a little backwards
     // jitter but prefer forward progress on hairpins that pass close by.
-    const pr = projectOnPolyline(
+    let pr = projectOnPolyline(
       this.shape,
       this.cum,
       fix,
       Math.max(0, this.segment - 3),
       this.segment + 40,
     );
+    if (pr.offset > this.opts.offRouteDistance && (this.reckoned || this.status === 'off-route')) {
+      // Out of a tunnel the bus may be ahead of or behind the timetable's
+      // guess, and back from a detour it can rejoin further on.
+      pr = this.relocate(fix) ?? pr;
+    }
     if (pr.offset > this.opts.offRouteDistance) {
       this.offRouteCount++;
       if (this.offRouteCount >= this.opts.offRouteFixes) {
@@ -157,11 +170,17 @@ export class RideTracker {
       return this.tick(fix.time);
     }
     this.offRouteCount = 0;
-    if (pr.along + 30 >= this.progress) {
+    if (this.reckoned) {
+      // GPS is back: it knows better than the timetable, even if that is behind.
+      this.progress = pr.along;
+      this.segment = pr.segment;
+      this.reckoned = false;
+    } else if (pr.along + 30 >= this.progress) {
       this.progress = Math.max(this.progress, pr.along);
       this.segment = pr.segment;
     }
     this.lastFixTime = fix.time;
+    this.lastOnRoute = { along: this.progress, time: fix.time };
     this.lastPosition = pr.point;
     if (this.progress > this.stopAlong[0]! + 50 || fix.time >= this.stops[0]!.dep) {
       // Exponential smoothing keeps a single noisy fix from swinging the ETA.
@@ -181,6 +200,9 @@ export class RideTracker {
       const along = this.scheduledAlongAt(time - this.delay);
       if (along > this.progress) {
         this.progress = along;
+        // Fixes after the tunnel are looked for from here on.
+        this.segment = this.segmentAt(along);
+        this.reckoned = true;
         this.lastPosition = pointAlong(this.shape, this.cum, along);
       }
     }
@@ -206,6 +228,46 @@ export class RideTracker {
       return 'prepare';
     }
     return this.progress > this.stopAlong[0]! + 50 ? 'riding' : 'waiting';
+  }
+
+  /**
+   * Finds the bus on the shape when the search around its last position
+   * fails: as far along as it can have gone since its last fix on the route,
+   * each place the road passes near the fix, and of those the one where the
+   * timetable expects the bus (a loop can pass the same spot twice).
+   */
+  private relocate(fix: Fix): Projection | undefined {
+    const { along, time } = this.lastOnRoute;
+    const from = this.segmentAt(along - 300);
+    const to = this.segmentAt(along + Math.max(0, fix.time - time) * MAX_SPEED + 500);
+    const expected = this.scheduledAlongAt(fix.time - this.delay);
+    let best: Projection | undefined;
+    let pass: Projection | undefined;
+    const endPass = () => {
+      if (pass && (!best || Math.abs(pass.along - expected) < Math.abs(best.along - expected))) {
+        best = pass;
+      }
+      pass = undefined;
+    };
+    for (let i = from; i <= to; i++) {
+      const pr = projectOnPolyline(this.shape, this.cum, fix, i, i);
+      if (pr.offset > this.opts.offRouteDistance) endPass();
+      else if (!pass || pr.offset < pass.offset) pass = pr;
+    }
+    endPass();
+    return best;
+  }
+
+  /** The shape's segment at `along` metres from its start. */
+  private segmentAt(along: number): number {
+    let lo = 0;
+    let hi = this.cum.length - 2;
+    while (lo < hi) {
+      const mid = (lo + hi + 1) >> 1;
+      if (this.cum[mid]! <= along) lo = mid;
+      else hi = mid - 1;
+    }
+    return lo;
   }
 
   private nextStopIndex(): number {

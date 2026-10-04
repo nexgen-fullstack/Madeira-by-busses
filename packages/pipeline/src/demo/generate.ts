@@ -121,7 +121,7 @@ export function generateDemoGtfs(): GtfsFiles {
       ],
       [
         [
-          'MadeiraBus DEMO - synthetic timetable, not for travel',
+          'Madeira by busses DEMO - synthetic timetable, not for travel',
           'https://github.com/nexgen-fullstack/madeirabus',
           'pt',
           START,

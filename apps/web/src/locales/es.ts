@@ -108,6 +108,8 @@ export const es: Dict = {
   'settings.about': 'Acerca de',
   'settings.aboutText':
     'Planificador de viajes para toda la red de autobuses de Madeira. Funciona sin conexión; su ubicación nunca sale del teléfono.',
+  'settings.slogan': 'Explora Madeira con facilidad',
+  'settings.privacy': 'Política de privacidad',
   'layers.title': 'Capas del mapa',
   'layers.map': 'Mapa',
   'layers.satellite': 'Satélite',
@@ -162,7 +164,7 @@ export const es: Dict = {
   'install.android': 'Descargar para Android',
   'install.androidHint': 'La app de Android avisa cuándo bajar incluso con la pantalla apagada.',
   'install.ios': 'En iPhone: en Safari pulsa Compartir → Añadir a pantalla de inicio.',
-  'trip.bgTitle': 'MadeiraBus sigue tu viaje',
+  'trip.bgTitle': 'Madeira by busses sigue tu viaje',
   'trip.bgText': 'Te aviso cuándo bajar: {stop}',
   'trip.keepOpen':
     'Mantén la pantalla encendida: el navegador pausa el GPS con la pantalla apagada. La app de Android avisa igualmente.',
@@ -171,4 +173,100 @@ export const es: Dict = {
   'remind.title': 'Hora de salir hacia el autobús',
   'remind.body': '{route} a las {t} desde «{stop}»',
   'map.label': 'Mapa',
+  'scenic.curral.tag': 'Valle de las monjas',
+  'scenic.curral.text':
+    'Un pueblo en el fondo de un valle volcánico rodeado de picos. El autobús sube desde Funchal por túneles y curvas cerradas; prueba el pastel de castañas.',
+  'scenic.eira.tag': 'Mirador sobre el valle',
+  'scenic.eira.text':
+    'Un balcón a 1000 m de altura justo encima de Curral das Freiras. Algunos autobuses al valle paran junto al mirador.',
+  'scenic.monte.tag': 'Jardines y trineos de mimbre',
+  'scenic.monte.text':
+    'Barrio en la ladera sobre Funchal con el jardín tropical Monte Palace y la iglesia de Nuestra Señora. Baja en un trineo de mimbre o vuelve en teleférico.',
+  'scenic.botanico.tag': 'Alfombras de flores con vistas',
+  'scenic.botanico.text':
+    'Parterres con dibujos, cactus y plantas autóctonas en terrazas con una amplia vista de la bahía de Funchal.',
+  'scenic.palheiro.tag': 'Camelias y árboles antiguos',
+  'scenic.palheiro.text':
+    'El jardín histórico de una finca, con camelias, rosas y una capilla tranquila entre árboles centenarios.',
+  'scenic.barcelos.tag': 'Funchal a tus pies',
+  'scenic.barcelos.text':
+    'Un mirador a 355 m con todo el anfiteatro de Funchal debajo; lo mejor, al atardecer.',
+  'scenic.formosa.tag': 'Paseo marítimo y piscinas',
+  'scenic.formosa.text':
+    'La playa más larga de Funchal, de cantos oscuros, el paseo hasta Câmara de Lobos y las piscinas de Doca do Cavacas.',
+  'scenic.cidade.tag': 'Puertas pintadas y teleférico',
+  'scenic.cidade.text':
+    'La Rua de Santa Maria con sus puertas pintadas, el fuerte junto al mar y el teleférico que sube flotando hasta Monte.',
+  'scenic.cabo-girao.tag': 'Mirador de cristal',
+  'scenic.cabo-girao.text':
+    'Uno de los acantilados más altos de Europa, a 580 m sobre las olas, con suelo de cristal para mirar hacia abajo.',
+  'scenic.camara-lobos.tag': 'Pueblo pesquero',
+  'scenic.camara-lobos.text':
+    'Barcas de colores, casas sobre el acantilado y la bahía que Churchill pintaba, a un paso al oeste de Funchal.',
+  'scenic.porto-moniz.tag': 'Piscinas naturales de lava',
+  'scenic.porto-moniz.text':
+    'Báñate en piscinas de agua de mar que formó la lava en el extremo noroeste de la isla, donde rompen las olas del Atlántico.',
+  'scenic.santana.tag': 'Casitas con tejado de paja',
+  'scenic.santana.text':
+    'Pequeñas casas triangulares con tejado de paja, pintadas de rojo, blanco y azul: un símbolo de Madeira en la verde costa norte.',
+  'scenic.sao-lourenco.tag': 'Acantilados rojos al este',
+  'scenic.sao-lourenco.text':
+    'Una península desnuda de acantilados rojos y ocres entre dos mares, con uno de los paseos más bonitos de la isla.',
+  'scenic.balcoes.tag': 'Balcón sobre la laurisilva',
+  'scenic.balcoes.text':
+    'Un paseo fácil y llano junto a una levada por el bosque de laurisilva, patrimonio de la UNESCO, hasta un balcón sobre las montañas.',
+  'tab.explore': 'Paisajes',
+  'detail.wayBack': 'Vuelta',
+  'scenic.title': 'Viajes populares con bonitos paisajes',
+  'scenic.hint':
+    'Toca un lugar: planifico el viaje y te muestro todos los autobuses del día, del primero al último.',
+  'scenic.later': 'Más lejos en la isla',
+  'scenic.laterHint':
+    'Aquí llegan autobuses de {operators}, cuyos horarios aún no están en la app. Las rutas aparecerán en cuanto lo estén.',
+  'scenic.soon': 'Pronto',
+  'scenic.centre': 'Centro de Funchal',
+  'scenic.fromCentre': 'Desde el centro',
+  'scenic.fromHere': 'Desde aquí',
+  'scenic.getThere': 'Cómo llegar',
+  'scenic.minutes': '≈{m} min desde el centro',
+  'scenic.lastBack': 'último de vuelta a las {t}',
+  'scenic.there': 'Ida',
+  'scenic.noDirect': 'No hay autobús directo desde el centro: usa una ruta con transbordo arriba.',
+  'scenic.noTrips': 'Hoy ya no hay autobuses hasta allí. Consulta el horario abajo.',
+  'scenic.openPlanner': 'Más opciones en el planificador',
+  'scenic.photo': 'Foto: {author}, {license}',
+  'scenic.walk': '{m} min a pie desde el centro, sin autobús',
+  'scenic.boardsAt': 'sale de «{stop}»',
+  'scenic.credits': 'Fotografías',
+  'scenic.creditsHint': 'Fotos de Wikimedia Commons con licencias libres; recortadas y reducidas.',
+  'plan.scenic': 'Bonitos paisajes',
+  'scenic.all': 'Todos',
+  'lines.formerly': 'antes {n}',
+  'lines.search': 'Número o nombre de la línea',
+  'lines.none': 'Ninguna línea coincide con «{q}»',
+  'lines.buses': { one: '{n} autobús', other: '{n} autobuses' },
+  'lines.firstLast': 'Primero a las {first} · último a las {last}',
+  'print.card': 'Horario para imprimir',
+  'print.hint':
+    'PDF en A4: laborables, sábados, domingos y festivos, y el tiempo hasta cada parada.',
+  'print.from': 'Salidas desde',
+  'print.back': 'Añadir la vuelta',
+  'print.download': 'Descargar PDF',
+  'print.print': 'Imprimir',
+  'print.share': 'Compartir',
+  'print.saved': 'PDF guardado',
+  'print.failed': 'No se pudo crear el PDF',
+  'print.title': 'Línea {n} — {name}',
+  'print.kind': 'Horario de autobús',
+  'print.daily': 'Todos los días',
+  'print.withHolidays': '{days} y festivos',
+  'print.closed': 'Sin autobuses: {days}',
+  'print.endsAt': 'solo hasta «{stop}»',
+  'print.hour': 'Hora',
+  'print.none': 'En las próximas semanas no salen autobuses de esta parada.',
+  'print.stops': 'Paradas y minutos desde «{stop}»',
+  'print.continued': 'continuación',
+  'print.page': 'Página {n} de {total}',
+  'print.basis': 'Horario del {from} al {to}. Puede cambiar: compruébalo en la parada.',
+  'print.source': 'Fuente: {source}. Impreso el {date} con Madeira by busses.',
 };

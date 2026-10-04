@@ -7,4 +7,5 @@ export * from './municipality.ts';
 export * from './network.ts';
 export * from './raptor.ts';
 export * from './time.ts';
+export * from './timetable.ts';
 export * from './tracker.ts';

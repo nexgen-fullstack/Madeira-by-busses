@@ -17,7 +17,7 @@ import {
 import { generateDemoGtfs } from './demo/generate.ts';
 import { DEMO_ROUTES } from './demo/network.ts';
 import { loadFeedFiles, parseFeedArg, unzipFeed } from './load.ts';
-import { prettyAgencyName, prettyRouteName, prettyStopName } from './names.ts';
+import { prettyAgencyName, prettyRouteName, prettyStopName, sigaRouteNumber } from './names.ts';
 import { placeKind, placesFromOsm, type OsmElement } from './places.ts';
 import { diffBundles, diffMarkdown } from './report.ts';
 import { validateBundle, validateFeed } from './validate.ts';
@@ -211,6 +211,72 @@ describe('real Horários do Funchal conventions', () => {
     expect(name('Monte  Centro Saúde  D ')).toBe('Monte Centro Saúde');
     expect(name('Rua Vale Ajuda  S1A ')).toBe('Rua Vale Ajuda S1A');
     expect(prettyStopName({ stop_name: 'Ponta Laranjeira  T-01 (871)' })).toBe('Ponta Laranjeira');
+  });
+
+  it('shows the number on the bus, not the one from before the 2026 renumbering', () => {
+    // routes.txt of the September 2026 feed: line_id is the new number.
+    const files = {
+      'agency.txt': toCsv(
+        ['agency_id', 'agency_name', 'agency_url', 'agency_timezone'],
+        [['1', 'HF', 'https://hf.pt', 'Europe/Lisbon']],
+      ),
+      'stops.txt': toCsv(
+        ['stop_id', 'stop_name', 'stop_lat', 'stop_lon'],
+        [
+          ['1', 'AV Mar Alfândega (00023)', 32.6469, -16.9086],
+          ['2', 'Cota 500 LMB Aguiares (01368)', 32.6703, -16.9301],
+        ],
+      ),
+      'routes.txt': toCsv(
+        [
+          'line_id',
+          'line_short_name',
+          'route_id',
+          'route_short_name',
+          'route_long_name',
+          'route_type',
+        ],
+        [
+          ['110', '10A', '110_0', '10A', 'Centro - Barreira', 3],
+          ['110', '10A', '110_A', '10A', 'Centro - Barreira (via LMB Aguiares)', 3],
+          ['001', '01', '001_0', '01', 'Centro - Ponta Laranjeira', 3],
+          ['181', '81', '181_0', '81', 'Funchal - CFreiras', 3],
+        ],
+      ),
+      'trips.txt': toCsv(
+        ['route_id', 'service_id', 'trip_id'],
+        ['110_0', '110_A', '001_0', '181_0'].map((r) => [r, 'S', `t${r}`]),
+      ),
+      'stop_times.txt': toCsv(
+        ['trip_id', 'arrival_time', 'departure_time', 'stop_id', 'stop_sequence'],
+        ['110_0', '110_A', '001_0', '181_0'].flatMap((r) => [
+          [`t${r}`, '21:30:00', '21:30:00', '1', 1],
+          [`t${r}`, '21:50:00', '21:50:00', '2', 2],
+        ]),
+      ),
+      'calendar_dates.txt': toCsv(['service_id', 'date', 'exception_type'], [['S', '20261003', 1]]),
+    };
+    const { bundle } = buildBundle([{ feed: parseGtfs(files), source: { name: 'hf' } }], {
+      demo: false,
+      fares: SIGA_FARES_2026,
+      routeNumber: sigaRouteNumber,
+    });
+    expect(bundle.routes.map((r) => [r.short, r.formerly])).toEqual([
+      ['110', '10A'],
+      ['110', '10A'],
+      // Zero padding is the same number: nothing to explain.
+      ['001', undefined],
+      ['181', '81'],
+    ]);
+    // Feeds without GTFS-PT lines, and ones that already publish the new number.
+    expect(sigaRouteNumber({ route_short_name: 'D139' })).toEqual({ short: 'D139' });
+    expect(sigaRouteNumber({ route_short_name: '110', line_id: '110' })).toEqual({ short: '110' });
+    expect(sigaRouteNumber({ route_short_name: '05A', line_id: '105' })).toEqual({
+      short: '105',
+      formerly: '05A',
+    });
+    // Not a SIGA number: keep what the feed calls the line.
+    expect(sigaRouteNumber({ route_short_name: '7', line_id: 'L7' })).toEqual({ short: '7' });
   });
 
   it('reads INE municipality codes and pretty names when building', () => {

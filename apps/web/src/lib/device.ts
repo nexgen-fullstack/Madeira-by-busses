@@ -22,6 +22,19 @@ export function platform(): 'android' | 'ios' | 'web' {
   return p === 'android' || p === 'ios' ? p : 'web';
 }
 
+/**
+ * The header is the logo's deep blue right up to the top of the screen, so the
+ * status bar takes light icons; the navigation bar keeps following the theme.
+ */
+export function lightStatusBar(): void {
+  if (!isNative()) return;
+  void import('@capacitor/core')
+    .then(({ SystemBars, SystemBarsStyle, SystemBarType }) =>
+      SystemBars.setStyle({ style: SystemBarsStyle.Dark, bar: SystemBarType.StatusBar }),
+    )
+    .catch(() => undefined);
+}
+
 const TRIP_CHANNEL = 'trip';
 let channelReady: Promise<void> | undefined;
 
@@ -94,7 +107,7 @@ export async function notify(title: string, body: string, tag = 'madeirabus-trip
     renotify: true,
     vibrate: [400, 150, 400, 150, 400],
     icon: 'icon-192.png',
-    badge: 'icon-192.png',
+    badge: 'badge-96.png',
   };
   try {
     const reg = await navigator.serviceWorker?.getRegistration();

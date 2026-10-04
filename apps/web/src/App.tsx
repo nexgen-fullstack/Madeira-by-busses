@@ -1,11 +1,15 @@
 import { lazy, Suspense, useEffect, useRef } from 'react';
-import { Bus, List, Map as MapIcon, Navigation, Settings } from 'lucide-react';
+import { List, Map as MapIcon, Mountain, Navigation, Settings } from 'lucide-react';
 import { StatusBanners } from './components/DemoBanner.tsx';
 import { MapProvider } from './components/mapContext.tsx';
 import { useI18n, type Key } from './i18n.ts';
 import { navigate, useRoute } from './lib/router.ts';
+import { APP_NAME } from './lib/site.ts';
+import { destination } from './lib/scenic.ts';
 import { AppProvider, useApp } from './state/app.tsx';
 import { TripProvider } from './state/trip.tsx';
+import { DestinationView } from './views/DestinationView.tsx';
+import { ExploreView } from './views/ExploreView.tsx';
 import { LineDetail } from './views/LineDetail.tsx';
 import { LinesView } from './views/LinesView.tsx';
 import { NearbyView } from './views/NearbyView.tsx';
@@ -18,6 +22,7 @@ const MapView = lazy(() => import('./components/MapView.tsx'));
 
 const TABS: { path: string; key: Key; icon: typeof MapIcon }[] = [
   { path: 'plan', key: 'tab.plan', icon: Navigation },
+  { path: 'explore', key: 'tab.explore', icon: Mountain },
   { path: 'nearby', key: 'tab.nearby', icon: MapIcon },
   { path: 'lines', key: 'tab.lines', icon: List },
   { path: 'settings', key: 'tab.settings', icon: Settings },
@@ -30,7 +35,7 @@ function Screen() {
   if (data.status === 'loading') {
     return (
       <div className="splash" role="status">
-        <Bus size={32} className="pulse" aria-hidden />
+        <img className="splash__logo" src="logo.png" alt="" width={112} height={112} />
         <p>{t.t('loading')}</p>
       </div>
     );
@@ -52,7 +57,15 @@ function Screen() {
     case 'nearby':
       return <NearbyView />;
     case 'lines':
-      return sub !== undefined ? <LineDetail routeIndex={Number(sub)} /> : <LinesView />;
+      return sub !== undefined ? (
+        <LineDetail key={sub} routeIndex={Number(sub)} />
+      ) : (
+        <LinesView key={route.query.get('q') ?? ''} route={route} />
+      );
+    case 'explore': {
+      const place = destination(sub);
+      return place ? <DestinationView key={place.id} d={place} route={route} /> : <ExploreView />;
+    }
     case 'stop':
       return <StopView route={route} />;
     case 'settings':
@@ -78,11 +91,9 @@ function Shell() {
   return (
     <div className={`app ${head === 'trip' ? 'app--trip' : ''}`}>
       <header className="topbar">
-        <a className="brand" href="#/plan">
-          <span className="brand__logo" aria-hidden>
-            <Bus size={18} />
-          </span>
-          <span className="brand__name">MadeiraBus</span>
+        <a className="brand" href="#/plan" aria-label={APP_NAME}>
+          <img className="brand__mark" src="brand-mark.png" alt="" width={57} height={36} />
+          <img className="brand__words" src="brand-words.png" alt="" width={84} height={34} />
         </a>
         {demo && <span className="badge badge--demo">{t.t('demo.badge')}</span>}
         {trip && head !== 'trip' && (

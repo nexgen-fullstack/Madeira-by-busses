@@ -14,7 +14,13 @@ import {
 } from '@madeirabus/engine';
 import { generateDemoGtfs } from './demo/generate.ts';
 import { loadFeedFiles, parseFeedArg } from './load.ts';
-import { expandAbbreviations, prettyAgencyName, prettyRouteName, prettyStopName } from './names.ts';
+import {
+  expandAbbreviations,
+  prettyAgencyName,
+  prettyRouteName,
+  prettyStopName,
+  sigaRouteNumber,
+} from './names.ts';
 import { DEMO_PLACES } from './demo/places.ts';
 import { placesFromOsm } from './places.ts';
 import { buildReportMarkdown, diffBundles, diffMarkdown } from './report.ts';
@@ -129,6 +135,8 @@ async function build(args: Args) {
       demo: args.flags.has('demo'),
       fares: SIGA_FARES_2026,
       extendUntil,
+      // Always: the number passengers see on the bus is not a matter of style.
+      routeNumber: sigaRouteNumber,
       ...(args.flags.has('pretty-names') && {
         stopName: prettyStopName,
         routeName: prettyRouteName,

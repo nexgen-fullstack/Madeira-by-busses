@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import {
   AlarmClock,
   AlertTriangle,
+  CalendarClock,
   ArrowLeft,
   Clock,
   Footprints,
@@ -15,10 +16,11 @@ import {
 import { adviseTicket, type Itinerary } from '@madeirabus/engine';
 import { useI18n, type Key } from '../i18n.ts';
 import { isNative, remind } from '../lib/device.ts';
-import { clock, duration, price } from '../lib/format.ts';
-import { fareRides } from '../lib/itinerary.ts';
+import { clock, duration, longDate, price } from '../lib/format.ts';
+import { fareRides, ridesOf } from '../lib/itinerary.ts';
 import { useNow } from '../lib/useNow.ts';
 import { useApp, useNetwork } from '../state/app.tsx';
+import { RideTimetable } from './RideTimetable.tsx';
 import { RouteBadge } from './RouteBadge.tsx';
 
 interface Props {
@@ -265,6 +267,19 @@ export function ItineraryDetail({ it, date, onBack, onStart, onShare }: Props) {
             ? t.t('detail.reminded', { t: clock(reminder) })
             : t.t('detail.remind')}
         </button>
+      )}
+
+      {it.rides > 0 && (
+        <section className="card day-timetable">
+          <h3 className="card__title">
+            <CalendarClock size={16} aria-hidden />{' '}
+            {t.t('lines.timetable', { date: longDate(t, date) })}
+          </h3>
+          {ridesOf(it).map((leg, i) => (
+            <RideTimetable key={i} leg={leg} date={date} />
+          ))}
+          {it.rides === 1 && <RideTimetable leg={ridesOf(it)[0]!} date={date} back />}
+        </section>
       )}
 
       {it.rides > 0 && (

@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react';
-import { Database, Download, Info, Smartphone } from 'lucide-react';
+import { Camera, Database, Download, Info, Smartphone } from 'lucide-react';
 import { useI18n, LANGS } from '../i18n.ts';
 import { isNative } from '../lib/device.ts';
 import { fullDate, shortDate } from '../lib/format.ts';
 import { lineGroups } from '../lib/lines.ts';
 import { canInstall, install, isStandalone, onInstallChange } from '../lib/pwa.ts';
+import { DESTINATIONS } from '../lib/scenic.ts';
+import { APP_NAME } from '../lib/site.ts';
 import { useApp } from '../state/app.tsx';
 
 /** The latest Android build, published by the "Android app" workflow. */
 const APK_URL =
   import.meta.env.VITE_ANDROID_APK ||
-  'https://github.com/nexgen-fullstack/madeirabus/releases/latest/download/MadeiraBus.apk';
+  'https://github.com/nexgen-fullstack/madeirabus/releases/latest/download/Madeira-by-busses.apk';
 
 /** Install the website as an app, or download the Android app. */
 function InstallCard() {
@@ -165,9 +167,41 @@ export function SettingsView() {
       </section>
       <section className="card">
         <h3 className="card__title">
+          <Camera size={16} aria-hidden /> {t.t('scenic.credits')}
+        </h3>
+        <p className="muted small">{t.t('scenic.creditsHint')}</p>
+        <ul className="credits">
+          {DESTINATIONS.map((d) => (
+            <li key={d.id}>
+              <a href={d.credit.source} target="_blank" rel="noopener noreferrer">
+                {d.name}
+              </a>{' '}
+              — {d.credit.author},{' '}
+              <a href={d.credit.licenseUrl} target="_blank" rel="noopener noreferrer">
+                {d.credit.license}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p className="muted small">Inter · SIL Open Font License 1.1</p>
+      </section>
+      <section className="card">
+        <h3 className="card__title">
           <Info size={16} aria-hidden /> {t.t('settings.about')}
         </h3>
+        <div className="about">
+          <img className="about__logo" src="logo.png" alt="" width={64} height={64} />
+          <div>
+            <p className="about__name">{APP_NAME}</p>
+            <p className="muted small">{t.t('settings.slogan')}</p>
+          </div>
+        </div>
         <p>{t.t('settings.aboutText')}</p>
+        <p className="small">
+          <a href="privacy.html" target="_blank" rel="noopener noreferrer">
+            {t.t('settings.privacy')}
+          </a>
+        </p>
         <p className="muted small">© OpenStreetMap contributors · OpenFreeMap</p>
       </section>
     </div>

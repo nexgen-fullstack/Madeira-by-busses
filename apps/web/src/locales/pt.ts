@@ -109,6 +109,8 @@ export const pt: Dict = {
   'settings.about': 'Sobre',
   'settings.aboutText':
     'Planeador de viagens para toda a rede de autocarros da Madeira. Funciona sem internet; a sua localização nunca sai do telemóvel.',
+  'settings.slogan': 'Explore a Madeira com facilidade',
+  'settings.privacy': 'Política de privacidade',
   'layers.title': 'Camadas do mapa',
   'layers.map': 'Mapa',
   'layers.satellite': 'Satélite',
@@ -162,7 +164,7 @@ export const pt: Dict = {
   'install.android': 'Descarregar para Android',
   'install.androidHint': 'A aplicação Android avisa quando sair mesmo com o ecrã desligado.',
   'install.ios': 'No iPhone: no Safari toque em Partilhar → Adicionar ao ecrã principal.',
-  'trip.bgTitle': 'O MadeiraBus está a acompanhar a viagem',
+  'trip.bgTitle': 'A app Madeira by busses está a acompanhar a viagem',
   'trip.bgText': 'Aviso quando sair: {stop}',
   'trip.keepOpen':
     'Mantenha o ecrã ligado: o navegador pausa o GPS com o ecrã desligado. A aplicação Android avisa na mesma.',
@@ -171,4 +173,100 @@ export const pt: Dict = {
   'remind.title': 'Hora de sair para o autocarro',
   'remind.body': '{route} às {t} de «{stop}»',
   'map.label': 'Mapa',
+  'scenic.curral.tag': 'Vale das freiras',
+  'scenic.curral.text':
+    'Uma aldeia no fundo de um vale vulcânico rodeado de picos. O autocarro sobe do Funchal por túneis e curvas apertadas; prove o bolo de castanha.',
+  'scenic.eira.tag': 'Miradouro sobre o vale',
+  'scenic.eira.text':
+    'Uma varanda a 1000 m de altitude, mesmo por cima do Curral das Freiras. Alguns autocarros para o vale param junto ao miradouro.',
+  'scenic.monte.tag': 'Jardins e carrinhos de cesto',
+  'scenic.monte.text':
+    'Freguesia na encosta acima do Funchal, com o Monte Palace Tropical Garden e a igreja de Nossa Senhora. Desça num carrinho de cesto ou volte de teleférico.',
+  'scenic.botanico.tag': 'Canteiros com vista',
+  'scenic.botanico.text':
+    'Canteiros desenhados, catos e plantas indígenas em socalcos, com uma vista ampla sobre a baía do Funchal.',
+  'scenic.palheiro.tag': 'Camélias e árvores antigas',
+  'scenic.palheiro.text':
+    'O jardim histórico de uma quinta, com camélias, rosas e uma capela tranquila entre árvores centenárias.',
+  'scenic.barcelos.tag': 'O Funchal a seus pés',
+  'scenic.barcelos.text':
+    'Um miradouro a 355 m com todo o anfiteatro do Funchal em baixo — no seu melhor ao pôr do sol.',
+  'scenic.formosa.tag': 'Passeio marítimo e piscinas',
+  'scenic.formosa.text':
+    'A maior praia do Funchal, de calhau escuro, o passeio até Câmara de Lobos e as piscinas da Doca do Cavacas.',
+  'scenic.cidade.tag': 'Portas pintadas e teleférico',
+  'scenic.cidade.text':
+    'A Rua de Santa Maria com as portas pintadas, a fortaleza junto ao mar e o teleférico que sobe até ao Monte.',
+  'scenic.cabo-girao.tag': 'Plataforma de vidro',
+  'scenic.cabo-girao.text':
+    'Um dos cabos mais altos da Europa, 580 m acima das ondas, com um chão de vidro para olhar a direito para baixo.',
+  'scenic.camara-lobos.tag': 'Vila piscatória',
+  'scenic.camara-lobos.text':
+    'Barcos coloridos, casas sobre a falésia e a baía que Churchill gostava de pintar, logo a oeste do Funchal.',
+  'scenic.porto-moniz.tag': 'Piscinas naturais de lava',
+  'scenic.porto-moniz.text':
+    'Nade em piscinas de água do mar formadas pela lava no extremo noroeste da ilha, onde as ondas do Atlântico rebentam nas rochas.',
+  'scenic.santana.tag': 'Casas de colmo',
+  'scenic.santana.text':
+    'Pequenas casas triangulares de colmo, pintadas de vermelho, branco e azul — um símbolo da Madeira na verde costa norte.',
+  'scenic.sao-lourenco.tag': 'Falésias vermelhas a leste',
+  'scenic.sao-lourenco.text':
+    'Uma península nua de falésias vermelhas e ocre entre dois mares, com um dos passeios mais bonitos da ilha.',
+  'scenic.balcoes.tag': 'Varanda sobre a Laurissilva',
+  'scenic.balcoes.text':
+    'Um passeio fácil e plano ao longo de uma levada pela floresta Laurissilva, património da UNESCO, até uma varanda sobre as serras.',
+  'tab.explore': 'Paisagens',
+  'detail.wayBack': 'Volta',
+  'scenic.title': 'Viagens populares com belas paisagens',
+  'scenic.hint':
+    'Toque num lugar: planeio a viagem e mostro todos os autocarros do dia, do primeiro ao último.',
+  'scenic.later': 'Mais longe na ilha',
+  'scenic.laterHint':
+    'Aqui chegam autocarros de {operators}, cujos horários ainda não estão na aplicação. Os percursos aparecem assim que estiverem.',
+  'scenic.soon': 'Em breve',
+  'scenic.centre': 'Centro do Funchal',
+  'scenic.fromCentre': 'Do centro',
+  'scenic.fromHere': 'De onde estou',
+  'scenic.getThere': 'Como chegar',
+  'scenic.minutes': '≈{m} min do centro',
+  'scenic.lastBack': 'último de volta às {t}',
+  'scenic.there': 'Ida',
+  'scenic.noDirect': 'Não há autocarro direto do centro: use um percurso com transbordo acima.',
+  'scenic.noTrips': 'Hoje já não há autocarros para lá. Veja o horário abaixo.',
+  'scenic.openPlanner': 'Mais opções no planeador',
+  'scenic.photo': 'Foto: {author}, {license}',
+  'scenic.walk': '{m} min a pé do centro — não precisa de autocarro',
+  'scenic.boardsAt': 'parte de «{stop}»',
+  'scenic.credits': 'Fotografias',
+  'scenic.creditsHint':
+    'Fotografias do Wikimedia Commons com licenças livres; recortadas e reduzidas.',
+  'plan.scenic': 'Belas paisagens',
+  'scenic.all': 'Todas',
+  'lines.formerly': 'antiga {n}',
+  'lines.search': 'Número ou nome da linha',
+  'lines.none': 'Nenhuma linha corresponde a «{q}»',
+  'lines.buses': { one: '{n} autocarro', other: '{n} autocarros' },
+  'lines.firstLast': 'Primeiro às {first} · último às {last}',
+  'print.card': 'Horário para imprimir',
+  'print.hint': 'PDF em A4: dias úteis, sábados, domingos e feriados, e o tempo até cada paragem.',
+  'print.from': 'Partidas de',
+  'print.back': 'Incluir o sentido inverso',
+  'print.download': 'Descarregar PDF',
+  'print.print': 'Imprimir',
+  'print.share': 'Partilhar',
+  'print.saved': 'PDF guardado',
+  'print.failed': 'Não foi possível criar o PDF',
+  'print.title': 'Linha {n} — {name}',
+  'print.kind': 'Horário do autocarro',
+  'print.daily': 'Todos os dias',
+  'print.withHolidays': '{days} e feriados',
+  'print.closed': 'Sem autocarros: {days}',
+  'print.endsAt': 'só até «{stop}»',
+  'print.hour': 'Hora',
+  'print.none': 'Nas próximas semanas não há autocarros a partir desta paragem.',
+  'print.stops': 'Paragens e minutos desde «{stop}»',
+  'print.continued': 'continuação',
+  'print.page': 'Página {n} de {total}',
+  'print.basis': 'Horário de {from} a {to}. Pode mudar — confirme na paragem.',
+  'print.source': 'Fonte: {source}. Impresso a {date} com a app Madeira by busses.',
 };

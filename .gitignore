@@ -13,3 +13,4 @@ test-results/
 playwright-report/
 *.local.mjs
 *.local.ts
+__pycache__/

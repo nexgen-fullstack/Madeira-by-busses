@@ -118,7 +118,7 @@ export function networkContent(net: Network): MapContent {
     lat: g.lat,
     lon: g.lon,
     kind: 'stop',
-    color: '#0E7C66',
+    color: '#0B3A8E',
     label: g.name,
     stops: g.stops,
   }));
@@ -135,7 +135,7 @@ export function stopsContent(groups: StopGroup[], user?: LatLon, fitKey = 'stops
     lat: g.lat,
     lon: g.lon,
     kind: 'stop',
-    color: '#0E7C66',
+    color: '#0B3A8E',
     label: g.name,
     stops: g.stops,
   }));

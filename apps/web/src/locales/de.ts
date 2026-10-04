@@ -111,6 +111,8 @@ export const de: Dict = {
   'settings.about': 'Über die App',
   'settings.aboutText':
     'Reiseplaner für das gesamte Busnetz Madeiras. Funktioniert offline; Ihr Standort verlässt nie Ihr Telefon.',
+  'settings.slogan': 'Madeira ganz einfach entdecken',
+  'settings.privacy': 'Datenschutzerklärung',
   'layers.title': 'Kartenebenen',
   'layers.map': 'Karte',
   'layers.satellite': 'Satellit',
@@ -166,7 +168,7 @@ export const de: Dict = {
   'install.androidHint':
     'Die Android-App sagt Bescheid, wann Sie aussteigen müssen – auch bei ausgeschaltetem Bildschirm.',
   'install.ios': 'Auf dem iPhone: in Safari auf Teilen → Zum Home-Bildschirm tippen.',
-  'trip.bgTitle': 'MadeiraBus verfolgt Ihre Fahrt',
+  'trip.bgTitle': 'Madeira by busses verfolgt Ihre Fahrt',
   'trip.bgText': 'Ich sage Bescheid, wann Sie aussteigen: {stop}',
   'trip.keepOpen':
     'Lassen Sie den Bildschirm an: Browser pausieren das GPS bei ausgeschaltetem Bildschirm. Die Android-App warnt trotzdem.',
@@ -175,4 +177,102 @@ export const de: Dict = {
   'remind.title': 'Zeit, zum Bus zu gehen',
   'remind.body': '{route} um {t} ab „{stop}“',
   'map.label': 'Karte',
+  'scenic.curral.tag': 'Das Tal der Nonnen',
+  'scenic.curral.text':
+    'Ein Dorf tief in einem vulkanischen Talkessel, umringt von Gipfeln. Der Bus klettert von Funchal durch Tunnel und Kehren hinauf; probieren Sie den Kastanienkuchen.',
+  'scenic.eira.tag': 'Aussicht über das Tal',
+  'scenic.eira.text':
+    'Ein Balkon in 1000 m Höhe direkt über Curral das Freiras. Einige Busse ins Tal halten gleich am Aussichtspunkt.',
+  'scenic.monte.tag': 'Gärten und Korbschlitten',
+  'scenic.monte.text':
+    'Ortsteil am Hang über Funchal mit dem Monte Palace Tropical Garden und der Wallfahrtskirche. Fahren Sie im Korbschlitten hinunter oder mit der Seilbahn zurück.',
+  'scenic.botanico.tag': 'Blumenteppiche mit Aussicht',
+  'scenic.botanico.text':
+    'Gemusterte Beete, Kakteen und heimische Pflanzen auf Terrassen mit weitem Blick über die Bucht von Funchal.',
+  'scenic.palheiro.tag': 'Kamelien und alte Bäume',
+  'scenic.palheiro.text':
+    'Der historische Garten eines Landguts mit Kamelien, Rosen und einer stillen Kapelle unter jahrhundertealten Bäumen.',
+  'scenic.barcelos.tag': 'Funchal zu Füßen',
+  'scenic.barcelos.text':
+    'Ein Aussichtspunkt in 355 m Höhe mit dem ganzen Amphitheater von Funchal unter Ihnen – am schönsten bei Sonnenuntergang.',
+  'scenic.formosa.tag': 'Promenade und Meeresbecken',
+  'scenic.formosa.text':
+    'Funchals längster Strand aus dunklen Kieseln, die Promenade nach Câmara de Lobos und die Meeresbecken der Doca do Cavacas.',
+  'scenic.cidade.tag': 'Bemalte Türen und Seilbahn',
+  'scenic.cidade.text':
+    'Die Rua de Santa Maria mit ihren bemalten Türen, die Festung am Meer und die Seilbahn, die hinauf nach Monte schwebt.',
+  'scenic.cabo-girao.tag': 'Gläserner Skywalk',
+  'scenic.cabo-girao.text':
+    'Eine der höchsten Steilküsten Europas, 580 m über den Wellen, mit einem Glasboden für den Blick senkrecht nach unten.',
+  'scenic.camara-lobos.tag': 'Fischerort',
+  'scenic.camara-lobos.text':
+    'Bunte Boote, Häuser auf der Klippe und die Bucht, die Churchill gern malte – gleich westlich von Funchal.',
+  'scenic.porto-moniz.tag': 'Natürliche Lava-Pools',
+  'scenic.porto-moniz.text':
+    'Baden Sie in Meerwasserbecken aus Lava an der Nordwestspitze der Insel, wo die Wellen des Atlantiks an die Felsen schlagen.',
+  'scenic.santana.tag': 'Strohgedeckte Dreieckshäuser',
+  'scenic.santana.text':
+    'Kleine dreieckige Häuser mit Strohdach, rot, weiß und blau gestrichen – ein Wahrzeichen Madeiras an der grünen Nordküste.',
+  'scenic.sao-lourenco.tag': 'Rote Klippen im Osten',
+  'scenic.sao-lourenco.text':
+    'Eine kahle Halbinsel aus roten und ockerfarbenen Klippen zwischen zwei Meeren, mit einer der schönsten Wanderungen der Insel.',
+  'scenic.balcoes.tag': 'Balkon über dem Lorbeerwald',
+  'scenic.balcoes.text':
+    'Ein leichter, ebener Weg entlang einer Levada durch den Lorbeerwald (UNESCO-Welterbe) zu einem Balkon über den Bergen.',
+  'tab.explore': 'Ausblicke',
+  'detail.wayBack': 'Zurück',
+  'scenic.title': 'Beliebte Fahrten mit schönen Ausblicken',
+  'scenic.hint':
+    'Tippen Sie auf einen Ort: Ich plane die Fahrt und zeige alle Busse des Tages, vom ersten bis zum letzten.',
+  'scenic.later': 'Weiter auf der Insel',
+  'scenic.laterHint':
+    'Hierher fahren Busse von {operators}, deren Fahrpläne noch nicht in der App sind. Die Verbindungen erscheinen, sobald sie da sind.',
+  'scenic.soon': 'Bald',
+  'scenic.centre': 'Funchal Zentrum',
+  'scenic.fromCentre': 'Ab Zentrum',
+  'scenic.fromHere': 'Von hier',
+  'scenic.getThere': 'Anreise',
+  'scenic.minutes': '≈{m} Min. ab Zentrum',
+  'scenic.lastBack': 'letzter zurück {t}',
+  'scenic.there': 'Hin',
+  'scenic.noDirect': 'Kein direkter Bus ab Zentrum: Nutzen Sie oben eine Verbindung mit Umstieg.',
+  'scenic.noTrips': 'Heute fährt kein Bus mehr dorthin. Siehe Fahrplan unten.',
+  'scenic.openPlanner': 'Mehr Verbindungen im Planer',
+  'scenic.photo': 'Foto: {author}, {license}',
+  'scenic.walk': '{m} Min. zu Fuß ab Zentrum – kein Bus nötig',
+  'scenic.boardsAt': 'fährt ab „{stop}“',
+  'scenic.credits': 'Fotos',
+  'scenic.creditsHint':
+    'Fotos von Wikimedia Commons unter freien Lizenzen; zugeschnitten und verkleinert.',
+  'plan.scenic': 'Schöne Ausblicke',
+  'scenic.all': 'Alle',
+  'lines.formerly': 'früher {n}',
+  'lines.search': 'Liniennummer oder Name',
+  'lines.none': 'Keine Linie passt zu „{q}“',
+  'lines.buses': { one: '{n} Bus', other: '{n} Busse' },
+  'lines.firstLast': 'Erster um {first} · letzter um {last}',
+  'print.card': 'Fahrplan zum Ausdrucken',
+  'print.hint':
+    'PDF in A4: Werktage, Samstage, Sonn- und Feiertage und die Fahrzeit bis zu jeder Haltestelle.',
+  'print.from': 'Abfahrten ab',
+  'print.back': 'Rückrichtung dazu',
+  'print.download': 'PDF herunterladen',
+  'print.print': 'Drucken',
+  'print.share': 'Teilen',
+  'print.saved': 'PDF gespeichert',
+  'print.failed': 'PDF konnte nicht erstellt werden',
+  'print.title': 'Linie {n} — {name}',
+  'print.kind': 'Busfahrplan',
+  'print.daily': 'Täglich',
+  'print.withHolidays': '{days} und Feiertage',
+  'print.closed': 'Keine Busse: {days}',
+  'print.endsAt': 'nur bis „{stop}“',
+  'print.hour': 'Std.',
+  'print.none': 'In den nächsten Wochen fährt ab dieser Haltestelle kein Bus.',
+  'print.stops': 'Haltestellen und Minuten ab „{stop}“',
+  'print.continued': 'Fortsetzung',
+  'print.page': 'Seite {n} von {total}',
+  'print.basis':
+    'Fahrplan vom {from} bis {to}. Zeiten können sich ändern – bitte an der Haltestelle prüfen.',
+  'print.source': 'Quelle: {source}. Gedruckt am {date} mit Madeira by busses.',
 };
