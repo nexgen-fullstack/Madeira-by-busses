@@ -8,7 +8,7 @@ import { useI18n } from '../i18n.ts';
 import { canPrint, canShareFiles, printPdf, saveFile, shareFile } from '../lib/files.ts';
 import { clock, longDate } from '../lib/format.ts';
 import { lineDirections, lineOf } from '../lib/lines.ts';
-import { routeContent } from '../lib/mapContent.ts';
+import { routeContent, WAY_TURQUOISE, WAY_YELLOW } from '../lib/mapContent.ts';
 import { boardingStops, returnOf, terminusMarks } from '../lib/printable.ts';
 import { goBack, navigate } from '../lib/router.ts';
 import { lineUrl } from '../lib/site.ts';
@@ -32,15 +32,17 @@ export function LineDetail({ routeIndex }: { routeIndex: number }) {
   // All variants of the line, as the feed may publish each one as a route.
   const variants = useMemo(() => lineOf(net, routeIndex), [net, routeIndex]);
   const directions = useMemo(() => lineDirections(net, variants), [net, variants]);
-  const dir = directions[Math.min(dirIndex, directions.length - 1)];
+  const chosen = Math.min(dirIndex, directions.length - 1);
+  const dir = directions[chosen];
   const main = dir?.patterns[0];
   const stops = useMemo(() => (dir ? boardingStops(net, dir) : []), [net, dir]);
   const stop = chosenStop !== undefined && stops.includes(chosenStop) ? chosenStop : stops[0];
 
+  // The chosen way in yellow, the way back in turquoise, as the buttons show.
   useMapContent(
     useMemo(
-      () => (route ? routeContent(net, variants, main) : undefined),
-      [net, route, variants, main],
+      () => (route ? routeContent(net, directions, chosen) : undefined),
+      [net, route, directions, chosen],
     ),
   );
 
@@ -156,6 +158,11 @@ export function LineDetail({ routeIndex }: { routeIndex: number }) {
                 aria-pressed={d === dir}
                 onClick={() => switchDirection(i)}
               >
+                <span
+                  className="way-swatch"
+                  style={{ background: d === dir ? WAY_YELLOW : WAY_TURQUOISE }}
+                  aria-hidden
+                />
                 {d.label}
               </button>
             ))}

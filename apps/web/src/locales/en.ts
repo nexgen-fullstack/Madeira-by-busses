@@ -48,6 +48,8 @@ export const en: Dict = {
   'it.riskyHint': 'Little time to change and the next bus is a long way off',
   'it.best': 'Best',
   'it.otherBus': 'Another bus',
+  'it.express': 'Express · Via Rápida',
+  'it.expressHint': 'Express bus on the Via Rápida: fewer stops, less time on board',
   'dur.h': '{h} h',
   'dur.hm': '{h} h {m} min',
   'dur.m': '{m} min',

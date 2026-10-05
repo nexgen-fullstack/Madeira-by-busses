@@ -248,88 +248,124 @@ describe('Planner', () => {
   });
 });
 
-describe('ways on other lines', () => {
-  /** Two lines from P to Q, 3 km apart: X takes 20 minutes, Y the slower road takes 35. */
-  function twoLines(): Network {
-    const stopTimes: (string | number)[][] = [];
-    const trips: string[][] = [];
-    for (const [route, start, minutes] of [
-      ['X', 8 * 60, 20],
-      ['Y', 8 * 60 + 5, 35],
-    ] as const) {
-      for (let h = 0; h < 3; h++) {
-        const id = `${route}${h}`;
-        const t0 = start + h * 60;
-        const time = (m: number) =>
-          `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}:00`;
-        trips.push([route, 'WK', id]);
-        stopTimes.push(
-          [id, time(t0), time(t0), 'P', 1],
-          [id, time(t0 + minutes), time(t0 + minutes), 'Q', 2],
-        );
-      }
-    }
-    const feed = parseGtfs({
-      'agency.txt': toCsv(
-        ['agency_id', 'agency_name', 'agency_url', 'agency_timezone'],
-        [['T', 'Test', 'https://example.com', 'Atlantic/Madeira']],
-      ),
-      'stops.txt': toCsv(
-        ['stop_id', 'stop_name', 'stop_lat', 'stop_lon', 'zone_id'],
-        [
-          ['P', 'P', 32.65, -16.95, 'FNC'],
-          ['Q', 'Q', 32.65, -16.918, 'FNC'],
-        ],
-      ),
-      'routes.txt': toCsv(
-        ['route_id', 'agency_id', 'route_short_name', 'route_long_name', 'route_type'],
-        [
-          ['X', 'T', 'X', 'P - Q', 3],
-          ['Y', 'T', 'Y', 'P - Q by the old road', 3],
-        ],
-      ),
-      'trips.txt': toCsv(['route_id', 'service_id', 'trip_id'], trips),
-      'stop_times.txt': toCsv(
-        ['trip_id', 'arrival_time', 'departure_time', 'stop_id', 'stop_sequence'],
-        stopTimes,
-      ),
-      'calendar.txt': toCsv(
-        [
-          'service_id',
-          'monday',
-          'tuesday',
-          'wednesday',
-          'thursday',
-          'friday',
-          'saturday',
-          'sunday',
-          'start_date',
-          'end_date',
-        ],
-        [['WK', 1, 1, 1, 1, 1, 0, 0, '20260101', '20271231']],
-      ),
+/**
+ * Lines from P to Q, 3 km apart: each with its name, the minutes after midnight its
+ * buses leave and how many minutes they take.
+ */
+function linesFromPtoQ(lines: readonly [name: string, starts: number[], minutes: number][]) {
+  const stopTimes: (string | number)[][] = [];
+  const trips: string[][] = [];
+  const time = (m: number) =>
+    `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}:00`;
+  for (const [route, starts, minutes] of lines) {
+    starts.forEach((t0, h) => {
+      const id = `${route}${h}`;
+      trips.push([route, 'WK', id]);
+      stopTimes.push(
+        [id, time(t0), time(t0), 'P', 1],
+        [id, time(t0 + minutes), time(t0 + minutes), 'Q', 2],
+      );
     });
-    return new Network(
-      buildBundle([{ feed, source: { name: 'test' } }], { demo: true, fares: SIGA_FARES_2026 })
-        .bundle,
-    );
   }
+  const feed = parseGtfs({
+    'agency.txt': toCsv(
+      ['agency_id', 'agency_name', 'agency_url', 'agency_timezone'],
+      [['T', 'Test', 'https://example.com', 'Atlantic/Madeira']],
+    ),
+    'stops.txt': toCsv(
+      ['stop_id', 'stop_name', 'stop_lat', 'stop_lon', 'zone_id'],
+      [
+        ['P', 'P', 32.65, -16.95, 'FNC'],
+        ['Q', 'Q', 32.65, -16.918, 'FNC'],
+      ],
+    ),
+    'routes.txt': toCsv(
+      ['route_id', 'agency_id', 'route_short_name', 'route_long_name', 'route_type'],
+      lines.map(([name]) => [name, 'T', name, `P - Q (${name})`, 3]),
+    ),
+    'trips.txt': toCsv(['route_id', 'service_id', 'trip_id'], trips),
+    'stop_times.txt': toCsv(
+      ['trip_id', 'arrival_time', 'departure_time', 'stop_id', 'stop_sequence'],
+      stopTimes,
+    ),
+    'calendar.txt': toCsv(
+      [
+        'service_id',
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+        'sunday',
+        'start_date',
+        'end_date',
+      ],
+      [['WK', 1, 1, 1, 1, 1, 0, 0, '20260101', '20271231']],
+    ),
+  });
+  const net = new Network(
+    buildBundle([{ feed, source: { name: 'test' } }], { demo: true, fares: SIGA_FARES_2026 })
+      .bundle,
+  );
+  const stop = (id: string) => {
+    const i = net.stops.findIndex((s) => s.id === id);
+    return { ...net.stops[i]!, stops: [i] };
+  };
+  const line = (it: Itinerary) =>
+    it.legs.flatMap((l) => (l.kind === 'ride' ? [net.routes[l.route]!.short] : []));
+  return { net, from: stop('P'), to: stop('Q'), line };
+}
 
+describe('the best of the options', () => {
+  it('is the express that gets there a few minutes after the slow bus', () => {
+    // The bus round the coast takes an hour; the one on the Via Rápida leaves 40
+    // minutes later and gets there 10 minutes after it.
+    const { net, from, to, line } = linesFromPtoQ([
+      ['Coast', [9 * 60], 60],
+      ['VR', [9 * 60 + 40], 30],
+    ]);
+    const results = new Planner(net).plan({ from, to, date: WEEKDAY, time: at(8, 55) });
+    expect(results.map(line)).toEqual([['VR'], ['Coast']]);
+    expect(results[0]!.depart).toBe(at(9, 40));
+  });
+
+  it('is still the slow bus when the express gets there much later', () => {
+    const { net, from, to, line } = linesFromPtoQ([
+      ['Coast', [9 * 60], 60],
+      ['VR', [9 * 60 + 50], 30],
+    ]);
+    const results = new Planner(net).plan({ from, to, date: WEEKDAY, time: at(8, 55) });
+    expect(results.map(line)[0]).toEqual(['Coast']);
+  });
+
+  it('may be the way on other lines, when that is cheaper and as quick', () => {
+    // The Aerobus (dearer) gets there a minute before the town bus.
+    const { net, from, to, line } = linesFromPtoQ([
+      ['Aerobus', [8 * 60], 20],
+      ['Town', [8 * 60], 21],
+    ]);
+    const results = new Planner(net).plan({ from, to, date: WEEKDAY, time: at(7, 55) });
+    expect(results.map(line)).toEqual([['Town'], ['Aerobus']]);
+    expect(results[0]!.alternative).toBeUndefined();
+    expect(results[1]!.alternative).toBe(true);
+  });
+});
+
+describe('ways on other lines', () => {
   it('offers another line besides the best one', () => {
-    const net = twoLines();
-    const stop = (id: string) => {
-      const i = net.stops.findIndex((s) => s.id === id);
-      return { ...net.stops[i]!, stops: [i] };
-    };
+    // X takes 20 minutes, Y the slower road takes 35.
+    const { net, from, to, line } = linesFromPtoQ([
+      ['X', [8 * 60, 9 * 60, 10 * 60], 20],
+      ['Y', [8 * 60 + 5, 9 * 60 + 5, 10 * 60 + 5], 35],
+    ]);
     const results = new Planner(net).plan({
-      from: stop('P'),
-      to: stop('Q'),
+      from,
+      to,
       date: WEEKDAY,
       time: at(7, 55),
       options: { maxResults: 1 },
     });
-    const line = (it: Itinerary) =>
-      it.legs.flatMap((l) => (l.kind === 'ride' ? [net.routes[l.route]!.short] : []));
     expect(results.map(line)).toEqual([['X'], ['Y']]);
     expect(results[0]!.alternative).toBeUndefined();
     expect(results[1]!.alternative).toBe(true);

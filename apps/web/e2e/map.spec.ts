@@ -143,3 +143,33 @@ test('opens on a plain island; one button shows every stop and line', async ({ p
   await page.getByRole('button', { name: 'Шари карти' }).click();
   await expect(page.getByRole('checkbox', { name: /Зупинки й лінії/ })).toBeChecked();
 });
+
+test('a chosen route is shown alone; the stops and lines come back with the list', async ({
+  page,
+}) => {
+  await page.goto('./#/plan');
+  await page.waitForSelector('.map-canvas canvas');
+  const button = page.getByRole('button', { name: 'Зупинки й лінії автобусів' });
+  await button.click();
+  await expect(button).toHaveAttribute('aria-pressed', 'true');
+  await page.getByRole('button', { name: /Mercado dos Lavradores → Monte/ }).click();
+  await page.locator('.it-card').first().click();
+  await expect(page).toHaveURL(/i=0/);
+  await expect(button).toHaveAttribute('aria-pressed', 'false');
+  // Asked for again, they are there.
+  await button.click();
+  await expect(button).toHaveAttribute('aria-pressed', 'true');
+  await button.click();
+  await expect(button).toHaveAttribute('aria-pressed', 'false');
+  await page.goBack();
+  await expect(page).not.toHaveURL(/i=0/);
+  await expect(button).toHaveAttribute('aria-pressed', 'false');
+  // A line opened is shown alone too, its ways in the colours of their buttons.
+  await button.click();
+  await page.goto('./#/lines');
+  await page.getByRole('button', { name: /D139/ }).click();
+  await expect(button).toHaveAttribute('aria-pressed', 'false');
+  const swatches = page.locator('.segmented--stack .way-swatch');
+  await expect(swatches.first()).toHaveCSS('background-color', 'rgb(255, 230, 0)');
+  await expect(swatches.nth(1)).toHaveCSS('background-color', 'rgb(0, 232, 213)');
+});

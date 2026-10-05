@@ -209,12 +209,22 @@ export class Planner {
     if (direct) results.push(direct);
     results.push(...this.longWalks(request, ctx, results));
     const pareto = paretoFilter(results, ctx.opts.transferPenalty);
-    const best = bestOf(pareto, ctx.opts);
-    const main = best
-      ? [best, ...pareto.filter((it) => it !== best).sort(byArrival)].slice(0, ctx.opts.maxResults)
+    const top = bestOf(pareto, ctx.opts);
+    const main = top
+      ? [top, ...pareto.filter((it) => it !== top).sort(byArrival)].slice(0, ctx.opts.maxResults)
       : [];
-    const others = [...main.slice(1), ...this.alternatives(request, ctx, main)].sort(byArrival);
-    return [...main.slice(0, 1), ...others].map((it) => this.withPaths(it));
+    const alternatives = this.alternatives(request, ctx, main);
+    let best = main[0];
+    let others = [...main.slice(1), ...alternatives];
+    // A way on other lines may be better still (the bus a minute after the dearer Aerobus):
+    // then it is the best, and the one found first is the way on other lines.
+    const better = best && bestOf([best, ...alternatives], ctx.opts);
+    if (best && better && better !== best) {
+      others = [...others.filter((it) => it !== better), { ...best, alternative: true }];
+      best = { ...better };
+      delete best.alternative;
+    }
+    return [...(best ? [best] : []), ...others.sort(byArrival)].map((it) => this.withPaths(it));
   }
 
   /**
@@ -980,7 +990,20 @@ export function itineraryCost(
   );
 }
 
-/** The option that costs least, preferring one by bus to walking all the way. */
+/** How much later a much quicker way may get there and still be the best (s). */
+const ABOUT_AS_SOON = 15 * 60;
+/** How much less time on the way makes a way much quicker (s). */
+const MUCH_QUICKER = 20 * 60;
+/** A few more minutes on foot that a much quicker way may ask for (s). */
+const LIGHT_WALK = 5 * 60;
+
+/**
+ * The option that costs least, preferring one by bus to walking all the way.
+ * Leaving now, a much quicker way that gets there about as soon is the best
+ * one: the express on the Via Rápida, half an hour later than the bus round
+ * the coast and there a few minutes after it, rather than an hour more on
+ * board — with no more changes, walking or fare.
+ */
 function bestOf(
   items: readonly Itinerary[],
   opts: PlanOptions,
@@ -990,7 +1013,18 @@ function bestOf(
     (a, b) =>
       itineraryCost(a, opts, arriveBy) - itineraryCost(b, opts, arriveBy) || a.arrive - b.arrive,
   );
-  return ranked.find((it) => it.rides > 0) ?? ranked[0];
+  const best = ranked.find((it) => it.rides > 0) ?? ranked[0];
+  if (!best || arriveBy || best.rides === 0) return best;
+  const quicker = ranked.find(
+    (it) =>
+      it.rides > 0 &&
+      it.rides <= best.rides &&
+      it.arrive <= best.arrive + ABOUT_AS_SOON &&
+      it.duration <= best.duration - MUCH_QUICKER &&
+      walkTime(it) <= walkTime(best) + LIGHT_WALK &&
+      fareOf(it) <= fareOf(best),
+  );
+  return quicker ?? best;
 }
 
 /** How much farther one option may walk than another and still be as good (m). */

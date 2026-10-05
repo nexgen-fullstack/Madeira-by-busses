@@ -55,6 +55,8 @@ export const uk = {
   'it.riskyHint': 'Мало часу на пересадку, а наступний автобус нескоро',
   'it.best': 'Найкращий',
   'it.otherBus': 'Інший автобус',
+  'it.express': 'Експрес · Via Rápida',
+  'it.expressHint': 'Швидкісний автобус по Via Rápida: менше зупинок, швидше в дорозі',
   'dur.h': '{h} год',
   'dur.hm': '{h} год {m} хв',
   'dur.m': '{m} хв',

@@ -48,6 +48,8 @@ export const fr: Dict = {
   'it.riskyHint': 'Peu de temps pour changer et le bus suivant passe bien plus tard',
   'it.best': 'Meilleur',
   'it.otherBus': 'Autre bus',
+  'it.express': 'Express · Via Rápida',
+  'it.expressHint': 'Bus express par la Via Rápida : moins d’arrêts, trajet plus court',
   'dur.h': '{h} h',
   'dur.hm': '{h} h {m} min',
   'dur.m': '{m} min',

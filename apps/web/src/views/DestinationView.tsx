@@ -113,7 +113,7 @@ export function DestinationView({ d, route }: { d: Destination; route: Route }) 
   useMapContent(
     useMemo<MapContent>(() => {
       const it = selectedIt ?? results?.find((r) => r.rides > 0);
-      if (it) return itineraryContent(net, it);
+      if (it) return itineraryContent(net, it, undefined, it === selectedIt);
       return {
         lines: [],
         points: [{ lat: d.lat, lon: d.lon, kind: 'destination', color: '#14181F', label: d.name }],

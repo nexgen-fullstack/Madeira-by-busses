@@ -1,4 +1,5 @@
 import type { Itinerary, LatLon, Network, StopGroup } from '@madeirabus/engine';
+import type { Direction } from './lines.ts';
 
 export interface MapLine {
   coords: LatLon[];
@@ -8,6 +9,10 @@ export interface MapLine {
   width?: number;
   /** Written along the line: the number of the bus. */
   label?: string;
+  /** Arrows along the line, the way the bus goes. */
+  arrows?: boolean;
+  /** On its side of the road (traffic keeps right), beside the line running the other way. */
+  side?: boolean;
 }
 
 export type PointKind =
@@ -15,7 +20,10 @@ export type PointKind =
 
 export interface MapPoint extends LatLon {
   kind: PointKind;
+  /** The ring round a stop; the dot of a bus. */
   color?: string;
+  /** Inside the ring of a stop (white when not given). */
+  fill?: string;
   label?: string;
   /** Stop indices this point represents (clicking opens its departures). */
   stops?: number[];
@@ -27,14 +35,34 @@ export interface MapContent {
   /** Change this to re-fit the camera. */
   fitKey?: string;
   fit?: LatLon[];
+  /**
+   * A route chosen to take, which the map shows alone: every other stop and line steps
+   * aside. Different for each route.
+   */
+  focus?: string;
 }
 
 export const EMPTY_CONTENT: MapContent = { lines: [], points: [] };
 
+/** The way chosen, in the neon yellow of the logo's pin: it stands out on any map. */
+export const WAY_YELLOW = '#FFE600';
+/** The way back, in neon turquoise. */
+export const WAY_TURQUOISE = '#00E8D5';
+/** The ring round the stops on those ways. */
+const INK = '#14181F';
+
 const routeColor = (net: Network, route: number) => `#${net.routes[route]!.color}`;
 
-/** A route on the map; `focus` brings one of its legs close up. */
-export function itineraryContent(net: Network, it: Itinerary, focus?: number): MapContent {
+/**
+ * A route on the map, its buses in neon yellow with arrows the way they go; `focus`
+ * brings one of its legs close up. A route `chosen` to take is shown alone.
+ */
+export function itineraryContent(
+  net: Network,
+  it: Itinerary,
+  focus?: number,
+  chosen = false,
+): MapContent {
   const lines: MapLine[] = [];
   const points: MapPoint[] = [];
   it.legs.forEach((leg, i) => {
@@ -43,32 +71,32 @@ export function itineraryContent(net: Network, it: Itinerary, focus?: number): M
       lines.push({ coords: leg.path ?? [leg.from, leg.to], color: '#002F85', dashed: true });
       return;
     }
-    const color = routeColor(net, leg.route);
     lines.push({
       coords: net.rideShape(leg.pattern, leg.boardPos, leg.alightPos),
-      color,
-      width: 5,
+      color: WAY_YELLOW,
+      width: 6,
       label: net.routes[leg.route]!.short,
+      arrows: true,
     });
     const prevRide = it.legs.slice(0, i).some((l) => l.kind === 'ride');
     const nextRide = it.legs.slice(i + 1).some((l) => l.kind === 'ride');
     points.push({
       ...leg.from,
       kind: prevRide ? 'transfer' : 'board',
-      color,
+      color: INK,
       label: leg.from.name,
       stops: [leg.from.stop!],
     });
     points.push({
       ...leg.to,
       kind: nextRide ? 'transfer' : 'alight',
-      color,
+      color: INK,
       label: leg.to.name,
       stops: [leg.to.stop!],
     });
     for (const s of leg.stops.slice(1, -1)) {
       const st = net.stops[s.stop]!;
-      points.push({ lat: st.lat, lon: st.lon, kind: 'stop', color, stops: [s.stop] });
+      points.push({ lat: st.lat, lon: st.lon, kind: 'stop', color: INK, stops: [s.stop] });
     }
   });
   const first = it.legs[0];
@@ -85,11 +113,13 @@ export function itineraryContent(net: Network, it: Itinerary, focus?: number): M
     });
   }
   const leg = focus !== undefined ? lines[focus] : undefined;
+  const key = `it:${it.key}:${it.depart}`;
   return {
     lines,
     points,
-    fitKey: `it:${it.key}:${it.depart}${leg ? `:${focus}` : ''}`,
+    fitKey: `${key}${leg ? `:${focus}` : ''}`,
     fit: leg ? leg.coords : lines.flatMap((l) => l.coords),
+    ...(chosen ? { focus: key } : {}),
   };
 }
 
@@ -106,25 +136,56 @@ export function placesContent(from?: MapPoint, to?: MapPoint): MapContent {
   };
 }
 
-/** A line on the map: all its route variants, with one pattern drawn bolder. */
-export function routeContent(net: Network, routes: number[], highlight?: number): MapContent {
+/**
+ * A line on the map, each way it runs on its side of the road with arrows the way the bus
+ * goes: the `chosen` way in neon yellow, the way back (and any other) in neon turquoise,
+ * and each stop in the colour of its way.
+ */
+export function routeContent(
+  net: Network,
+  directions: readonly Direction[],
+  chosen: number,
+): MapContent {
   const lines: MapLine[] = [];
   const points = new Map<number, MapPoint>();
-  const route = routes[0]!;
-  const color = routeColor(net, route);
-  net.patterns.forEach((p, i) => {
-    if (!routes.includes(p.route)) return;
-    lines.push({ coords: net.shape(i), color, width: i === highlight ? 6 : 4 });
-    for (const s of p.stops) {
-      const st = net.stops[s]!;
-      points.set(s, { lat: st.lat, lon: st.lon, kind: 'stop', color, label: st.name, stops: [s] });
-    }
-  });
+  const way = directions[chosen];
+  // The chosen way last, over the way back where the two share a stop.
+  const ways = [...directions.filter((d) => d !== way), ...(way ? [way] : [])];
+  for (const d of ways) {
+    const color = d === way ? WAY_YELLOW : WAY_TURQUOISE;
+    // The main variant first, with the arrows; the shorter runs thinner along it.
+    d.patterns.forEach((p, i) => {
+      lines.push({
+        coords: net.shape(p),
+        color,
+        width: i === 0 ? 5 : 3.5,
+        arrows: i === 0,
+        side: true,
+      });
+      for (const s of net.patterns[p]!.stops) {
+        const st = net.stops[s]!;
+        points.delete(s);
+        points.set(s, {
+          lat: st.lat,
+          lon: st.lon,
+          kind: 'stop',
+          color: INK,
+          fill: color,
+          label: st.name,
+          stops: [s],
+        });
+      }
+    });
+  }
+  // The same while the reader switches between the ways: the line is shown alone.
+  const main = directions[0]?.patterns[0];
+  const key = `route:${main === undefined ? '' : net.patterns[main]!.route}`;
   return {
     lines,
     points: [...points.values()],
-    fitKey: `route:${route}`,
+    fitKey: key,
     fit: lines.flatMap((l) => l.coords),
+    focus: key,
   };
 }
 

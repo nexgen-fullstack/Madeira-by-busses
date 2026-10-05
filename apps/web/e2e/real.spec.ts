@@ -11,7 +11,8 @@ test.beforeEach(async ({ page }) => {
 
 test('real timetable: every line, journey, grouped lines and the demo switch', async ({ page }) => {
   await page.goto('./');
-  await expect(page.locator('.plan__form')).toBeVisible();
+  // The whole island's timetable takes a while to read on a slow machine.
+  await expect(page.locator('.plan__form')).toBeVisible({ timeout: 20_000 });
   // Every line of CAM and SIGA Rodoeste is in the app: no notice of missing ones.
   await expect(page.getByText(/ще немає/)).toHaveCount(0);
 

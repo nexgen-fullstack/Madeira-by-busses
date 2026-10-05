@@ -1,7 +1,8 @@
-import { AlertTriangle, ChevronRight, Footprints, Repeat, Star } from 'lucide-react';
+import { AlertTriangle, ChevronRight, Footprints, Repeat, Star, Zap } from 'lucide-react';
 import type { Itinerary } from '@madeirabus/engine';
 import { useI18n } from '../i18n.ts';
 import { clock, duration, price } from '../lib/format.ts';
+import { ridesExpress } from '../lib/itinerary.ts';
 import { useApp, useNetwork } from '../state/app.tsx';
 import { RouteBadge } from './RouteBadge.tsx';
 
@@ -20,10 +21,11 @@ export function ItineraryCard({ it, best, now, onSelect }: Props) {
   const { settings } = useApp();
   const fare = settings.payment === 'cash' ? it.fare.cash : it.fare.giro;
   const leaveIn = now !== undefined ? Math.round((it.depart - now) / 60) : undefined;
+  const express = ridesExpress(net, it);
 
   return (
     <button type="button" className={`it-card${best ? ' it-card--best' : ''}`} onClick={onSelect}>
-      {(best || it.alternative) && (
+      {(best || it.alternative || express) && (
         <div className="it-card__tags">
           {best && (
             <span className="it-card__tag it-card__tag--best">
@@ -33,6 +35,11 @@ export function ItineraryCard({ it, best, now, onSelect }: Props) {
           {it.alternative && (
             <span className="it-card__tag">
               <Repeat size={12} aria-hidden /> {t.t('it.otherBus')}
+            </span>
+          )}
+          {express && (
+            <span className="it-card__tag it-card__tag--express" title={t.t('it.expressHint')}>
+              <Zap size={12} aria-hidden /> {t.t('it.express')}
             </span>
           )}
         </div>

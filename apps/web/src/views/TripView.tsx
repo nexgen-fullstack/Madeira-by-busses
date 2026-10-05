@@ -16,7 +16,7 @@ import { useI18n } from '../i18n.ts';
 import { isNative } from '../lib/device.ts';
 import { clock } from '../lib/format.ts';
 import { encodePlace } from '../lib/itinerary.ts';
-import type { MapContent, MapPoint } from '../lib/mapContent.ts';
+import { WAY_YELLOW, type MapContent, type MapPoint } from '../lib/mapContent.ts';
 import { goBack, navigate } from '../lib/router.ts';
 import { useApp, useNetwork } from '../state/app.tsx';
 import { useTripTracking } from '../state/trip.tsx';
@@ -45,15 +45,17 @@ export function TripView() {
       lat: s.lat,
       lon: s.lon,
       kind: i === setup.stops.length - 1 ? 'alight' : i === 0 ? 'board' : 'stop',
-      color,
+      color: '#14181F',
       label: i === 0 || i === setup.stops.length - 1 ? s.name : undefined,
     }));
     if (state) points.push({ ...state.position, kind: 'bus', color });
+    // The ride in the yellow of a chosen route, alone on the map.
     return {
-      lines: [{ coords: setup.shape, color, width: 5 }],
+      lines: [{ coords: setup.shape, color: WAY_YELLOW, width: 6, arrows: true }],
       points,
       fitKey: `trip:${rideIndex}`,
       fit: setup.shape,
+      focus: 'trip',
     };
   }, [setup, ride, net, state, rideIndex]);
   useMapContent(content);

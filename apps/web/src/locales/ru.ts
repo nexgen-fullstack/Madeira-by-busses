@@ -52,6 +52,8 @@ export const ru: Dict = {
   'it.riskyHint': 'Мало времени на пересадку, а следующий автобус нескоро',
   'it.best': 'Лучший',
   'it.otherBus': 'Другой автобус',
+  'it.express': 'Экспресс · Via Rápida',
+  'it.expressHint': 'Скоростной автобус по Via Rápida: меньше остановок, быстрее в пути',
   'dur.h': '{h} ч',
   'dur.hm': '{h} ч {m} мин',
   'dur.m': '{m} мин',

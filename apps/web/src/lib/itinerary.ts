@@ -1,6 +1,13 @@
-import type { FareRide, Itinerary, Network, RideLeg } from '@madeirabus/engine';
+import type { BRoute, FareRide, Itinerary, Network, RideLeg } from '@madeirabus/engine';
 
 export const ridesOf = (it: Itinerary) => it.legs.filter((l): l is RideLeg => l.kind === 'ride');
+
+/** An express on the Via Rápida, as Rodoeste names its lines ("Funchal - Ribeira Brava (Via Rápida)"). */
+export const isExpress = (route: BRoute) => /\bvia\s+r[aá]pida\b/i.test(route.long);
+
+/** Whether a way rides an express on the Via Rápida. */
+export const ridesExpress = (net: Network, it: Itinerary) =>
+  ridesOf(it).some((l) => isExpress(net.routes[l.route]!));
 
 export function fareRides(net: Network, it: Itinerary): FareRide[] {
   return ridesOf(it).map((l) => ({

@@ -179,7 +179,7 @@ export function PlanView({ route }: { route: Route }) {
   useEffect(() => setFocusLeg(undefined), [selectedIt]);
 
   const mapContent = useMemo<MapContent>(() => {
-    if (selectedIt) return itineraryContent(net, selectedIt, focusLeg);
+    if (selectedIt) return itineraryContent(net, selectedIt, focusLeg, true);
     if (results?.[0] && results[0].rides > 0) return itineraryContent(net, results[0]);
     // Nothing chosen yet: the plain island, as a maps app opens.
     if (!from && !to) return EMPTY_CONTENT;

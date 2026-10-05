@@ -12,12 +12,13 @@ import {
   RotateCcw,
   Share2,
   Ticket,
+  Zap,
 } from 'lucide-react';
 import { adviseTicket, type Itinerary } from '@madeirabus/engine';
 import { useI18n, type Key } from '../i18n.ts';
 import { isNative, remind } from '../lib/device.ts';
 import { clock, duration, longDate, price } from '../lib/format.ts';
-import { fareRides, ridesOf } from '../lib/itinerary.ts';
+import { fareRides, isExpress, ridesOf } from '../lib/itinerary.ts';
 import { useNow } from '../lib/useNow.ts';
 import { useApp, useNetwork } from '../state/app.tsx';
 import { RideTimetable } from './RideTimetable.tsx';
@@ -187,6 +188,11 @@ export function ItineraryDetail({ it, date, onFocusLeg, onBack, onStart, onShare
                     <RouteBadge route={route} size="sm" />{' '}
                     {t.t('detail.towards', { h: leg.headsign })}
                   </div>
+                  {isExpress(route) && (
+                    <div className="timeline__express" title={t.t('it.expressHint')}>
+                      <Zap size={12} aria-hidden /> {t.t('it.express')}
+                    </div>
+                  )}
                   {leg.nextDeparture !== undefined && (
                     <div className="muted small">
                       {t.t('detail.next', { t: clock(leg.nextDeparture) })}

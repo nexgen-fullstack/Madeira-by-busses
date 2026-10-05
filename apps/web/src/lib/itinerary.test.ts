@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import type { Network } from '@madeirabus/engine';
-import { decodePlace, encodePlace } from './itinerary.ts';
+import type { BRoute, Network } from '@madeirabus/engine';
+import { decodePlace, encodePlace, isExpress } from './itinerary.ts';
 
 const net = {
   stops: [
@@ -39,5 +39,16 @@ describe('place URLs', () => {
     expect(decodePlace(net, 's:99', 'Me')).toBeUndefined();
     expect(decodePlace(net, 'p:abc', 'Me')).toBeUndefined();
     expect(decodePlace(net, 'x', 'Me')).toBeUndefined();
+  });
+});
+
+describe('express lines', () => {
+  const route = (long: string) => ({ long }) as BRoute;
+
+  it('knows the lines on the Via Rápida by their names', () => {
+    expect(isExpress(route('Funchal - Ribeira Brava (Via Rápida)'))).toBe(true);
+    expect(isExpress(route('Funchal - Ribeira Brava (Via Rápida até à Quinta Grande)'))).toBe(true);
+    expect(isExpress(route('FUNCHAL - SÃO VICENTE (VIA RAPIDA)'))).toBe(true);
+    expect(isExpress(route('Funchal - Câmara de Lobos - Ribeira Brava'))).toBe(false);
   });
 });

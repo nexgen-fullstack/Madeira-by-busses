@@ -17,6 +17,7 @@ import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&ur
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { haversine, type LatLon, type Network } from '@madeirabus/engine';
 import { useI18n } from '../i18n.ts';
+import { luminance, readableOn } from '../lib/color.ts';
 import { decodePlace, encodePlace } from '../lib/itinerary.ts';
 import { transitGeoJson, type MapContent } from '../lib/mapContent.ts';
 import {
@@ -27,6 +28,7 @@ import {
   loadStyle,
   placeLayerIds,
   poiLabel,
+  type BaseLayer,
   type MapLayers,
 } from '../lib/mapStyles.ts';
 import { pointName } from '../lib/pointName.ts';
@@ -134,9 +136,15 @@ function toGeoJson(content: MapContent) {
         type: 'Feature' as const,
         properties: {
           color: l.color,
+          // A dark edge round a light line (the neon of a chosen way), a white one round the rest.
+          casing: luminance(l.color) > 0.4 ? '#14181F' : '#ffffff',
+          // The number of the bus written on the line.
+          ink: readableOn(l.color),
           dashed: Boolean(l.dashed),
           width: l.width ?? 4,
           label: l.label ?? '',
+          arrows: Boolean(l.arrows),
+          side: Boolean(l.side),
         },
         geometry: { type: 'LineString' as const, coordinates: l.coords.map((c) => [c.lon, c.lat]) },
       })),
@@ -148,6 +156,7 @@ function toGeoJson(content: MapContent) {
         properties: {
           kind: p.kind,
           color: p.color ?? '#002F85',
+          fill: p.fill ?? '#ffffff',
           label: p.label ?? '',
           stops: (p.stops ?? []).join(','),
         },
@@ -159,8 +168,51 @@ function toGeoJson(content: MapContent) {
 
 const EMPTY = { type: 'FeatureCollection' as const, features: [] };
 
-function addOverlay(map: MapLibreMap) {
+/**
+ * How far each way of a line keeps to its side of the road (px): apart once the map is
+ * close enough for two lines to fit on a road.
+ */
+const SIDE: [number, number][] = [
+  [10, 0.5],
+  [12, 2],
+  [16, 4.5],
+];
+
+/** A chevron pointing along a line, for the arrows the way the bus goes. */
+function arrowImage(): ImageData | undefined {
+  const size = 40;
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return undefined;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.beginPath();
+  ctx.moveTo(14, 9);
+  ctx.lineTo(26, 20);
+  ctx.lineTo(14, 31);
+  ctx.strokeStyle = '#ffffff';
+  ctx.lineWidth = 14;
+  ctx.stroke();
+  ctx.strokeStyle = '#14181F';
+  ctx.lineWidth = 8;
+  ctx.stroke();
+  return ctx.getImageData(0, 0, size, size);
+}
+
+function addOverlay(map: MapLibreMap, base: BaseLayer) {
   if (map.getSource('mb-lines')) return;
+  if (!map.hasImage('mb-arrow')) {
+    const arrow = arrowImage();
+    if (arrow) map.addImage('mb-arrow', arrow, { pixelRatio: 2 });
+  }
+  const sideOffset = [
+    'interpolate',
+    ['linear'],
+    ['zoom'],
+    ...SIDE.flatMap(([zoom, px]) => [zoom, ['case', ['get', 'side'], px, 0]]),
+  ] as unknown as number;
   // Every stop and line, under whatever the screen draws.
   map.addSource('mb-net-lines', { type: 'geojson', data: EMPTY });
   map.addSource('mb-net-stops', { type: 'geojson', data: EMPTY });
@@ -196,9 +248,10 @@ function addOverlay(map: MapLibreMap) {
     filter: ['!', ['get', 'dashed']],
     layout: { 'line-cap': 'round', 'line-join': 'round' },
     paint: {
-      'line-color': '#ffffff',
+      'line-color': ['get', 'casing'],
       'line-width': ['+', ['get', 'width'], 3],
       'line-opacity': 0.9,
+      'line-offset': sideOffset,
     },
   });
   map.addLayer({
@@ -207,7 +260,11 @@ function addOverlay(map: MapLibreMap) {
     source: 'mb-lines',
     filter: ['!', ['get', 'dashed']],
     layout: { 'line-cap': 'round', 'line-join': 'round' },
-    paint: { 'line-color': ['get', 'color'], 'line-width': ['get', 'width'] },
+    paint: {
+      'line-color': ['get', 'color'],
+      'line-width': ['get', 'width'],
+      'line-offset': sideOffset,
+    },
   });
   map.addLayer({
     id: 'mb-walk',
@@ -215,8 +272,39 @@ function addOverlay(map: MapLibreMap) {
     source: 'mb-lines',
     filter: ['get', 'dashed'],
     layout: { 'line-cap': 'round' },
-    paint: { 'line-color': ['get', 'color'], 'line-width': 4.5, 'line-dasharray': [0.3, 1.6] },
+    paint: {
+      // White dots read on the dark of the aerial photos, navy ones on the drawn maps.
+      'line-color': base === 'satellite' ? '#ffffff' : ['get', 'color'],
+      'line-width': 4.5,
+      'line-dasharray': [0.3, 1.6],
+    },
   });
+  // Arrows the way the bus goes: on the line, or on its side of the road.
+  for (const side of [false, true]) {
+    map.addLayer({
+      id: side ? 'mb-line-arrow-side' : 'mb-line-arrow',
+      type: 'symbol',
+      source: 'mb-lines',
+      minzoom: 10,
+      filter: ['all', ['get', 'arrows'], side ? ['get', 'side'] : ['!', ['get', 'side']]],
+      layout: {
+        'symbol-placement': 'line',
+        'symbol-spacing': 90,
+        'icon-image': 'mb-arrow',
+        'icon-allow-overlap': true,
+        'icon-ignore-placement': true,
+        'icon-rotation-alignment': 'map',
+        ...(side && {
+          'icon-offset': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            ...SIDE.flatMap(([zoom, px]) => [zoom, ['literal', [0, px]]]),
+          ] as unknown as [number, number],
+        }),
+      },
+    });
+  }
   map.addLayer({
     id: 'mb-point',
     type: 'circle',
@@ -225,13 +313,15 @@ function addOverlay(map: MapLibreMap) {
     filter: ['!=', ['get', 'kind'], 'destination'],
     paint: {
       // The stops along a line are dots that grow as the map comes closer: zoomed out,
-      // a line with eighty stops would be a string of beads.
+      // a line with eighty stops would be a string of beads hiding the line itself.
       'circle-radius': [
         'interpolate',
         ['linear'],
         ['zoom'],
         10,
-        ['match', ['get', 'kind'], 'user', 7, 'bus', 9, 'stop', 1.5, 6.5],
+        ['match', ['get', 'kind'], 'user', 7, 'bus', 9, 'stop', 0, 6.5],
+        11.5,
+        ['match', ['get', 'kind'], 'user', 7, 'bus', 9, 'stop', 1.8, 6.5],
         13,
         ['match', ['get', 'kind'], 'user', 7, 'bus', 9, 'stop', 3, 6.5],
         15,
@@ -246,7 +336,7 @@ function addOverlay(map: MapLibreMap) {
         ['get', 'color'],
         'origin',
         '#ffffff',
-        '#ffffff',
+        ['get', 'fill'],
       ],
       'circle-stroke-color': [
         'match',
@@ -264,6 +354,8 @@ function addOverlay(map: MapLibreMap) {
         ['linear'],
         ['zoom'],
         10,
+        ['match', ['get', 'kind'], 'stop', 0, 'origin', 4, 3],
+        11.5,
         ['match', ['get', 'kind'], 'stop', 1, 'origin', 4, 3],
         14,
         ['match', ['get', 'kind'], 'stop', 2, 'origin', 4, 3],
@@ -303,7 +395,7 @@ function addOverlay(map: MapLibreMap) {
         'text-keep-upright': true,
       },
       paint: {
-        'text-color': '#ffffff',
+        'text-color': ['get', 'ink'],
         'text-halo-color': ['get', 'color'],
         'text-halo-width': 3,
       },
@@ -368,8 +460,6 @@ export default function MapView({ className }: { className?: string }) {
   const layers = settings.map;
   const layersRef = useRef(layers);
   layersRef.current = layers;
-  const setLayersRef = useRef((map: MapLayers) => setSettings({ map }));
-  setLayersRef.current = (map: MapLayers) => setSettings({ map });
   const container = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const contentRef = useRef(content);
@@ -381,6 +471,15 @@ export default function MapView({ className }: { className?: string }) {
   const [picked, setPicked] = useState<PickedPlace | undefined>();
   const transitControl = useRef<TransitControl | null>(null);
   const transitRef = useRef<{ data?: TransitData; on: boolean }>({ on: false });
+  // A chosen route is shown alone: every stop and line step aside until asked for again.
+  const [transitWith, setTransitWith] = useState<string | undefined>();
+  const transitOn = layers.transit && (!content.focus || transitWith === content.focus);
+  const setTransit = (on: boolean) => {
+    if (on && content.focus) setTransitWith(content.focus);
+    setSettings({ map: { ...layers, transit: on } });
+  };
+  const toggleTransitRef = useRef(() => {});
+  toggleTransitRef.current = () => setTransit(!transitOn);
   // Choosing a place: the point under the pin, its name, and whether the map is moving.
   const [center, setCenter] = useState<LatLon | undefined>();
   const [moving, setMoving] = useState(false);
@@ -410,16 +509,13 @@ export default function MapView({ className }: { className?: string }) {
       }),
       'top-right',
     );
-    const transit = new TransitControl(() => {
-      const current = layersRef.current;
-      setLayersRef.current({ ...current, transit: !current.transit });
-    });
+    const transit = new TransitControl(() => toggleTransitRef.current());
     transitControl.current = transit;
     map.addControl(transit, 'top-right');
     map.addControl(new ScaleControl({ maxWidth: 90 }), 'bottom-right');
     map.on('style.load', () => {
       styleLoaded.current = true;
-      addOverlay(map);
+      addOverlay(map, layersRef.current.base);
       applyDetails(map, layersRef.current);
       applyTransit(map, transitRef.current.data, transitRef.current.on);
       fitted.current = {};
@@ -536,12 +632,16 @@ export default function MapView({ className }: { className?: string }) {
     () => (layers.transit && net ? transitGeoJson(net) : undefined),
     [layers.transit, net],
   );
+  const shownTransit = useRef<TransitData | undefined>(undefined);
   useEffect(() => {
-    transitControl.current?.set(layers.transit, t.t('layers.transit'));
-    transitRef.current = { data: transit ?? transitRef.current.data, on: layers.transit };
+    transitControl.current?.set(transitOn, t.t('layers.transit'));
+    transitRef.current = { data: transit ?? transitRef.current.data, on: transitOn };
     const map = mapRef.current;
-    if (map && ready) applyTransit(map, transit, layers.transit);
-  }, [transit, layers.transit, ready, t]);
+    if (!map || !ready) return;
+    // Hidden and shown again for a chosen route, the same stops need not be loaded again.
+    applyTransit(map, transit !== shownTransit.current ? transit : undefined, transitOn);
+    if (transit) shownTransit.current = transit;
+  }, [transit, transitOn, ready, t]);
 
   // The yellow pin where the journey goes.
   const destination = content.points.find((p) => p.kind === 'destination');
@@ -629,7 +729,14 @@ export default function MapView({ className }: { className?: string }) {
           </div>
         </>
       )}
-      <LayerSwitcher value={layers} onChange={(map) => setSettings({ map })} />
+      <LayerSwitcher
+        value={{ ...layers, transit: transitOn }}
+        onChange={(map) =>
+          map.transit !== transitOn
+            ? setTransit(map.transit)
+            : setSettings({ map: { ...map, transit: layers.transit } })
+        }
+      />
       {picked && !pick && (
         <div className="place-card" role="dialog" aria-label={pickedLabel}>
           <div className="place-card__text">
