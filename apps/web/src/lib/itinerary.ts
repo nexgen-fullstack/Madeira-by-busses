@@ -80,3 +80,51 @@ export function decodePlace(
   }
   return undefined;
 }
+
+export type OptionTag = 'fastest' | 'cheapest' | 'lessWalking';
+
+/** Seconds on foot in a way. */
+const onFoot = (it: Itinerary) =>
+  it.legs.reduce((t, l) => t + (l.kind === 'walk' ? l.end - l.start : 0), 0);
+
+/** Less on foot than the best way by at least this much to be worth a tag (s). */
+const LESS_ON_FOOT = 5 * 60;
+
+/**
+ * What each way is good at besides the best one (the first): the one there first, the
+ * cheapest and the one with the least walking, each told on its card when it is not the
+ * best already.
+ */
+export function optionTags(
+  options: readonly Itinerary[],
+  payment: 'giro' | 'cash',
+): Map<number, OptionTag[]> {
+  const tags = new Map<number, OptionTag[]>();
+  const best = options[0];
+  if (!best || options.length < 2) return tags;
+  const add = (i: number, tag: OptionTag) => tags.set(i, [...(tags.get(i) ?? []), tag]);
+  const pick = (score: (it: Itinerary) => number | null, ok: (it: Itinerary) => boolean) => {
+    let at = -1;
+    options.forEach((it, i) => {
+      const s = score(it);
+      if (s === null || !ok(it)) return;
+      if (at < 0 || s < score(options[at]!)!) at = i;
+    });
+    return at;
+  };
+  const fastest = pick(
+    (it) => it.arrive,
+    (it) => it.arrive < best.arrive,
+  );
+  if (fastest > 0) add(fastest, 'fastest');
+  const fare = (it: Itinerary) => (it.rides === 0 ? null : it.fare[payment]);
+  const bestFare = fare(best);
+  const cheapest = pick(fare, (it) => bestFare !== null && (fare(it) ?? Infinity) < bestFare);
+  if (cheapest > 0) add(cheapest, 'cheapest');
+  const walking = pick(
+    (it) => (it.rides === 0 ? null : onFoot(it)),
+    (it) => onFoot(it) <= onFoot(best) - LESS_ON_FOOT,
+  );
+  if (walking > 0) add(walking, 'lessWalking');
+  return tags;
+}

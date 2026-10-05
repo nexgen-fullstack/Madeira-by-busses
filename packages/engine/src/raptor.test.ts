@@ -129,8 +129,8 @@ describe('Planner', () => {
     expect(best!.legs.map((l) => l.kind)).toEqual(['walk', 'ride']);
     expect(rides(best!).map(routeOf)).toEqual(['3']);
     expect((best!.legs[0] as WalkLeg).distance).toBeGreaterThan(150);
-    // Without it, nothing leaves from E itself.
-    expect(plan(0)).toEqual([]);
+    // Without it, no bus leaves from E itself: walking all the way is what is left.
+    expect(plan(0).map((it) => it.rides)).toEqual([0]);
   });
 
   it('respects the service calendar', () => {
@@ -317,6 +317,36 @@ function linesFromPtoQ(lines: readonly [name: string, starts: number[], minutes:
   return { net, from: stop('P'), to: stop('Q'), line };
 }
 
+describe('walking', () => {
+  const onFoot = (it: Itinerary) =>
+    it.legs.reduce((t, l) => t + (l.kind === 'walk' ? l.end - l.start : 0), 0);
+
+  it('walks all the way when no bus goes, even a couple of kilometres', () => {
+    // No buses at the weekend; E to G is 2.2 km.
+    const results = planner.plan({
+      from: place('E'),
+      to: place('G'),
+      date: SATURDAY,
+      time: at(9, 0),
+    });
+    expect(results.map((it) => it.rides)).toEqual([0]);
+    expect(results[0]!.walkDistance).toBeGreaterThan(2000);
+  });
+
+  it('offers a bus to the bus besides a long walk to it', () => {
+    // From C the 3 to G is a long walk away at F; the 2 goes to E, round the corner from F.
+    const from = { ...STOPS.C, name: 'C' };
+    const results = planner.plan({ from, to: place('G'), date: WEEKDAY, time: at(9, 0) });
+    const best = results[0]!;
+    expect(rides(best).map(routeOf)).toEqual(['3']);
+    expect(onFoot(best)).toBeGreaterThan(10 * 60);
+    const less = results.find((it) => rides(it).map(routeOf).join() === '2,3');
+    expect(less).toBeDefined();
+    expect(onFoot(less!)).toBeLessThan(onFoot(best) - 5 * 60);
+    expect(less!.arrive).toBe(best.arrive);
+  });
+});
+
 describe('the best of the options', () => {
   it('is the express that gets there a few minutes after the slow bus', () => {
     // The bus round the coast takes an hour; the one on the Via Rápida leaves 40
@@ -325,7 +355,9 @@ describe('the best of the options', () => {
       ['Coast', [9 * 60], 60],
       ['VR', [9 * 60 + 40], 30],
     ]);
-    const results = new Planner(net).plan({ from, to, date: WEEKDAY, time: at(8, 55) });
+    const results = new Planner(net)
+      .plan({ from, to, date: WEEKDAY, time: at(8, 55) })
+      .filter((it) => it.rides > 0);
     expect(results.map(line)).toEqual([['VR'], ['Coast']]);
     expect(results[0]!.depart).toBe(at(9, 40));
   });

@@ -9,7 +9,7 @@ import { ScenicCard } from '../components/ScenicCard.tsx';
 import { useI18n } from '../i18n.ts';
 import { parseTimeInput, toTimeInput } from '../lib/format.ts';
 import { useGeolocation } from '../lib/geolocation.ts';
-import { decodePlace, encodePlace } from '../lib/itinerary.ts';
+import { decodePlace, encodePlace, optionTags } from '../lib/itinerary.ts';
 import {
   EMPTY_CONTENT,
   itineraryContent,
@@ -174,13 +174,18 @@ export function PlanView({ route }: { route: Route }) {
   }, [results, loading, baseKey]);
 
   const selectedIt = selected !== undefined ? results?.[selected] : undefined;
+  // The fastest, the cheapest and the one with least walking, told on their cards.
+  const tags = useMemo(
+    () => optionTags(results ?? [], settings.payment),
+    [results, settings.payment],
+  );
   // A step of the selected route tapped: the map shows it close up, as a maps app does.
   const [focusLeg, setFocusLeg] = useState<number | undefined>();
   useEffect(() => setFocusLeg(undefined), [selectedIt]);
 
   const mapContent = useMemo<MapContent>(() => {
     if (selectedIt) return itineraryContent(net, selectedIt, focusLeg, true);
-    if (results?.[0] && results[0].rides > 0) return itineraryContent(net, results[0]);
+    if (results?.[0]) return itineraryContent(net, results[0]);
     // Nothing chosen yet: the plain island, as a maps app opens.
     if (!from && !to) return EMPTY_CONTENT;
     const point = (p: PlaceValue | undefined) =>
@@ -344,7 +349,8 @@ export function PlanView({ route }: { route: Route }) {
             <ItineraryCard
               key={`${it.key}@${it.depart}`}
               it={it}
-              best={i === 0 && results.length > 1 && it.rides > 0}
+              best={i === 0 && results.length > 1}
+              tags={tags.get(i)}
               now={date === now.date ? now.time : undefined}
               onSelect={() => setParams({ i: String(i) })}
             />

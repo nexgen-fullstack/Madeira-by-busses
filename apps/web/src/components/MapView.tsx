@@ -19,7 +19,12 @@ import { haversine, type LatLon, type Network } from '@madeirabus/engine';
 import { useI18n } from '../i18n.ts';
 import { luminance, readableOn } from '../lib/color.ts';
 import { decodePlace, encodePlace } from '../lib/itinerary.ts';
-import { transitGeoJson, type LineNote, type MapContent } from '../lib/mapContent.ts';
+import {
+  transitGeoJson,
+  WAY_TURQUOISE,
+  type LineNote,
+  type MapContent,
+} from '../lib/mapContent.ts';
 import {
   buildingLayers,
   demSource,
@@ -306,6 +311,19 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
       },
     });
   }
+  // Where the trip starts and where the person is: neon turquoise, glowing.
+  map.addLayer({
+    id: 'mb-point-glow',
+    type: 'circle',
+    source: 'mb-points',
+    filter: ['match', ['get', 'kind'], ['origin', 'user'], true, false],
+    paint: {
+      'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, 15, 16, 20],
+      'circle-color': WAY_TURQUOISE,
+      'circle-opacity': 0.45,
+      'circle-blur': 0.9,
+    },
+  });
   map.addLayer({
     id: 'mb-point',
     type: 'circle',
@@ -320,34 +338,28 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
         ['linear'],
         ['zoom'],
         10,
-        ['match', ['get', 'kind'], 'user', 7, 'bus', 9, 'stop', 0, 6.5],
+        ['match', ['get', 'kind'], ['user', 'origin'], 8, 'bus', 9, 'stop', 0, 6.5],
         11.5,
-        ['match', ['get', 'kind'], 'user', 7, 'bus', 9, 'stop', 1.8, 6.5],
+        ['match', ['get', 'kind'], ['user', 'origin'], 8, 'bus', 9, 'stop', 1.8, 6.5],
         13,
-        ['match', ['get', 'kind'], 'user', 7, 'bus', 9, 'stop', 3, 6.5],
+        ['match', ['get', 'kind'], ['user', 'origin'], 8, 'bus', 9, 'stop', 3, 6.5],
         15,
-        ['match', ['get', 'kind'], 'user', 7, 'bus', 9, 'stop', 4.5, 6.5],
+        ['match', ['get', 'kind'], ['user', 'origin'], 8, 'bus', 9, 'stop', 4.5, 6.5],
       ],
       'circle-color': [
         'match',
         ['get', 'kind'],
-        'user',
-        '#1E88E5',
+        ['user', 'origin'],
+        WAY_TURQUOISE,
         'bus',
         ['get', 'color'],
-        'origin',
-        '#ffffff',
         ['get', 'fill'],
       ],
       'circle-stroke-color': [
         'match',
         ['get', 'kind'],
-        'user',
+        ['user', 'origin', 'bus'],
         '#ffffff',
-        'bus',
-        '#ffffff',
-        'origin',
-        '#14181F',
         ['get', 'color'],
       ],
       'circle-stroke-width': [
@@ -355,11 +367,11 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
         ['linear'],
         ['zoom'],
         10,
-        ['match', ['get', 'kind'], 'stop', 0, 'origin', 4, 3],
+        ['match', ['get', 'kind'], 'stop', 0, 3],
         11.5,
-        ['match', ['get', 'kind'], 'stop', 1, 'origin', 4, 3],
+        ['match', ['get', 'kind'], 'stop', 1, 3],
         14,
-        ['match', ['get', 'kind'], 'stop', 2, 'origin', 4, 3],
+        ['match', ['get', 'kind'], 'stop', 2, 3],
       ],
     },
   });

@@ -18,6 +18,8 @@ import { PlannerClient } from '../worker/client.ts';
 export interface Settings {
   lang: Lang;
   payment: 'giro' | 'cash';
+  /** The person chose how they pay (before that, cash on the bus is assumed). */
+  paymentChosen?: boolean;
   /** m/s */
   walkSpeed: number;
   map: MapLayers;
@@ -114,12 +116,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [settings, setSettingsState] = useState<Settings>(() => {
     const stored = load<Settings>(SETTINGS_KEY, {
       lang: detectLang(),
-      payment: 'giro',
+      payment: 'cash',
       walkSpeed: 1.25,
       map: DEFAULT_LAYERS,
       dataset: 'real',
     });
-    return { ...stored, map: { ...DEFAULT_LAYERS, ...stored.map } };
+    // Most visitors pay cash on the bus; GIRO only for those who said they have the card.
+    const payment = stored.paymentChosen ? stored.payment : 'cash';
+    return { ...stored, payment, map: { ...DEFAULT_LAYERS, ...stored.map } };
   });
   const [data, setData] = useState<DataState>({ status: 'loading' });
   const dataset = settings.dataset;

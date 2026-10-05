@@ -85,17 +85,17 @@ export function SettingsView() {
         <div className="segmented" role="group" aria-label={t.t('settings.payment')}>
           <button
             type="button"
-            aria-pressed={settings.payment === 'giro'}
-            onClick={() => setSettings({ payment: 'giro' })}
+            aria-pressed={settings.payment === 'cash'}
+            onClick={() => setSettings({ payment: 'cash', paymentChosen: true })}
           >
-            {t.t('settings.giro')}
+            {t.t('settings.cash')}
           </button>
           <button
             type="button"
-            aria-pressed={settings.payment === 'cash'}
-            onClick={() => setSettings({ payment: 'cash' })}
+            aria-pressed={settings.payment === 'giro'}
+            onClick={() => setSettings({ payment: 'giro', paymentChosen: true })}
           >
-            {t.t('settings.cash')}
+            {t.t('settings.giro')}
           </button>
         </div>
       </section>

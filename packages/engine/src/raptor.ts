@@ -147,6 +147,8 @@ export interface Itinerary {
   risky: boolean;
   /** A way on other lines than the best one's, offered besides it. */
   alternative?: boolean;
+  /** The best option's buses with a bus instead of its long walk to or from them. */
+  lessWalking?: boolean;
 }
 
 interface Access {
@@ -166,6 +168,16 @@ const STREET_ALLOWANCE = 1.35;
 const LONG_WAIT = 15 * 60;
 /** How much sooner a trip with a long walk must get there to be offered besides the best (s). */
 const SOONER = 5 * 60;
+/** Walking all the way is always offered up to this far along the streets (m)… */
+const WALK_ALWAYS = 2000;
+/** …and up to this far when no bus gets there sooner (m). */
+const WALK_FAR = 8000;
+/** A walk to or from the buses long enough to look for a bus instead (s). */
+const LONG_ACCESS = 10 * 60;
+/** A walk to or from the buses short enough not to look further (s). */
+const SHORT_ACCESS = 6 * 60;
+/** How much less on foot a way with another bus must ask for to be offered (s). */
+const LESS_WALK = 5 * 60;
 
 export class Planner {
   private walk?: WalkGraph;
@@ -205,14 +217,19 @@ export class Planner {
     if (request.arriveBy) return this.planArriveBy(request);
     const ctx = this.context(request);
     const results = [...this.collect(request, ctx.opts, ctx.searchAt, 12).values()];
-    const direct = this.directWalk(request, ctx.opts);
-    if (direct) results.push(direct);
     results.push(...this.longWalks(request, ctx, results));
+    // Walking all the way: when it is short, when no bus gets there sooner, or when none goes.
+    const direct = this.directWalk(request, ctx.opts, WALK_FAR);
+    const firstBus = Math.min(...results.map((it) => it.arrive));
+    if (direct && (direct.walkDistance <= WALK_ALWAYS || direct.arrive <= firstBus)) {
+      results.push(direct);
+    }
     const pareto = paretoFilter(results, ctx.opts.transferPenalty);
     const top = bestOf(pareto, ctx.opts);
     const main = top
       ? [top, ...pareto.filter((it) => it !== top).sort(byArrival)].slice(0, ctx.opts.maxResults)
       : [];
+    main.push(...this.lessWalking(request, ctx, main));
     const alternatives = this.alternatives(request, ctx, main);
     let best = main[0];
     let others = [...main.slice(1), ...alternatives];
@@ -380,6 +397,54 @@ export class Planner {
       .filter((it) => it !== best)
       .sort((a, b) => b.depart - a.depart || a.arrive - b.arrive || a.rides - b.rides);
     return (best ? [best, ...rest] : rest).slice(0, ctx.opts.maxResults);
+  }
+
+  /**
+   * The best option without its long walk to the first or from the last bus: another bus
+   * to where it is boarded (or on from where it is left), for those who would rather ride
+   * than walk twenty-five minutes downhill to the 207.
+   */
+  private lessWalking(
+    request: PlanRequest,
+    ctx: ReturnType<Planner['context']>,
+    main: readonly Itinerary[],
+  ): Itinerary[] {
+    const best = main.find((it) => it.rides > 0);
+    if (!best) return [];
+    const first = best.legs[0];
+    const last = best.legs[best.legs.length - 1];
+    const long = (l: Leg | undefined) => l?.kind === 'walk' && l.end - l.start > LONG_ACCESS;
+    const longStart = long(first);
+    const longEnd = best.legs.length > 1 && long(last);
+    if (!longStart && !longEnd) return [];
+    // The stops a short walk away (or, with none, the nearest ones).
+    const near = (all: readonly Access[]) => {
+      const nearest = Math.min(...all.map((a) => a.seconds));
+      const limit = Math.max(SHORT_ACCESS, nearest + 3 * 60);
+      return all.filter((a) => a.seconds <= limit);
+    };
+    const access = longStart ? near(ctx.access) : ctx.access;
+    const egress = longEnd
+      ? new Map(near([...ctx.egress.values()]).map((e) => [e.stop, e]))
+      : ctx.egress;
+    if (access.length === 0 || egress.size === 0) return [];
+    const day = this.net.timetable(request.date);
+    const found = this.collect(
+      request,
+      ctx.opts,
+      (t) => this.search(day, request, access, egress, t, ctx.opts),
+      6,
+    );
+    const keys = new Set(main.map((it) => it.key));
+    const options = [...found.values()].filter(
+      (it) =>
+        it.rides > 0 &&
+        !keys.has(it.key) &&
+        walkTime(it) <= walkTime(best) - LESS_WALK &&
+        it.arrive <= best.arrive + Math.max(45 * 60, best.duration * 0.5),
+    );
+    const pick = bestOf(options, ctx.opts);
+    return pick ? [{ ...pick, lessWalking: true }] : [];
   }
 
   /**
@@ -899,11 +964,12 @@ export class Planner {
     };
   }
 
-  private directWalk(request: PlanRequest, opts: PlanOptions): Itinerary | undefined {
+  /** Walking all the way, when it is no more than `max` metres along the streets. */
+  private directWalk(request: PlanRequest, opts: PlanOptions, max: number): Itinerary | undefined {
     const straight = haversine(request.from, request.to);
-    if (straight > opts.maxAccessWalk * 1.5) return undefined;
+    if (straight * 1.25 > max) return undefined;
     const route = this.walk?.route(request.from, request.to);
-    if (route && route.length > opts.maxAccessWalk * 1.5 * STREET_ALLOWANCE) return undefined;
+    if ((route ? route.length : straight * 1.25) > max) return undefined;
     const distance = route ? route.length : straight * 1.25;
     const seconds = route
       ? Math.round(route.cost / opts.walkSpeed)
@@ -1013,7 +1079,9 @@ function bestOf(
     (a, b) =>
       itineraryCost(a, opts, arriveBy) - itineraryCost(b, opts, arriveBy) || a.arrive - b.arrive,
   );
-  const best = ranked.find((it) => it.rides > 0) ?? ranked[0];
+  // A walk all the way may be the best when it is short and costs least; a long one
+  // only when no bus goes.
+  const best = ranked.find((it) => it.rides > 0 || it.duration <= SHORT_WALK) ?? ranked[0];
   if (!best || arriveBy || best.rides === 0) return best;
   const quicker = ranked.find(
     (it) =>
@@ -1026,6 +1094,9 @@ function bestOf(
   );
   return quicker ?? best;
 }
+
+/** Walking all the way that may be the best way (s). */
+const SHORT_WALK = 30 * 60;
 
 /** How much farther one option may walk than another and still be as good (m). */
 const WALK_SLACK = 300;

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import type { BRoute, Network } from '@madeirabus/engine';
-import { decodePlace, encodePlace, isExpress } from './itinerary.ts';
+import type { BRoute, Itinerary, Network } from '@madeirabus/engine';
+import { decodePlace, encodePlace, isExpress, optionTags } from './itinerary.ts';
 
 const net = {
   stops: [
@@ -50,5 +50,33 @@ describe('express lines', () => {
     expect(isExpress(route('Funchal - Ribeira Brava (Via Rápida até à Quinta Grande)'))).toBe(true);
     expect(isExpress(route('FUNCHAL - SÃO VICENTE (VIA RAPIDA)'))).toBe(true);
     expect(isExpress(route('Funchal - Câmara de Lobos - Ribeira Brava'))).toBe(false);
+  });
+});
+
+describe('what each way is good at', () => {
+  const way = (arrive: number, cash: number, walk: number, rides = 1) =>
+    ({
+      key: `${arrive}`,
+      arrive,
+      rides,
+      fare: { cash, giro: cash - 0.5 },
+      legs: [{ kind: 'walk', start: 0, end: walk }],
+    }) as unknown as Itinerary;
+
+  it('tells the fastest, the cheapest and the one with least walking besides the best', () => {
+    const best = way(3600, 2.6, 25 * 60);
+    const options = [best, way(3300, 4.6, 20 * 60), way(4000, 2, 24 * 60), way(3900, 4.6, 5 * 60)];
+    expect(optionTags(options, 'cash')).toEqual(
+      new Map([
+        [1, ['fastest']],
+        [2, ['cheapest']],
+        [3, ['lessWalking']],
+      ]),
+    );
+  });
+
+  it('tells nothing the best already is, and walking all the way is no cheapest ride', () => {
+    const options = [way(3000, 2, 5 * 60), way(3600, 2.6, 25 * 60), way(3500, 0, 30 * 60, 0)];
+    expect(optionTags(options, 'cash').size).toBe(0);
   });
 });

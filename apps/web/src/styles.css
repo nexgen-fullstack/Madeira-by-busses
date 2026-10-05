@@ -864,6 +864,10 @@ input[type='time'],
   background: var(--brand-soft);
   color: var(--brand);
 }
+.it-card__tag--good {
+  background: color-mix(in srgb, var(--ok) 13%, transparent);
+  color: var(--ok);
+}
 .it-card__tag--express,
 .timeline__express {
   background: var(--express-bg);
@@ -2285,4 +2289,13 @@ input[type='time'],
   padding-left: 18px;
   font-size: 13px;
   line-height: 1.5;
+}
+
+/* The person on the map: neon turquoise and glowing, as where a trip starts. */
+.maplibregl-user-location-dot,
+.maplibregl-user-location-dot::before {
+  background-color: #00e8d5;
+}
+.maplibregl-user-location-dot {
+  box-shadow: 0 0 12px 4px rgb(0 232 213 / 70%);
 }

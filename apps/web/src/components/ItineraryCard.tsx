@@ -1,8 +1,17 @@
-import { AlertTriangle, ChevronRight, Footprints, Repeat, Star, Zap } from 'lucide-react';
+import {
+  AlertTriangle,
+  ChevronRight,
+  Coins,
+  Footprints,
+  Repeat,
+  Star,
+  Timer,
+  Zap,
+} from 'lucide-react';
 import type { Itinerary } from '@madeirabus/engine';
 import { useI18n } from '../i18n.ts';
 import { clock, duration, price } from '../lib/format.ts';
-import { ridesExpress } from '../lib/itinerary.ts';
+import { ridesExpress, type OptionTag } from '../lib/itinerary.ts';
 import { useApp, useNetwork } from '../state/app.tsx';
 import { RouteBadge } from './RouteBadge.tsx';
 
@@ -10,12 +19,16 @@ interface Props {
   it: Itinerary;
   /** The option a maps app would put first. */
   best?: boolean;
+  /** What it is good at besides the best one. */
+  tags?: OptionTag[];
   /** Seconds after midnight now, when planning for today. */
   now?: number;
   onSelect: () => void;
 }
 
-export function ItineraryCard({ it, best, now, onSelect }: Props) {
+const TAG_ICONS = { fastest: Timer, cheapest: Coins, lessWalking: Footprints } as const;
+
+export function ItineraryCard({ it, best, tags = [], now, onSelect }: Props) {
   const t = useI18n();
   const { net } = useNetwork();
   const { settings } = useApp();
@@ -25,13 +38,21 @@ export function ItineraryCard({ it, best, now, onSelect }: Props) {
 
   return (
     <button type="button" className={`it-card${best ? ' it-card--best' : ''}`} onClick={onSelect}>
-      {(best || it.alternative || express) && (
+      {(best || it.alternative || express || tags.length > 0) && (
         <div className="it-card__tags">
           {best && (
             <span className="it-card__tag it-card__tag--best">
               <Star size={12} aria-hidden /> {t.t('it.best')}
             </span>
           )}
+          {tags.map((tag) => {
+            const Icon = TAG_ICONS[tag];
+            return (
+              <span key={tag} className="it-card__tag it-card__tag--good">
+                <Icon size={12} aria-hidden /> {t.t(`it.${tag}`)}
+              </span>
+            );
+          })}
           {it.alternative && (
             <span className="it-card__tag">
               <Repeat size={12} aria-hidden /> {t.t('it.otherBus')}
