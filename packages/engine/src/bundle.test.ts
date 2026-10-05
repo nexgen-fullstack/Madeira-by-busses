@@ -4,7 +4,7 @@ import { toCsv } from './csv.ts';
 import { SIGA_FARES_2026 } from './fares.ts';
 import { parseGtfs, type GtfsFiles } from './gtfs.ts';
 import { Network } from './network.ts';
-import { at, fixtureBundle, WEEKDAY } from './test-fixtures.ts';
+import { at, fixtureBundle, fixtureFiles, WEEKDAY } from './test-fixtures.ts';
 import { addDays, weekday } from './time.ts';
 
 function feed(extra: Partial<GtfsFiles> = {}): GtfsFiles {
@@ -232,5 +232,26 @@ describe('projectServices', () => {
     const list = services();
     expect(projectServices(list, '2026-07-31')).toBeUndefined();
     expect(list).toEqual(services());
+  });
+});
+
+describe('carrying a feed forward while another goes on', () => {
+  it('projects each feed from its own last day', () => {
+    // Horários do Funchal ends with November; the other operators' timetable runs into 2027.
+    const ending = fixtureFiles();
+    ending['calendar.txt'] = ending['calendar.txt']!.replace('20271231', '20261130');
+    const going = fixtureFiles();
+    going['calendar.txt'] = going['calendar.txt']!.replace('20271231', '20270630');
+    const { bundle } = buildBundle(
+      [
+        { feed: parseGtfs(ending), source: { name: 'hf' }, prefix: 'hf:' },
+        { feed: parseGtfs(going), source: { name: 'siga' }, prefix: 'siga:' },
+      ],
+      { demo: true, fares: SIGA_FARES_2026, extendUntil: '2027-02-01' },
+    );
+    expect(bundle.projected).toEqual({ officialUntil: '2026-11-30', until: '2027-02-01' });
+    const hf = bundle.services.find((s) => s.id === 'hf:WK')!;
+    expect(hf.end).toBe('2027-02-01');
+    expect(bundle.services.find((s) => s.id === 'siga:WK')!.end).toBe('2027-06-30');
   });
 });

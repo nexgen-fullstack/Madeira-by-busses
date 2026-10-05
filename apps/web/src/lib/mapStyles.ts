@@ -123,10 +123,22 @@ function reliefLayers(): LayerSpecification[] {
   ];
 }
 
+/**
+ * The imagery a little lighter than it comes: the deep ocean around Madeira
+ * and the island's forests are nearly black in it, and on a phone in the sun
+ * that reads as a dark blot.
+ */
+export const SATELLITE_PAINT = {
+  'raster-brightness-min': 0.2,
+  'raster-brightness-max': 1,
+  'raster-contrast': 0.1,
+  'raster-saturation': 0.3,
+} as const;
+
 function satelliteLayers(): LayerSpecification[] {
   return [
-    { id: 'mb-background', type: 'background', paint: { 'background-color': '#1d2a33' } },
-    { id: 'mb-satellite', type: 'raster', source: 'mb-satellite' },
+    { id: 'mb-background', type: 'background', paint: { 'background-color': '#33495a' } },
+    { id: 'mb-satellite', type: 'raster', source: 'mb-satellite', paint: { ...SATELLITE_PAINT } },
   ];
 }
 

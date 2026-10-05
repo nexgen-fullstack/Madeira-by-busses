@@ -149,13 +149,23 @@ async function timetableFeed(args: Args, today: string) {
   const outline = built.lines.reduce((n, l) => n + l.outline, 0);
   const filled = built.lines.reduce((n, l) => n + l.filled, 0);
   const skipped = built.lines.reduce((n, l) => n + l.skipped.length, 0);
+  if (built.planner) {
+    const trips = built.planner.lines.reduce((n, l) => n + l.trips, 0);
+    console.log(
+      `SIGA journey planner: ${built.planner.lines.length} lines, ${trips} trips; ` +
+        built.planner.services
+          .map((s) => `${s.id} ${s.dates} days (${s.first}…${s.last})`)
+          .join(', '),
+    );
+  }
   for (const d of built.observed.days) {
     console.log(
       `SIGA timetable of a ${d.kind} (seen ${d.date}): ${d.variants} variants, ${d.trips} trips, for ${d.dates} dates`,
     );
   }
+  const standBy = built.lines.filter((l) => l.covered).length;
   console.log(
-    `Printed timetables: ${files.length} files, ${full + outline} trips for the other days ` +
+    `Printed timetables: ${files.length} files (${standBy} standing by), ${full + outline} trips for the other days ` +
       `(${full} with every stop, ${outline} between the printed places, ${filled} of them with some stops; ` +
       `${skipped} rows left out); SIGA: ${siga.variants.length} variants, ${Object.keys(siga.stops).length} stops`,
   );
@@ -288,6 +298,7 @@ async function build(args: Args) {
               timetables.built.lines,
               timetables.built.missing,
               timetables.built.observed,
+              timetables.built.planner,
             )
         : md,
     );

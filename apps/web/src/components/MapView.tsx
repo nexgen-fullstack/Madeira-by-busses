@@ -195,7 +195,19 @@ function addOverlay(map: MapLibreMap) {
     // The destination is the red pin (a marker), not a circle.
     filter: ['!=', ['get', 'kind'], 'destination'],
     paint: {
-      'circle-radius': ['match', ['get', 'kind'], 'user', 7, 'bus', 9, 'stop', 4.5, 6.5],
+      // The stops along a line are dots that grow as the map comes closer: zoomed out,
+      // a line with eighty stops would be a string of beads.
+      'circle-radius': [
+        'interpolate',
+        ['linear'],
+        ['zoom'],
+        10,
+        ['match', ['get', 'kind'], 'user', 7, 'bus', 9, 'stop', 1.5, 6.5],
+        13,
+        ['match', ['get', 'kind'], 'user', 7, 'bus', 9, 'stop', 3, 6.5],
+        15,
+        ['match', ['get', 'kind'], 'user', 7, 'bus', 9, 'stop', 4.5, 6.5],
+      ],
       'circle-color': [
         'match',
         ['get', 'kind'],
@@ -218,7 +230,15 @@ function addOverlay(map: MapLibreMap) {
         '#14181F',
         ['get', 'color'],
       ],
-      'circle-stroke-width': ['match', ['get', 'kind'], 'stop', 2, 'origin', 4, 3],
+      'circle-stroke-width': [
+        'interpolate',
+        ['linear'],
+        ['zoom'],
+        10,
+        ['match', ['get', 'kind'], 'stop', 1, 'origin', 4, 3],
+        14,
+        ['match', ['get', 'kind'], 'stop', 2, 'origin', 4, 3],
+      ],
     },
   });
   if (map.getStyle().glyphs) {

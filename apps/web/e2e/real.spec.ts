@@ -9,15 +9,11 @@ test.beforeEach(async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-10-07T08:00:00Z'));
 });
 
-test('real timetable: notice, journey, grouped lines and the demo switch', async ({ page }) => {
+test('real timetable: every line, journey, grouped lines and the demo switch', async ({ page }) => {
   await page.goto('./');
-  const notice = page.locator('.banner--info');
-  await expect(notice).toContainText('Деяких ліній CAM, SIGA Rodoeste ще немає');
-  await notice.getByRole('button', { name: 'Закрити' }).click();
-  await expect(notice).toBeHidden();
-  await page.reload();
   await expect(page.locator('.plan__form')).toBeVisible();
-  await expect(notice).toBeHidden();
+  // Every line of CAM and SIGA Rodoeste is in the app: no notice of missing ones.
+  await expect(page.getByText(/ще немає/)).toHaveCount(0);
 
   await page
     .getByRole('button', { name: /Avenida Mar Alfândega → Igreja Curral das Freiras/ })
@@ -30,6 +26,9 @@ test('real timetable: notice, journey, grouped lines and the demo switch', async
   const tile = page.getByRole('button', { name: /^181\b/ });
   await expect(tile).toHaveCount(1);
   await expect(tile).toContainText('раніше 81');
+  // The express to Ribeira Brava (Rodoeste) and the Camacha – Calheta line (CAM).
+  await expect(page.getByRole('button', { name: /^200\b/ })).toHaveCount(1);
+  await expect(page.getByRole('button', { name: /^994\b/ })).toHaveCount(1);
   await tile.click();
   await expect(page.getByRole('group', { name: 'Напрямок' })).toBeVisible();
   await expect(page.locator('.stop-line li').first()).toBeVisible();

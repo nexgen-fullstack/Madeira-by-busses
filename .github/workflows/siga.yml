@@ -1,18 +1,21 @@
 name: Collect SIGA routes
 
-# Every day, records the whole timetable of the CAM and SIGA Rodoeste lines
-# that run that day on the SIGA website — every trip of every variant at every
-# stop (scripts/fetch-siga.mjs) — and commits data/sources/siga/ on the same
-# branch. The site only shows a day at a time, so a week of runs sees every
-# day of the week; each day seen stands for the days of its kind to come.
-# The website is then published again, so the app has the day's timetable
-# the same morning.
+# Every day, records the whole timetable of CAM and SIGA Rodoeste and commits
+# data/sources/siga/ on the same branch:
+# - from the journey planner behind the SIGA website: every line, every trip
+#   at every stop and the days each service runs (scripts/fetch-siga-timetable.mjs);
+# - from the website's timetable pages: the lines that run that day, as a
+#   check and a stand-by (scripts/fetch-siga.mjs). The site only shows a day
+#   at a time; each day seen stands for the days of its kind to come.
+# The website is then published again, so the app has the new timetable the
+# same morning.
 on:
   schedule:
     - cron: '23 6 * * *'
   push:
     paths:
       - scripts/fetch-siga.mjs
+      - scripts/fetch-siga-timetable.mjs
       - .github/workflows/siga.yml
   workflow_dispatch:
 
@@ -34,12 +37,17 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Collect
+      - name: Collect the timetable of the journey planner
+        # A failure keeps the last timetable; the website's pages are still read.
+        continue-on-error: true
+        run: node scripts/fetch-siga-timetable.mjs data/sources/siga
+      - name: Collect the day on the website
         run: node scripts/fetch-siga.mjs data/sources/siga
       - name: Summary
         run: |
           {
             echo '### SIGA routes'
+            echo "- journey planner: $(wc -l < data/sources/siga/timetable/trips.jsonl) stop sequences, $(grep -c '_' data/sources/siga/timetable/services.json) services"
             echo "- variants known: $(wc -l < data/sources/siga/variants.jsonl)"
             echo "- stops known: $(grep -c '":\[' data/sources/siga/stops.json)"
             for f in data/sources/siga/days/*.jsonl; do

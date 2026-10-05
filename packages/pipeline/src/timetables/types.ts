@@ -152,10 +152,42 @@ export interface SigaDayVariant {
   trips: ([string, number] | [string, number, string[]])[];
 }
 
+/**
+ * A stop sequence of a route in the journey planner behind the SIGA website
+ * (data/sources/siga/timetable/trips.jsonl, see scripts/fetch-siga-timetable.mjs).
+ */
+export interface SigaPattern {
+  /** The planner's pattern: "route id:direction:number". */
+  id: string;
+  /** SIGA's route id (the same as on the website). */
+  route: number;
+  line: string;
+  /** The route's name ("Funchal - Ribeira Brava VIA RAPIDA"). */
+  name: string;
+  operator: string;
+  direction: number;
+  headsign: string;
+  /** Stop codes in order. */
+  stops: string[];
+  /** Running times: the minutes from the departure to each stop. */
+  profiles: number[][];
+  /** Departure (HH:MM), profile and service ("UE_002"). */
+  trips: [string, number, string][];
+}
+
+/** The whole timetable of CAM and SIGA Rodoeste, from SIGA's journey planner. */
+export interface SigaTimetable {
+  /** Service → the dates the planner says it runs (YYYY-MM-DD). */
+  services: Record<string, string[]>;
+  patterns: SigaPattern[];
+}
+
 export interface SigaData {
   routes: SigaRoute[];
   variants: SigaVariant[];
   stops: SigaStops;
   /** Whole days of timetables, by the kind of day they were seen on. */
   days?: Partial<Record<DayKind, SigaDayVariant[]>>;
+  /** Every trip on every day, from the journey planner; it stands for the days above. */
+  timetable?: SigaTimetable;
 }

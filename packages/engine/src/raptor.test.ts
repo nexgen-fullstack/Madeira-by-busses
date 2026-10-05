@@ -4,7 +4,14 @@ import { toCsv } from './csv.ts';
 import { SIGA_FARES_2026 } from './fares.ts';
 import { parseGtfs } from './gtfs.ts';
 import { Network } from './network.ts';
-import { paretoFilter, Planner, type Itinerary, type RideLeg, type WalkLeg } from './raptor.ts';
+import {
+  itineraryCost,
+  paretoFilter,
+  Planner,
+  type Itinerary,
+  type RideLeg,
+  type WalkLeg,
+} from './raptor.ts';
 import { haversine, type LatLon } from './geo.ts';
 import { at, fixtureNetwork, SATURDAY, STOPS, stopIndex, WEEKDAY } from './test-fixtures.ts';
 import { encodeWalkGraph, WalkGraph, WALK_STREET } from './walk.ts';
@@ -52,6 +59,7 @@ describe('Planner', () => {
       to: place('E'),
       date: WEEKDAY,
       time: at(7, 0),
+      options: { longWalk: 0 },
     });
     const r = rides(best!);
     expect(r.map(routeOf)).toEqual(['1', '2']);
@@ -61,6 +69,34 @@ describe('Planner', () => {
     expect(r[1]!.start).toBe(at(8, 15));
     expect(r[1]!.wait).toBe(at(8, 15) - at(7, 50));
     expect(best!.arrive).toBe(at(8, 25));
+  });
+
+  it('offers a longer walk from the last stop when it beats waiting for the next bus', () => {
+    // C → E is ~1.1 km: on foot from the 07:50 at C rather than waiting for the 08:15 to E.
+    const results = planner.plan({
+      from: place('A'),
+      to: place('E'),
+      date: WEEKDAY,
+      time: at(7, 0),
+    });
+    const [best] = results;
+    expect(rides(best!).map(routeOf)).toEqual(['1']);
+    expect(best!.legs.map((l) => l.kind)).toEqual(['ride', 'walk']);
+    expect(best!.legs[1]!.end - best!.legs[1]!.start).toBeGreaterThan(10 * 60);
+    expect(best!.arrive).toBeLessThan(at(8, 25));
+    // The two buses stay on offer for those who would rather not walk.
+    expect(results.some((it) => rides(it).map(routeOf).join() === '1,2')).toBe(true);
+  });
+
+  it('keeps the usual walks when a long one gains nothing', () => {
+    // A → D: the bus goes all the way; walking from C saves nothing worth the walk.
+    const [best] = planner.plan({
+      from: place('A'),
+      to: place('D'),
+      date: WEEKDAY,
+      time: at(9, 0),
+    });
+    expect(best!.legs.map((l) => l.kind)).toEqual(['ride']);
   });
 
   it('walks between stops to make a connection', () => {
@@ -321,5 +357,46 @@ describe('paretoFilter', () => {
     // Walking only is not a transfer.
     const walk = it0(100, 1050, 0);
     expect(paretoFilter([walk, direct], 300)).toEqual([walk, direct]);
+  });
+});
+
+describe('itineraryCost', () => {
+  const option = (depart: number, arrive: number, transfers: number, cash: number, walk: number) =>
+    ({
+      depart,
+      arrive,
+      duration: arrive - depart,
+      rides: transfers + 1,
+      transfers,
+      fare: { cash, knownGiro: cash },
+      legs: [{ kind: 'walk', start: depart, end: depart + walk }],
+    }) as unknown as Itinerary;
+
+  it('prefers fewer changes and a lower fare to leaving a little later', () => {
+    // Levada Cavalo → Tabua, both at 16:42: three buses for 6.60 € leaving at 14:08,
+    // or two for 4.60 € leaving at 13:41.
+    const threeBuses = option(at(14, 8), at(16, 42), 2, 6.6, 12 * 60);
+    const twoBuses = option(at(13, 41), at(16, 42), 1, 4.6, 20 * 60);
+    expect(itineraryCost(twoBuses)).toBeLessThan(itineraryCost(threeBuses));
+  });
+
+  it('still prefers getting there much sooner', () => {
+    // The express and half an hour on foot, an hour earlier than the bus to the door.
+    const expressAndWalk = option(at(13, 41), at(15, 30), 1, 4.6, 35 * 60);
+    const toTheDoor = option(at(13, 41), at(16, 42), 1, 4.6, 12 * 60);
+    expect(itineraryCost(expressAndWalk)).toBeLessThan(itineraryCost(toTheDoor));
+  });
+
+  it('puts the best option first, then the others by arrival', () => {
+    const results = planner.plan({
+      from: place('A'),
+      to: place('D'),
+      date: WEEKDAY,
+      time: at(7, 55),
+    });
+    const costs = results.map((it) => itineraryCost(it));
+    expect(costs[0]).toBe(Math.min(...costs.slice(0, results.length)));
+    const arrivals = results.slice(1).map((it) => it.arrive);
+    expect(arrivals).toEqual([...arrivals].sort((a, b) => a - b));
   });
 });

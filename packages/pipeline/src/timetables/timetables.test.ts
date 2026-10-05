@@ -1,4 +1,6 @@
 import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import {
   buildBundle,
@@ -11,6 +13,7 @@ import {
 import { buildTimetableFeed, namesPlace, parseCell, parseRow } from './build.ts';
 import { calendarFor, datesOf, isSchoolDay, runsOn } from './calendar.ts';
 import { loadSiga, loadTimetables } from './load.ts';
+import { serviceDates } from './services.ts';
 import { cleanVariantName, headsignOf, kindFor, lineNameOf } from './observed.ts';
 import type { SigaData, SigaDayVariant, SigaVariant, TimetableFile } from './types.ts';
 
@@ -111,6 +114,16 @@ const build = (file: TimetableFile, variants: SigaVariant[] = [PLAIN]) =>
     from: '2026-10-05',
     to: '2026-10-11',
   });
+/** A day of the plain variant as the website shows it. */
+const PLAIN_DAY: SigaDayVariant = {
+  id: '1:0',
+  line: '702',
+  date: '2026-10-04',
+  services: ['D_003'],
+  stops: ['A', 'B', 'C', 'D', 'E', 'F'],
+  profiles: [[0, 12, 24, 36, 48, 60]],
+  trips: [['12:00', 0]],
+};
 const timesOf = (feed: GtfsFeed, tripId: string) =>
   feed.stopTimes
     .filter((st: GtfsStopTime) => st.trip_id === tripId)
@@ -451,6 +464,57 @@ describe('timetables seen on the SIGA website', () => {
   });
 });
 
+describe("the journey planner's timetable", () => {
+  it('gives every line its trips on the days of their service, before the other sources', () => {
+    const data = siga([PLAIN]);
+    data.timetable = {
+      services: {
+        UE_003: ['2026-10-05', '2026-10-06', '2026-10-07'],
+        D_003: ['2026-10-05', '2026-10-11'],
+      },
+      patterns: [
+        {
+          id: '1:0:01',
+          route: 1,
+          line: '702',
+          name: 'Plain',
+          operator: 'Companhia de Autocarros da Madeira (CAM), S.A.',
+          direction: 0,
+          headsign: 'Foxtrot',
+          stops: ['A', 'B', 'C', 'D', 'E', 'F'],
+          profiles: [[0, 10, 20, 30, 40, 50]],
+          trips: [
+            ['07:30', 0, 'UE_003'],
+            ['09:00', 0, 'D_003'],
+          ],
+        },
+      ],
+    };
+    // A day seen on the website and a printed sheet of the same line: both stand by.
+    data.days = { hol: [{ ...PLAIN_DAY, date: '2026-10-05' }] };
+    const { feed, lines, planner } = buildTimetableFeed(
+      [['702.json', sheet(['07:00 | 07:30 | 08:00'])]],
+      data,
+      { from: '2026-10-05', to: '2026-10-11' },
+    );
+    expect(lines[0]!.covered).toBe(true);
+    expect(feed.trips.map((t) => t.service_id).sort()).toEqual(['P-D_003', 'P-UE_003']);
+    expect(timesOf(feed, 'CAM-702-UE_003-1d0d01-0730')).toEqual([
+      'A 07:30',
+      'B 07:40',
+      'C 07:50',
+      'D 08:00',
+      'E 08:10',
+      'F 08:20',
+    ]);
+    // 5 October is a holiday: the Sunday service only, though the planner lists both.
+    expect(planner!.services).toEqual([
+      { id: 'D_003', first: '2026-10-05', last: '2026-10-11', dates: 2, trips: 1 },
+      { id: 'UE_003', first: '2026-10-06', last: '2026-10-07', dates: 2, trips: 1 },
+    ]);
+  });
+});
+
 describe('merging with Horários do Funchal', () => {
   it('makes a pole both operators serve one stop', () => {
     const hf = parseGtfs({
@@ -509,13 +573,14 @@ describe('merging with Horários do Funchal', () => {
 });
 
 describe('data/timetables', () => {
-  const dir = new URL('../../../../data/timetables', import.meta.url).pathname;
-  const sigaDir = new URL('../../../../data/sources/siga', import.meta.url).pathname;
+  const dir = fileURLToPath(new URL('../../../../data/timetables', import.meta.url));
+  const sigaDir = fileURLToPath(new URL('../../../../data/sources/siga', import.meta.url));
   it.runIf(existsSync(dir) && existsSync(sigaDir))(
     'every printed timetable reads and places its stops',
     async () => {
       const files = await loadTimetables(dir);
-      const data = await loadSiga(sigaDir);
+      // The printed timetables stand by for the journey planner's: try them without it.
+      const { timetable: _planner, ...data } = await loadSiga(sigaDir);
       const { lines } = buildTimetableFeed(files, data, { from: '2026-10-05', to: '2026-11-05' });
       expect(files.length).toBeGreaterThan(10);
       for (const [name, tt] of files) {
@@ -528,6 +593,28 @@ describe('data/timetables', () => {
         const accidental = l.skipped.filter((s) => !/: [A-Za-z]+: /.test(s));
         expect(accidental, l.file).toEqual([]);
         expect(l.full + l.outline, l.file).toBeGreaterThan(0);
+      }
+    },
+  );
+  it.runIf(existsSync(join(sigaDir, 'timetable', 'trips.jsonl')))(
+    "the journey planner's timetable has every line SIGA lists with stops",
+    async () => {
+      const files = await loadTimetables(dir);
+      const data = await loadSiga(sigaDir);
+      const built = buildTimetableFeed(files, data, { from: '2026-10-05', to: '2027-01-05' });
+      expect(built.missing).toEqual({ CAM: [], Rodoeste: [] });
+      expect(built.planner!.lines.length).toBeGreaterThan(150);
+      // Every printed line is in it: the printed timetables only stand by.
+      expect(built.lines.filter((l) => !l.covered).map((l) => l.file)).toEqual([]);
+      // No bus twice: a weekday runs the term-time or the school-holiday service, not both.
+      const dates = serviceDates(data.timetable!.services, '2026-10-06', '2026-12-31');
+      for (const day of ['2026-10-06', '2026-12-21']) {
+        const running = new Set([...dates].filter(([, d]) => d.includes(day)).map(([s]) => s));
+        const buses = data.timetable!.patterns.flatMap((p) =>
+          p.trips.filter(([, , s]) => running.has(s)).map(([start]) => `${p.id} ${start}`),
+        );
+        expect(buses.length, day).toBeGreaterThan(1000);
+        expect(new Set(buses).size, day).toBe(buses.length);
       }
     },
   );

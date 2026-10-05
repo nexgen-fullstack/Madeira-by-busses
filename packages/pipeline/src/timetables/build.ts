@@ -16,6 +16,7 @@ import {
   type DayType,
 } from './calendar.ts';
 import { headsignOf, kindFor, lineNameOf, localityOf, operatorOf } from './observed.ts';
+import { serviceDates } from './services.ts';
 import type {
   DayKind,
   Direction,
@@ -80,6 +81,16 @@ export interface LineReport {
   filled: number;
   skipped: string[];
   warnings: string[];
+  /** SIGA's journey planner has every line of the sheet: the printed timetable stands by. */
+  covered?: boolean;
+}
+
+/** What SIGA's journey planner gave: every trip of every line on every day. */
+export interface PlannerReport {
+  /** Each service: the dates it runs in the calendar built, and its trips. */
+  services: { id: string; first: string; last: string; dates: number; trips: number }[];
+  /** Trips per line (one trip counted once, however many dates it runs). */
+  lines: { operator: Operator; line: string; trips: number }[];
 }
 
 /** What the SIGA website's day timetables gave. */
@@ -94,6 +105,8 @@ export interface TimetableBuild {
   feed: GtfsFeed;
   lines: LineReport[];
   observed: ObservedReport;
+  /** Present when SIGA's journey planner gave the timetable. */
+  planner?: PlannerReport;
   /** Lines SIGA lists that neither a seen day nor a printed timetable gave trips to yet. */
   missing: Record<Operator, string[]>;
   /** The SIGA variant each trip lies on (trips between printed places only are absent). */
@@ -768,11 +781,43 @@ export function buildTimetableFeed(
     const mine = siga.routes.filter((r) => r.line === line && operatorOf(r.operator) === op);
     const outward = mine.filter((r) => r.directions.includes(0));
     const names = (outward.length > 0 ? outward : mine).map((r) => r.name);
-    const first = mine
-      .map((r) => src.variants.get(`${r.id}:0`)?.stops[0]?.[0])
-      .find((c): c is string => c !== undefined);
+    const first =
+      mine
+        .map((r) => src.variants.get(`${r.id}:0`)?.stops[0]?.[0])
+        .find((c): c is string => c !== undefined) ??
+      planner?.patterns.find(
+        (p) => p.line === line && p.direction === 0 && operatorOf(p.operator) === op,
+      )?.stops[0];
     return lineNameOf(names, op, first ? src.point(first) : undefined, localities);
   };
+
+  /** Where a bus goes: the printed place it ends at, its town, or what SIGA calls it. */
+  const headsignFor = (op: Operator, line: string, codes: readonly string[], name?: string) => {
+    const tt = printed.get(lineKey(op, line));
+    const last = src.point(codes[codes.length - 1]!);
+    const timing = tt?.directions
+      .flatMap((dir) => dir.stops)
+      .map((tp) => ({ tp, p: src.point(tp.stop) }))
+      .filter((x) => x.p && last && haversine(x.p, last) <= SAME_END)
+      .sort((a, b) => haversine(a.p!, last!) - haversine(b.p!, last!))[0]?.tp.name;
+    return (
+      timing ??
+      (last ? localityOf(last, localities) : undefined) ??
+      headsignOf(name, op, last, localities) ??
+      siga.stops[codes[codes.length - 1]!]![0]
+    );
+  };
+
+  // SIGA's journey planner: every line it has trips for in these days, and the days of its services.
+  const planner = siga.timetable;
+  const plannerDates = planner
+    ? serviceDates(planner.services, from, to)
+    : new Map<string, string[]>();
+  const covered = new Set<string>();
+  for (const p of planner?.patterns ?? []) {
+    const op = operatorOf(p.operator);
+    if (op && p.trips.some(([, , s]) => plannerDates.has(s))) covered.add(lineKey(op, p.line));
+  }
 
   for (const [file, tt] of files) {
     const report: LineReport = {
@@ -791,12 +836,17 @@ export function buildTimetableFeed(
       continue;
     }
     agencies.add(tt.operator);
+    const sigaLines = tt.lines ?? [tt.line];
+    if (sigaLines.every((l) => covered.has(lineKey(tt.operator, l)))) {
+      report.covered = true;
+      continue;
+    }
     const closed = tt.closed ?? ['12-25'];
     const fileNotes = tt.notes ?? {};
     if (!schoolCalendarKnown(to) && Object.values(fileNotes).some((n) => n.school)) {
       report.warnings.push('School terms after the published calendar are estimated');
     }
-    const sigaLines = tt.lines ?? [tt.line];
+    let coveredRows = 0;
     const candidates = sigaLines.flatMap((l) => src.byLine.get(l) ?? []);
     const landmarks = Object.entries(fileNotes).flatMap(([mark, n]) =>
       n.pass ? [[mark, n.pass] as const] : [],
@@ -982,6 +1032,11 @@ export function buildTimetableFeed(
             report.skipped.push(`${where}: stop ${unknownStop.code} unknown to SIGA`);
             return;
           }
+          // The journey planner has this line's every trip.
+          if (covered.has(lineKey(tt.operator, line))) {
+            coveredRows++;
+            return;
+          }
           const service = serviceFor(type, marks.rule, closed, tt.operator, line);
           // No day left: holidays only and none before `to`, or SIGA's own days of the line stand.
           if (!service) return;
@@ -1038,6 +1093,99 @@ export function buildTimetableFeed(
         });
       }
     });
+    if (coveredRows > 0 && report.full + report.outline === 0) report.covered = true;
+  }
+
+  const tripIds = new Set<string>();
+  /** A trip with its time at every stop: departure (HH:MM) plus the minutes to each stop. */
+  const addTrip = (t: {
+    op: Operator;
+    line: string;
+    id: string;
+    variant: string;
+    service: string;
+    direction: number;
+    codes: readonly string[];
+    offsets: readonly number[] | undefined;
+    start: string;
+    name?: string;
+  }) => {
+    const t0 = /^(\d{1,2}):(\d{2})$/.exec(t.start);
+    const { codes, offsets } = t;
+    if (!offsets || offsets.length !== codes.length || codes.length < 2 || !t0) return false;
+    if (codes.some((c) => !siga.stops[c])) return false;
+    const routeId = routeFor(t.op, t.line);
+    let tripId = `${routeId}-${t.id}`;
+    while (tripIds.has(tripId)) tripId += '+';
+    tripIds.add(tripId);
+    tripVariants.set(tripId, t.variant);
+    feed.trips.push({
+      trip_id: tripId,
+      route_id: routeId,
+      service_id: t.service,
+      trip_headsign: headsignFor(t.op, t.line, codes, t.name),
+      direction_id: t.direction % 2,
+    });
+    const departure = Number(t0[1]) * 60 + Number(t0[2]);
+    codes.forEach((code, i) => {
+      usedStops.add(code);
+      const time = (departure + offsets[i]!) * 60;
+      feed.stopTimes.push({
+        trip_id: tripId,
+        stop_id: code,
+        stop_sequence: i + 1,
+        arrival_time: time,
+        departure_time: time,
+      });
+    });
+    return true;
+  };
+
+  // SIGA's journey planner: every trip of every line, with the days its service runs.
+  let plannerReport: PlannerReport | undefined;
+  if (planner) {
+    const serviceTrips = new Map<string, number>();
+    const plannerLines = new Map<string, PlannerReport['lines'][number]>();
+    for (const [id, dates] of plannerDates) addService(`P-${id}`, dates);
+    for (const p of planner.patterns) {
+      const op = operatorOf(p.operator);
+      if (!op) continue;
+      for (const [start, profile, service] of p.trips) {
+        if (!plannerDates.has(service)) continue;
+        const added = addTrip({
+          op,
+          line: p.line,
+          id: `${service}-${p.id.replaceAll(':', 'd')}-${start.replace(':', '')}`,
+          variant: `${p.route}:${p.direction}`,
+          service: `P-${service}`,
+          direction: p.direction,
+          codes: p.stops,
+          offsets: p.profiles[profile],
+          start,
+          name: p.name,
+        });
+        if (!added) continue;
+        serviceTrips.set(service, (serviceTrips.get(service) ?? 0) + 1);
+        const key = lineKey(op, p.line);
+        const entry = plannerLines.get(key) ?? { operator: op, line: p.line, trips: 0 };
+        entry.trips++;
+        plannerLines.set(key, entry);
+      }
+    }
+    plannerReport = {
+      services: [...plannerDates].map(([id, dates]: [string, string[]]) => ({
+        id,
+        first: dates[0]!,
+        last: dates[dates.length - 1]!,
+        dates: dates.length,
+        trips: serviceTrips.get(id) ?? 0,
+      })),
+      lines: [...plannerLines.values()].sort(
+        (a, b) =>
+          a.operator.localeCompare(b.operator) ||
+          a.line.localeCompare(b.line, 'en', { numeric: true }),
+      ),
+    };
   }
 
   // The days the SIGA website was seen running: every trip at every stop.
@@ -1059,7 +1207,6 @@ export function buildTimetableFeed(
     group.dates.push(...dates);
     groups.set(same, group);
   }
-  const tripIds = new Set<string>();
   for (const { kinds, dates: groupDates } of groups.values()) {
     const kind = kinds[0]!;
     const records = days[kind] ?? [];
@@ -1068,52 +1215,24 @@ export function buildTimetableFeed(
     let trips = 0;
     for (const r of records) {
       const op = operatorOfVariant(r.id);
-      if (!op) continue;
-      const tt = printed.get(lineKey(op, r.line));
+      // The journey planner has every trip of the line, on every day.
+      if (!op || covered.has(lineKey(op, r.line))) continue;
       const sigaRoute = src.route(r.id);
       const direction = Number(r.id.split(':')[1] ?? 0) % 2;
       for (const [start, profile, own] of r.trips) {
-        const codes = own ?? r.stops;
-        const offsets = r.profiles[profile];
-        const t0 = /^(\d{1,2}):(\d{2})$/.exec(start);
-        if (!offsets || offsets.length !== codes.length || codes.length < 2 || !t0) continue;
-        if (codes.some((c) => !siga.stops[c])) continue;
-        const routeId = routeFor(op, r.line);
-        // Where the bus goes: the printed place it ends at, its town, or what SIGA calls it.
-        const last = src.point(codes[codes.length - 1]!);
-        const timing = tt?.directions
-          .flatMap((dir) => dir.stops)
-          .map((tp) => ({ tp, p: src.point(tp.stop) }))
-          .filter((x) => x.p && last && haversine(x.p, last) <= SAME_END)
-          .sort((a, b) => haversine(a.p!, last!) - haversine(b.p!, last!))[0]?.tp.name;
-        const headsign =
-          timing ??
-          (last ? localityOf(last, localities) : undefined) ??
-          headsignOf(sigaRoute?.name, op, last, localities) ??
-          siga.stops[codes[codes.length - 1]!]![0];
-        let tripId = `${routeId}-${kind}-${r.id.replace(':', 'd')}-${start.replace(':', '')}`;
-        while (tripIds.has(tripId)) tripId += '+';
-        tripIds.add(tripId);
-        tripVariants.set(tripId, r.id);
-        feed.trips.push({
-          trip_id: tripId,
-          route_id: routeId,
-          service_id: service,
-          trip_headsign: headsign,
-          direction_id: direction,
+        const added = addTrip({
+          op,
+          line: r.line,
+          id: `${kind}-${r.id.replace(':', 'd')}-${start.replace(':', '')}`,
+          variant: r.id,
+          service,
+          direction,
+          codes: own ?? r.stops,
+          offsets: r.profiles[profile],
+          start,
+          name: sigaRoute?.name,
         });
-        const departure = Number(t0[1]) * 60 + Number(t0[2]);
-        codes.forEach((code, i) => {
-          usedStops.add(code);
-          const time = (departure + offsets[i]!) * 60;
-          feed.stopTimes.push({
-            trip_id: tripId,
-            stop_id: code,
-            stop_sequence: i + 1,
-            arrival_time: time,
-            departure_time: time,
-          });
-        });
+        if (!added) continue;
         trips++;
         const key = lineKey(op, r.line);
         const entry = lineTrips.get(key) ?? { operator: op, line: r.line, trips: 0 };
@@ -1168,13 +1287,23 @@ export function buildTimetableFeed(
     feed.routes.filter((r) => withTrips.has(r.route_id)).map((r) => `${r.agency_id}|${r.line_id}`),
   );
   const missing: Record<Operator, string[]> = { CAM: [], Rodoeste: [] };
+  // A line SIGA lists without any stop (CAM's 560 "Cristo Rei") has nothing to show yet.
+  const withStops = new Set(siga.routes.filter((r) => r.stops > 0).map((r) => r.line));
   for (const r of siga.routes) {
     const op = operatorOf(r.operator);
-    if (!op || built.has(`${AGENCIES[op].id}|${r.line}`) || missing[op].includes(r.line)) continue;
+    if (!op || !withStops.has(r.line)) continue;
+    if (built.has(`${AGENCIES[op].id}|${r.line}`) || missing[op].includes(r.line)) continue;
     missing[op].push(r.line);
   }
   for (const op of Object.keys(missing) as Operator[]) {
     missing[op].sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));
   }
-  return { feed, lines, observed, tripVariants, missing };
+  return {
+    feed,
+    lines,
+    observed,
+    ...(plannerReport ? { planner: plannerReport } : {}),
+    tripVariants,
+    missing,
+  };
 }

@@ -201,7 +201,10 @@ export function buildBundle(
   /** Shapes made for stop sequences without one, by the sequence. */
   const madeShapes = new Map<string, number>();
 
-  for (const { feed, source, prefix = '' } of inputs) {
+  /** The feed each service comes from: each feed's timetable ends on its own day. */
+  const serviceFeed: number[] = [];
+
+  for (const [feedIndex, { feed, source, prefix = '' }] of inputs.entries()) {
     sources.push({ ...source, feedVersion: source.feedVersion ?? feed.feedInfo?.feed_version });
     const id = (v: string) => `${prefix}${v}`;
 
@@ -291,6 +294,7 @@ export function buildBundle(
       if (i === undefined) {
         i = services.length;
         serviceIndex.set(sid, i);
+        serviceFeed.push(feedIndex);
         services.push({
           id: id(sid),
           days: 0,
@@ -485,9 +489,26 @@ export function buildBundle(
     }
   }
 
-  const projection = options.extendUntil
-    ? projectServices(services, options.extendUntil)
-    : undefined;
+  // Each feed whose timetable ends too early is carried forward on its own (Horários do
+  // Funchal's may end in November while the other operators' go on into the next year).
+  let projection: { officialUntil: string; services: number } | undefined;
+  if (options.extendUntil) {
+    const byFeed = new Map<number, BService[]>();
+    services.forEach((s, i) =>
+      byFeed.set(serviceFeed[i]!, [...(byFeed.get(serviceFeed[i]!) ?? []), s]),
+    );
+    for (const group of byFeed.values()) {
+      const p = projectServices(group, options.extendUntil);
+      if (!p) continue;
+      projection = {
+        officialUntil:
+          projection && projection.officialUntil < p.officialUntil
+            ? projection.officialUntil
+            : p.officialUntil,
+        services: (projection?.services ?? 0) + p.services,
+      };
+    }
+  }
   if (projection) report.projectedServices = projection.services;
 
   const usedServices = services.filter((s) => s.days !== 0 || s.add.length > 0);

@@ -46,6 +46,16 @@ export interface PlanOptions {
    * does ("by the 702, or by the 701 and the 704").
    */
   alternatives: number;
+  /**
+   * A longer walk to the first or from the last stop (m along the streets),
+   * offered when it makes a better trip than the buses closer by: the express
+   * to Ribeira Brava and half an hour on foot rather than three buses.
+   */
+  longWalk: number;
+  /** What a euro of fare is worth in seconds when the options are ranked. */
+  fareWeight: number;
+  /** Each second on foot counts this much extra when ranking (walking is more tiring). */
+  walkReluctance: number;
 }
 
 export const DEFAULT_PLAN_OPTIONS: PlanOptions = {
@@ -59,6 +69,9 @@ export const DEFAULT_PLAN_OPTIONS: PlanOptions = {
   maxResults: 5,
   transferPenalty: 600,
   alternatives: 2,
+  longWalk: 3000,
+  fareWeight: 240,
+  walkReluctance: 0.5,
 };
 
 export interface PlanRequest {
@@ -149,6 +162,10 @@ const WALK = 3;
 
 /** Street metres allowed to a stop, against `maxAccessWalk` metres as the crow flies. */
 const STREET_ALLOWANCE = 1.35;
+/** A wait for the next bus long enough to look for a later first bus (s). */
+const LONG_WAIT = 15 * 60;
+/** How much sooner a trip with a long walk must get there to be offered besides the best (s). */
+const SOONER = 5 * 60;
 
 export class Planner {
   private walk?: WalkGraph;
@@ -178,29 +195,149 @@ export class Planner {
     return this.stopHits;
   }
 
+  /**
+   * Options to get there, the best one first and the others by arrival. The
+   * best is the one that costs least in all: arrival, time on the way,
+   * changes of bus, fare and walking (see `itineraryCost`), not merely the
+   * one that arrives first.
+   */
   plan(request: PlanRequest): Itinerary[] {
     if (request.arriveBy) return this.planArriveBy(request);
     const ctx = this.context(request);
+    const results = [...this.collect(request, ctx.opts, ctx.searchAt, 12).values()];
+    const direct = this.directWalk(request, ctx.opts);
+    if (direct) results.push(direct);
+    results.push(...this.longWalks(request, ctx, results));
+    const pareto = paretoFilter(results, ctx.opts.transferPenalty);
+    const best = bestOf(pareto, ctx.opts);
+    const main = best
+      ? [best, ...pareto.filter((it) => it !== best).sort(byArrival)].slice(0, ctx.opts.maxResults)
+      : [];
+    const others = [...main.slice(1), ...this.alternatives(request, ctx, main)].sort(byArrival);
+    return [...main.slice(0, 1), ...others].map((it) => this.withPaths(it));
+  }
+
+  /**
+   * Options leaving from `request.time` on, a minute after the earliest one
+   * found each time; then, for the options with a long wait for the next bus,
+   * the latest departure that still makes it.
+   */
+  private collect(
+    request: PlanRequest,
+    opts: PlanOptions,
+    searchAt: (t: number) => Itinerary[],
+    iterations: number,
+  ): Map<string, Itinerary> {
     const found = new Map<string, Itinerary>();
     let t = request.time;
-    for (let iter = 0; iter < 12 && t <= request.time + ctx.opts.window; iter++) {
-      const batch = ctx.searchAt(t);
+    for (let iter = 0; iter < iterations && t <= request.time + opts.window; iter++) {
+      const batch = searchAt(t);
       if (batch.length === 0) break;
       for (const it of batch) if (!found.has(it.key)) found.set(it.key, it);
-      if (found.size >= ctx.opts.maxResults * 3) break;
+      if (found.size >= opts.maxResults * 3) break;
       // Next iteration: leave a minute after the earliest option found.
       t = Math.min(...batch.map((it) => it.depart)) + 60;
     }
+    this.leaveLater(found, opts, searchAt);
+    return found;
+  }
 
-    const results = [...found.values()];
-    const direct = this.directWalk(request, ctx.opts);
-    if (direct) results.push(direct);
-    const main = paretoFilter(results, ctx.opts.transferPenalty)
-      .sort((a, b) => a.arrive - b.arrive || b.depart - a.depart)
-      .slice(0, ctx.opts.maxResults);
-    return [...main, ...this.alternatives(request, ctx, main)]
-      .sort((a, b) => a.arrive - b.arrive || b.depart - a.depart)
-      .map((it) => this.withPaths(it));
+  /**
+   * An option that waits long for its next bus usually has a later first
+   * bus that makes the same connection: rather than leave now and wait two
+   * hours at the change, leave later. Leaving earlier never hurts, so the
+   * latest departure is found by halving the wait (a few RAPTOR runs).
+   */
+  private leaveLater(
+    found: Map<string, Itinerary>,
+    opts: PlanOptions,
+    searchAt: (t: number) => Itinerary[],
+  ): void {
+    const waiting = [...found.values()]
+      .filter((it) => it.rides > 1 && it.waitTime > LONG_WAIT)
+      .sort((a, b) => itineraryCost(a, opts) - itineraryCost(b, opts))
+      .slice(0, 3);
+    for (const it of waiting) {
+      const makes = (t: number) =>
+        searchAt(t).filter((x) => x.arrive <= it.arrive && x.rides <= it.rides);
+      let lo = it.depart;
+      let hi = it.depart + it.waitTime + 60;
+      let later: Itinerary[] = [];
+      while (hi - lo > 60) {
+        const mid = Math.floor((lo + hi) / 2);
+        const at = makes(mid);
+        if (at.length > 0) {
+          lo = mid;
+          later = at;
+        } else {
+          hi = mid;
+        }
+      }
+      for (const x of later) if (!found.has(x.key)) found.set(x.key, x);
+    }
+  }
+
+  /**
+   * Trips with a longer walk to the first or from the last stop, when one
+   * makes a better trip than every option with the usual short walks (or
+   * when those find nothing): the bus to the next town and half an hour on
+   * foot, where the buses closer by take far longer.
+   */
+  private longWalks(
+    request: PlanRequest,
+    ctx: ReturnType<Planner['context']>,
+    found: readonly Itinerary[],
+  ): Itinerary[] {
+    const { opts } = ctx;
+    if (opts.longWalk <= opts.maxAccessWalk * STREET_ALLOWANCE) return [];
+    const access = this.longAccess(request.from, opts, ctx.access);
+    const egress = this.longAccess(request.to, opts, [...ctx.egress.values()]);
+    if (!access && !egress) return [];
+    const day = this.net.timetable(request.date);
+    const egressMap = egress ? new Map(egress.map((e) => [e.stop, e])) : ctx.egress;
+    const far = this.collect(
+      request,
+      opts,
+      (t) => this.search(day, request, access ?? ctx.access, egressMap, t, opts),
+      6,
+    );
+    const known = new Set(found.map((it) => it.key));
+    const byBus = found.filter((it) => it.rides > 0);
+    const bar = Math.min(...byBus.map((it) => itineraryCost(it, opts)));
+    const best = byBus.find((it) => itineraryCost(it, opts) === bar);
+    // Better in all, or there sooner for those who do not mind the walk.
+    return [...far.values()].filter(
+      (it) =>
+        it.rides > 0 &&
+        !known.has(it.key) &&
+        (itineraryCost(it, opts) < bar || !best || it.arrive <= best.arrive - SOONER),
+    );
+  }
+
+  /**
+   * The stops within a long walk of a place (with the usual ones), or
+   * undefined when there are no more of them than within the usual walk.
+   */
+  private longAccess(
+    place: Place,
+    opts: PlanOptions,
+    usual: readonly Access[],
+  ): Access[] | undefined {
+    // A stop chosen with no other stops around it: that stop and no other.
+    if (place.stops && place.stops.length > 0 && opts.stopWalk <= 0) return undefined;
+    const walked =
+      this.walkAccess(place, opts, opts.longWalk) ??
+      this.net.nearbyStops(place, opts.longWalk / STREET_ALLOWANCE).map((h) => ({
+        stop: h.stop,
+        distance: Math.round(h.distance),
+        seconds: walkSeconds(h.distance, opts.walkSpeed),
+      }));
+    const best = new Map<number, Access>(walked.map((a) => [a.stop, a]));
+    for (const a of usual) {
+      const known = best.get(a.stop);
+      if (!known || a.seconds < known.seconds) best.set(a.stop, a);
+    }
+    return best.size > usual.length ? [...best.values()] : undefined;
   }
 
   /**
@@ -223,14 +360,16 @@ export class Planner {
       }
     }
     const options = this.plan({ ...request, arriveBy: false, time: Math.max(0, lo - 90 * 60) });
-    return (
-      options
-        .map((it) => (it.rides === 0 ? shiftWalk(it, by - it.arrive) : it))
-        .filter((it) => it.arrive <= by)
-        // The one that leaves last first: "when must I go at the latest?"
-        .sort((a, b) => b.depart - a.depart || a.arrive - b.arrive || a.rides - b.rides)
-        .slice(0, ctx.opts.maxResults)
-    );
+    const made = options
+      .map((it) => (it.rides === 0 ? shiftWalk(it, by - it.arrive) : it))
+      .filter((it) => it.arrive <= by);
+    // The best first ("when must I go at the latest?", with as few changes and as little
+    // fare and walking as may be), then the others leaving last first.
+    const best = bestOf(made, ctx.opts, true);
+    const rest = made
+      .filter((it) => it !== best)
+      .sort((a, b) => b.depart - a.depart || a.arrive - b.arrive || a.rides - b.rides);
+    return (best ? [best, ...rest] : rest).slice(0, ctx.opts.maxResults);
   }
 
   /**
@@ -242,6 +381,7 @@ export class Planner {
     ctx: ReturnType<Planner['context']>,
     main: readonly Itinerary[],
   ): Itinerary[] {
+    // `main` starts with the best option.
     const best = main.find((it) => it.rides > 0);
     if (!best) return [];
     // The lines an option rides, in order: another departure of the same buses is no other way.
@@ -326,6 +466,8 @@ export class Planner {
     const egress = new Map(this.access(request.to, opts).map((e) => [e.stop, e]));
     return {
       opts,
+      access,
+      egress,
       /** RAPTOR from time t; the lines in `banned` are left out. */
       searchAt: (t: number, banned?: ReadonlySet<number>) =>
         this.search(day, request, access, egress, t, opts, banned),
@@ -364,13 +506,16 @@ export class Planner {
     }));
   }
 
-  /** The stops around a point and the walk to each along the streets. */
-  private walkAccess(place: LatLon, opts: PlanOptions): Access[] | undefined {
+  /** The stops around a point and the walk to each along the streets (up to `max` m). */
+  private walkAccess(
+    place: LatLon,
+    opts: PlanOptions,
+    max = opts.maxAccessWalk * STREET_ALLOWANCE,
+  ): Access[] | undefined {
     const walk = this.walk;
     if (!walk) return undefined;
     const start = walk.snap(place, 400);
     if (!start) return undefined;
-    const max = opts.maxAccessWalk * STREET_ALLOWANCE;
     const hits = this.hits();
     const near = this.net.nearbyStops(place, max).filter((h) => hits[h.stop]);
     const found = walk.distances(
@@ -795,9 +940,69 @@ function shiftWalk(it: Itinerary, by: number): Itinerary {
   };
 }
 
-/** Drops options that leave earlier, arrive later and need more rides than another. */
+const byArrival = (a: Itinerary, b: Itinerary) => a.arrive - b.arrive || b.depart - a.depart;
+
+/** A ride of unknown price (Aerobus), for ranking only (€). */
+const UNKNOWN_FARE = 5;
+
+/** The fare of an option for ranking: cash, or what is known of it and a guess for the rest. */
+const fareOf = (it: Itinerary) =>
+  it.fare?.cash ??
+  (it.fare?.knownGiro ?? 0) +
+    UNKNOWN_FARE * (it.fare?.rides.filter((r) => r.cash === null).length ?? 0);
+
+/** Seconds on foot (the walks to, between and from the stops). */
+const walkTime = (it: Itinerary) =>
+  it.legs?.reduce((t, l) => t + (l.kind === 'walk' ? l.end - l.start : 0), 0) ?? 0;
+
+/**
+ * What an option costs a passenger, in seconds, to rank the options by: the
+ * arrival (or, arriving by a time, how early one must leave), a tenth of the
+ * time on the way, ten minutes for each change of bus, four minutes for each
+ * euro and half again the time on foot. Of two options arriving at the same
+ * time, the one with fewer changes, a lower fare and less walking wins;
+ * waiting at home costs nothing.
+ */
+export function itineraryCost(
+  it: Itinerary,
+  opts: Pick<
+    PlanOptions,
+    'transferPenalty' | 'fareWeight' | 'walkReluctance'
+  > = DEFAULT_PLAN_OPTIONS,
+  arriveBy = false,
+): number {
+  return (
+    (arriveBy ? -it.depart : it.arrive) +
+    0.1 * it.duration +
+    opts.transferPenalty * it.transfers +
+    opts.fareWeight * fareOf(it) +
+    opts.walkReluctance * walkTime(it)
+  );
+}
+
+/** The option that costs least, preferring one by bus to walking all the way. */
+function bestOf(
+  items: readonly Itinerary[],
+  opts: PlanOptions,
+  arriveBy = false,
+): Itinerary | undefined {
+  const ranked = [...items].sort(
+    (a, b) =>
+      itineraryCost(a, opts, arriveBy) - itineraryCost(b, opts, arriveBy) || a.arrive - b.arrive,
+  );
+  return ranked.find((it) => it.rides > 0) ?? ranked[0];
+}
+
+/** How much farther one option may walk than another and still be as good (m). */
+const WALK_SLACK = 300;
+
+/**
+ * Drops options that leave earlier, arrive later and need more rides than
+ * another — unless they walk much less: a long walk is not for everyone.
+ */
 export function paretoFilter(items: Itinerary[], transferPenalty = 0): Itinerary[] {
   const transfers = (it: Itinerary) => Math.max(0, it.rides - 1);
+  const walks = (it: Itinerary) => it.walkDistance ?? 0;
   const pareto = items.filter(
     (a) =>
       !items.some(
@@ -806,6 +1011,7 @@ export function paretoFilter(items: Itinerary[], transferPenalty = 0): Itinerary
           b.depart >= a.depart &&
           b.arrive <= a.arrive &&
           b.rides <= a.rides &&
+          walks(b) <= walks(a) + WALK_SLACK &&
           (b.depart > a.depart || b.arrive < a.arrive || b.rides < a.rides),
       ),
   );
@@ -817,6 +1023,7 @@ export function paretoFilter(items: Itinerary[], transferPenalty = 0): Itinerary
         (b) =>
           transfers(b) < transfers(a) &&
           b.depart >= a.depart &&
+          walks(b) <= walks(a) + WALK_SLACK &&
           b.arrive <= a.arrive + transferPenalty * (transfers(a) - transfers(b)),
       ),
   );
