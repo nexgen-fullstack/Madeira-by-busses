@@ -1,3 +1,4 @@
+import { GridIndex, haversine } from '@madeirabus/engine';
 import type { Itinerary, LatLon, Network, StopGroup } from '@madeirabus/engine';
 import type { Direction } from './lines.ts';
 
@@ -136,15 +137,73 @@ export function placesContent(from?: MapPoint, to?: MapPoint): MapContent {
   };
 }
 
+/** Closer than this (m) to a line already drawn, a variant runs along it. */
+const ALONG = 25;
+/** Shorter detours (m) are only the road wobbling. */
+const DETOUR = 60;
+
+/** A polyline with a point at least every `step` metres. */
+function densify(coords: readonly LatLon[], step = 10): LatLon[] {
+  const out: LatLon[] = [];
+  coords.forEach((b, i) => {
+    const a = coords[i - 1];
+    if (a) {
+      const n = Math.floor(haversine(a, b) / step);
+      for (let k = 1; k < n; k++) {
+        const t = k / n;
+        out.push({ lat: a.lat + t * (b.lat - a.lat), lon: a.lon + t * (b.lon - a.lon) });
+      }
+    }
+    out.push(b);
+  });
+  return out;
+}
+
+/**
+ * The stretches of `coords` away from every line of `drawn`: where a variant of a way
+ * leaves its main road, e.g. a detour to Cabo Girão or a run by the Via Rápida.
+ */
+export function detours(coords: readonly LatLon[], drawn: readonly LatLon[][]): LatLon[][] {
+  const index = new GridIndex(
+    drawn.flatMap((d) => densify(d)),
+    60,
+  );
+  const runs: LatLon[][] = [];
+  let run: LatLon[] | undefined;
+  let last: LatLon | undefined;
+  for (const p of densify(coords)) {
+    const near = index.within(p, ALONG).length > 0;
+    if (!near) {
+      // From where it leaves the line, so the detour hangs on it.
+      run ??= last ? [last] : [];
+      run.push(p);
+    } else if (run) {
+      run.push(p);
+      runs.push(run);
+      run = undefined;
+    }
+    last = p;
+  }
+  if (run) runs.push(run);
+  return runs.filter((r) => r.slice(1).reduce((m, p, i) => m + haversine(r[i]!, p), 0) >= DETOUR);
+}
+
+/** Whether a variant has a bus on `date` (every variant when no date is given). */
+const runsOn = (net: Network, pattern: number, date?: string) =>
+  date === undefined ||
+  net.patterns[pattern]!.trips.some(([service]) => net.isServiceActive(service, date));
+
 /**
  * A line on the map, each way it runs on its side of the road with arrows the way the bus
  * goes: the `chosen` way in neon yellow, the way back (and any other) in neon turquoise,
- * and each stop in the colour of its way.
+ * and each stop in the colour of its way. Of the other variants of a way, those with a
+ * bus on `date`, only where they leave its road are drawn, thinner and with arrows too.
  */
 export function routeContent(
   net: Network,
   directions: readonly Direction[],
   chosen: number,
+  date?: string,
 ): MapContent {
   const lines: MapLine[] = [];
   const points = new Map<number, MapPoint>();
@@ -153,15 +212,16 @@ export function routeContent(
   const ways = [...directions.filter((d) => d !== way), ...(way ? [way] : [])];
   for (const d of ways) {
     const color = d === way ? WAY_YELLOW : WAY_TURQUOISE;
-    // The main variant first, with the arrows; the shorter runs thinner along it.
+    const drawn: LatLon[][] = [];
+    // The main variant always, the line's road; the others on the day they run.
     d.patterns.forEach((p, i) => {
-      lines.push({
-        coords: net.shape(p),
-        color,
-        width: i === 0 ? 5 : 3.5,
-        arrows: i === 0,
-        side: true,
-      });
+      if (i > 0 && !runsOn(net, p, date)) return;
+      const shape = net.shape(p);
+      const parts = i === 0 ? [shape] : detours(shape, drawn);
+      drawn.push(...parts);
+      for (const coords of parts) {
+        lines.push({ coords, color, width: i === 0 ? 5 : 3.5, arrows: true, side: true });
+      }
       for (const s of net.patterns[p]!.stops) {
         const st = net.stops[s]!;
         points.delete(s);
@@ -177,7 +237,7 @@ export function routeContent(
       }
     });
   }
-  // The same while the reader switches between the ways: the line is shown alone.
+  // The same while the reader switches between the ways or days: the line is shown alone.
   const main = directions[0]?.patterns[0];
   const key = `route:${main === undefined ? '' : net.patterns[main]!.route}`;
   return {

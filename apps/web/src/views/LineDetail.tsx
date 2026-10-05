@@ -38,11 +38,12 @@ export function LineDetail({ routeIndex }: { routeIndex: number }) {
   const stops = useMemo(() => (dir ? boardingStops(net, dir) : []), [net, dir]);
   const stop = chosenStop !== undefined && stops.includes(chosenStop) ? chosenStop : stops[0];
 
-  // The chosen way in yellow, the way back in turquoise, as the buttons show.
+  // The chosen way in yellow, the way back in turquoise, as the buttons show; the
+  // variants that run on the day of the timetable.
   useMapContent(
     useMemo(
-      () => (route ? routeContent(net, directions, chosen) : undefined),
-      [net, route, directions, chosen],
+      () => (route ? routeContent(net, directions, chosen, date) : undefined),
+      [net, route, directions, chosen, date],
     ),
   );
 

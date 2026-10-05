@@ -57,6 +57,39 @@ describe('a line on the map', () => {
   });
 });
 
+describe('the variants of a line on the map', () => {
+  // Back from Ribeira Brava along the coast; on Saturdays one bus by the Via Rápida
+  // inland from Câmara de Lobos, rejoining the coast road at Funchal.
+  const coast = [stop('', -17.06), stop('', -16.97), stop('', -16.91)];
+  const inland = [stop('', -17.06), stop('', -16.97), stop('', -16.94, 32.66), stop('', -16.91)];
+  const lines = {
+    stops: [stop('Ribeira Brava', -17.06), stop('Funchal', -16.91)],
+    patterns: [
+      { route: 7, stops: [0, 1], trips: [[0, 36000, 0, 'weekday']] },
+      { route: 7, stops: [0, 1], trips: [[1, 27000, 0, 'saturday']] },
+    ],
+    shape: (p: number) => (p === 0 ? coast : inland),
+    isServiceActive: (service: number, date: string) => service === (date === '2026-10-10' ? 1 : 0),
+  } as unknown as Network;
+  const way: Direction = { label: 'Ribeira Brava → Funchal', patterns: [0, 1] };
+
+  it('leaves out a variant on the days it does not run', () => {
+    const monday = routeContent(lines, [way], 0, '2026-10-05');
+    expect(monday.lines.map((l) => l.coords)).toEqual([coast]);
+  });
+
+  it('draws a variant only where it leaves the main road, with arrows', () => {
+    const saturday = routeContent(lines, [way], 0, '2026-10-10');
+    expect(saturday.lines).toHaveLength(2);
+    const detour = saturday.lines[1]!;
+    expect(detour).toMatchObject({ arrows: true, side: true, width: 3.5 });
+    // From where it leaves the coast road to where it comes back to it.
+    expect(Math.max(...detour.coords.map((c) => c.lat))).toBeCloseTo(32.66);
+    expect(Math.min(...detour.coords.map((c) => c.lon))).toBeGreaterThan(-16.98);
+    expect(Math.max(...detour.coords.map((c) => c.lon))).toBeLessThan(-16.9);
+  });
+});
+
 describe('a route on the map', () => {
   const ride = (s: number) => ({ ...net.stops[s]!, stop: s });
   const it207 = {

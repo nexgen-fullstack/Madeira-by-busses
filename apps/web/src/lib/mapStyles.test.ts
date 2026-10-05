@@ -6,6 +6,7 @@ import {
   overlayVector,
   placeLayerIds,
   poiLabel,
+  withHouseNumbers,
 } from './mapStyles.ts';
 
 /** A tiny stand-in for the OpenFreeMap Liberty style. */
@@ -65,6 +66,18 @@ describe('map styles', () => {
       'building',
     ]);
     expect(relief.sources['mb-dem']).toMatchObject({ type: 'raster-dem', encoding: 'terrarium' });
+  });
+
+  it('adds house numbers under the other labels, also over imagery', () => {
+    const style = withHouseNumbers(VECTOR);
+    expect(ids(style).slice(-3)).toEqual(['mb-housenumber', 'poi', 'place']);
+    expect(style.layers.find((l) => l.id === 'mb-housenumber')).toMatchObject({
+      source: 'openmaptiles',
+      'source-layer': 'housenumber',
+      minzoom: 17,
+    });
+    expect(withHouseNumbers(style)).toBe(style);
+    expect(ids(overlayVector(style, 'satellite'))).toContain('mb-housenumber');
   });
 
   it('falls back to tile-free styles', () => {

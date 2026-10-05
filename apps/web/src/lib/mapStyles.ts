@@ -212,6 +212,40 @@ function brightText(layer: LayerSpecification): LayerSpecification {
   };
 }
 
+/**
+ * House numbers on the buildings when zoomed in close, small and grey as in Google Maps.
+ * The style leaves them out though its tiles carry them; under the other labels, which
+ * win where they meet.
+ */
+export function withHouseNumbers(style: StyleSpecification): StyleSpecification {
+  const source = Object.keys(style.sources).find((id) =>
+    style.layers.some((l) => 'source' in l && l.source === id && sourceLayer(l) === 'building'),
+  );
+  if (!source || style.layers.some((l) => sourceLayer(l) === 'housenumber')) return style;
+  const layer: LayerSpecification = {
+    id: 'mb-housenumber',
+    type: 'symbol',
+    source,
+    'source-layer': 'housenumber',
+    minzoom: 17,
+    layout: {
+      'text-field': ['get', 'housenumber'],
+      'text-font': ['Noto Sans Regular'],
+      'text-size': ['interpolate', ['linear'], ['zoom'], 17, 10, 20, 13],
+      'text-padding': 2,
+    },
+    paint: {
+      'text-color': '#7a7a7a',
+      'text-halo-color': 'rgba(255, 255, 255, 0.9)',
+      'text-halo-width': 1.2,
+    },
+  };
+  const first = style.layers.findIndex((l) => l.type === 'symbol');
+  const layers = [...style.layers];
+  layers.splice(first < 0 ? layers.length : first, 0, layer);
+  return { ...style, layers };
+}
+
 let vectorStyle: Promise<StyleSpecification> | undefined;
 
 async function fetchVectorStyle(): Promise<StyleSpecification> {
@@ -220,7 +254,7 @@ async function fetchVectorStyle(): Promise<StyleSpecification> {
   try {
     const res = await fetch(VECTOR_STYLE, { signal: ctrl.signal });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return (await res.json()) as StyleSpecification;
+    return withHouseNumbers((await res.json()) as StyleSpecification);
   } finally {
     clearTimeout(timer);
   }
