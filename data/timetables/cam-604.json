@@ -47,12 +47,8 @@
         "13:00 a PNE",
         "17:30 a PNE"
       ],
-      "saturdays": [
-        "09:30"
-      ],
-      "sundays": [
-        "09:30"
-      ]
+      "saturdays": ["09:30"],
+      "sundays": ["09:30"]
     },
     {
       "to": "Camacha",
@@ -77,12 +73,8 @@
         "11:15 a PNE",
         "18:15 a PNE"
       ],
-      "saturdays": [
-        "18:00"
-      ],
-      "sundays": [
-        "18:00"
-      ]
+      "saturdays": ["18:00"],
+      "sundays": ["18:00"]
     }
   ]
 }

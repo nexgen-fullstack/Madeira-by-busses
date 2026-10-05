@@ -16,6 +16,7 @@ export const fr: Dict = {
   'data.projected':
     'Horaires officiels publiés jusqu’au {date}. Au-delà, nous reprenons la même semaine type — les heures peuvent changer, vérifiez à l’arrêt.',
   'data.missing': 'Pas encore inclus : {operators}. Leurs bus ne sont pas affichés.',
+  'data.partial': 'Certaines lignes de {operators} ne sont pas encore dans l’app.',
   from: 'Départ',
   to: 'Arrivée',
   swap: 'Inverser',

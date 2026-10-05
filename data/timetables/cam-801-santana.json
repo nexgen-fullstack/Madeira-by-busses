@@ -3,14 +3,7 @@
   "formerly": "56",
   "operator": "CAM",
   "name": "Funchal - Santana",
-  "lines": [
-    "801",
-    "802",
-    "850",
-    "860",
-    "875",
-    "885"
-  ],
+  "lines": ["801", "802", "850", "860", "875", "885"],
   "names": {
     "801": "Funchal - Ribeiro Frio - Santana",
     "802": "Funchal - Santana - Arco de São Jorge",

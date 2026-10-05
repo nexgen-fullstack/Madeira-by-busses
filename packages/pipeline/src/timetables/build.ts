@@ -77,6 +77,8 @@ export interface LineReport {
 export interface TimetableBuild {
   feed: GtfsFeed;
   lines: LineReport[];
+  /** Lines SIGA lists that no printed timetable gave trips to yet, by operator. */
+  missing: Record<Operator, string[]>;
   /** The SIGA variant each trip lies on (trips between printed places only are absent). */
   tripVariants: Map<string, string>;
 }
@@ -350,6 +352,34 @@ const plain = (s: string) =>
     .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase();
 
+/** The words that tell places apart ("Serra de Água" → serra, agua). */
+const placeWords = (s: string) =>
+  plain(s)
+    .split(/[^a-z0-9]+/)
+    .filter((w) => w && !['d', 'de', 'do', 'da', 'dos', 'das', 'e'].includes(w));
+
+/** "R" and "Rib" shorten "Ribeira", "Sta" shortens "Santa". */
+function shortens(short: string, word: string): boolean {
+  if (short.length > 3 || short[0] !== word[0]) return false;
+  let i = 0;
+  for (const c of word) if (c === short[i]) i++;
+  return i >= short.length;
+}
+
+/**
+ * Whether a stop's name already says the place: "Serra Agua - Centro" says
+ * Serra de Água and "R. Brava - Antes Tunel" Ribeira Brava; "C. Lobos" alone
+ * does not say Caniçal.
+ */
+export function namesPlace(name: string, place: string): boolean {
+  const have = placeWords(name);
+  const want = placeWords(place);
+  const whole = want.filter((w) => have.includes(w));
+  return (
+    whole.length > 0 && want.every((w) => whole.includes(w) || have.some((h) => shortens(h, w)))
+  );
+}
+
 /** The stop's name with its town or village, unless the name already says it. */
 function withLocality(name: string, p: LatLon, localities: readonly Locality[]): string {
   // The nearest town or village within 3 km; failing that, a hamlet within 1 km.
@@ -363,7 +393,7 @@ function withLocality(name: string, p: LatLon, localities: readonly Locality[]):
       best = l;
     }
   }
-  if (!best || plain(name).includes(plain(best.name))) return name;
+  if (!best || namesPlace(name, best.name)) return name;
   return `${name}, ${best.name}`;
 }
 
@@ -791,5 +821,20 @@ export function buildTimetableFeed(
       ...(zone ? { municipality: zone } : {}),
     } satisfies GtfsStop);
   }
-  return { feed, lines, tripVariants };
+  // Lines on SIGA's list without any trip here (CAM's operator name is long on SIGA).
+  const built = new Set(feed.routes.map((r) => `${r.agency_id}|${r.line_id}`));
+  const missing: Record<Operator, string[]> = { CAM: [], Rodoeste: [] };
+  for (const r of siga.routes) {
+    const op: Operator | undefined = /rodoeste/i.test(r.operator)
+      ? 'Rodoeste'
+      : /CAM|Autocarros/i.test(r.operator)
+        ? 'CAM'
+        : undefined;
+    if (!op || built.has(`${AGENCIES[op].id}|${r.line}`) || missing[op].includes(r.line)) continue;
+    missing[op].push(r.line);
+  }
+  for (const op of Object.keys(missing) as Operator[]) {
+    missing[op].sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));
+  }
+  return { feed, lines, tripVariants, missing };
 }

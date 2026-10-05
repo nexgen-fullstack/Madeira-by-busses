@@ -149,7 +149,7 @@ export function DestinationView({ d, route }: { d: Destination; route: Route }) 
     );
   }
 
-  const missing = net.bundle.missingOperators?.join(', ');
+  const missing = (net.bundle.missingOperators ?? net.bundle.partialOperators)?.join(', ');
   const shownResults = results?.slice(0, SHOWN) ?? [];
   const plannerLink =
     origin &&

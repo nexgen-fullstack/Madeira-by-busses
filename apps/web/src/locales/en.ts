@@ -16,6 +16,7 @@ export const en: Dict = {
   'data.projected':
     'Official timetable published until {date}. Later dates repeat its weekly pattern — times may have changed, check at the stop.',
   'data.missing': 'Not in the app yet: {operators}. Their buses are not shown.',
+  'data.partial': 'Some lines of {operators} are not in the app yet.',
   from: 'From',
   to: 'To',
   swap: 'Swap',

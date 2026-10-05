@@ -45,6 +45,9 @@ const PHRASES: [RegExp, string][] = [
   [/\bS (Amaro|António)\b/g, 'Santo $1'],
   [/\bS (Luzia|Maria|Cruz|Clara)\b/g, 'Santa $1'],
   [/\bS (Martinho|Roque|Gonçalo|João|Pedro|Lourenço|Tiago|Vicente|Jorge)\b/g, 'São $1'],
+  // On SIGA's stops outside Funchal "R" can be a ribeira or a saint, not a street.
+  [/\b(?:Rua|R\.) Brava\b/g, 'Ribeira Brava'],
+  [/\bS(?:ão|ao) (?:Rua|R\.) Faial\b/g, 'São Roque do Faial'],
 ];
 
 /** Expands the abbreviations of Madeira's timetables in a name. */

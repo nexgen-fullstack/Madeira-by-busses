@@ -24,6 +24,8 @@ export interface NetworkBundle {
   projected?: { officialUntil: string; until: string };
   /** Operators of the network that this bundle does not include yet. */
   missingOperators?: string[];
+  /** Operators of which this bundle has some lines but not all yet. */
+  partialOperators?: string[];
   sources: BundleSource[];
   validity: { from: string; to: string };
   agencies: BAgency[];
@@ -145,6 +147,7 @@ export interface BuildOptions {
   /** Carry an expired weekly pattern forward up to this ISO date (see `projectServices`). */
   extendUntil?: string;
   missingOperators?: string[];
+  partialOperators?: string[];
   /**
    * Stops of later feeds with the id of an earlier feed's stop, at the same
    * place (within 30 m), become that stop: SIGA's stop codes are Horários do
@@ -488,6 +491,7 @@ export function buildBundle(
       ? { projected: { officialUntil: projection.officialUntil, until: options.extendUntil! } }
       : {}),
     ...(options.missingOperators?.length ? { missingOperators: options.missingOperators } : {}),
+    ...(options.partialOperators?.length ? { partialOperators: options.partialOperators } : {}),
     sources,
     validity,
     agencies,

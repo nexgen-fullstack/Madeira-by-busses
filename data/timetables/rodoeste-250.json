@@ -1,0 +1,103 @@
+{
+  "line": "250",
+  "formerly": "150",
+  "operator": "Rodoeste",
+  "name": "São Vicente - Seixal - Porto Moniz",
+  "source": {
+    "pdf": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_150.pdf",
+    "sha256": "34d121bd8e4aa900",
+    "checked": "2026-10-05"
+  },
+  "closed": ["12-25", "12-26", "01-01"],
+  "directions": [
+    {
+      "to": "Porto Moniz - Santa",
+      "stops": [
+        {
+          "name": "São Vicente",
+          "stop": "86278"
+        },
+        {
+          "name": "Seixal",
+          "stop": "95614"
+        },
+        {
+          "name": "Ribeira Janela",
+          "stop": "95690"
+        },
+        {
+          "name": "Eira Achada",
+          "stop": "95678"
+        },
+        {
+          "name": "Porto Moniz",
+          "stop": "95688"
+        },
+        {
+          "name": "Lamaceiros",
+          "stop": "95638"
+        },
+        {
+          "name": "Santa",
+          "stop": "95616"
+        }
+      ],
+      "weekdays": [
+        "10:15 | 10:25 | 10:35 | - | 10:45 | 10:50 | 10:55",
+        "16:10 | 16:20 | 16:30 | 16:40 | 16:55 | 17:00 | 17:05"
+      ],
+      "saturdays": [
+        "10:15 | 10:25 | 10:35 | - | 10:45 | 10:50 | 10:55",
+        "16:10 | 16:20 | 16:30 | 16:40 | 16:55 | 17:00 | 17:05",
+        "20:00 | 20:10 | 20:20 | - | 20:35 | 20:40 | 20:45"
+      ],
+      "sundays": ["10:15 | 10:25 | 10:35 | - | 10:45 | 10:50 | 10:55"]
+    },
+    {
+      "to": "São Vicente",
+      "stops": [
+        {
+          "name": "Achadas Cruz",
+          "stop": "95601"
+        },
+        {
+          "name": "Santa",
+          "stop": "95607"
+        },
+        {
+          "name": "Lamaceiros",
+          "stop": "95623"
+        },
+        {
+          "name": "Porto Moniz",
+          "stop": "95688"
+        },
+        {
+          "name": "Ribeira Janela",
+          "stop": "95690"
+        },
+        {
+          "name": "Eira Achada",
+          "stop": "95678"
+        },
+        {
+          "name": "Seixal",
+          "stop": "95663"
+        },
+        {
+          "name": "São Vicente",
+          "stop": "86278"
+        }
+      ],
+      "weekdays": [
+        "06:20 | 06:30 | 06:35 | 06:40 | 06:45 | 06:50 | 07:05 | 07:20",
+        "- | 14:00 | 14:05 | 14:10 | 14:15 | - | 14:25 | 14:45"
+      ],
+      "saturdays": [
+        "- | 07:00 | 07:05 | 07:10 | 07:15 | - | 07:25 | 07:40",
+        "- | 14:00 | 14:05 | 14:10 | 14:15 | - | 14:25 | 14:45"
+      ],
+      "sundays": ["- | 07:00 | 07:05 | 07:10 | 07:15 | - | 07:25 | 07:40"]
+    }
+  ]
+}

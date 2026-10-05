@@ -196,6 +196,9 @@ describe('real Horários do Funchal conventions', () => {
     expect(name('Centro Cívico S Martinho')).toBe('Centro Cívico São Martinho');
     expect(name('AV Mar Alfândega')).toBe('Avenida Mar Alfândega');
     expect(name('AV S Menor R Nova Alegria')).toBe('Avenida Santiago Menor Rua Nova Alegria');
+    expect(name('Estacao R Brava')).toBe('Estacao Ribeira Brava');
+    expect(name('Calvario R. Brava')).toBe('Calvario Ribeira Brava');
+    expect(name('Centro Saúde São R Faial')).toBe('Centro Saúde São Roque do Faial');
     expect(prettyRouteName({ route_long_name: 'Funchal - CFreiras (via FJ Cardos)' })).toBe(
       'Funchal - Curral das Freiras (via Fajã Cardos)',
     );

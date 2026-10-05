@@ -27,7 +27,7 @@ import { DEMO_PLACES } from './demo/places.ts';
 import { placesFromOsm } from './places.ts';
 import { buildReportMarkdown, diffBundles, diffMarkdown } from './report.ts';
 import { buildWalkGraph, type OsmWay } from './walk.ts';
-import { buildTimetableFeed } from './timetables/build.ts';
+import { AGENCIES, buildTimetableFeed } from './timetables/build.ts';
 import { loadLocalities, loadSiga, loadTimetables } from './timetables/load.ts';
 import { timetableReportMarkdown } from './timetables/report.ts';
 import { validateBundle, validateFeed, type Issue } from './validate.ts';
@@ -151,6 +151,10 @@ async function timetableFeed(args: Args, today: string) {
   for (const l of built.lines) {
     for (const w of l.warnings) console.log(`  ! ${l.file}: ${w}`);
   }
+  for (const [op, lines] of Object.entries(built.missing)) {
+    if (lines.length > 0)
+      console.log(`  Not yet in the printed timetables, ${op}: ${lines.join(' ')}`);
+  }
   const issues = validateFeed(built.feed, today);
   printIssues('Feed timetables', issues);
   return { built, issues };
@@ -205,6 +209,11 @@ async function build(args: Args) {
         .map((s) => s.trim())
         .filter(Boolean),
       shareStops: timetables !== undefined,
+      partialOperators: timetables
+        ? (Object.entries(timetables.built.missing) as [keyof typeof AGENCIES, string[]][])
+            .filter(([, lines]) => lines.length > 0)
+            .map(([op]) => AGENCIES[op].name)
+        : undefined,
     },
   );
   if (bundle.projected) {
@@ -247,7 +256,9 @@ async function build(args: Args) {
     );
     await writeText(
       reportPath,
-      timetables ? md + timetableReportMarkdown(timetables.built.lines) : md,
+      timetables
+        ? md + timetableReportMarkdown(timetables.built.lines, timetables.built.missing)
+        : md,
     );
     console.log(`Report written to ${reportPath}`);
   }

@@ -16,6 +16,7 @@ export const pl: Dict = {
   'data.projected':
     'Oficjalny rozkład opublikowano do {date}. Później powtarzamy jego tygodniowy układ – godziny mogły się zmienić, sprawdź na przystanku.',
   'data.missing': 'Jeszcze nie ma: {operators}. Ich autobusy na razie się nie wyświetlają.',
+  'data.partial': 'Niektórych linii {operators} jeszcze nie ma w aplikacji.',
   from: 'Skąd',
   to: 'Dokąd',
   swap: 'Zamień',

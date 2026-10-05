@@ -103,7 +103,7 @@ export function calendarFor(
     total[weekday(d)]!++;
     if (on.has(d)) hits[weekday(d)]!++;
   }
-  const days = total.map((n, i) => n > 0 && hits[i]! * 2 > n) as GtfsCalendar['days'];
+  const days = total.map((n, i) => n > 0 && hits[i]! * 2 >= n) as GtfsCalendar['days'];
   if (!days.some(Boolean)) return { added: [...dates], removed: [] };
   const added: string[] = [];
   const removed: string[] = [];

@@ -3,17 +3,7 @@
   "formerly": "6",
   "operator": "Rodoeste",
   "name": "Funchal - São Vicente - Arco de São Jorge",
-  "lines": [
-    "300",
-    "301",
-    "304",
-    "305",
-    "306",
-    "307",
-    "308",
-    "310",
-    "311"
-  ],
+  "lines": ["300", "301", "304", "305", "306", "307", "308", "310", "311"],
   "names": {
     "304": "Funchal - São Vicente - Arco de São Jorge (via Encumeada)",
     "305": "Arco de São Jorge - São Vicente - Funchal (via Encumeada)",

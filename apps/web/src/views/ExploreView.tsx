@@ -35,7 +35,7 @@ export function ExploreView() {
       [served],
     ),
   );
-  const missing = net.bundle.missingOperators?.join(', ');
+  const missing = (net.bundle.missingOperators ?? net.bundle.partialOperators)?.join(', ');
 
   return (
     <div className="explore">

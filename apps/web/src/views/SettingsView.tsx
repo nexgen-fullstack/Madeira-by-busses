@@ -146,6 +146,11 @@ export function SettingsView() {
             {t.t('data.missing', { operators: b.missingOperators.join(', ') })}
           </p>
         )}
+        {b.partialOperators && b.partialOperators.length > 0 && (
+          <p className="muted small">
+            {t.t('data.partial', { operators: b.partialOperators.join(', ') })}
+          </p>
+        )}
         <p>
           {t.t('settings.validity', {
             from: shortDate(t, b.validity.from),

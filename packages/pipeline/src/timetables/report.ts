@@ -1,7 +1,10 @@
-import type { LineReport } from './build.ts';
+import type { LineReport, TimetableBuild } from './build.ts';
 
 /** The part of the nightly report about the printed timetables. */
-export function timetableReportMarkdown(lines: readonly LineReport[]): string {
+export function timetableReportMarkdown(
+  lines: readonly LineReport[],
+  missing?: TimetableBuild['missing'],
+): string {
   const out = [
     '',
     '## CAM and SIGA Rodoeste (printed timetables)',
@@ -14,6 +17,9 @@ export function timetableReportMarkdown(lines: readonly LineReport[]): string {
   ];
   for (const l of lines) {
     out.push(`| ${l.line} | ${l.operator} | ${l.full} | ${l.outline} | ${l.skipped.length} |`);
+  }
+  for (const [op, list] of Object.entries(missing ?? {})) {
+    if (list.length > 0) out.push('', `Not in the app yet (${op}): ${list.join(', ')}.`);
   }
   const notes = lines.flatMap((l) => [
     ...l.warnings.map((w) => `- ${l.file}: ${w}`),

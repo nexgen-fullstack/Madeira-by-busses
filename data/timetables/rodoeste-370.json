@@ -1,0 +1,169 @@
+{
+  "line": "370",
+  "formerly": "115",
+  "operator": "Rodoeste",
+  "name": "Funchal - Ponta do Sol - Calheta - Paul do Mar",
+  "lines": ["370", "371"],
+  "names": {
+    "371": "Paul do Mar - Calheta - Ponta do Sol - Funchal"
+  },
+  "source": {
+    "pdf": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_115.pdf",
+    "sha256": "b42ab7ab9f3943b0",
+    "checked": "2026-10-05"
+  },
+  "directions": [
+    {
+      "to": "Paul do Mar",
+      "stops": [
+        {
+          "name": "Funchal",
+          "stop": "01705"
+        },
+        {
+          "name": "Cª Lobos",
+          "stop": "12904"
+        },
+        {
+          "name": "Estreito C.Lobos",
+          "stop": "12794"
+        },
+        {
+          "name": "Qª Grande",
+          "stop": "13172"
+        },
+        {
+          "name": "Campanário",
+          "stop": "23994"
+        },
+        {
+          "name": "Rª Brava",
+          "stop": "24114"
+        },
+        {
+          "name": "Tabúa",
+          "stop": "24099"
+        },
+        {
+          "name": "Lugar Baixo",
+          "stop": "34710"
+        },
+        {
+          "name": "Ponta Sol",
+          "stop": "34728"
+        },
+        {
+          "name": "Canhas",
+          "stop": "34525"
+        },
+        {
+          "name": "Moledos",
+          "stop": "34711"
+        },
+        {
+          "name": "Arco Calheta",
+          "stop": "45127"
+        },
+        {
+          "name": "Atouguia",
+          "stop": "45321"
+        },
+        {
+          "name": "C.S. Calheta",
+          "stop": "45189"
+        },
+        {
+          "name": "Vila Calheta",
+          "stop": "45506"
+        },
+        {
+          "name": "Estrela Calheta",
+          "stop": "45316"
+        },
+        {
+          "name": "Estreito Calheta",
+          "stop": "45270"
+        },
+        {
+          "name": "Jardim Mar",
+          "stop": "45328"
+        },
+        {
+          "name": "Paúl Mar",
+          "stop": "45384"
+        }
+      ],
+      "weekdays": [
+        "16:05 #370 | 16:30 | 16:40 | 16:55 | 17:05 | 17:20 | 17:35 | 17:40 | 17:45 | 18:00 | 18:05 | 18:10 | 18:15 | 18:20 | 18:30 | 18:35 | 18:40 | 18:45 | 19:00"
+      ]
+    },
+    {
+      "to": "Funchal",
+      "stops": [
+        {
+          "name": "Pául Mar",
+          "stop": "45384"
+        },
+        {
+          "name": "Jardim Mar",
+          "stop": "45328"
+        },
+        {
+          "name": "Estreito Calheta",
+          "stop": "45270"
+        },
+        {
+          "name": "Estrela Calheta",
+          "stop": "45316"
+        },
+        {
+          "name": "Atouguia",
+          "stop": "45321"
+        },
+        {
+          "name": "Arco Calheta",
+          "stop": "45127"
+        },
+        {
+          "name": "Madalena Mar",
+          "stop": "34554"
+        },
+        {
+          "name": "Ponta Sol",
+          "stop": "34728"
+        },
+        {
+          "name": "Lugar Baixo",
+          "stop": "34710"
+        },
+        {
+          "name": "Rª Brava",
+          "stop": "24114"
+        },
+        {
+          "name": "Campanário",
+          "stop": "23994"
+        },
+        {
+          "name": "Qª Grande",
+          "stop": "13172"
+        },
+        {
+          "name": "Estreito C.Lobos",
+          "stop": "12794"
+        },
+        {
+          "name": "Cª Lobos",
+          "stop": "12904"
+        },
+        {
+          "name": "Funchal",
+          "stop": "01705"
+        }
+      ],
+      "weekdays": [
+        "06:00 #371 | 06:05 | 06:10 | 06:15 | 06:20 | 06:25 | 06:35 | 06:40 | 06:45 | 06:50 | 07:25 | 07:40 | 08:00 | 08:10 | 08:40"
+      ]
+    }
+  ]
+}

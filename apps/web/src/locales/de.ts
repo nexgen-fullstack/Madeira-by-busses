@@ -16,6 +16,7 @@ export const de: Dict = {
   'data.projected':
     'Offizieller Fahrplan veröffentlicht bis {date}. Danach wiederholen wir das Wochenmuster – Zeiten können sich geändert haben, bitte an der Haltestelle prüfen.',
   'data.missing': 'Noch nicht enthalten: {operators}. Deren Busse werden noch nicht angezeigt.',
+  'data.partial': 'Einige Linien von {operators} fehlen noch in der App.',
   from: 'Von',
   to: 'Nach',
   swap: 'Tauschen',
