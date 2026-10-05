@@ -315,6 +315,19 @@ export const uk = {
   'print.page': 'Сторінка {n} з {total}',
   'print.basis': 'Розклад на {from} – {to}; час може змінитися — перевіряйте на зупинці.',
   'print.source': 'Джерело: {source}. Надруковано {date} у застосунку Madeira by busses.',
+  'sheet.variant': 'Окремий рейс',
+  'sheet.from': 'від «{stop}»',
+  'sheet.to': 'до «{stop}»',
+  'sheet.via': 'через «{stop}»',
+  'sheet.skips': 'без зупинки «{stop}»',
+  'sheet.departs': 'Відправлення від «{stop}»',
+  'sheet.notThisWeek': 'Найближчими тижнями не курсує',
+  'sheet.card': 'Розклад картинкою',
+  'sheet.hint':
+    'Увесь розклад лінії на одній картинці, як на автостанції: збережіть її в галерею, і він завжди буде під рукою, навіть без інтернету.',
+  'sheet.download': 'Завантажити картинку',
+  'sheet.saved': 'Картинку збережено',
+  'sheet.failed': 'Не вдалося створити картинку',
 } satisfies Record<string, Entry>;
 
 export type Key = keyof typeof uk;

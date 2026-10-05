@@ -288,4 +288,17 @@ export const de: Dict = {
   'print.basis':
     'Fahrplan vom {from} bis {to}. Zeiten können sich ändern – bitte an der Haltestelle prüfen.',
   'print.source': 'Quelle: {source}. Gedruckt am {date} mit Madeira by busses.',
+  'sheet.variant': 'Einzelne Fahrt',
+  'sheet.from': 'ab „{stop}“',
+  'sheet.to': 'bis „{stop}“',
+  'sheet.via': 'über „{stop}“',
+  'sheet.skips': 'ohne Halt an „{stop}“',
+  'sheet.departs': 'Abfahrt „{stop}“',
+  'sheet.notThisWeek': 'Fährt in den nächsten Wochen nicht',
+  'sheet.card': 'Fahrplan als Bild',
+  'sheet.hint':
+    'Die ganze Linie auf einem Bild, wie am Busbahnhof: in der Galerie speichern und immer dabeihaben, auch offline.',
+  'sheet.download': 'Bild herunterladen',
+  'sheet.saved': 'Bild gespeichert',
+  'sheet.failed': 'Bild konnte nicht erstellt werden',
 };

@@ -1649,6 +1649,9 @@ input[type='time'],
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.place-card__text .line-note__title {
+  white-space: normal;
+}
 .place-card__actions {
   display: flex;
   align-items: center;

@@ -280,4 +280,17 @@ export const en: Dict = {
   'print.page': 'Page {n} of {total}',
   'print.basis': 'Timetable for {from} – {to}. Times can change — check at the stop.',
   'print.source': 'Source: {source}. Printed {date} with Madeira by busses.',
+  'sheet.variant': 'Separate run',
+  'sheet.from': 'from «{stop}»',
+  'sheet.to': 'to «{stop}»',
+  'sheet.via': 'via «{stop}»',
+  'sheet.skips': 'not stopping at «{stop}»',
+  'sheet.departs': 'Leaves «{stop}»',
+  'sheet.notThisWeek': 'Not running in the coming weeks',
+  'sheet.card': 'Timetable as a picture',
+  'sheet.hint':
+    'The whole line on one picture, as at the bus station: save it to your gallery to always have it at hand, even offline.',
+  'sheet.download': 'Download picture',
+  'sheet.saved': 'Picture saved',
+  'sheet.failed': 'Could not make the picture',
 };

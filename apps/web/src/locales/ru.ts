@@ -311,4 +311,17 @@ export const ru: Dict = {
   'print.page': 'Страница {n} из {total}',
   'print.basis': 'Расписание на {from} – {to}; время может измениться — проверяйте на остановке.',
   'print.source': 'Источник: {source}. Напечатано {date} в приложении Madeira by busses.',
+  'sheet.variant': 'Отдельный рейс',
+  'sheet.from': 'от «{stop}»',
+  'sheet.to': 'до «{stop}»',
+  'sheet.via': 'через «{stop}»',
+  'sheet.skips': 'без остановки «{stop}»',
+  'sheet.departs': 'Отправление от «{stop}»',
+  'sheet.notThisWeek': 'В ближайшие недели не ходит',
+  'sheet.card': 'Расписание картинкой',
+  'sheet.hint':
+    'Всё расписание линии на одной картинке, как на автостанции: сохраните её в галерею, и оно всегда будет под рукой, даже без интернета.',
+  'sheet.download': 'Скачать картинку',
+  'sheet.saved': 'Картинка сохранена',
+  'sheet.failed': 'Не удалось создать картинку',
 };

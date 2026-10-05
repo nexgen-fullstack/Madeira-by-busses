@@ -282,4 +282,17 @@ export const es: Dict = {
   'print.page': 'Página {n} de {total}',
   'print.basis': 'Horario del {from} al {to}. Puede cambiar: compruébalo en la parada.',
   'print.source': 'Fuente: {source}. Impreso el {date} con Madeira by busses.',
+  'sheet.variant': 'Servicio aparte',
+  'sheet.from': 'desde «{stop}»',
+  'sheet.to': 'hasta «{stop}»',
+  'sheet.via': 'por «{stop}»',
+  'sheet.skips': 'sin parar en «{stop}»',
+  'sheet.departs': 'Sale de «{stop}»',
+  'sheet.notThisWeek': 'No circula en las próximas semanas',
+  'sheet.card': 'Horario en imagen',
+  'sheet.hint':
+    'Toda la línea en una imagen, como en la estación: guárdala en la galería para tenerla siempre a mano, incluso sin internet.',
+  'sheet.download': 'Descargar imagen',
+  'sheet.saved': 'Imagen guardada',
+  'sheet.failed': 'No se pudo crear la imagen',
 };

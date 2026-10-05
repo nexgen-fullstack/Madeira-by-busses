@@ -315,4 +315,17 @@ export const pl: Dict = {
   'print.page': 'Strona {n} z {total}',
   'print.basis': 'Rozkład na {from} – {to}. Godziny mogą się zmienić — sprawdź na przystanku.',
   'print.source': 'Źródło: {source}. Wydrukowano {date} w aplikacji Madeira by busses.',
+  'sheet.variant': 'Osobny kurs',
+  'sheet.from': 'z „{stop}”',
+  'sheet.to': 'do „{stop}”',
+  'sheet.via': 'przez „{stop}”',
+  'sheet.skips': 'bez przystanku „{stop}”',
+  'sheet.departs': 'Odjazd z „{stop}”',
+  'sheet.notThisWeek': 'Nie kursuje w najbliższych tygodniach',
+  'sheet.card': 'Rozkład jako obrazek',
+  'sheet.hint':
+    'Cała linia na jednym obrazku, jak na dworcu: zapisz go w galerii, by mieć go zawsze pod ręką, także bez internetu.',
+  'sheet.download': 'Pobierz obrazek',
+  'sheet.saved': 'Obrazek zapisany',
+  'sheet.failed': 'Nie udało się utworzyć obrazka',
 };

@@ -1,5 +1,5 @@
 import { useMemo, useState, type ReactNode } from 'react';
-import { ArrowLeft, Download, Loader2, Printer, Share2 } from 'lucide-react';
+import { ArrowLeft, Download, Image, Loader2, Printer, Share2 } from 'lucide-react';
 import { stopDepartures } from '@madeirabus/engine';
 import { HourTable } from '../components/HourTable.tsx';
 import { useMapContent } from '../components/mapContext.tsx';
@@ -7,6 +7,7 @@ import { RouteBadge } from '../components/RouteBadge.tsx';
 import { useI18n } from '../i18n.ts';
 import { canPrint, canShareFiles, printPdf, saveFile, shareFile } from '../lib/files.ts';
 import { clock, longDate } from '../lib/format.ts';
+import { lineSheet, variantNote } from '../lib/lineSheet.ts';
 import { lineDirections, lineOf } from '../lib/lines.ts';
 import { routeContent, WAY_TURQUOISE, WAY_YELLOW } from '../lib/mapContent.ts';
 import { boardingStops, returnOf, terminusMarks } from '../lib/printable.ts';
@@ -16,6 +17,7 @@ import { useNow } from '../lib/useNow.ts';
 import { useNetwork } from '../state/app.tsx';
 
 type PdfAction = 'save' | 'print' | 'share';
+type ImageAction = 'image' | 'imageShare';
 
 export function LineDetail({ routeIndex }: { routeIndex: number }) {
   const t = useI18n();
@@ -26,7 +28,7 @@ export function LineDetail({ routeIndex }: { routeIndex: number }) {
   const [dirIndex, setDirIndex] = useState(0);
   const [chosenStop, setChosenStop] = useState<number | undefined>();
   const [back, setBack] = useState(true);
-  const [busy, setBusy] = useState<PdfAction | undefined>();
+  const [busy, setBusy] = useState<PdfAction | ImageAction | undefined>();
   const [toast, setToast] = useState<string | undefined>();
   const route = net.routes[routeIndex];
   // All variants of the line, as the feed may publish each one as a route.
@@ -39,11 +41,14 @@ export function LineDetail({ routeIndex }: { routeIndex: number }) {
   const stop = chosenStop !== undefined && stops.includes(chosenStop) ? chosenStop : stops[0];
 
   // The chosen way in yellow, the way back in turquoise, as the buttons show; the
-  // variants that run on the day of the timetable.
+  // variants that run on the day of the timetable, telling when they run when tapped.
   useMapContent(
     useMemo(
-      () => (route ? routeContent(net, directions, chosen, date) : undefined),
-      [net, route, directions, chosen, date],
+      () =>
+        route
+          ? routeContent(net, directions, chosen, date, (d, p) => variantNote(net, t, d, p, date))
+          : undefined,
+      [net, t, route, directions, chosen, date],
     ),
   );
 
@@ -89,6 +94,21 @@ export function LineDetail({ routeIndex }: { routeIndex: number }) {
       else if (await saveFile(bytes, tt.fileName)) flash(t.t('print.saved'));
     } catch {
       flash(t.t('print.failed'));
+    } finally {
+      setBusy(undefined);
+    }
+  };
+  // The whole line on one picture, to keep in the phone's gallery.
+  const image = async (action: ImageAction) => {
+    setBusy(action);
+    try {
+      const { lineSheetPng } = await import('../lib/sheetImage.ts');
+      const sheet = lineSheet(net, t, routeIndex, date, today);
+      const bytes = await lineSheetPng(sheet);
+      if (action === 'imageShare') await shareFile(bytes, sheet.fileName, sheet.title, 'image/png');
+      else if (await saveFile(bytes, sheet.fileName, 'image/png')) flash(t.t('sheet.saved'));
+    } catch {
+      flash(t.t('sheet.failed'));
     } finally {
       setBusy(undefined);
     }
@@ -221,6 +241,45 @@ export function LineDetail({ routeIndex }: { routeIndex: number }) {
             )}
           </>
         )}
+      </section>
+
+      <section className="card print-card">
+        <h3 className="card__title">
+          <Image size={16} aria-hidden /> {t.t('sheet.card')}
+        </h3>
+        <p className="muted small">{t.t('sheet.hint')}</p>
+        <div className="detail__actions">
+          <button
+            type="button"
+            className="button button--primary"
+            onClick={() => void image('image')}
+            disabled={busy !== undefined}
+            aria-busy={busy === 'image'}
+          >
+            {busy === 'image' ? (
+              <Loader2 size={18} className="spin" aria-hidden />
+            ) : (
+              <Download size={18} />
+            )}{' '}
+            {t.t('sheet.download')}
+          </button>
+          {canShareFiles() && (
+            <button
+              type="button"
+              className="button"
+              onClick={() => void image('imageShare')}
+              disabled={busy !== undefined}
+              aria-busy={busy === 'imageShare'}
+            >
+              {busy === 'imageShare' ? (
+                <Loader2 size={18} className="spin" aria-hidden />
+              ) : (
+                <Share2 size={18} />
+              )}{' '}
+              {t.t('print.share')}
+            </button>
+          )}
+        </div>
       </section>
 
       <section className="card print-card">

@@ -79,7 +79,10 @@ describe('the variants of a line on the map', () => {
   });
 
   it('draws a variant only where it leaves the main road, with arrows', () => {
-    const saturday = routeContent(lines, [way], 0, '2026-10-10');
+    const note = { title: 'Separate run', lines: ['Saturday: 07:30'] };
+    const saturday = routeContent(lines, [way], 0, '2026-10-10', () => note);
+    // Tapped, it tells when it runs; the main way says nothing.
+    expect(saturday.lines.map((l) => l.note)).toEqual([undefined, note]);
     expect(saturday.lines).toHaveLength(2);
     const detour = saturday.lines[1]!;
     expect(detour).toMatchObject({ arrows: true, side: true, width: 3.5 });

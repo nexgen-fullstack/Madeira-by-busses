@@ -14,6 +14,13 @@ export interface MapLine {
   arrows?: boolean;
   /** On its side of the road (traffic keeps right), beside the line running the other way. */
   side?: boolean;
+  /** Shown when the line is tapped: what it is and when it runs. */
+  note?: LineNote;
+}
+
+export interface LineNote {
+  title: string;
+  lines: string[];
 }
 
 export type PointKind =
@@ -197,13 +204,15 @@ const runsOn = (net: Network, pattern: number, date?: string) =>
  * A line on the map, each way it runs on its side of the road with arrows the way the bus
  * goes: the `chosen` way in neon yellow, the way back (and any other) in neon turquoise,
  * and each stop in the colour of its way. Of the other variants of a way, those with a
- * bus on `date`, only where they leave its road are drawn, thinner and with arrows too.
+ * bus on `date`, only where they leave its road are drawn, thinner and with arrows too;
+ * tapped, they tell their `note`.
  */
 export function routeContent(
   net: Network,
   directions: readonly Direction[],
   chosen: number,
   date?: string,
+  note?: (direction: Direction, pattern: number) => LineNote,
 ): MapContent {
   const lines: MapLine[] = [];
   const points = new Map<number, MapPoint>();
@@ -219,8 +228,16 @@ export function routeContent(
       const shape = net.shape(p);
       const parts = i === 0 ? [shape] : detours(shape, drawn);
       drawn.push(...parts);
+      const about = i > 0 ? note?.(d, p) : undefined;
       for (const coords of parts) {
-        lines.push({ coords, color, width: i === 0 ? 5 : 3.5, arrows: true, side: true });
+        lines.push({
+          coords,
+          color,
+          width: i === 0 ? 5 : 3.5,
+          arrows: true,
+          side: true,
+          ...(about ? { note: about } : {}),
+        });
       }
       for (const s of net.patterns[p]!.stops) {
         const st = net.stops[s]!;

@@ -312,4 +312,17 @@ export const cs: Dict = {
   'print.page': 'Strana {n} z {total}',
   'print.basis': 'Jízdní řád na {from} – {to}. Časy se mohou změnit – ověřte si je na zastávce.',
   'print.source': 'Zdroj: {source}. Vytištěno {date} v aplikaci Madeira by busses.',
+  'sheet.variant': 'Samostatný spoj',
+  'sheet.from': 'z „{stop}“',
+  'sheet.to': 'do „{stop}“',
+  'sheet.via': 'přes „{stop}“',
+  'sheet.skips': 'bez zastávky „{stop}“',
+  'sheet.departs': 'Odjezd ze zastávky „{stop}“',
+  'sheet.notThisWeek': 'V příštích týdnech nejede',
+  'sheet.card': 'Jízdní řád jako obrázek',
+  'sheet.hint':
+    'Celá linka na jednom obrázku, jako na autobusovém nádraží: uložte si ho do galerie a mějte ho vždy po ruce, i bez internetu.',
+  'sheet.download': 'Stáhnout obrázek',
+  'sheet.saved': 'Obrázek uložen',
+  'sheet.failed': 'Obrázek se nepodařilo vytvořit',
 };

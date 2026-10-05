@@ -19,7 +19,7 @@ import { haversine, type LatLon, type Network } from '@madeirabus/engine';
 import { useI18n } from '../i18n.ts';
 import { luminance, readableOn } from '../lib/color.ts';
 import { decodePlace, encodePlace } from '../lib/itinerary.ts';
-import { transitGeoJson, type MapContent } from '../lib/mapContent.ts';
+import { transitGeoJson, type LineNote, type MapContent } from '../lib/mapContent.ts';
 import {
   buildingLayers,
   demSource,
@@ -145,6 +145,7 @@ function toGeoJson(content: MapContent) {
           label: l.label ?? '',
           arrows: Boolean(l.arrows),
           side: Boolean(l.side),
+          note: l.note ? JSON.stringify(l.note) : '',
         },
         geometry: { type: 'LineString' as const, coordinates: l.coords.map((c) => [c.lon, c.lat]) },
       })),
@@ -469,6 +470,7 @@ export default function MapView({ className }: { className?: string }) {
   const styleLoaded = useRef(false);
   const shownStyle = useRef(`${layers.base}:fallback`);
   const [picked, setPicked] = useState<PickedPlace | undefined>();
+  const [note, setNote] = useState<LineNote | undefined>();
   const transitControl = useRef<TransitControl | null>(null);
   const transitRef = useRef<{ data?: TransitData; on: boolean }>({ on: false });
   // A chosen route is shown alone: every stop and line step aside until asked for again.
@@ -549,6 +551,14 @@ export default function MapView({ className }: { className?: string }) {
         navigate('stop', { ids: String(stop.properties.stops) });
         return;
       }
+      // A run of a line that goes its own way: when it runs.
+      const run = features.find((f) => f.layer.id.startsWith('mb-line') && f.properties?.note);
+      if (run) {
+        setPicked(undefined);
+        setNote(JSON.parse(String(run.properties.note)) as LineNote);
+        return;
+      }
+      setNote(undefined);
       const poi = features.find((f) => f.sourceLayer === 'poi' && f.properties?.name);
       if (poi && poi.geometry.type === 'Point') {
         const [lon, lat] = poi.geometry.coordinates as [number, number];
@@ -567,6 +577,7 @@ export default function MapView({ className }: { className?: string }) {
     map.on('contextmenu', (e: MapMouseEvent) => {
       if (pickRef.current) return;
       const p = { lat: e.lngLat.lat, lon: e.lngLat.lng };
+      setNote(undefined);
       setPicked({ name: pointName(netRef.current, p, tRef.current), ...p });
     });
     map.on('movestart', (e) => {
@@ -648,6 +659,8 @@ export default function MapView({ className }: { className?: string }) {
   useMarker(mapRef, ready, destination);
   // And on a place tapped or a pin dropped.
   useMarker(mapRef, ready, pick ? undefined : picked);
+  // A run tapped belongs to the line on the map; another one, another day, forget it.
+  useEffect(() => setNote(undefined), [content]);
 
   // Choosing a place: start where the field's place is, or near the other end of the trip.
   useEffect(() => {
@@ -737,6 +750,28 @@ export default function MapView({ className }: { className?: string }) {
             : setSettings({ map: { ...map, transit: layers.transit } })
         }
       />
+      {note && !pick && (
+        <div className="place-card" role="dialog" aria-label={note.title}>
+          <div className="place-card__text">
+            <div className="strong line-note__title">{note.title}</div>
+            {note.lines.map((l) => (
+              <div key={l} className="small">
+                {l}
+              </div>
+            ))}
+          </div>
+          <div className="place-card__actions">
+            <button
+              type="button"
+              className="icon-button"
+              aria-label={t.t('close')}
+              onClick={() => setNote(undefined)}
+            >
+              <X size={16} />
+            </button>
+          </div>
+        </div>
+      )}
       {picked && !pick && (
         <div className="place-card" role="dialog" aria-label={pickedLabel}>
           <div className="place-card__text">

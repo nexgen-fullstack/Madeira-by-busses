@@ -98,6 +98,64 @@ export function boardingStops(net: Network, direction: Direction): number[] {
 const LOOKAHEAD = 28;
 
 /**
+ * The days to read a week from: each weekday's first ordinary (non-holiday) date on or
+ * after `from` (0 = Monday; missing past the end of the timetable), and the first public
+ * holiday among them.
+ */
+export function weekDates(
+  net: Network,
+  from: string,
+): { dates: (string | undefined)[]; holiday?: string } {
+  const until = net.bundle.validity.to;
+  const holidays = new Set<string>();
+  for (const year of new Set([from, addDays(from, LOOKAHEAD)].map((d) => Number(d.slice(0, 4)))))
+    for (const h of madeiraHolidays(year)) holidays.add(h.date);
+  const dates: (string | undefined)[] = Array.from({ length: 7 });
+  let holiday: string | undefined;
+  for (let i = 0; i < LOOKAHEAD; i++) {
+    const d = addDays(from, i);
+    if (d > until) break;
+    if (holidays.has(d)) holiday ??= d;
+    else dates[weekday(d)] ??= d;
+  }
+  return { dates, holiday };
+}
+
+/**
+ * Weekdays whose `read` is the same share a group; holidays join the group whose they
+ * have, or Sunday's.
+ */
+export function groupWeek<T>(
+  net: Network,
+  from: string,
+  read: (date: string) => { key: string; value: T },
+): {
+  groups: { days: number[]; holidays: boolean; value: T }[];
+  basis: { from: string; to: string };
+} {
+  const { dates, holiday } = weekDates(net, from);
+  const groups: { days: number[]; holidays: boolean; value: T; key: string }[] = [];
+  dates.forEach((date, day) => {
+    // Past the end of the timetable nothing is known, not even "no buses".
+    if (!date) return;
+    const { key, value } = read(date);
+    const same = groups.find((g) => g.key === key);
+    if (same) same.days.push(day);
+    else groups.push({ key, days: [day], holidays: false, value });
+  });
+  const holidayKey = holiday ? read(holiday).key : undefined;
+  const onHolidays =
+    groups.find((g) => holidayKey !== undefined && g.key === holidayKey) ??
+    groups.find((g) => g.days.includes(6));
+  if (onHolidays) onHolidays.holidays = true;
+  const used = dates.filter((d): d is string => d !== undefined).sort();
+  return {
+    groups: groups.map(({ days, holidays, value }) => ({ days, holidays, value })),
+    basis: { from: used[0] ?? from, to: used[used.length - 1] ?? from },
+  };
+}
+
+/**
  * The week at a stop: weekdays with identical departures share a column. Each
  * weekday is read from its first ordinary (non-holiday) date on or after
  * `from`; holidays join the column whose departures they have, or Sunday's.
@@ -108,45 +166,13 @@ export function weekTimetable(
   stop: number,
   from: string,
 ): { groups: DayGroup[]; basis: { from: string; to: string } } {
-  const until = net.bundle.validity.to;
-  const years = new Set<number>();
-  const holidayDates = new Set<string>();
-  const isHoliday = (iso: string) => {
-    const year = Number(iso.slice(0, 4));
-    if (!years.has(year)) {
-      years.add(year);
-      for (const h of madeiraHolidays(year)) holidayDates.add(h.date);
-    }
-    return holidayDates.has(iso);
-  };
-  const dates: (string | undefined)[] = Array.from({ length: 7 });
-  let holiday: string | undefined;
-  for (let i = 0; i < LOOKAHEAD; i++) {
-    const d = addDays(from, i);
-    if (d > until) break;
-    if (isHoliday(d)) holiday ??= d;
-    else dates[weekday(d)] ??= d;
-  }
-  const key = (deps: StopDeparture[]) => deps.map((d) => `${d.time}@${d.terminus}`).join(',');
-  const groups: (DayGroup & { key: string })[] = [];
-  dates.forEach((date, day) => {
-    // Past the end of the timetable nothing is known, not even "no buses".
-    if (!date) return;
+  const { groups, basis } = groupWeek(net, from, (date) => {
     const departures = stopDepartures(net, patterns, stop, date);
-    const k = key(departures);
-    const same = groups.find((g) => g.key === k);
-    if (same) same.days.push(day);
-    else groups.push({ key: k, days: [day], holidays: false, departures });
+    return { key: departures.map((d) => `${d.time}@${d.terminus}`).join(','), value: departures };
   });
-  const holidayKey = holiday ? key(stopDepartures(net, patterns, stop, holiday)) : undefined;
-  const onHolidays =
-    groups.find((g) => holidayKey !== undefined && g.key === holidayKey) ??
-    groups.find((g) => g.days.includes(6));
-  if (onHolidays) onHolidays.holidays = true;
-  const used = dates.filter((d): d is string => d !== undefined).sort();
   return {
-    groups: groups.map(({ days, holidays: h, departures }) => ({ days, holidays: h, departures })),
-    basis: { from: used[0] ?? from, to: used[used.length - 1] ?? from },
+    groups: groups.map(({ days, holidays, value }) => ({ days, holidays, departures: value })),
+    basis,
   };
 }
 
