@@ -9,8 +9,13 @@ import { load, save } from './storage.ts';
  * changes under a passenger's fingers.
  */
 
-/** The published timetable, e.g. https://…github.io/Madeira-by-busses/data/network.json */
-const REMOTE: string | undefined = import.meta.env.VITE_REMOTE_DATA || undefined;
+/**
+ * Where the published timetable is, e.g. https://…github.io/Madeira-by-busses/data/network.json,
+ * and other copies of it to try when that one is unreachable (space-separated).
+ */
+const REMOTES: string[] = (import.meta.env.VITE_REMOTE_DATA ?? '').split(/\s+/).filter(Boolean);
+/** The cache keeps a download under the first address, whichever copy it came from. */
+const REMOTE: string | undefined = REMOTES[0];
 const CACHE = 'madeirabus-data';
 const META_KEY = 'madeirabus.remoteData.v1';
 /** Check the website at most this often. */
@@ -62,12 +67,8 @@ export async function refreshRemote(current: string): Promise<void> {
   const meta = load<Meta | null>(META_KEY, null);
   if (meta && Date.now() - meta.checkedAt < CHECK_EVERY) return;
   try {
-    const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), 60_000);
-    const res = await fetch(REMOTE, { cache: 'no-store', signal: ctrl.signal });
-    clearTimeout(timer);
-    if (!res.ok) return;
-    const text = await res.text();
+    const text = await download();
+    if (text === undefined) return;
     const bundle = JSON.parse(text) as { format?: string; generatedAt?: string; demo?: boolean };
     const generatedAt = bundle.generatedAt ?? '';
     if (bundle.format === 'madeirabus.network' && !bundle.demo && generatedAt > current) {
@@ -86,4 +87,22 @@ export async function refreshRemote(current: string): Promise<void> {
   } catch {
     // Offline or the website is down: try again next time.
   }
+}
+
+/** The published timetable from the first copy that answers with one. */
+async function download(): Promise<string | undefined> {
+  for (const url of REMOTES) {
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 60_000);
+      const res = await fetch(url, { cache: 'no-store', signal: ctrl.signal });
+      clearTimeout(timer);
+      if (!res.ok) continue;
+      const text = await res.text();
+      if (text.trimStart().startsWith('{')) return text;
+    } catch {
+      // This copy is unreachable: the next one.
+    }
+  }
+  return undefined;
 }

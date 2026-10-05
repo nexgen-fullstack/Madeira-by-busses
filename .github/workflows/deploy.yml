@@ -45,6 +45,10 @@ jobs:
           mode=$(gh api "repos/${{ github.repository }}/pages" --jq .build_type 2>/dev/null) || mode=off
           echo "mode=$mode" >> "$GITHUB_OUTPUT"
           echo "GitHub Pages: $mode"
+          branch=$(gh api "repos/${{ github.repository }}/pages" --jq .source.branch 2>/dev/null) || branch=""
+          if [ "$mode" = "legacy" ] && [ -n "$branch" ] && [ "$branch" != "gh-pages" ]; then
+            echo "::warning title=GitHub Pages shows the $branch branch::The app is published on gh-pages. Settings → Pages → Deploy from a branch → gh-pages, / (root)."
+          fi
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
