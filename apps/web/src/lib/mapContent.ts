@@ -58,12 +58,23 @@ export const WAY_YELLOW = '#FFE600';
 export const WAY_TURQUOISE = '#00E8D5';
 /** The ring round the stops on those ways. */
 const INK = '#14181F';
+/**
+ * Each bus of a route in a neon of its own, the first in the yellow of a chosen way:
+ * where one bus ends and the next begins shows on the map.
+ */
+export const RIDE_COLORS = [WAY_YELLOW, '#FF3DF0', WAY_TURQUOISE, '#FF8A00', '#7CFF3A'];
+export const rideColor = (ride: number) => RIDE_COLORS[ride % RIDE_COLORS.length]!;
+/** Where each bus of a route is boarded: a big red dot. */
+export const RIDE_START = '#E53935';
+/** Where each bus of a route is left: a dark blue dot. */
+export const RIDE_END = '#0D2A6B';
 
 const routeColor = (net: Network, route: number) => `#${net.routes[route]!.color}`;
 
 /**
- * A route on the map, its buses in neon yellow with arrows the way they go; `focus`
- * brings one of its legs close up. A route `chosen` to take is shown alone.
+ * A route on the map, each of its buses in a neon of its own with arrows the way it goes,
+ * a red dot where it is boarded and a dark blue one where it is left; `focus` brings one
+ * of its legs close up. A route `chosen` to take is shown alone.
  */
 export function itineraryContent(
   net: Network,
@@ -73,7 +84,8 @@ export function itineraryContent(
 ): MapContent {
   const lines: MapLine[] = [];
   const points: MapPoint[] = [];
-  it.legs.forEach((leg, i) => {
+  let ride = 0;
+  it.legs.forEach((leg) => {
     if (leg.kind === 'walk') {
       // Along the streets when the walking network is loaded.
       lines.push({ coords: leg.path ?? [leg.from, leg.to], color: '#002F85', dashed: true });
@@ -81,24 +93,24 @@ export function itineraryContent(
     }
     lines.push({
       coords: net.rideShape(leg.pattern, leg.boardPos, leg.alightPos),
-      color: WAY_YELLOW,
+      color: rideColor(ride++),
       width: 6,
       label: net.routes[leg.route]!.short,
       arrows: true,
     });
-    const prevRide = it.legs.slice(0, i).some((l) => l.kind === 'ride');
-    const nextRide = it.legs.slice(i + 1).some((l) => l.kind === 'ride');
     points.push({
       ...leg.from,
-      kind: prevRide ? 'transfer' : 'board',
-      color: INK,
+      kind: 'board',
+      color: '#ffffff',
+      fill: RIDE_START,
       label: leg.from.name,
       stops: [leg.from.stop!],
     });
     points.push({
       ...leg.to,
-      kind: nextRide ? 'transfer' : 'alight',
-      color: INK,
+      kind: 'alight',
+      color: '#ffffff',
+      fill: RIDE_END,
       label: leg.to.name,
       stops: [leg.to.stop!],
     });

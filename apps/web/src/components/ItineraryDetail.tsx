@@ -19,6 +19,7 @@ import { useI18n, type Key } from '../i18n.ts';
 import { isNative, remind } from '../lib/device.ts';
 import { clock, duration, longDate, price } from '../lib/format.ts';
 import { fareRides, isExpress, ridesOf } from '../lib/itinerary.ts';
+import { rideColor } from '../lib/mapContent.ts';
 import { useNow } from '../lib/useNow.ts';
 import { useApp, useNetwork } from '../state/app.tsx';
 import { RideTimetable } from './RideTimetable.tsx';
@@ -185,6 +186,11 @@ export function ItineraryDetail({ it, date, onFocusLeg, onBack, onStart, onShare
                 <div>
                   <div className="strong">{leg.from.name}</div>
                   <div className="timeline__route">
+                    <span
+                      className="way-swatch"
+                      style={{ background: rideColor(ridesOf(it).indexOf(leg)) }}
+                      aria-hidden
+                    />
                     <RouteBadge route={route} size="sm" />{' '}
                     {t.t('detail.towards', { h: leg.headsign })}
                   </div>

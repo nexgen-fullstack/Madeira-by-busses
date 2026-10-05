@@ -1,7 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import type { Itinerary, Network } from '@madeirabus/engine';
 import type { Direction } from './lines.ts';
-import { itineraryContent, routeContent, WAY_TURQUOISE, WAY_YELLOW } from './mapContent.ts';
+import {
+  itineraryContent,
+  RIDE_COLORS,
+  RIDE_END,
+  RIDE_START,
+  routeContent,
+  WAY_TURQUOISE,
+  WAY_YELLOW,
+} from './mapContent.ts';
 
 // Line 207 from Funchal to Ribeira Brava, and back with its stops across the road.
 const stop = (name: string, lon: number, lat = 32.65) => ({ name, lat, lon });
@@ -125,5 +133,24 @@ describe('a route on the map', () => {
     expect(chosen).toBeDefined();
     // A step brought close up is still the same route.
     expect(itineraryContent(net, it207, 0, true).focus).toBe(chosen);
+  });
+
+  it('gives each bus its own colour, red where it is boarded and dark blue where left', () => {
+    // There on the 207 and back on it: two buses, changing at Ribeira Brava.
+    const back = { ...it207.legs[0]!, pattern: 1, from: ride(2), to: ride(4) };
+    const twoBuses = { ...it207, legs: [it207.legs[0]!, back] } as Itinerary;
+    const c = itineraryContent(net, twoBuses);
+    expect(c.lines.map((l) => [l.color, l.arrows])).toEqual([
+      [RIDE_COLORS[0], true],
+      [RIDE_COLORS[1], true],
+    ]);
+    expect(RIDE_COLORS[0]).not.toBe(RIDE_COLORS[1]);
+    const dots = c.points.filter((p) => p.kind === 'board' || p.kind === 'alight');
+    expect(dots.map((p) => [p.kind, p.fill, p.stops?.[0]])).toEqual([
+      ['board', RIDE_START, 0],
+      ['alight', RIDE_END, 2],
+      ['board', RIDE_START, 2],
+      ['alight', RIDE_END, 4],
+    ]);
   });
 });
