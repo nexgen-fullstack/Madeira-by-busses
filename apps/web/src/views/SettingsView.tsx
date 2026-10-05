@@ -12,7 +12,7 @@ import { useApp } from '../state/app.tsx';
 /** The latest Android build, published by the "Android app" workflow. */
 const APK_URL =
   import.meta.env.VITE_ANDROID_APK ||
-  'https://github.com/nexgen-fullstack/madeirabus/releases/latest/download/Madeira-by-busses.apk';
+  'https://github.com/nexgen-fullstack/Madeira-by-busses/releases/latest/download/Madeira-by-busses.apk';
 
 /** Install the website as an app, or download the Android app. */
 function InstallCard() {

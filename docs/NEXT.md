@@ -10,8 +10,8 @@
 
 Уся робота зібрана в основній гілці `claude/ecstatic-knuth-std4r7`; з неї щоразу оновлюються:
 
-- сайт https://nexgen-fullstack.github.io/madeirabus/ (workflow **Deploy website**);
-- застосунок https://github.com/nexgen-fullstack/madeirabus/releases/latest/download/Madeira-by-busses.apk і пакет для Google Play `Madeira-by-busses.aab` (workflow **Android app**). Давнє посилання `…/MadeiraBus.apk` теж веде на новий застосунок.
+- сайт https://nexgen-fullstack.github.io/Madeira-by-busses/ (workflow **Deploy website**);
+- застосунок https://github.com/nexgen-fullstack/Madeira-by-busses/releases/latest/download/Madeira-by-busses.apk і пакет для Google Play `Madeira-by-busses.aab` (workflow **Android app**). Давнє посилання `…/MadeiraBus.apk` теж веде на новий застосунок.
 
 Що зроблено:
 
@@ -46,7 +46,7 @@
 
 ## Публікація в Google Play
 
-Готово: пакет `.aab` у кожному релізі, графіка, скриншоти, описи й відповіді для анкет у [branding/play/README.md](../branding/play/README.md), політика конфіденційності https://nexgen-fullstack.github.io/madeirabus/privacy.html.
+Готово: пакет `.aab` у кожному релізі, графіка, скриншоти, описи й відповіді для анкет у [branding/play/README.md](../branding/play/README.md), політика конфіденційності https://nexgen-fullstack.github.io/Madeira-by-busses/privacy.html.
 
 Лишилося власникові:
 

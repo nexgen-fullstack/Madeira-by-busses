@@ -25,7 +25,8 @@ const CRAWL_HOSTS = new Set(SEEDS.map((u) => new URL(u).host));
 const MAX_PAGES = 600;
 const MAX_PDFS = 500;
 const MAX_PDF_BYTES = 25 * 1024 * 1024;
-const UA = 'MadeiraBus timetable collector (+https://github.com/nexgen-fullstack/madeirabus)';
+const UA =
+  'MadeiraBus timetable collector (+https://github.com/nexgen-fullstack/Madeira-by-busses)';
 // Bounding box of the archipelago (Madeira and Porto Santo).
 const BBOX = '32.35,-17.35,33.15,-16.25';
 

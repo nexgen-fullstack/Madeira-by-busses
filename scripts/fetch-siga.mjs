@@ -23,7 +23,8 @@ import { join } from 'node:path';
 
 const OUT = process.argv[2] ?? 'data/sources/siga';
 const BASE = 'https://sigadev.imt.madeira.gov.pt';
-const UA = 'MadeiraBus timetable collector (+https://github.com/nexgen-fullstack/madeirabus)';
+const UA =
+  'MadeiraBus timetable collector (+https://github.com/nexgen-fullstack/Madeira-by-busses)';
 const PAUSE = 700;
 /** Horários do Funchal publishes a GTFS feed of its own (agency 1 on SIGA). */
 const SKIP_AGENCIES = new Set([1]);

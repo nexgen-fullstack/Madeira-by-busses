@@ -4,13 +4,13 @@
 
 | Що                               | Файл / значення                                                                                                                            |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| Пакет для завантаження           | `Madeira-by-busses.aab` з [останнього релізу](https://github.com/nexgen-fullstack/madeirabus/releases/latest)                              |
+| Пакет для завантаження           | `Madeira-by-busses.aab` з [останнього релізу](https://github.com/nexgen-fullstack/Madeira-by-busses/releases/latest)                       |
 | Іконка 512×512                   | [`icon-512.png`](icon-512.png)                                                                                                             |
 | Банер (feature graphic) 1024×500 | [`feature-graphic.png`](feature-graphic.png)                                                                                               |
 | Скриншоти телефона 1080×2160     | [`screenshots/`](screenshots/)                                                                                                             |
 | Назва                            | **Madeira by busses** (однакова для всіх мов)                                                                                              |
 | Категорія                        | Карти й навігація (Maps & Navigation)                                                                                                      |
-| Політика конфіденційності        | https://nexgen-fullstack.github.io/madeirabus/privacy.html                                                                                 |
+| Політика конфіденційності        | https://nexgen-fullstack.github.io/Madeira-by-busses/privacy.html                                                                          |
 | Реклама                          | Немає                                                                                                                                      |
 | Безпека даних (Data safety)      | Дані не збираються й не передаються: геопозиція обробляється лише на пристрої. Шифрування передачі — так (https). Видалення — не потрібне. |
 | Вікова категорія                 | Для всіх (анкета IARC: без насильства, покупок, спілкування користувачів)                                                                  |

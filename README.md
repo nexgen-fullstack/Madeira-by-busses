@@ -11,10 +11,10 @@
 > Розклади CAM і SIGA Rodoeste — наступний крок (див. [docs/NEXT.md](docs/NEXT.md) і [docs/data.md](docs/data.md)). Поки їх немає, застосунок прямо про це каже.
 > Для показу всього острова в налаштуваннях є **демо-мережа**: місця справжні, розклад вигаданий, позначена банером «ДЕМО».
 
-**Сайт:** https://nexgen-fullstack.github.io/madeirabus/
+**Сайт:** https://nexgen-fullstack.github.io/Madeira-by-busses/
 
-**Застосунок для Android:** [завантажити Madeira-by-busses.apk](https://github.com/nexgen-fullstack/madeirabus/releases/latest/download/Madeira-by-busses.apk) — відкрийте посилання на телефоні, встановіть файл і дозвольте встановлення з цього джерела. Нові версії ставляться поверх старої (і поверх давнього MadeiraBus).
-**Для Google Play:** [Madeira-by-busses.aab](https://github.com/nexgen-fullstack/madeirabus/releases/latest/download/Madeira-by-busses.aab) — пакет для Play Console; іконка, банер, скриншоти й тексти сторінки — у [branding/play](branding/play/README.md).
+**Застосунок для Android:** [завантажити Madeira-by-busses.apk](https://github.com/nexgen-fullstack/Madeira-by-busses/releases/latest/download/Madeira-by-busses.apk) — відкрийте посилання на телефоні, встановіть файл і дозвольте встановлення з цього джерела. Нові версії ставляться поверх старої (і поверх давнього MadeiraBus).
+**Для Google Play:** [Madeira-by-busses.aab](https://github.com/nexgen-fullstack/Madeira-by-busses/releases/latest/download/Madeira-by-busses.aab) — пакет для Play Console; іконка, банер, скриншоти й тексти сторінки — у [branding/play](branding/play/README.md).
 **iPhone:** відкрийте сайт у Safari → «Поділитися» → «На початковий екран».
 
 | Старт                                | Краєвиди                                  | Curral das Freiras: маршрут і розклад                     |

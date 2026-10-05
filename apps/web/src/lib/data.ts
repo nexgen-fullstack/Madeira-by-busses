@@ -9,7 +9,7 @@ import { load, save } from './storage.ts';
  * changes under a passenger's fingers.
  */
 
-/** The published timetable, e.g. https://…github.io/madeirabus/data/network.json */
+/** The published timetable, e.g. https://…github.io/Madeira-by-busses/data/network.json */
 const REMOTE: string | undefined = import.meta.env.VITE_REMOTE_DATA || undefined;
 const CACHE = 'madeirabus-data';
 const META_KEY = 'madeirabus.remoteData.v1';
