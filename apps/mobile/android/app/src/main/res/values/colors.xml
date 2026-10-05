@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- The blue of the Madeira by busses logo. -->
-    <color name="brand">#0B3A8E</color>
-    <color name="colorPrimary">#0B3A8E</color>
-    <color name="colorPrimaryDark">#072A6B</color>
-    <color name="colorAccent">#FFB81C</color>
+    <!-- The colours of the Madeira by busses logo: the navy of its road (the status bar,
+         beside the app's header), the azure glow round its tile (the splash screen) and the
+         yellow of "Madeira". -->
+    <color name="brand">#002F85</color>
+    <color name="splash">#0056C7</color>
+    <color name="colorPrimary">#002F85</color>
+    <color name="colorPrimaryDark">#001F5C</color>
+    <color name="colorAccent">#FFD400</color>
 </resources>

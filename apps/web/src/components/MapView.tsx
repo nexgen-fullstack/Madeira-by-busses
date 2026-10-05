@@ -55,18 +55,47 @@ interface PickedStop extends LatLon {
   name: string;
 }
 
-/** The red pin of a maps app: where the journey goes, a dropped pin, the spot being chosen. */
+/**
+ * The pin of a maps app in the yellow of the logo's pin: where the journey goes, a dropped
+ * pin, the spot being chosen. Pressed, it turns turquoise (colours in styles.css).
+ */
+const PIN_PATH =
+  'M14 1C6.8 1 1 6.8 1 14c0 9.6 11.2 22.6 12.2 23.8a1 1 0 0 0 1.6 0C15.8 36.6 27 23.6 27 14 27 6.8 21.2 1 14 1z';
 const PIN_SVG = `<svg viewBox="0 0 28 40" width="28" height="40" aria-hidden="true">
-<path d="M14 1C6.8 1 1 6.8 1 14c0 9.6 11.2 22.6 12.2 23.8a1 1 0 0 0 1.6 0C15.8 36.6 27 23.6 27 14 27 6.8 21.2 1 14 1z" fill="#EA4335" stroke="#B3261E" stroke-width="1.5"/>
-<circle cx="14" cy="14" r="5" fill="#7A1A12"/></svg>`;
+<path class="map-pin__body" d="${PIN_PATH}"/>
+<path class="map-pin__shade" d="M14 1C21.2 1 27 6.8 27 14c0 9.6-11.2 22.6-12.2 23.8l-.8.4z"/>
+<path class="map-pin__edge" d="${PIN_PATH}"/>
+<ellipse class="map-pin__shine" cx="9.2" cy="8.2" rx="3.4" ry="1.9" transform="rotate(-38 9.2 8.2)"/>
+<circle class="map-pin__dot" cx="14" cy="14" r="5"/></svg>`;
 /** lucide "bus", for the button that shows every stop and line. */
 const BUS_SVG = `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6v6"/><path d="M15 6v6"/><path d="M2 12h19.6"/><path d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-1.4-5C20.1 6.8 19.1 6 18 6H4a2 2 0 0 0-2 2v10h3"/><circle cx="7" cy="18" r="2"/><path d="M9 18h5"/><circle cx="16" cy="18" r="2"/></svg>`;
 
-function pinElement(className = ''): HTMLElement {
+/**
+ * A pin for a marker. Turquoise while pressed; a tap chooses it (it stays turquoise) or lets it
+ * go again, and a tap anywhere else on the map lets it go too.
+ */
+function pinElement(): HTMLElement {
   const el = document.createElement('div');
-  el.className = `map-pin ${className}`;
+  el.className = 'map-pin';
   el.innerHTML = PIN_SVG;
+  const release = () => el.classList.remove('map-pin--pressed');
+  el.addEventListener('pointerdown', () => el.classList.add('map-pin--pressed'));
+  el.addEventListener('pointerup', release);
+  el.addEventListener('pointercancel', release);
+  el.addEventListener('pointerleave', release);
+  el.addEventListener('click', (e) => {
+    // The map under the pin would take the tap for one elsewhere (or for the stop beneath).
+    e.stopPropagation();
+    el.classList.toggle('map-pin--chosen');
+  });
   return el;
+}
+
+/** A tap on the map away from the pins: none of them is chosen any more. */
+function releasePins(map: MapLibreMap) {
+  for (const pin of map.getCanvasContainer().querySelectorAll('.map-pin--chosen')) {
+    pin.classList.remove('map-pin--chosen');
+  }
 }
 
 /** A map button (in the column of zoom and location buttons) that shows every stop and line. */
@@ -118,7 +147,7 @@ function toGeoJson(content: MapContent) {
         type: 'Feature' as const,
         properties: {
           kind: p.kind,
-          color: p.color ?? '#0B3A8E',
+          color: p.color ?? '#002F85',
           label: p.label ?? '',
           stops: (p.stops ?? []).join(','),
         },
@@ -154,7 +183,7 @@ function addOverlay(map: MapLibreMap) {
     paint: {
       'circle-radius': ['interpolate', ['linear'], ['zoom'], 9, 1.4, 12, 2.6, 14, 4, 17, 7],
       'circle-color': '#ffffff',
-      'circle-stroke-color': '#0B3A8E',
+      'circle-stroke-color': '#002F85',
       'circle-stroke-width': ['interpolate', ['linear'], ['zoom'], 9, 0.8, 14, 2],
     },
   });
@@ -192,7 +221,7 @@ function addOverlay(map: MapLibreMap) {
     id: 'mb-point',
     type: 'circle',
     source: 'mb-points',
-    // The destination is the red pin (a marker), not a circle.
+    // The destination is the yellow pin (a marker), not a circle.
     filter: ['!=', ['get', 'kind'], 'destination'],
     paint: {
       // The stops along a line are dots that grow as the map comes closer: zoomed out,
@@ -257,7 +286,7 @@ function addOverlay(map: MapLibreMap) {
         'text-optional': true,
         'text-font': ['Noto Sans Regular'],
       },
-      paint: { 'text-color': '#0B3A8E', 'text-halo-color': '#ffffff', 'text-halo-width': 1.5 },
+      paint: { 'text-color': '#002F85', 'text-halo-color': '#ffffff', 'text-halo-width': 1.5 },
     });
     // The number of the bus along its line, as a maps app writes it.
     map.addLayer({
@@ -398,6 +427,7 @@ export default function MapView({ className }: { className?: string }) {
       apply(map, contentRef.current, fitted);
     });
     map.on('click', (e: MapMouseEvent) => {
+      releasePins(map);
       const box: [[number, number], [number, number]] = [
         [e.point.x - 8, e.point.y - 8],
         [e.point.x + 8, e.point.y + 8],
@@ -513,7 +543,7 @@ export default function MapView({ className }: { className?: string }) {
     if (map && ready) applyTransit(map, transit, layers.transit);
   }, [transit, layers.transit, ready, t]);
 
-  // The red pin where the journey goes.
+  // The yellow pin where the journey goes.
   const destination = content.points.find((p) => p.kind === 'destination');
   useMarker(mapRef, ready, destination);
   // And on a place tapped or a pin dropped.
@@ -645,7 +675,7 @@ export default function MapView({ className }: { className?: string }) {
   );
 }
 
-/** Keeps a red pin on the map at `at`, or none. */
+/** Keeps a yellow pin on the map at `at`, or none. */
 function useMarker(
   mapRef: { current: MapLibreMap | null },
   ready: boolean,

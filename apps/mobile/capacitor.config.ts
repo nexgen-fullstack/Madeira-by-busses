@@ -10,7 +10,7 @@ const config: CapacitorConfig = {
   appId: 'io.github.nexgenfullstack.madeirabus',
   appName: 'Madeira by busses',
   webDir: '../web/dist',
-  backgroundColor: '#F6F7F9',
+  backgroundColor: '#F3F7FC',
   android: {
     // Map tiles and the timetable update come over https only.
     allowMixedContent: false,
@@ -19,12 +19,12 @@ const config: CapacitorConfig = {
     SplashScreen: {
       launchShowDuration: 600,
       launchAutoHide: true,
-      backgroundColor: '#0B3A8E',
+      backgroundColor: '#0056C7',
       showSpinner: false,
     },
     LocalNotifications: {
       smallIcon: 'ic_stat_bus',
-      iconColor: '#0B3A8E',
+      iconColor: '#0066DD',
     },
     // Android 15+ draws the app edge to edge; the page pads itself with the
     // safe-area insets and the bar icons follow the light/dark theme.

@@ -94,8 +94,8 @@ function Shell() {
     <div className={`app ${head === 'trip' ? 'app--trip' : ''}${pick ? ' app--picking' : ''}`}>
       <header className="topbar">
         <a className="brand" href="#/plan" aria-label={APP_NAME}>
-          <img className="brand__mark" src="brand-mark.png" alt="" width={57} height={36} />
-          <img className="brand__words" src="brand-words.png" alt="" width={84} height={34} />
+          <img className="brand__mark" src="brand-mark.png" alt="" width={38} height={38} />
+          <img className="brand__words" src="brand-words.png" alt="" width={84} height={37} />
         </a>
         {demo && <span className="badge badge--demo">{t.t('demo.badge')}</span>}
         {trip && head !== 'trip' && (

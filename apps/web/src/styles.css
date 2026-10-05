@@ -1,17 +1,21 @@
 :root {
-  /* The blues and the sun of the Madeira by busses logo. */
-  --brand: #0a5bc4;
-  --brand-strong: #073f94;
-  --brand-soft: #e6f0fc;
-  --accent: #ffb61c;
-  --navy: #0b3a8e;
-  --sky: #33b4ff;
-  --bg: #f4f6fa;
+  /* The colours of the Madeira by busses logo: its azure glow and navy road,
+     the yellow of "Madeira" and its pin, the cyan wave under it. */
+  --brand: #0066dd;
+  --brand-strong: #004fb5;
+  --brand-soft: #e3f1ff;
+  --accent: #ffd400;
+  --accent-strong: #ffc400;
+  --navy: #002f85;
+  --sky: #02c3fd;
+  /* A pin being pressed or chosen on the map. */
+  --turquoise: #16c7d0;
+  --bg: #f3f7fc;
   --surface: #ffffff;
-  --surface-2: #f0f3f6;
+  --surface-2: #eef3f9;
   --text: #14181f;
   --muted: #5b6573;
-  --border: #e1e6ec;
+  --border: #dfe7f0;
   --danger: #c62828;
   --warn-bg: #fff4dc;
   --warn: #8a5300;
@@ -25,10 +29,10 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --brand: #5aa9ff;
-    --brand-strong: #8cc4ff;
-    --brand-soft: #10264a;
-    --navy: #082a6a;
+    --brand: #4db0ff;
+    --brand-strong: #8ccbff;
+    --brand-soft: #0c2550;
+    --navy: #001f5c;
     --bg: #0d1117;
     --surface: #161b22;
     --surface-2: #1d232c;
@@ -97,10 +101,29 @@ h3 {
   gap: 10px;
   padding: 8px 16px;
   padding-top: max(8px, env(safe-area-inset-top));
-  /* The logo's tile: bright sky blue at the top left, deep blue below. */
-  background: linear-gradient(115deg, #0a6fd8 0%, var(--navy) 55%, #072a6b 100%);
+  /* As in the logo: the yellow lettering on the navy road, the azure glow beyond,
+     and the cyan wave along the bottom. */
+  position: relative;
+  background: linear-gradient(100deg, #002f85 0%, #0047b3 48%, #0a74e0 82%, #0a9cf0 100%);
   color: #fff;
   z-index: 2;
+}
+.topbar::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    rgb(2 195 253 / 0%) 0%,
+    #02c3fd 18%,
+    #95fcfe 50%,
+    #02c3fd 82%,
+    rgb(2 195 253 / 0%) 100%
+  );
+  pointer-events: none;
 }
 .map {
   grid-area: map;
@@ -152,10 +175,11 @@ h3 {
   width: auto;
 }
 .brand__mark {
-  height: 36px;
+  height: 38px;
+  filter: drop-shadow(0 0 6px rgb(2 195 253 / 45%));
 }
 .brand__words {
-  height: 34px;
+  height: 37px;
 }
 
 .tabbar__item {
@@ -520,8 +544,8 @@ input:focus-visible {
 .about__logo {
   width: 64px;
   height: 64px;
-  border-radius: 15px;
   flex: none;
+  filter: drop-shadow(0 4px 10px rgb(0 47 133 / 25%));
 }
 .about__name {
   margin: 0 0 2px;
@@ -541,8 +565,8 @@ input:focus-visible {
 .splash__logo {
   width: 112px;
   height: 112px;
-  border-radius: 26px;
-  box-shadow: 0 10px 30px rgb(7 42 107 / 30%);
+  /* The logo's tile has its own rounded shape (logo.png is transparent round it). */
+  filter: drop-shadow(0 10px 18px rgb(0 47 133 / 30%));
   animation: breathe 1.8s ease-in-out infinite;
 }
 @keyframes breathe {
@@ -1397,15 +1421,60 @@ input[type='time'],
   }
 }
 
-/* The red pin of a maps app: destination, dropped pin, the spot being chosen. */
+/* The pin of a maps app, yellow and glossy like the logo's pin: destination, dropped pin,
+   the spot being chosen. Pressed or chosen (and lifted while the map moves under it), it
+   turns turquoise. */
 .map-pin {
+  --pin-face: var(--accent);
+  --pin-shade: #ffb300;
+  --pin-edge: #a65a00;
   width: 28px;
   height: 40px;
   filter: drop-shadow(0 2px 2px rgb(0 0 0 / 35%));
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.map-pin:active,
+.map-pin--pressed,
+.map-pin--chosen,
+.map-center-pin--lifted .map-pin {
+  --pin-face: var(--turquoise);
+  --pin-shade: #0ea9b5;
+  --pin-edge: #05707a;
 }
 .map-pin svg {
   display: block;
+  overflow: visible;
+  transform-origin: 50% 100%;
+  transition: transform 0.15s ease-out;
+}
+.map-pin--chosen svg {
+  transform: scale(1.18);
+}
+.map-pin__body {
+  fill: var(--pin-face);
+}
+.map-pin__shade {
+  fill: var(--pin-shade);
+}
+.map-pin__body,
+.map-pin__shade,
+.map-pin__edge {
+  transition:
+    fill 0.15s,
+    stroke 0.15s;
+}
+.map-pin__edge {
+  fill: none;
+  stroke: var(--pin-edge);
+  stroke-width: 1.5;
+}
+.map-pin__shine {
+  fill: #ffffff;
+  opacity: 0.6;
+}
+.map-pin__dot {
+  fill: #002f85;
 }
 /* The pin over the middle of the map while choosing a place; the map moves under it. */
 .map-center-pin {
@@ -1478,7 +1547,7 @@ input[type='time'],
 }
 .mb-transit-button[aria-pressed='true'] {
   color: #ffffff;
-  background: #0b3a8e !important;
+  background: #002f85 !important;
 }
 
 /* "Choose on the map": what to do, over the map. */

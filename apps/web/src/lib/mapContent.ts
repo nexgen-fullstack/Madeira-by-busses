@@ -40,7 +40,7 @@ export function itineraryContent(net: Network, it: Itinerary, focus?: number): M
   it.legs.forEach((leg, i) => {
     if (leg.kind === 'walk') {
       // Along the streets when the walking network is loaded.
-      lines.push({ coords: leg.path ?? [leg.from, leg.to], color: '#0B3A8E', dashed: true });
+      lines.push({ coords: leg.path ?? [leg.from, leg.to], color: '#002F85', dashed: true });
       return;
     }
     const color = routeColor(net, leg.route);
@@ -74,7 +74,7 @@ export function itineraryContent(net: Network, it: Itinerary, focus?: number): M
   const first = it.legs[0];
   const last = it.legs[it.legs.length - 1];
   if (first?.kind === 'walk') points.push({ ...first.from, kind: 'origin', color: '#14181F' });
-  // The red pin where the journey ends, as in a maps app (at the last stop when it ends there).
+  // The yellow pin where the journey ends, as in a maps app (at the last stop when it ends there).
   if (last) {
     points.push({
       lat: last.to.lat,
@@ -150,7 +150,7 @@ export function stopsContent(groups: StopGroup[], user?: LatLon, fitKey = 'stops
     lat: g.lat,
     lon: g.lon,
     kind: 'stop',
-    color: '#0B3A8E',
+    color: '#002F85',
     label: g.name,
     stops: g.stops,
   }));

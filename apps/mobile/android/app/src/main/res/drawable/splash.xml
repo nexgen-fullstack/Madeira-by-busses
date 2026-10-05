@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Launch screen before Android 12: the brand's blue with the logo in the middle. -->
+<!-- Launch screen before Android 12: the logo in the middle of its azure glow. -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@color/brand" />
+    <item android:drawable="@color/splash" />
     <item
         android:width="288dp"
         android:height="288dp"

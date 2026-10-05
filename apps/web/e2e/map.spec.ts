@@ -95,6 +95,21 @@ test('a dropped pin becomes the destination', async ({ page }) => {
   await expect(page.getByRole('combobox', { name: 'Куди' })).toHaveValue('Точка на карті');
 });
 
+test('the pin is the yellow of the logo, and turquoise once tapped', async ({ page }) => {
+  await page.goto('./#/plan');
+  await page.waitForSelector('.map-canvas canvas');
+  await page.waitForTimeout(1000);
+  await page.locator('.map-canvas canvas').click({ button: 'right', position: { x: 160, y: 140 } });
+  const pin = page.locator('.maplibregl-marker.map-pin');
+  const face = () => pin.locator('.map-pin__body').evaluate((el) => getComputedStyle(el).fill);
+  await expect.poll(face).toBe('rgb(255, 212, 0)');
+  await pin.click();
+  await expect(pin).toHaveClass(/map-pin--chosen/);
+  await expect.poll(face).toBe('rgb(22, 199, 208)');
+  // The tap stays on the pin: the map under it does not take it for a tap elsewhere.
+  await expect(page.getByRole('dialog', { name: 'Точка на карті' })).toBeVisible();
+});
+
 test('the start of a trip can be chosen on the map', async ({ page }) => {
   await page.goto('./#/plan');
   await page.waitForSelector('.map-canvas canvas');
@@ -104,7 +119,7 @@ test('the start of a trip can be chosen on the map', async ({ page }) => {
   await page.getByRole('button', { name: 'Вибрати на карті' }).first().click();
   const banner = page.locator('.map-pick');
   await expect(banner).toHaveText('Посуньте карту, щоб шпилька стала там, звідки їдете');
-  // As in a maps app: a red pin over the middle of the map, which moves under it.
+  // As in a maps app: a pin over the middle of the map, which moves under it.
   await expect(page.locator('.map-center-pin')).toBeVisible();
   // A tap takes the pin there: out at sea, away from stops and places (a stop or a café
   // would be taken by name).
