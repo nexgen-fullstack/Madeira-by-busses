@@ -67,14 +67,14 @@ export function walkKind(tags: Record<string, string> = {}, length = 0): number 
   return WALK_STREET;
 }
 
-function pathLength(points: readonly LatLon[]): number {
+export function pathLength(points: readonly LatLon[]): number {
   let d = 0;
   for (let i = 1; i < points.length; i++) d += haversine(points[i - 1]!, points[i]!);
   return d;
 }
 
 /** Douglas–Peucker on a short polyline, in metres. */
-function simplify(points: LatLon[], tolerance: number): LatLon[] {
+export function simplify(points: LatLon[], tolerance: number): LatLon[] {
   if (points.length <= 2) return points;
   const lat0 = points[0]!.lat;
   const kx = 111_320 * Math.cos((lat0 * Math.PI) / 180);
@@ -109,6 +109,17 @@ function simplify(points: LatLon[], tolerance: number): LatLon[] {
   return points.filter((_, k) => keep[k] === 1);
 }
 
+export interface GraphBuildOptions {
+  /** Douglas–Peucker tolerance for the shapes of the ways (m). */
+  tolerance?: number;
+  /** Pieces of network shorter than this in all are left out (m). */
+  minComponent?: number;
+  /** The kind of a way, or undefined to leave it out; by default how it walks. */
+  kindOf?: (tags: Record<string, string> | undefined, length: number) => number | undefined;
+  /** The kind of a way taken the other way round (one-way roads); by default the same. */
+  reverse?: (kind: number) => number;
+}
+
 export interface WalkBuildStats {
   ways: number;
   walkable: number;
@@ -127,14 +138,19 @@ export interface WalkBuildStats {
  */
 export function buildWalkGraph(
   ways: readonly OsmWay[],
-  { tolerance = 1.5, minComponent = 400 } = {},
+  {
+    tolerance = 1.5,
+    minComponent = 400,
+    kindOf = walkKind,
+    reverse = (kind: number) => kind,
+  }: GraphBuildOptions = {},
 ): { graph: WalkGraphData; stats: WalkBuildStats } {
   type Raw = { a: number; b: number; kind: number; points: LatLon[] };
   const kept: { way: OsmWay; kind: number }[] = [];
   for (const way of ways) {
     if (!way.nodes || !way.geometry || way.nodes.length !== way.geometry.length) continue;
     if (way.nodes.length < 2) continue;
-    const kind = walkKind(way.tags, pathLength(way.geometry));
+    const kind = kindOf(way.tags, pathLength(way.geometry));
     if (kind !== undefined) kept.push({ way, kind });
   }
 
@@ -183,17 +199,22 @@ export function buildWalkGraph(
     const [i, j] = inc as [number, number];
     const e1 = edges[i]!;
     const e2 = edges[j]!;
-    if (i === j || e1.kind !== e2.kind || e1.a === e1.b || e2.a === e2.b) continue;
-    // Orient e1 to end at x and e2 to start at x.
+    if (i === j || e1.a === e1.b || e2.a === e2.b) continue;
+    // Orient e1 to end at x and e2 to start at x (a one-way road turned round changes kind).
     const p1 =
-      e1.b === x ? e1 : { a: e1.b, b: e1.a, kind: e1.kind, points: [...e1.points].reverse() };
+      e1.b === x
+        ? e1
+        : { a: e1.b, b: e1.a, kind: reverse(e1.kind), points: [...e1.points].reverse() };
     const p2 =
-      e2.a === x ? e2 : { a: e2.b, b: e2.a, kind: e2.kind, points: [...e2.points].reverse() };
+      e2.a === x
+        ? e2
+        : { a: e2.b, b: e2.a, kind: reverse(e2.kind), points: [...e2.points].reverse() };
+    if (p1.kind !== p2.kind) continue;
     if (p1.a === p2.b) continue; // would close a loop on one node
     const merged: Raw = {
       a: p1.a,
       b: p2.b,
-      kind: e1.kind,
+      kind: p1.kind,
       points: [...p1.points, nodes[x]!, ...p2.points],
     };
     edges[i] = merged;

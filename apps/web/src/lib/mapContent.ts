@@ -6,6 +6,8 @@ export interface MapLine {
   color: string;
   dashed?: boolean;
   width?: number;
+  /** Written along the line: the number of the bus. */
+  label?: string;
 }
 
 export type PointKind =
@@ -31,7 +33,8 @@ export const EMPTY_CONTENT: MapContent = { lines: [], points: [] };
 
 const routeColor = (net: Network, route: number) => `#${net.routes[route]!.color}`;
 
-export function itineraryContent(net: Network, it: Itinerary): MapContent {
+/** A route on the map; `focus` brings one of its legs close up. */
+export function itineraryContent(net: Network, it: Itinerary, focus?: number): MapContent {
   const lines: MapLine[] = [];
   const points: MapPoint[] = [];
   it.legs.forEach((leg, i) => {
@@ -45,6 +48,7 @@ export function itineraryContent(net: Network, it: Itinerary): MapContent {
       coords: net.rideShape(leg.pattern, leg.boardPos, leg.alightPos),
       color,
       width: 5,
+      label: net.routes[leg.route]!.short,
     });
     const prevRide = it.legs.slice(0, i).some((l) => l.kind === 'ride');
     const nextRide = it.legs.slice(i + 1).some((l) => l.kind === 'ride');
@@ -70,18 +74,35 @@ export function itineraryContent(net: Network, it: Itinerary): MapContent {
   const first = it.legs[0];
   const last = it.legs[it.legs.length - 1];
   if (first?.kind === 'walk') points.push({ ...first.from, kind: 'origin', color: '#14181F' });
-  if (last?.kind === 'walk')
+  // The red pin where the journey ends, as in a maps app (at the last stop when it ends there).
+  if (last) {
     points.push({
-      ...last.to,
+      lat: last.to.lat,
+      lon: last.to.lon,
       kind: 'destination',
       color: '#14181F',
-      label: last.to.name || undefined,
+      label: last.kind === 'walk' ? last.to.name || undefined : undefined,
     });
+  }
+  const leg = focus !== undefined ? lines[focus] : undefined;
   return {
     lines,
     points,
-    fitKey: `it:${it.key}:${it.depart}`,
-    fit: lines.flatMap((l) => l.coords),
+    fitKey: `it:${it.key}:${it.depart}${leg ? `:${focus}` : ''}`,
+    fit: leg ? leg.coords : lines.flatMap((l) => l.coords),
+  };
+}
+
+/** Where the trip starts and where it goes, before there is a route between them. */
+export function placesContent(from?: MapPoint, to?: MapPoint): MapContent {
+  const points: MapPoint[] = [];
+  if (from) points.push({ ...from, kind: 'origin', color: '#14181F' });
+  if (to) points.push({ ...to, kind: 'destination', color: '#14181F' });
+  return {
+    lines: [],
+    points,
+    fitKey: points.map((p) => `${p.kind}:${p.lat.toFixed(5)},${p.lon.toFixed(5)}`).join('|'),
+    fit: points,
   };
 }
 
@@ -107,6 +128,7 @@ export function routeContent(net: Network, routes: number[], highlight?: number)
   };
 }
 
+/** Every line of the network along its roads (the stops are a map layer of their own). */
 export function networkContent(net: Network): MapContent {
   const seen = new Set<number>();
   const lines: MapLine[] = [];
@@ -115,17 +137,9 @@ export function networkContent(net: Network): MapContent {
     seen.add(p.shape);
     lines.push({ coords: net.shape(i), color: routeColor(net, p.route), width: 2.5 });
   });
-  const points: MapPoint[] = net.stopGroups().map((g) => ({
-    lat: g.lat,
-    lon: g.lon,
-    kind: 'stop',
-    color: '#0B3A8E',
-    label: g.name,
-    stops: g.stops,
-  }));
   return {
     lines,
-    points,
+    points: [],
     fitKey: 'network',
     fit: net.stops.map((s) => ({ lat: s.lat, lon: s.lon })),
   };
@@ -142,4 +156,50 @@ export function stopsContent(groups: StopGroup[], user?: LatLon, fitKey = 'stops
   }));
   if (user) points.push({ ...user, kind: 'user' });
   return { lines: [], points, fitKey, fit: [...groups, ...(user ? [user] : [])] };
+}
+
+/** How close stops with the same name are to count as one place (both sides of a road, m). */
+const SAME_STOP = 120;
+
+/**
+ * Every stop and line of the network as GeoJSON, for the "bus stops and
+ * lines" layer. Each stop carries the stops of the same name around it, so a
+ * tap shows the buses both ways.
+ */
+export function transitGeoJson(net: Network) {
+  const seen = new Set<number>();
+  const lines = net.patterns.flatMap((p, i) => {
+    if (seen.has(p.shape)) return [];
+    seen.add(p.shape);
+    return [
+      {
+        type: 'Feature' as const,
+        properties: { color: routeColor(net, p.route) },
+        geometry: {
+          type: 'LineString' as const,
+          coordinates: net.shape(i).map((c) => [c.lon, c.lat]),
+        },
+      },
+    ];
+  });
+  const served = new Set(net.patterns.flatMap((p) => p.stops));
+  const stops = net.stops.flatMap((s, i) => {
+    if (!served.has(i)) return [];
+    const same = net
+      .nearbyStops(s, SAME_STOP)
+      .filter((h) => net.stops[h.stop]!.name === s.name)
+      .map((h) => h.stop)
+      .sort((a, b) => a - b);
+    return [
+      {
+        type: 'Feature' as const,
+        properties: { label: s.name, stops: (same.length > 0 ? same : [i]).join(',') },
+        geometry: { type: 'Point' as const, coordinates: [s.lon, s.lat] },
+      },
+    ];
+  });
+  return {
+    lines: { type: 'FeatureCollection' as const, features: lines },
+    stops: { type: 'FeatureCollection' as const, features: stops },
+  };
 }

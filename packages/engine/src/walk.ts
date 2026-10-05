@@ -149,6 +149,41 @@ export function encodeWalkGraph(data: WalkGraphData): Uint8Array {
   return w.finish();
 }
 
+/** The nodes and edges of walk.bin bytes (or a file in the same format, like drive.bin). */
+export function decodeWalkGraphData(bytes: Uint8Array): WalkGraphData {
+  const r = new Reader(bytes);
+  for (const b of MAGIC) if (r.byte() !== b) throw new Error('Not a walk graph');
+  const n = r.uint();
+  const m = r.uint();
+  const q: [number, number][] = [];
+  let lat = 0;
+  let lon = 0;
+  for (let i = 0; i < n; i++) {
+    lat += r.int();
+    lon += r.int();
+    q.push([lat, lon]);
+  }
+  const nodes = q.map(([a, b]) => ({ lat: a / Q, lon: b / Q }));
+  const edges: WalkGraphData['edges'] = [];
+  let from = 0;
+  for (let e = 0; e < m; e++) {
+    from += r.uint();
+    const to = from + r.int();
+    if (from >= n || to < 0 || to >= n) throw new Error('Walk graph edge out of range');
+    const kind = r.uint();
+    const k = r.uint();
+    [lat, lon] = q[from]!;
+    const points: LatLon[] = [];
+    for (let j = 0; j < k; j++) {
+      lat += r.int();
+      lon += r.int();
+      points.push({ lat: lat / Q, lon: lon / Q });
+    }
+    edges.push({ from, to, kind, points });
+  }
+  return { nodes, edges };
+}
+
 // ---------- The graph ----------
 
 /** A binary min-heap of node indices keyed by cost. */

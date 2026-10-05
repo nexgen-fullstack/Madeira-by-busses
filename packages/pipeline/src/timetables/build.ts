@@ -1,4 +1,5 @@
 import {
+  addDays,
   haversine,
   isoToGtfsDate,
   weekday,
@@ -14,7 +15,9 @@ import {
   type DayRule,
   type DayType,
 } from './calendar.ts';
+import { headsignOf, kindFor, lineNameOf, localityOf, operatorOf } from './observed.ts';
 import type {
+  DayKind,
   Direction,
   Note,
   Operator,
@@ -26,19 +29,22 @@ import type {
 } from './types.ts';
 
 /**
- * Builds a GTFS feed for CAM and SIGA Rodoeste from their printed timetables
- * (data/timetables) and the SIGA website's route data (data/sources/siga).
+ * Builds a GTFS feed for CAM and SIGA Rodoeste from the SIGA website's
+ * timetables (data/sources/siga) and their printed timetables (data/timetables).
  *
- * The printed timetables give the times at a few places, often only the
- * departure. SIGA gives, for each variant of a line, every stop in order with
- * the minutes between them and the road the bus takes. Each printed trip is
- * laid onto its variant: the one its marks name ("via Cabo Girão"), or else
- * the one of its line that passes all the printed places in about the printed
- * time. The printed times are kept where they are given and the stops in
- * between get times spread as on SIGA's own trip. When SIGA has not shown the
- * variant yet, the trip runs between the printed places only (with SIGA's
- * running time when only the departure is printed); it gets its stops on a
- * later night, once the collector has seen the variant run.
+ * The SIGA website shows a whole day of a line at a time: every trip of every
+ * variant, with its time at every stop. A day seen there gives the line's trips
+ * on the days of its kind (the next Tuesdays, Saturdays, holidays…).
+ *
+ * Until a kind of day has been seen, the printed timetables stand in. They give
+ * the times at a few places, often only the departure. SIGA gives, for each
+ * variant of a line, every stop in order with the minutes between them. Each
+ * printed trip is laid onto its variant: the one its marks name ("via Cabo
+ * Girão"), or else the one of its line that passes all the printed places in
+ * about the printed time. The printed times are kept where they are given and
+ * the stops in between get times spread as on SIGA's own trip. When SIGA has
+ * not shown the variant yet, the trip runs between the printed places, with the
+ * stops of each stretch on which every known variant agrees.
  */
 
 export const AGENCIES: Record<Operator, { id: string; name: string; url: string; color: string }> =
@@ -68,16 +74,27 @@ export interface LineReport {
   operator: Operator;
   /** Trips with every stop of their SIGA variant. */
   full: number;
-  /** Trips between the printed places only (variant not seen on SIGA yet). */
+  /** Trips between the printed places (variant not seen on SIGA yet). */
   outline: number;
+  /** Of those, trips with the stops of some stretches, on which every known variant agrees. */
+  filled: number;
   skipped: string[];
   warnings: string[];
+}
+
+/** What the SIGA website's day timetables gave. */
+export interface ObservedReport {
+  /** Each kind of day seen: when, how many variants and trips, and how many dates it runs. */
+  days: { kind: DayKind; date: string; variants: number; trips: number; dates: number }[];
+  /** Trips per line (one trip counted once, however many dates it runs). */
+  lines: { operator: Operator; line: string; trips: number }[];
 }
 
 export interface TimetableBuild {
   feed: GtfsFeed;
   lines: LineReport[];
-  /** Lines SIGA lists that no printed timetable gave trips to yet, by operator. */
+  observed: ObservedReport;
+  /** Lines SIGA lists that neither a seen day nor a printed timetable gave trips to yet. */
   missing: Record<Operator, string[]>;
   /** The SIGA variant each trip lies on (trips between printed places only are absent). */
   tripVariants: Map<string, string>;
@@ -494,6 +511,137 @@ function seenVariants(
   return out;
 }
 
+/** The municipality of Funchal (INE code): expresses run non-stop between it and the first town. */
+const FUNCHAL = '3103';
+/** A landmark stop is inside a stretch of a variant when one of its stops is this close (m). */
+const LANDMARK_NEAR = 60;
+
+/**
+ * The stops between printed places (two, or three when the variants differ
+ * only in where a loop through the middle one's town comes) that every known
+ * variant of the line passing them agrees on, with times spread between the
+ * printed ones as on SIGA's trips. Undefined where the variants part ways,
+ * where the trip's marks leave its way there unknown, or where no variant is
+ * known: the trip then keeps to the printed places on that stretch.
+ */
+function stretch(
+  src: Sources,
+  variants: readonly SigaVariant[],
+  anchors: readonly TripStop[],
+  marks: { all: Set<string>; noVariant: boolean },
+  landmarks: readonly (readonly [string, string])[],
+): TripStop[] | undefined {
+  const a = anchors[0]!;
+  const c = anchors[anchors.length - 1]!;
+  // An express leaves and reaches Funchal on the expressway, past every stop.
+  const zone = (code: string) => src.siga.stops[code]?.[3];
+  if (marks.noVariant && (zone(a.code) === FUNCHAL || zone(c.code) === FUNCHAL)) return undefined;
+  const points = anchors.map((s) => src.point(s.code));
+  if (points.some((p) => !p)) return undefined;
+  const near = (code: string, p: LatLon, radius: number) => {
+    const q = src.point(code);
+    return q !== undefined && haversine(p, q) <= radius;
+  };
+  // Where a variant passes a place: at its very stop, or else at its nearest stop close by.
+  const find = (v: SigaVariant, code: string, p: LatLon, after: number) => {
+    const exact = v.stops.findIndex(([s], k) => k > after && s === code);
+    if (exact >= 0) return { at: exact, exact: true };
+    let at = -1;
+    let best = SAME_PLACE;
+    v.stops.forEach(([s], k) => {
+      const q = k > after ? src.point(s) : undefined;
+      const d = q ? haversine(p, q) : Infinity;
+      if (d <= best) {
+        best = d;
+        at = k;
+      }
+    });
+    return { at, exact: false };
+  };
+  let usable: { v: SigaVariant; at: number[]; exact: boolean }[] = [];
+  for (const v of variants) {
+    const at: number[] = [];
+    let exact = true;
+    for (let k = 0; k < anchors.length; k++) {
+      const f = find(v, anchors[k]!.code, points[k]!, at[k - 1] ?? -1);
+      if (f.at < 0) break;
+      at.push(f.at);
+      exact &&= f.exact;
+    }
+    if (at.length === anchors.length) usable.push({ v, at, exact });
+  }
+  // Variants stopping at the printed stops themselves tell the way best: a loop through a
+  // town passes near its printed stop twice.
+  if (usable.some((u) => u.exact)) usable = usable.filter((u) => u.exact);
+  const first = (u: (typeof usable)[number]) => u.at[0]!;
+  const last = (u: (typeof usable)[number]) => u.at[u.at.length - 1]!;
+  for (const [mark, code] of landmarks) {
+    const lp = src.point(code);
+    if (!lp) continue;
+    const inside = (u: (typeof usable)[number]) =>
+      u.v.stops
+        .slice(first(u) + 1, last(u))
+        .some(([s]) => s === code || near(s, lp, LANDMARK_NEAR));
+    if (marks.all.has(mark)) {
+      if (usable.some(inside)) usable = usable.filter(inside);
+      // Where the trip passes its landmark is unknown: no telling this stretch's way.
+      else if (!variants.some((v) => src.passes(v, code))) return undefined;
+    } else {
+      usable = usable.filter((u) => !inside(u));
+    }
+  }
+  if (usable.length === 0) return undefined;
+  // The stops in between, the printed ones aside: variants may pass a printed stop before
+  // or after a loop through its town and still drive the same way.
+  const printed = new Set(anchors.map((s) => s.code));
+  const way = (u: (typeof usable)[number]) =>
+    u.v.stops
+      .slice(first(u) + 1, last(u))
+      .flatMap(([s], k) => (u.at.includes(first(u) + 1 + k) || printed.has(s) ? [] : [s]));
+  // The fullest way; the others must be it with at most a stop or two left out (and not
+  // served elsewhere on their way: that is another order, not a stop skipped).
+  const ways = usable
+    .map((u) => ({ u, codes: way(u) }))
+    .sort((x, y) => y.codes.length - x.codes.length);
+  const fullest = ways[0]!;
+  if (fullest.codes.length === 0) return undefined;
+  const leftOut = Math.max(2, Math.floor(fullest.codes.length / 10));
+  const agrees = ({ u, codes }: (typeof ways)[number]) => {
+    let k = 0;
+    for (const c of fullest.codes) {
+      if (k < codes.length && codes[k] === c) k++;
+      else if (u.v.stops.some(([s]) => s === c)) return false;
+    }
+    return k === codes.length && fullest.codes.length - codes.length <= leftOut;
+  };
+  if (!ways.every(agrees)) return undefined;
+  const { v, at } = fullest.u;
+  // Far slower or faster than printed between two printed stops: some other road.
+  for (let k = 1; k < anchors.length; k++) {
+    const span = v.stops[at[k]!]![1] - v.stops[at[k - 1]!]![1];
+    const time = anchors[k]!.time - anchors[k - 1]!.time;
+    if (Math.abs(span - time) > Math.max(12, time)) return undefined;
+  }
+  // Every stop of the variant in between, timed between the printed ones around it.
+  const out: TripStop[] = [];
+  for (let k = 1; k < anchors.length; k++) {
+    const i = at[k - 1]!;
+    const j = at[k]!;
+    const span = v.stops[j]![1] - v.stops[i]![1];
+    const time = anchors[k]!.time - anchors[k - 1]!.time;
+    for (let x = i + 1; x < j; x++) {
+      const share = span > 0 ? (v.stops[x]![1] - v.stops[i]![1]) / span : (x - i) / (j - i);
+      out.push({
+        code: v.stops[x]![0],
+        time: Math.round(anchors[k - 1]!.time + share * time),
+        index: -1,
+      });
+    }
+    if (k < anchors.length - 1) out.push(anchors[k]!);
+  }
+  return out;
+}
+
 /** Builds the feed. `files` are [file name, contents] of data/timetables/*.json. */
 export function buildTimetableFeed(
   files: readonly [string, TimetableFile][],
@@ -501,6 +649,34 @@ export function buildTimetableFeed(
   { from, to, localities = [] }: BuildTimetablesOptions,
 ): TimetableBuild {
   const src = new Sources(siga);
+  // The kind of day whose SIGA timetable each date runs, and the lines each kind has.
+  const days = siga.days ?? {};
+  const dayKinds = new Map<string, DayKind>();
+  for (let d = from; d <= to; d = addDays(d, 1)) {
+    const kind = kindFor(d, days);
+    if (kind) dayKinds.set(d, kind);
+  }
+  const lineKey = (op: Operator, line: string) => `${op}|${line}`;
+  const operatorOfVariant = (id: string) => {
+    const route = src.route(id);
+    return operatorOf(route?.operator ?? src.variants.get(id)?.operator ?? '');
+  };
+  const seenKinds = new Map<string, Set<DayKind>>();
+  for (const [kind, records] of Object.entries(days) as [DayKind, typeof days.hol][]) {
+    for (const r of records ?? []) {
+      const op = operatorOfVariant(r.id);
+      if (!op) continue;
+      const key = lineKey(op, r.line);
+      const set = seenKinds.get(key) ?? new Set<DayKind>();
+      set.add(kind);
+      seenKinds.set(key, set);
+    }
+  }
+  /** Whether the SIGA timetable of the date's kind of day has the line (then it stands, not the printed one). */
+  const seenOn = (op: Operator, line: string, date: string) => {
+    const kind = dayKinds.get(date);
+    return kind !== undefined && (seenKinds.get(lineKey(op, line))?.has(kind) ?? false);
+  };
   const feed: GtfsFeed = {
     agencies: [],
     stops: [],
@@ -522,17 +698,8 @@ export function buildTimetableFeed(
   const routes = new Set<string>();
   const agencies = new Set<Operator>();
 
-  /** The service of a day rule, or undefined when it has no day between `from` and `to`. */
-  const serviceFor = (type: DayType, rule: Omit<DayRule, 'type'>, closed: string[]) => {
-    const key = `${ruleKey(type, rule)}/${closed.join(',')}`;
-    if (services.has(key)) return services.get(key) || undefined;
-    const dates = datesOf({ type, ...rule }, from, to, closed);
-    if (dates.length === 0) {
-      services.set(key, '');
-      return undefined;
-    }
-    const id = `S${services.size + 1}`;
-    services.set(key, id);
+  /** A service running on these dates. */
+  const addService = (id: string, dates: readonly string[]) => {
     const { calendar, added, removed } = calendarFor(id, dates, from, to);
     if (calendar) feed.calendars.push(calendar);
     for (const date of added) {
@@ -541,26 +708,70 @@ export function buildTimetableFeed(
     for (const date of removed) {
       feed.calendarDates.push({ service_id: id, date: isoToGtfsDate(date), exception_type: 2 });
     }
+  };
+
+  /**
+   * The service of a printed day rule on a line, or undefined when it has no
+   * day between `from` and `to`: the days SIGA's own timetable of the line
+   * stands for are not the printed timetable's.
+   */
+  const serviceFor = (
+    type: DayType,
+    rule: Omit<DayRule, 'type'>,
+    closed: string[],
+    op: Operator,
+    line: string,
+  ) => {
+    const seen = [...(seenKinds.get(lineKey(op, line)) ?? [])].sort().join('');
+    const key = `${ruleKey(type, rule)}/${closed.join(',')}/${seen}`;
+    if (services.has(key)) return services.get(key) || undefined;
+    const dates = datesOf({ type, ...rule }, from, to, closed).filter((d) => !seenOn(op, line, d));
+    if (dates.length === 0) {
+      services.set(key, '');
+      return undefined;
+    }
+    const id = `S${services.size + 1}`;
+    services.set(key, id);
+    addService(id, dates);
     return id;
   };
 
-  const routeFor = (tt: TimetableFile, line: string) => {
-    const agency = AGENCIES[tt.operator];
+  // The printed timetable of each line, for its name, its former number and the names of places.
+  const printed = new Map<string, TimetableFile>();
+  for (const [, tt] of files) {
+    for (const l of tt.lines ?? [tt.line]) printed.set(lineKey(tt.operator, l), tt);
+  }
+
+  const routeFor = (op: Operator, line: string) => {
+    const agency = AGENCIES[op];
     const id = `${agency.id}-${line}`;
     if (!routes.has(id)) {
       routes.add(id);
+      agencies.add(op);
+      const tt = printed.get(lineKey(op, line));
       feed.routes.push({
         route_id: id,
         agency_id: agency.id,
-        route_short_name: line === tt.line ? (tt.formerly ?? line) : line,
+        route_short_name: tt && line === tt.line ? (tt.formerly ?? line) : line,
         line_id: line,
-        route_long_name: tt.names?.[line] ?? tt.name,
+        route_long_name: tt ? (tt.names?.[line] ?? tt.name) : (sigaLineName(op, line) ?? line),
         route_type: 3,
         route_color: agency.color,
         route_text_color: 'FFFFFF',
       });
     }
     return id;
+  };
+
+  /** A line's name from SIGA's names of its variants, for lines without a printed timetable. */
+  const sigaLineName = (op: Operator, line: string) => {
+    const mine = siga.routes.filter((r) => r.line === line && operatorOf(r.operator) === op);
+    const outward = mine.filter((r) => r.directions.includes(0));
+    const names = (outward.length > 0 ? outward : mine).map((r) => r.name);
+    const first = mine
+      .map((r) => src.variants.get(`${r.id}:0`)?.stops[0]?.[0])
+      .find((c): c is string => c !== undefined);
+    return lineNameOf(names, op, first ? src.point(first) : undefined, localities);
   };
 
   for (const [file, tt] of files) {
@@ -570,6 +781,7 @@ export function buildTimetableFeed(
       operator: tt.operator,
       full: 0,
       outline: 0,
+      filled: 0,
       skipped: [],
       warnings: [],
     };
@@ -633,8 +845,6 @@ export function buildTimetableFeed(
             report.skipped.push(`${where}: ${marks.skip}`);
             return;
           }
-          const service = serviceFor(type, marks.rule, closed);
-          if (!service) return; // e.g. holidays only, and none before `to`
           // A trip that starts or ends off the printed places ("from Rochão").
           const points = dir.stops.map((p, i) =>
             marks.from && i === timed[0] ? { name: p.name, stop: marks.from } : p,
@@ -697,10 +907,10 @@ export function buildTimetableFeed(
 
           let stops: TripStop[];
           let line = marks.line ?? tt.line;
+          let filled = false;
           if (best) {
             if (!marks.line && sigaLines.includes(best.variant.line)) line = best.variant.line;
             stops = layOnVariant(best.variant, best.known);
-            report.full++;
           } else {
             // Not seen on SIGA yet: the printed places only.
             stops = timed.map((i) => ({
@@ -739,12 +949,46 @@ export function buildTimetableFeed(
                 index: -1,
               });
             }
-            report.outline++;
+            // The stops of the stretches every known variant agrees on.
+            if (!explicit || explicit.some((id) => src.variant(id))) {
+              const lineVariants = candidates.filter((v) => !marks.line || v.line === marks.line);
+              const withStops: TripStop[] = [stops[0]!];
+              let k = 1;
+              while (k < stops.length) {
+                // A stretch between two printed places, or else across the next one too.
+                let step = 0;
+                for (const span of [1, 2]) {
+                  if (k - 1 + span >= stops.length) break;
+                  const anchors = stops.slice(k - 1, k + span);
+                  const between = stretch(src, lineVariants, anchors, marks, landmarks);
+                  if (between) {
+                    withStops.push(...between, anchors[anchors.length - 1]!);
+                    filled = true;
+                    step = span;
+                    break;
+                  }
+                }
+                if (step === 0) {
+                  withStops.push(stops[k]!);
+                  step = 1;
+                }
+                k += step;
+              }
+              stops = withStops;
+            }
           }
           const unknownStop = stops.find((s) => !siga.stops[s.code]);
           if (unknownStop) {
             report.skipped.push(`${where}: stop ${unknownStop.code} unknown to SIGA`);
             return;
+          }
+          const service = serviceFor(type, marks.rule, closed, tt.operator, line);
+          // No day left: holidays only and none before `to`, or SIGA's own days of the line stand.
+          if (!service) return;
+          if (best) report.full++;
+          else {
+            report.outline++;
+            if (filled) report.filled++;
           }
 
           // A change of bus splits the trip in two where it happens.
@@ -768,7 +1012,7 @@ export function buildTimetableFeed(
           }
           pieces.push(stops.slice(begin));
 
-          const routeId = routeFor(tt, line);
+          const routeId = routeFor(tt.operator, line);
           pieces.forEach((piece, p) => {
             const day = type === 'weekdays' ? 'U' : type === 'saturdays' ? 'S' : 'D';
             const tripId = `${routeId}-${d}${day}${r + 1}${pieces.length > 1 ? `-${p + 1}` : ''}`;
@@ -796,6 +1040,103 @@ export function buildTimetableFeed(
     });
   }
 
+  // The days the SIGA website was seen running: every trip at every stop.
+  const observed: ObservedReport = { days: [], lines: [] };
+  const lineTrips = new Map<string, ObservedReport['lines'][number]>();
+  const datesByKind = new Map<DayKind, string[]>();
+  for (const [date, kind] of dayKinds) {
+    if (date.slice(5) === '12-25') continue; // No buses on Christmas Day.
+    datesByKind.set(kind, [...(datesByKind.get(kind) ?? []), date]);
+  }
+  // Kinds of day with the very same timetable (the weekdays, mostly) share one service.
+  const groups = new Map<string, { kinds: DayKind[]; dates: string[] }>();
+  for (const [kind, dates] of datesByKind) {
+    const same = JSON.stringify(
+      (days[kind] ?? []).map((r) => [r.id, r.stops, r.profiles, r.trips]),
+    );
+    const group = groups.get(same) ?? { kinds: [], dates: [] };
+    group.kinds.push(kind);
+    group.dates.push(...dates);
+    groups.set(same, group);
+  }
+  const tripIds = new Set<string>();
+  for (const { kinds, dates: groupDates } of groups.values()) {
+    const kind = kinds[0]!;
+    const records = days[kind] ?? [];
+    const service = `O-${kinds.join('-')}`;
+    addService(service, [...groupDates].sort());
+    let trips = 0;
+    for (const r of records) {
+      const op = operatorOfVariant(r.id);
+      if (!op) continue;
+      const tt = printed.get(lineKey(op, r.line));
+      const sigaRoute = src.route(r.id);
+      const direction = Number(r.id.split(':')[1] ?? 0) % 2;
+      for (const [start, profile, own] of r.trips) {
+        const codes = own ?? r.stops;
+        const offsets = r.profiles[profile];
+        const t0 = /^(\d{1,2}):(\d{2})$/.exec(start);
+        if (!offsets || offsets.length !== codes.length || codes.length < 2 || !t0) continue;
+        if (codes.some((c) => !siga.stops[c])) continue;
+        const routeId = routeFor(op, r.line);
+        // Where the bus goes: the printed place it ends at, its town, or what SIGA calls it.
+        const last = src.point(codes[codes.length - 1]!);
+        const timing = tt?.directions
+          .flatMap((dir) => dir.stops)
+          .map((tp) => ({ tp, p: src.point(tp.stop) }))
+          .filter((x) => x.p && last && haversine(x.p, last) <= SAME_END)
+          .sort((a, b) => haversine(a.p!, last!) - haversine(b.p!, last!))[0]?.tp.name;
+        const headsign =
+          timing ??
+          (last ? localityOf(last, localities) : undefined) ??
+          headsignOf(sigaRoute?.name, op, last, localities) ??
+          siga.stops[codes[codes.length - 1]!]![0];
+        let tripId = `${routeId}-${kind}-${r.id.replace(':', 'd')}-${start.replace(':', '')}`;
+        while (tripIds.has(tripId)) tripId += '+';
+        tripIds.add(tripId);
+        tripVariants.set(tripId, r.id);
+        feed.trips.push({
+          trip_id: tripId,
+          route_id: routeId,
+          service_id: service,
+          trip_headsign: headsign,
+          direction_id: direction,
+        });
+        const departure = Number(t0[1]) * 60 + Number(t0[2]);
+        codes.forEach((code, i) => {
+          usedStops.add(code);
+          const time = (departure + offsets[i]!) * 60;
+          feed.stopTimes.push({
+            trip_id: tripId,
+            stop_id: code,
+            stop_sequence: i + 1,
+            arrival_time: time,
+            departure_time: time,
+          });
+        });
+        trips++;
+        const key = lineKey(op, r.line);
+        const entry = lineTrips.get(key) ?? { operator: op, line: r.line, trips: 0 };
+        entry.trips++;
+        lineTrips.set(key, entry);
+      }
+    }
+    for (const k of kinds) {
+      const seen = days[k] ?? [];
+      observed.days.push({
+        kind: k,
+        date: seen.reduce((d, r) => (r.date > d ? r.date : d), ''),
+        variants: seen.length,
+        trips,
+        dates: datesByKind.get(k)?.length ?? 0,
+      });
+    }
+  }
+  observed.lines = [...lineTrips.values()].sort(
+    (a, b) =>
+      a.operator.localeCompare(b.operator) || a.line.localeCompare(b.line, 'en', { numeric: true }),
+  );
+
   for (const op of agencies) {
     const a = AGENCIES[op];
     feed.agencies.push({
@@ -822,19 +1163,18 @@ export function buildTimetableFeed(
     } satisfies GtfsStop);
   }
   // Lines on SIGA's list without any trip here (CAM's operator name is long on SIGA).
-  const built = new Set(feed.routes.map((r) => `${r.agency_id}|${r.line_id}`));
+  const withTrips = new Set(feed.trips.map((t) => t.route_id));
+  const built = new Set(
+    feed.routes.filter((r) => withTrips.has(r.route_id)).map((r) => `${r.agency_id}|${r.line_id}`),
+  );
   const missing: Record<Operator, string[]> = { CAM: [], Rodoeste: [] };
   for (const r of siga.routes) {
-    const op: Operator | undefined = /rodoeste/i.test(r.operator)
-      ? 'Rodoeste'
-      : /CAM|Autocarros/i.test(r.operator)
-        ? 'CAM'
-        : undefined;
+    const op = operatorOf(r.operator);
     if (!op || built.has(`${AGENCIES[op].id}|${r.line}`) || missing[op].includes(r.line)) continue;
     missing[op].push(r.line);
   }
   for (const op of Object.keys(missing) as Operator[]) {
     missing[op].sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));
   }
-  return { feed, lines, tripVariants, missing };
+  return { feed, lines, observed, tripVariants, missing };
 }

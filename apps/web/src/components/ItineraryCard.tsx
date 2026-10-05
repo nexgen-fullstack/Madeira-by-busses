@@ -1,4 +1,4 @@
-import { AlertTriangle, ChevronRight, Footprints } from 'lucide-react';
+import { AlertTriangle, ChevronRight, Footprints, Repeat, Star } from 'lucide-react';
 import type { Itinerary } from '@madeirabus/engine';
 import { useI18n } from '../i18n.ts';
 import { clock, duration, price } from '../lib/format.ts';
@@ -7,12 +7,14 @@ import { RouteBadge } from './RouteBadge.tsx';
 
 interface Props {
   it: Itinerary;
+  /** The option a maps app would put first. */
+  best?: boolean;
   /** Seconds after midnight now, when planning for today. */
   now?: number;
   onSelect: () => void;
 }
 
-export function ItineraryCard({ it, now, onSelect }: Props) {
+export function ItineraryCard({ it, best, now, onSelect }: Props) {
   const t = useI18n();
   const { net } = useNetwork();
   const { settings } = useApp();
@@ -20,7 +22,21 @@ export function ItineraryCard({ it, now, onSelect }: Props) {
   const leaveIn = now !== undefined ? Math.round((it.depart - now) / 60) : undefined;
 
   return (
-    <button type="button" className="it-card" onClick={onSelect}>
+    <button type="button" className={`it-card${best ? ' it-card--best' : ''}`} onClick={onSelect}>
+      {(best || it.alternative) && (
+        <div className="it-card__tags">
+          {best && (
+            <span className="it-card__tag it-card__tag--best">
+              <Star size={12} aria-hidden /> {t.t('it.best')}
+            </span>
+          )}
+          {it.alternative && (
+            <span className="it-card__tag">
+              <Repeat size={12} aria-hidden /> {t.t('it.otherBus')}
+            </span>
+          )}
+        </div>
+      )}
       <div className="it-card__top">
         <span className="it-card__times">
           {clock(it.depart)} – {clock(it.arrive)}

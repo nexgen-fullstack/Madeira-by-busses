@@ -1,7 +1,7 @@
-import { lazy, Suspense, useEffect, useRef } from 'react';
+import { lazy, Suspense, useContext, useEffect, useRef } from 'react';
 import { List, Map as MapIcon, Mountain, Navigation, Settings } from 'lucide-react';
 import { StatusBanners } from './components/DemoBanner.tsx';
-import { MapProvider } from './components/mapContext.tsx';
+import { MapContentContext, MapProvider } from './components/mapContext.tsx';
 import { useI18n, type Key } from './i18n.ts';
 import { navigate, useRoute } from './lib/router.ts';
 import { APP_NAME } from './lib/site.ts';
@@ -81,6 +81,8 @@ function Shell() {
   const t = useI18n();
   const route = useRoute();
   const { data, trip } = useApp();
+  // Choosing a place on the map: the map takes the screen, as in a maps app.
+  const { pick } = useContext(MapContentContext);
   const head = route.path[0] ?? 'plan';
   const demo = data.status === 'ready' && data.net.bundle.demo;
   const panel = useRef<HTMLElement>(null);
@@ -89,7 +91,7 @@ function Shell() {
     panel.current?.scrollTo({ top: 0 });
   }, [screenKey]);
   return (
-    <div className={`app ${head === 'trip' ? 'app--trip' : ''}`}>
+    <div className={`app ${head === 'trip' ? 'app--trip' : ''}${pick ? ' app--picking' : ''}`}>
       <header className="topbar">
         <a className="brand" href="#/plan" aria-label={APP_NAME}>
           <img className="brand__mark" src="brand-mark.png" alt="" width={57} height={36} />

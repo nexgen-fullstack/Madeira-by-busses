@@ -2,9 +2,10 @@ name: Collect timetable sources
 
 # Downloads the public sources for operators without a GTFS feed (CAM and
 # SIGA Rodoeste timetables from the SIGA and operator websites; bus routes,
-# stops and the walkable ways, built into walk.bin, from OpenStreetMap) and
-# commits them to data/sources/ on the same branch, for the pipeline to parse.
-# Runs when the collector changes, or by hand.
+# stops, the walkable ways, built into walk.bin, and the roads buses drive on,
+# built into drive.bin, from OpenStreetMap) and commits them to data/sources/
+# on the same branch, for the pipeline to parse. Runs when the collector
+# changes, or by hand.
 on:
   push:
     paths:
@@ -46,6 +47,16 @@ jobs:
           else
             echo "::warning title=Walking network not refreshed::No ways from Overpass; keeping the previous walk.bin."
             git checkout HEAD -- data/sources/osm/walk.bin || true
+          fi
+      - name: Road network
+        run: |
+          if [ -f data/sources/osm/drive-ways.json ]; then
+            pnpm --filter @madeirabus/pipeline cli drive \
+              --osm ../../data/sources/osm/drive-ways.json --out ../../data/sources/osm/drive.bin
+            rm data/sources/osm/drive-ways.json
+          else
+            echo "::warning title=Road network not refreshed::No roads from Overpass; keeping the previous drive.bin."
+            git checkout HEAD -- data/sources/osm/drive.bin || true
           fi
       - name: Summary
         run: |

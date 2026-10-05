@@ -1,10 +1,12 @@
 name: Collect SIGA routes
 
-# Every day, records the stops and running times of the CAM and SIGA Rodoeste
-# route variants that run that day on the SIGA website (scripts/fetch-siga.mjs)
-# and commits data/sources/siga/ on the same branch. The site only shows a
-# variant on days it runs, so a week of runs sees weekdays, Saturdays and
-# Sundays; the pipeline then gives more printed trips their every stop.
+# Every day, records the whole timetable of the CAM and SIGA Rodoeste lines
+# that run that day on the SIGA website — every trip of every variant at every
+# stop (scripts/fetch-siga.mjs) — and commits data/sources/siga/ on the same
+# branch. The site only shows a day at a time, so a week of runs sees every
+# day of the week; each day seen stands for the days of its kind to come.
+# The website is then published again, so the app has the day's timetable
+# the same morning.
 on:
   schedule:
     - cron: '23 6 * * *'
@@ -16,6 +18,8 @@ on:
 
 permissions:
   contents: write
+  # To start "Deploy website" (a push made with the workflow's token starts no workflow).
+  actions: write
 
 concurrency:
   group: siga-${{ github.ref }}
@@ -38,8 +42,12 @@ jobs:
             echo '### SIGA routes'
             echo "- variants known: $(wc -l < data/sources/siga/variants.jsonl)"
             echo "- stops known: $(grep -c '":\[' data/sources/siga/stops.json)"
+            for f in data/sources/siga/days/*.jsonl; do
+              if [ -f "$f" ]; then echo "- $(basename "$f" .jsonl): $(wc -l < "$f") variants running"; fi
+            done
           } >> "$GITHUB_STEP_SUMMARY"
       - name: Commit
+        id: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -51,3 +59,9 @@ jobs:
           git commit -q -m "Update SIGA routes ($(date -u +%Y-%m-%d))"
           git pull -q --rebase origin "${GITHUB_REF_NAME}"
           git push -q origin "HEAD:${GITHUB_REF_NAME}"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      - name: Publish the website with the new timetable
+        if: steps.commit.outputs.changed == 'true' && github.ref_name == github.event.repository.default_branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy.yml --ref "${GITHUB_REF_NAME}"

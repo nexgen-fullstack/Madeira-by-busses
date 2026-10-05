@@ -103,10 +103,28 @@ test('the start of a trip can be chosen on the map', async ({ page }) => {
   await expect(page.locator('.plan__tip')).toContainText('кафе, готель чи точка на карті');
   await page.getByRole('button', { name: 'Вибрати на карті' }).first().click();
   const banner = page.locator('.map-pick');
-  await expect(banner).toHaveText('Торкніться на карті місця, звідки їдете');
-  // Out at sea, away from stops and places (a stop or a café would be taken by name).
+  await expect(banner).toHaveText('Посуньте карту, щоб шпилька стала там, звідки їдете');
+  // As in a maps app: a red pin over the middle of the map, which moves under it.
+  await expect(page.locator('.map-center-pin')).toBeVisible();
+  // A tap takes the pin there: out at sea, away from stops and places (a stop or a café
+  // would be taken by name).
   await page.locator('.map-canvas canvas').click({ position: { x: 40, y: 110 } });
+  await page.waitForTimeout(800);
+  await page.getByRole('button', { name: 'Вибрати цю точку' }).click();
   await expect(page).toHaveURL(/from=p%3A/);
   await expect(page.getByRole('combobox', { name: 'Звідки' })).toHaveValue('Точка на карті');
   await expect(banner).toHaveCount(0);
+});
+
+test('opens on a plain island; one button shows every stop and line', async ({ page }) => {
+  await page.goto('./#/plan');
+  await page.waitForSelector('.map-canvas canvas');
+  const button = page.getByRole('button', { name: 'Зупинки й лінії автобусів' });
+  await expect(button).toHaveAttribute('aria-pressed', 'false');
+  await button.click();
+  await expect(button).toHaveAttribute('aria-pressed', 'true');
+  // The same switch in the layers sheet, and it is remembered.
+  await page.reload();
+  await page.getByRole('button', { name: 'Шари карти' }).click();
+  await expect(page.getByRole('checkbox', { name: /Зупинки й лінії/ })).toBeChecked();
 });

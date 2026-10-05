@@ -246,6 +246,14 @@ async function osm() {
      out geom qt;`,
   );
   writeFileSync(join(dir, 'walk-ways.json'), JSON.stringify(ways));
+  // Every road a bus may drive on, tunnels and expressways too, with its one-way rules
+  // (`madeirabus-pipeline drive` turns it into drive.bin, so lines are drawn along the roads).
+  const roads = await overpass(
+    `[out:json][timeout:300];
+     way["highway"~"^(motorway|motorway_link|trunk|trunk_link|primary|primary_link|secondary|secondary_link|tertiary|tertiary_link|unclassified|residential|living_street|service|road|busway|bus_guideway)$"]["area"!="yes"](${BBOX});
+     out geom qt;`,
+  );
+  writeFileSync(join(dir, 'drive-ways.json'), JSON.stringify(roads));
   const relations = routes.elements.filter((e) => e.type === 'relation');
   return {
     routeRelations: relations.filter((r) => r.tags?.type === 'route').length,

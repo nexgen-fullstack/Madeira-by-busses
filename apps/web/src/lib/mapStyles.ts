@@ -23,6 +23,8 @@ export interface MapLayers {
   buildings3d: boolean;
   places: boolean;
   terrain3d: boolean;
+  /** Every bus stop and line on the map (off: a plain island, as a maps app opens). */
+  transit: boolean;
 }
 
 export const DEFAULT_LAYERS: MapLayers = {
@@ -30,6 +32,7 @@ export const DEFAULT_LAYERS: MapLayers = {
   buildings3d: false,
   places: true,
   terrain3d: false,
+  transit: false,
 };
 
 const VECTOR_STYLE = 'https://tiles.openfreemap.org/styles/liberty';

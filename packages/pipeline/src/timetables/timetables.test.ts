@@ -11,7 +11,8 @@ import {
 import { buildTimetableFeed, namesPlace, parseCell, parseRow } from './build.ts';
 import { calendarFor, datesOf, isSchoolDay, runsOn } from './calendar.ts';
 import { loadSiga, loadTimetables } from './load.ts';
-import type { SigaData, SigaVariant, TimetableFile } from './types.ts';
+import { cleanVariantName, headsignOf, kindFor, lineNameOf } from './observed.ts';
+import type { SigaData, SigaDayVariant, SigaVariant, TimetableFile } from './types.ts';
 
 const hm = (s: number) =>
   `${String(Math.floor(s / 3600)).padStart(2, '0')}:${String(Math.floor(s / 60) % 60).padStart(2, '0')}`;
@@ -195,10 +196,61 @@ describe('printed trips on SIGA variants', () => {
       sheet(['07:00 x', '09:00 | 09:20 | 09:50'], { variants: { x: ['9:0'] } }),
       [DETOUR],
     );
-    expect(lines[0]).toMatchObject({ full: 0, outline: 2 });
+    expect(lines[0]).toMatchObject({ full: 0, outline: 2, filled: 1 });
     // The unseen variant's running time from SIGA's route list.
     expect(timesOf(feed, 'CAM-702-0U1')).toEqual(['A 07:00', 'F 08:10']);
-    expect(timesOf(feed, 'CAM-702-0U2')).toEqual(['A 09:00', 'C 09:20', 'F 09:50']);
+    // Without the detour's mark the trip does not take it, but from Charlie on every
+    // known variant drives the same road: its stops are served.
+    expect(timesOf(feed, 'CAM-702-0U2')).toEqual([
+      'A 09:00',
+      'C 09:20',
+      'D 09:30',
+      'E 09:40',
+      'F 09:50',
+    ]);
+  });
+
+  it('fills a stretch across a printed stop the variants loop round differently', () => {
+    // Two ways from Alpha to Foxtrot through a loop at Delta's: one stops at Charlie before
+    // the loop (X), the other after it. Only Charlie's place in the loop differs.
+    const before = variant('3:0', [
+      ['A', 0],
+      ['B', 10],
+      ['C', 20],
+      ['X', 25],
+      ['D', 30],
+      ['E', 40],
+      ['F', 50],
+    ]);
+    const after = variant('4:0', [
+      ['A', 0],
+      ['B', 10],
+      ['X', 15],
+      ['C', 20],
+      ['D', 30],
+      ['E', 40],
+      ['F', 50],
+    ]);
+    const file: TimetableFile = {
+      ...sheet(['09:00 E | 09:20 | 09:50']),
+      notes: { E: { text: 'Expresso', variant: false } },
+    };
+    // Alpha is not in Funchal here: zone 3104.
+    const data = siga([before, after]);
+    data.stops = { ...STOPS, A: ['Alpha', 32.65, -16.9, '3104'] };
+    const { feed } = buildTimetableFeed([['702.json', file]], data, {
+      from: '2026-10-05',
+      to: '2026-10-11',
+    });
+    expect(timesOf(feed, 'CAM-702-0U1').map((s) => s.split(' ')[0])).toEqual([
+      'A',
+      'B',
+      'C',
+      'X',
+      'D',
+      'E',
+      'F',
+    ]);
   });
 
   it('splits a trip where passengers change buses', () => {
@@ -257,6 +309,145 @@ describe('printed trips on SIGA variants', () => {
     expect(namesPlace('Cruzamento C. Lobos', 'Caniçal')).toBe(false);
     expect(namesPlace('Poiso S', 'Serra de Água')).toBe(false);
     expect(namesPlace('Igreja São Jorge', 'Arco de São Jorge')).toBe(false);
+  });
+});
+
+describe('timetables seen on the SIGA website', () => {
+  const day = (date: string, trips: SigaDayVariant['trips'], line = '702'): SigaDayVariant => ({
+    id: '1:0',
+    line,
+    date,
+    services: ['D_003'],
+    stops: ['A', 'B', 'C', 'D', 'E', 'F'],
+    profiles: [[0, 12, 24, 36, 48, 60]],
+    trips,
+  });
+  /** The dates a service runs between 5 and 11 October 2026. */
+  const datesOfService = (feed: GtfsFeed, service: string) => {
+    const out: string[] = [];
+    const calendar = feed.calendars.find((c) => c.service_id === service);
+    for (let d = 5; d <= 11; d++) {
+      const date = `202610${String(d).padStart(2, '0')}`;
+      const weekday = (new Date(Date.UTC(2026, 9, d)).getUTCDay() + 6) % 7;
+      const exception = feed.calendarDates.find((x) => x.service_id === service && x.date === date);
+      const weekly = calendar?.days[weekday] ?? false;
+      if (exception ? exception.exception_type === 1 : weekly) out.push(date);
+    }
+    return out;
+  };
+
+  it('stands for the days of its kind, a holiday for the Sundays until one is seen', () => {
+    const days = {
+      hol: [
+        day('2026-10-05', [
+          ['07:30', 0],
+          ['15:00', 0],
+        ]),
+      ],
+    };
+    expect(kindFor('2026-10-05', days)).toBe('hol'); // Implantação da República
+    expect(kindFor('2026-10-11', days)).toBe('hol'); // a Sunday
+    expect(kindFor('2026-10-06', days)).toBeUndefined(); // no weekday seen yet
+    const week = { ...days, wed: [day('2026-10-07', [])], thu: [day('2026-10-08', [])] };
+    expect(kindFor('2026-10-13', week)).toBe('thu'); // a Tuesday: the latest weekday seen
+    expect(kindFor('2026-10-10', week)).toBeUndefined(); // Saturday has its own
+  });
+
+  it('gives every trip of a seen day all its stops, and the printed rows the other days', () => {
+    const data = siga([PLAIN]);
+    data.days = {
+      hol: [
+        day('2026-10-05', [
+          ['07:30', 0],
+          ['15:00', 0],
+        ]),
+      ],
+    };
+    const file = sheet(['07:00 | 07:30 | 08:00']);
+    file.directions[0]!.sundays = ['10:00 | 10:30 | 11:00'];
+    const { feed, observed } = buildTimetableFeed([['702.json', file]], data, {
+      from: '2026-10-05',
+      to: '2026-10-11',
+    });
+    const seen = feed.trips.filter((t) => t.service_id === 'O-hol');
+    expect(seen.map((t) => t.trip_id)).toEqual(['CAM-702-hol-1d0-0730', 'CAM-702-hol-1d0-1500']);
+    expect(timesOf(feed, 'CAM-702-hol-1d0-0730')).toEqual([
+      'A 07:30',
+      'B 07:42',
+      'C 07:54',
+      'D 08:06',
+      'E 08:18',
+      'F 08:30',
+    ]);
+    // The holiday and the Sunday run the seen day; the printed Sunday row is left out.
+    expect(datesOfService(feed, 'O-hol')).toEqual(['20261005', '20261011']);
+    expect(feed.trips.some((t) => t.trip_id.startsWith('CAM-702-0D'))).toBe(false);
+    // The weekdays keep the printed timetable.
+    expect(feed.trips.some((t) => t.trip_id === 'CAM-702-0U1')).toBe(true);
+    expect(observed.days).toEqual([
+      { kind: 'hol', date: '2026-10-05', variants: 1, trips: 2, dates: 2 },
+    ]);
+  });
+
+  it('gives days with the same timetable one service', () => {
+    const data = siga([PLAIN]);
+    const trips: SigaDayVariant['trips'] = [['07:30', 0]];
+    data.days = { tue: [day('2026-10-06', trips)], wed: [day('2026-10-07', trips)] };
+    const { feed, observed } = buildTimetableFeed([], data, {
+      from: '2026-10-05',
+      to: '2026-10-11',
+    });
+    expect(feed.trips).toHaveLength(1);
+    // Monday is a holiday; Tuesday to Friday run the weekdays seen.
+    expect(datesOfService(feed, feed.trips[0]!.service_id)).toEqual([
+      '20261006',
+      '20261007',
+      '20261008',
+      '20261009',
+    ]);
+    expect(observed.days.map((d) => d.kind).sort()).toEqual(['tue', 'wed']);
+  });
+
+  it('keeps the printed timetable of a line the seen day does not have', () => {
+    const data = siga([PLAIN]);
+    data.days = { hol: [day('2026-10-05', [['07:30', 0]], '703')] };
+    const file = sheet(['07:00 | 07:30 | 08:00']);
+    file.directions[0]!.sundays = ['10:00 | 10:30 | 11:00'];
+    const { feed } = buildTimetableFeed([['702.json', file]], data, {
+      from: '2026-10-05',
+      to: '2026-10-11',
+    });
+    expect(feed.trips.some((t) => t.trip_id.startsWith('CAM-702-0D'))).toBe(true);
+    // The 703 runs too, named after SIGA's variants.
+    expect(feed.routes.find((r) => r.line_id === '703')).toBeDefined();
+  });
+
+  it('reads the names SIGA gives lines and variants', () => {
+    expect(cleanVariantName("Baia D'AbraEI", 'CAM')).toBe("Baia D'Abra");
+    expect(cleanVariantName('Santo da SerraII', 'CAM')).toBe('Santo da Serra');
+    expect(cleanVariantName('Achada (Santa Cruz)V', 'CAM')).toBe('Achada (Santa Cruz)');
+    expect(cleanVariantName('Centro  (99800) - Porto de Abrigo  (99829)', 'CAM')).toBe(
+      'Centro - Porto de Abrigo',
+    );
+    expect(cleanVariantName('Funchal - Ribeira Brava|via Francelheira', 'Rodoeste')).toBe(
+      'Funchal - Ribeira Brava via Francelheira',
+    );
+    expect(headsignOf('Ribeira Brava - Funchal via Cabo Girão', 'Rodoeste', undefined, [])).toBe(
+      'Funchal',
+    );
+    expect(headsignOf('Santo da SerraEI', 'CAM', undefined, [])).toBe('Santo da Serra');
+    expect(
+      lineNameOf(
+        ['Funchal - Ribeira Brava via Cabo Girão', 'Funchal - Ribeira Brava via Estreito C.Lobos'],
+        'Rodoeste',
+        undefined,
+        [],
+      ),
+    ).toBe('Funchal - Ribeira Brava');
+    const funchal = { name: 'Funchal', lat: 32.65, lon: -16.91, rank: 1 };
+    expect(lineNameOf(['Santo da Serra0I'], 'CAM', funchal, [funchal])).toBe(
+      'Funchal - Santo da Serra',
+    );
   });
 });
 

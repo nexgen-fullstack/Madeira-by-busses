@@ -1,4 +1,9 @@
 import { describe, expect, it } from 'vitest';
+import { buildBundle } from './bundle.ts';
+import { toCsv } from './csv.ts';
+import { SIGA_FARES_2026 } from './fares.ts';
+import { parseGtfs } from './gtfs.ts';
+import { Network } from './network.ts';
 import { paretoFilter, Planner, type Itinerary, type RideLeg, type WalkLeg } from './raptor.ts';
 import { haversine, type LatLon } from './geo.ts';
 import { at, fixtureNetwork, SATURDAY, STOPS, stopIndex, WEEKDAY } from './test-fixtures.ts';
@@ -168,6 +173,21 @@ describe('Planner', () => {
     expect(toD!.fare.cash).toBe(2.6);
   });
 
+  it('arrives by a time, leaving as late as possible', () => {
+    const results = planner.plan({
+      from: place('A'),
+      to: place('D'),
+      date: WEEKDAY,
+      time: at(9, 0),
+      arriveBy: true,
+    });
+    expect(results.length).toBeGreaterThan(1);
+    expect(results.every((r) => r.arrive <= at(9, 0))).toBe(true);
+    // The 08:30 gets to D at 09:00 sharp; the express at 08:05 is there by 08:20.
+    expect(Math.max(...results.map((r) => r.depart))).toBe(at(8, 30));
+    expect(results.some((r) => rides(r).map(routeOf).join() === '4X')).toBe(true);
+  });
+
   it('finds the last connection of the day', () => {
     const last = planner.lastConnection({
       from: place('A'),
@@ -189,6 +209,95 @@ describe('Planner', () => {
     });
     // 07:30 → C 07:50 → R2 08:15: 25 min buffer, not risky.
     expect(best!.risky).toBe(false);
+  });
+});
+
+describe('ways on other lines', () => {
+  /** Two lines from P to Q, 3 km apart: X takes 20 minutes, Y the slower road takes 35. */
+  function twoLines(): Network {
+    const stopTimes: (string | number)[][] = [];
+    const trips: string[][] = [];
+    for (const [route, start, minutes] of [
+      ['X', 8 * 60, 20],
+      ['Y', 8 * 60 + 5, 35],
+    ] as const) {
+      for (let h = 0; h < 3; h++) {
+        const id = `${route}${h}`;
+        const t0 = start + h * 60;
+        const time = (m: number) =>
+          `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}:00`;
+        trips.push([route, 'WK', id]);
+        stopTimes.push(
+          [id, time(t0), time(t0), 'P', 1],
+          [id, time(t0 + minutes), time(t0 + minutes), 'Q', 2],
+        );
+      }
+    }
+    const feed = parseGtfs({
+      'agency.txt': toCsv(
+        ['agency_id', 'agency_name', 'agency_url', 'agency_timezone'],
+        [['T', 'Test', 'https://example.com', 'Atlantic/Madeira']],
+      ),
+      'stops.txt': toCsv(
+        ['stop_id', 'stop_name', 'stop_lat', 'stop_lon', 'zone_id'],
+        [
+          ['P', 'P', 32.65, -16.95, 'FNC'],
+          ['Q', 'Q', 32.65, -16.918, 'FNC'],
+        ],
+      ),
+      'routes.txt': toCsv(
+        ['route_id', 'agency_id', 'route_short_name', 'route_long_name', 'route_type'],
+        [
+          ['X', 'T', 'X', 'P - Q', 3],
+          ['Y', 'T', 'Y', 'P - Q by the old road', 3],
+        ],
+      ),
+      'trips.txt': toCsv(['route_id', 'service_id', 'trip_id'], trips),
+      'stop_times.txt': toCsv(
+        ['trip_id', 'arrival_time', 'departure_time', 'stop_id', 'stop_sequence'],
+        stopTimes,
+      ),
+      'calendar.txt': toCsv(
+        [
+          'service_id',
+          'monday',
+          'tuesday',
+          'wednesday',
+          'thursday',
+          'friday',
+          'saturday',
+          'sunday',
+          'start_date',
+          'end_date',
+        ],
+        [['WK', 1, 1, 1, 1, 1, 0, 0, '20260101', '20271231']],
+      ),
+    });
+    return new Network(
+      buildBundle([{ feed, source: { name: 'test' } }], { demo: true, fares: SIGA_FARES_2026 })
+        .bundle,
+    );
+  }
+
+  it('offers another line besides the best one', () => {
+    const net = twoLines();
+    const stop = (id: string) => {
+      const i = net.stops.findIndex((s) => s.id === id);
+      return { ...net.stops[i]!, stops: [i] };
+    };
+    const results = new Planner(net).plan({
+      from: stop('P'),
+      to: stop('Q'),
+      date: WEEKDAY,
+      time: at(7, 55),
+      options: { maxResults: 1 },
+    });
+    const line = (it: Itinerary) =>
+      it.legs.flatMap((l) => (l.kind === 'ride' ? [net.routes[l.route]!.short] : []));
+    expect(results.map(line)).toEqual([['X'], ['Y']]);
+    expect(results[0]!.alternative).toBeUndefined();
+    expect(results[1]!.alternative).toBe(true);
+    expect(results[1]!.depart).toBe(at(8, 5));
   });
 });
 

@@ -154,6 +154,11 @@ export interface BuildOptions {
    * Funchal's stop ids, and a pole served by both operators is one stop.
    */
   shareStops?: boolean;
+  /**
+   * The way between a trip's stops when its feed has no shape (shapes.txt),
+   * e.g. along the roads; straight lines between the stops when it gives none.
+   */
+  routeShape?: (stops: readonly LatLon[]) => LatLon[] | undefined;
 }
 
 /** How far apart two feeds' stops with one id may be and still be the same stop (m). */
@@ -193,6 +198,8 @@ export function buildBundle(
 
   /** Stops of earlier feeds by their own (unprefixed) id, for `shareStops`. */
   const byRawId = new Map<string, number>();
+  /** Shapes made for stop sequences without one, by the sequence. */
+  const madeShapes = new Map<string, number>();
 
   for (const { feed, source, prefix = '' } of inputs) {
     sources.push({ ...source, feedVersion: source.feedVersion ?? feed.feedInfo?.feed_version });
@@ -334,9 +341,16 @@ export function buildBundle(
         }
         return i;
       }
-      // No shape: straight lines between stops (good enough for tracking).
-      shapes.push(encodePolyline(stopSeq.map((s) => stops[s]!)));
-      return shapes.length - 1;
+      // No shape: along the roads when known, else straight lines between the stops.
+      const key = stopSeq.join(',');
+      let made = madeShapes.get(key);
+      if (made === undefined) {
+        const points = stopSeq.map((s) => stops[s]!);
+        made = shapes.length;
+        shapes.push(encodePolyline(options.routeShape?.(points) ?? points));
+        madeShapes.set(key, made);
+      }
+      return made;
     };
 
     // Trips → patterns

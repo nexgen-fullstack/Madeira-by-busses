@@ -2,7 +2,15 @@ import { existsSync } from 'node:fs';
 import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { Locality } from './build.ts';
-import type { SigaData, SigaRoute, SigaStops, SigaVariant, TimetableFile } from './types.ts';
+import {
+  DAY_KINDS,
+  type SigaData,
+  type SigaDayVariant,
+  type SigaRoute,
+  type SigaStops,
+  type SigaVariant,
+  type TimetableFile,
+} from './types.ts';
 
 /** data/timetables/*.json, sorted by file name. */
 export async function loadTimetables(dir: string): Promise<[string, TimetableFile][]> {
@@ -12,22 +20,30 @@ export async function loadTimetables(dir: string): Promise<[string, TimetableFil
   );
 }
 
-/** What scripts/fetch-siga.mjs collected (routes.json, variants.jsonl, stops.json). */
+async function readJsonl<T>(path: string): Promise<T[]> {
+  if (!existsSync(path)) return [];
+  return (await readFile(path, 'utf8'))
+    .split('\n')
+    .filter((l) => l.trim())
+    .map((l) => JSON.parse(l) as T);
+}
+
+/** What scripts/fetch-siga.mjs collected (routes.json, variants.jsonl, stops.json, days/). */
 export async function loadSiga(dir: string): Promise<SigaData> {
   const file = (name: string) => join(dir, name);
   const routes = existsSync(file('routes.json'))
     ? (JSON.parse(await readFile(file('routes.json'), 'utf8')) as { routes: SigaRoute[] }).routes
     : [];
-  const variants = existsSync(file('variants.jsonl'))
-    ? (await readFile(file('variants.jsonl'), 'utf8'))
-        .split('\n')
-        .filter((l) => l.trim())
-        .map((l) => JSON.parse(l) as SigaVariant)
-    : [];
+  const variants = await readJsonl<SigaVariant>(file('variants.jsonl'));
   const stops = existsSync(file('stops.json'))
     ? (JSON.parse(await readFile(file('stops.json'), 'utf8')) as SigaStops)
     : {};
-  return { routes, variants, stops };
+  const days: NonNullable<SigaData['days']> = {};
+  for (const kind of DAY_KINDS) {
+    const records = await readJsonl<SigaDayVariant>(join(dir, 'days', `${kind}.jsonl`));
+    if (records.length > 0) days[kind] = records;
+  }
+  return { routes, variants, stops, days };
 }
 
 /** Towns and villages from the Overpass answer of data/sources/osm/places.json. */

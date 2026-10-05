@@ -9,6 +9,7 @@ import {
   madeiraNow,
   parseGtfs,
   SIGA_FARES_2026,
+  decodeWalkGraphData,
   encodeWalkGraph,
   WalkGraph,
   type FeedInput,
@@ -27,6 +28,8 @@ import { DEMO_PLACES } from './demo/places.ts';
 import { placesFromOsm } from './places.ts';
 import { buildReportMarkdown, diffBundles, diffMarkdown } from './report.ts';
 import { buildWalkGraph, type OsmWay } from './walk.ts';
+import { driveKind, reverseDriveKind } from './drive.ts';
+import { RoadRouter } from './shapes.ts';
 import { AGENCIES, buildTimetableFeed } from './timetables/build.ts';
 import { loadLocalities, loadSiga, loadTimetables } from './timetables/load.ts';
 import { timetableReportMarkdown } from './timetables/report.ts';
@@ -42,12 +45,14 @@ const USAGE = `madeirabus-pipeline <command>
         [--missing <op1,op2>]        operators not covered yet (shown in the app)
         [--places <osm.json>]        searchable places from an Overpass answer (skipped if absent)
         [--walk <walk.bin>]          the walking network, copied next to the bundle (skipped if absent)
+        [--drive <drive.bin>]        the roads: lines without shapes are drawn along them
         [--timetables <dir> --siga <dir>]  add CAM and SIGA Rodoeste from their printed
                                      timetables and the SIGA website's routes
         [--timetable-days <n>]       how far ahead their calendar goes (default 180)
   validate --feed [name=]<dir|zip|url> …  validate feeds only
   diff <old.json> <new.json>              summarise timetable changes
   walk  --osm <overpass.json> --out <walk.bin>   the walking network from OpenStreetMap ways
+  drive --osm <overpass.json> --out <drive.bin>  the roads buses drive on, from OpenStreetMap ways
 `;
 
 interface Args {
@@ -142,18 +147,24 @@ async function timetableFeed(args: Args, today: string) {
   });
   const full = built.lines.reduce((n, l) => n + l.full, 0);
   const outline = built.lines.reduce((n, l) => n + l.outline, 0);
+  const filled = built.lines.reduce((n, l) => n + l.filled, 0);
   const skipped = built.lines.reduce((n, l) => n + l.skipped.length, 0);
+  for (const d of built.observed.days) {
+    console.log(
+      `SIGA timetable of a ${d.kind} (seen ${d.date}): ${d.variants} variants, ${d.trips} trips, for ${d.dates} dates`,
+    );
+  }
   console.log(
-    `Printed timetables: ${files.length} files, ${built.feed.trips.length} trips ` +
-      `(${full} with every stop, ${outline} between the printed places only, ${skipped} rows left out); ` +
-      `SIGA: ${siga.variants.length} variants, ${Object.keys(siga.stops).length} stops`,
+    `Printed timetables: ${files.length} files, ${full + outline} trips for the other days ` +
+      `(${full} with every stop, ${outline} between the printed places, ${filled} of them with some stops; ` +
+      `${skipped} rows left out); SIGA: ${siga.variants.length} variants, ${Object.keys(siga.stops).length} stops`,
   );
   for (const l of built.lines) {
     for (const w of l.warnings) console.log(`  ! ${l.file}: ${w}`);
   }
   for (const [op, lines] of Object.entries(built.missing)) {
     if (lines.length > 0)
-      console.log(`  Not yet in the printed timetables, ${op}: ${lines.join(' ')}`);
+      console.log(`  No trips yet (not seen on SIGA, not printed), ${op}: ${lines.join(' ')}`);
   }
   const issues = validateFeed(built.feed, today);
   printIssues('Feed timetables', issues);
@@ -178,6 +189,14 @@ async function build(args: Args) {
       },
       issues: timetables.issues,
     });
+  }
+  // The roads, to draw lines without shapes (CAM, SIGA Rodoeste) the way their buses drive.
+  const drivePath = flag(args, 'drive');
+  let router: RoadRouter | undefined;
+  if (drivePath && existsSync(drivePath)) {
+    router = new RoadRouter(decodeWalkGraphData(await readFile(drivePath)));
+  } else if (drivePath) {
+    console.log(`! No road network at ${drivePath}; lines without shapes are drawn straight`);
   }
   const extendDays = flag(args, 'extend-days');
   const extendUntil = extendDays ? addDays(today, Number(extendDays)) : undefined;
@@ -209,6 +228,7 @@ async function build(args: Args) {
         .map((s) => s.trim())
         .filter(Boolean),
       shareStops: timetables !== undefined,
+      routeShape: router ? (points) => router.shape(points) : undefined,
       partialOperators: timetables
         ? (Object.entries(timetables.built.missing) as [keyof typeof AGENCIES, string[]][])
             .filter(([, lines]) => lines.length > 0)
@@ -216,6 +236,12 @@ async function build(args: Args) {
         : undefined,
     },
   );
+  if (router) {
+    const s = router.stats;
+    console.log(
+      `Lines along the roads: ${s.patterns} stop sequences, ${s.routed} sections routed, ${s.straight} left straight`,
+    );
+  }
   if (bundle.projected) {
     console.log(
       `! Official timetable ended ${bundle.projected.officialUntil}; ` +
@@ -257,7 +283,12 @@ async function build(args: Args) {
     await writeText(
       reportPath,
       timetables
-        ? md + timetableReportMarkdown(timetables.built.lines, timetables.built.missing)
+        ? md +
+            timetableReportMarkdown(
+              timetables.built.lines,
+              timetables.built.missing,
+              timetables.built.observed,
+            )
         : md,
     );
     console.log(`Report written to ${reportPath}`);
@@ -318,6 +349,33 @@ async function walk(args: Args) {
   console.log(`Written to ${out}: ${kb(bytes.length)} (${kb(gzipSync(bytes).length)} gzipped)`);
 }
 
+async function drive(args: Args) {
+  const input = flag(args, 'osm');
+  const out = flag(args, 'out');
+  if (!input || !out) throw new Error('drive needs --osm <overpass.json> and --out <drive.bin>');
+  const json = JSON.parse(await readFile(input, 'utf8')) as {
+    elements?: OsmWay[] & { type?: string }[];
+  };
+  const ways = (json.elements ?? []).filter((e) => (e as { type?: string }).type !== 'node');
+  const { graph, stats } = buildWalkGraph(ways, {
+    kindOf: (tags) => driveKind(tags),
+    reverse: reverseDriveKind,
+    tolerance: 2,
+    minComponent: 300,
+  });
+  const bytes = encodeWalkGraph(graph);
+  // Read it back: the build must be able to.
+  decodeWalkGraphData(bytes);
+  await mkdir(dirname(out), { recursive: true });
+  await writeFile(out, bytes);
+  const kb = (n: number) => `${Math.round(n / 1024)} KiB`;
+  console.log(
+    `Road network: ${stats.walkable} of ${stats.ways} ways, ${stats.km} km, ` +
+      `${stats.nodes} junctions, ${stats.edges} links (${stats.droppedComponents} isolated pieces left out)`,
+  );
+  console.log(`Written to ${out}: ${kb(bytes.length)} (${kb(gzipSync(bytes).length)} gzipped)`);
+}
+
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   const command = args._[0];
@@ -327,6 +385,7 @@ async function main() {
     validate,
     diff,
     walk,
+    drive,
   };
   const run = command ? commands[command] : undefined;
   if (!run) {

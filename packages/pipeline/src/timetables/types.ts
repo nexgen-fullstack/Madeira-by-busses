@@ -128,8 +128,34 @@ export interface SigaRoute {
 /** code → [name, latitude, longitude, municipality (INE code)] */
 export type SigaStops = Record<string, [string, number, number, string]>;
 
+/** Kinds of day the SIGA website was seen running: the weekdays, and public holidays. */
+export type DayKind = 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun' | 'hol';
+export const DAY_KINDS: DayKind[] = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun', 'hol'];
+
+/**
+ * A variant's whole timetable on one kind of day, as the SIGA website shows it
+ * (data/sources/siga/days/<kind>.jsonl, see scripts/fetch-siga.mjs).
+ */
+export interface SigaDayVariant {
+  /** "route id:direction". */
+  id: string;
+  line: string;
+  /** The day the trips were seen (YYYY-MM-DD). */
+  date: string;
+  /** SIGA's service ids ("D_003": Sundays and holidays, timetable 3). */
+  services: string[];
+  /** Stop codes in order. */
+  stops: string[];
+  /** Running times: the minutes from the departure to each stop. */
+  profiles: number[][];
+  /** Departure (HH:MM), profile, and the trip's own stops when it skips some (rare). */
+  trips: ([string, number] | [string, number, string[]])[];
+}
+
 export interface SigaData {
   routes: SigaRoute[];
   variants: SigaVariant[];
   stops: SigaStops;
+  /** Whole days of timetables, by the kind of day they were seen on. */
+  days?: Partial<Record<DayKind, SigaDayVariant[]>>;
 }

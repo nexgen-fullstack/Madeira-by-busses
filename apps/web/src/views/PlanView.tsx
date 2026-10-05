@@ -11,9 +11,9 @@ import { parseTimeInput, toTimeInput } from '../lib/format.ts';
 import { useGeolocation } from '../lib/geolocation.ts';
 import { decodePlace, encodePlace } from '../lib/itinerary.ts';
 import {
+  EMPTY_CONTENT,
   itineraryContent,
-  networkContent,
-  stopsContent,
+  placesContent,
   type MapContent,
 } from '../lib/mapContent.ts';
 import { navigate, type Route } from '../lib/router.ts';
@@ -50,6 +50,8 @@ export function PlanView({ route }: { route: Route }) {
   const from = useMemo(() => decodePlace(net, q.get('from'), myLocation), [net, q, myLocation]);
   const to = useMemo(() => decodePlace(net, q.get('to'), myLocation), [net, q, myLocation]);
   const timeParam = q.get('t');
+  // With a time: be there by it ("a=1"), or leave at it.
+  const arriveBy = Boolean(timeParam) && q.get('a') === '1';
   const dateParam = q.get('d');
   const selected = q.get('i') !== null ? Number(q.get('i')) : undefined;
 
@@ -80,18 +82,42 @@ export function PlanView({ route }: { route: Route }) {
     [net],
   );
 
+  const toParam = q.get('to');
+  const fromParam = q.get('from');
+  // Asked for by the planner itself, not by a tap: then a refusal is not worth a message.
+  const autoLocate = useRef(false);
+
   // "My location" resolves asynchronously.
   useEffect(() => {
     if (geo.position && wantLocation.current) {
       wantLocation.current = false;
+      // A start typed in meanwhile stays.
+      if (autoLocate.current && fromParam) return;
       setParams({ from: encodePlace(geo.position), i: undefined });
     }
-  }, [geo.position, setParams]);
+  }, [geo.position, setParams, fromParam]);
+
+  // As in a maps app, a trip to somewhere starts where you are, unless you say otherwise.
+  const locatedFor = useRef<string | null>(null);
+  const requestLocation = geo.request;
+  useEffect(() => {
+    if (!toParam || fromParam || locatedFor.current === toParam) return;
+    locatedFor.current = toParam;
+    const permission = navigator.permissions?.query({ name: 'geolocation' });
+    void (permission ?? Promise.resolve(undefined))
+      .catch(() => undefined)
+      .then((status) => {
+        if (status?.state === 'denied' || locatedFor.current !== toParam) return;
+        wantLocation.current = true;
+        autoLocate.current = true;
+        requestLocation();
+      });
+  }, [toParam, fromParam, requestLocation]);
 
   // Plan whenever both ends are known.
   const baseKey =
     from && to
-      ? `${encodePlace(from)}>${encodePlace(to)}@${date}T${timeParam ?? 'now'}|${settings.walkSpeed}`
+      ? `${encodePlace(from)}>${encodePlace(to)}@${date}T${timeParam ?? 'now'}${arriveBy ? '<' : ''}|${settings.walkSpeed}`
       : '';
   const searchKey = baseKey && `${baseKey}|${refresh}`;
   useEffect(() => {
@@ -108,6 +134,7 @@ export function PlanView({ route }: { route: Route }) {
         to,
         date,
         time: timeParam ? parseTimeInput(timeParam) : madeiraNow().time,
+        arriveBy,
         options: { walkSpeed: settings.walkSpeed },
       })
       .then((r) => {
@@ -147,20 +174,19 @@ export function PlanView({ route }: { route: Route }) {
   }, [results, loading, baseKey]);
 
   const selectedIt = selected !== undefined ? results?.[selected] : undefined;
+  // A step of the selected route tapped: the map shows it close up, as a maps app does.
+  const [focusLeg, setFocusLeg] = useState<number | undefined>();
+  useEffect(() => setFocusLeg(undefined), [selectedIt]);
 
   const mapContent = useMemo<MapContent>(() => {
-    if (selectedIt) return itineraryContent(net, selectedIt);
+    if (selectedIt) return itineraryContent(net, selectedIt, focusLeg);
     if (results?.[0] && results[0].rides > 0) return itineraryContent(net, results[0]);
-    const pts = [from, to].filter((p): p is PlaceValue => Boolean(p));
-    if (pts.length) {
-      return stopsContent(
-        pts.map((p) => ({ name: p.name, muni: '', stops: p.stops ?? [], lat: p.lat, lon: p.lon })),
-        undefined,
-        pts.map((p) => encodePlace(p)).join('|'),
-      );
-    }
-    return networkContent(net);
-  }, [net, selectedIt, results, from, to]);
+    // Nothing chosen yet: the plain island, as a maps app opens.
+    if (!from && !to) return EMPTY_CONTENT;
+    const point = (p: PlaceValue | undefined) =>
+      p && { lat: p.lat, lon: p.lon, label: p.name, kind: 'stop' as const };
+    return placesContent(point(from), point(to));
+  }, [selectedIt, results, from, to, net, focusLeg]);
   useMapContent(mapContent);
 
   const suggestions = useMemo(() => {
@@ -190,6 +216,7 @@ export function PlanView({ route }: { route: Route }) {
       <ItineraryDetail
         it={selectedIt}
         date={date}
+        onFocusLeg={setFocusLeg}
         onBack={() => setParams({ i: undefined })}
         onStart={(simulate) => {
           setTrip({
@@ -227,6 +254,7 @@ export function PlanView({ route }: { route: Route }) {
           onChange={(v) => setParams({ from: v ? encode(v) : undefined, i: undefined })}
           onUseLocation={() => {
             wantLocation.current = true;
+            autoLocate.current = false;
             geo.request();
           }}
           locating={geo.pending}
@@ -254,22 +282,29 @@ export function PlanView({ route }: { route: Route }) {
           onChange={(v) => setParams({ to: v ? encode(v) : undefined, i: undefined })}
           onPickOnMap={() => setPick('to')}
         />
-        {geo.error && <p className="error small">{t.t('place.denied')}</p>}
+        {geo.error && !autoLocate.current && <p className="error small">{t.t('place.denied')}</p>}
         <div className="plan__time">
           <div className="segmented" role="group" aria-label={t.t('time.depart')}>
             <button
               type="button"
               aria-pressed={!timeParam}
-              onClick={() => setParams({ t: undefined, d: undefined, i: undefined })}
+              onClick={() => setParams({ t: undefined, d: undefined, a: undefined, i: undefined })}
             >
               {t.t('time.now')}
             </button>
             <button
               type="button"
-              aria-pressed={Boolean(timeParam)}
-              onClick={() => setParams({ t: toTimeInput(time), i: undefined })}
+              aria-pressed={Boolean(timeParam) && !arriveBy}
+              onClick={() => setParams({ t: toTimeInput(time), a: undefined, i: undefined })}
             >
               {t.t('time.depart')}
+            </button>
+            <button
+              type="button"
+              aria-pressed={arriveBy}
+              onClick={() => setParams({ t: toTimeInput(time), a: '1', i: undefined })}
+            >
+              {t.t('time.arrive')}
             </button>
           </div>
           {timeParam && (
@@ -284,7 +319,7 @@ export function PlanView({ route }: { route: Route }) {
               />
               <input
                 type="time"
-                aria-label={t.t('time.depart')}
+                aria-label={t.t(arriveBy ? 'time.arrive' : 'time.depart')}
                 value={timeParam}
                 onChange={(e) => e.target.value && setParams({ t: e.target.value, i: undefined })}
               />
@@ -309,6 +344,7 @@ export function PlanView({ route }: { route: Route }) {
             <ItineraryCard
               key={`${it.key}@${it.depart}`}
               it={it}
+              best={i === 0 && results.length > 1 && it.rides > 0}
               now={date === now.date ? now.time : undefined}
               onSelect={() => setParams({ i: String(i) })}
             />

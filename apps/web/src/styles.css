@@ -795,6 +795,34 @@ input[type='time'],
   color: var(--warn);
   font-weight: 600;
 }
+/* A step of the route: tapping it shows that part of the way on the map. */
+.timeline__walk,
+.timeline__ride {
+  cursor: pointer;
+}
+.it-card--best {
+  border-color: var(--brand);
+}
+.it-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.it-card__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+.it-card__tag--best {
+  background: var(--brand-soft);
+  color: var(--brand);
+}
 
 /* ---------- Itinerary detail ---------- */
 
@@ -1359,7 +1387,101 @@ input[type='time'],
   accent-color: var(--brand);
 }
 
-/* "Choose on the map": what to tap, over the map. */
+/* Phones: while a place is chosen on the map, the map takes the screen. */
+@media (max-width: 899px) {
+  .app.app--picking {
+    grid-template-rows: auto 1fr 0 auto;
+  }
+  .app--picking .panel {
+    display: none;
+  }
+}
+
+/* The red pin of a maps app: destination, dropped pin, the spot being chosen. */
+.map-pin {
+  width: 28px;
+  height: 40px;
+  filter: drop-shadow(0 2px 2px rgb(0 0 0 / 35%));
+  cursor: pointer;
+}
+.map-pin svg {
+  display: block;
+}
+/* The pin over the middle of the map while choosing a place; the map moves under it. */
+.map-center-pin {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  width: 28px;
+  height: 40px;
+  margin: -40px 0 0 -14px;
+  pointer-events: none;
+}
+.map-center-pin .map-pin {
+  transition: transform 0.15s ease-out;
+}
+.map-center-pin--lifted .map-pin {
+  transform: translateY(-10px);
+}
+.map-center-pin__shadow {
+  position: absolute;
+  left: 50%;
+  bottom: -3px;
+  width: 10px;
+  height: 5px;
+  margin-left: -5px;
+  border-radius: 50%;
+  background: rgb(0 0 0 / 35%);
+}
+.pick-card {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  z-index: 4;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 25%);
+}
+.pick-card__text {
+  flex: 1 1 160px;
+  min-width: 0;
+}
+.pick-card__text .strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pick-card .button {
+  flex: none;
+}
+@media (min-width: 900px) {
+  .pick-card {
+    left: 50%;
+    right: auto;
+    width: 420px;
+    margin-left: -210px;
+  }
+}
+/* The map button that shows every stop and line. */
+.mb-transit-button {
+  display: grid;
+  place-items: center;
+  color: #14181f;
+}
+.mb-transit-button[aria-pressed='true'] {
+  color: #ffffff;
+  background: #0b3a8e !important;
+}
+
+/* "Choose on the map": what to do, over the map. */
 .map-pick {
   position: absolute;
   top: 10px;
@@ -1384,9 +1506,6 @@ input[type='time'],
   width: 32px;
   height: 32px;
   color: #fff;
-}
-.map-wrap--picking .maplibregl-canvas {
-  cursor: crosshair;
 }
 .plan__tip {
   display: flex;

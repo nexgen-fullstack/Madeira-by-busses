@@ -26,12 +26,14 @@ import { RouteBadge } from './RouteBadge.tsx';
 interface Props {
   it: Itinerary;
   date: string;
+  /** A step was tapped: show that part of the way on the map. */
+  onFocusLeg?: (leg: number) => void;
   onBack: () => void;
   onStart: (simulate: boolean) => void;
   onShare: () => void;
 }
 
-export function ItineraryDetail({ it, date, onBack, onStart, onShare }: Props) {
+export function ItineraryDetail({ it, date, onFocusLeg, onBack, onStart, onShare }: Props) {
   const t = useI18n();
   const { net, planner } = useNetwork();
   const { settings } = useApp();
@@ -142,7 +144,7 @@ export function ItineraryDetail({ it, date, onBack, onStart, onShare }: Props) {
           if (leg.kind === 'walk') {
             const minutes = Math.max(1, Math.round((leg.end - leg.start) / 60));
             return (
-              <li key={i} className="timeline__walk">
+              <li key={i} className="timeline__walk" onClick={() => onFocusLeg?.(i)}>
                 <span className="timeline__time">{clock(leg.start)}</span>
                 <span className="timeline__icon">
                   <Footprints size={16} />
@@ -164,6 +166,7 @@ export function ItineraryDetail({ it, date, onBack, onStart, onShare }: Props) {
               key={i}
               className="timeline__ride"
               style={{ ['--route' as string]: `#${route.color}` }}
+              onClick={() => onFocusLeg?.(i)}
             >
               {leg.wait >= 60 && (
                 <div className="timeline__wait">
@@ -195,7 +198,10 @@ export function ItineraryDetail({ it, date, onBack, onStart, onShare }: Props) {
                 <button
                   type="button"
                   className="timeline__toggle"
-                  onClick={() => toggle(i)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggle(i);
+                  }}
                   aria-expanded={open}
                 >
                   {t.tn('detail.stops', between.length + 1)} · {duration(t, leg.end - leg.start)}

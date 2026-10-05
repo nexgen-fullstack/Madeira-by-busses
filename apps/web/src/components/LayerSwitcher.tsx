@@ -1,5 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
-import { Box, Building2, Layers, Map as MapIcon, Mountain, Satellite, Store } from 'lucide-react';
+import {
+  Box,
+  Building2,
+  Bus,
+  Layers,
+  Map as MapIcon,
+  Mountain,
+  Satellite,
+  Store,
+} from 'lucide-react';
 import { useI18n } from '../i18n.ts';
 import type { BaseLayer, MapLayers } from '../lib/mapStyles.ts';
 
@@ -35,6 +44,7 @@ export function LayerSwitcher({
   }, [open]);
 
   const toggles = [
+    { key: 'transit', label: t.t('layers.transit'), icon: Bus },
     { key: 'places', label: t.t('layers.places'), icon: Store },
     { key: 'buildings3d', label: t.t('layers.buildings'), icon: Building2 },
     { key: 'terrain3d', label: t.t('layers.terrain'), icon: Box },

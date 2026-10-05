@@ -41,6 +41,11 @@ export interface PlanOptions {
    * this much later per transfer saved.
    */
   transferPenalty: number;
+  /**
+   * How many ways on other lines to offer besides the best one, as a maps app
+   * does ("by the 702, or by the 701 and the 704").
+   */
+  alternatives: number;
 }
 
 export const DEFAULT_PLAN_OPTIONS: PlanOptions = {
@@ -53,6 +58,7 @@ export const DEFAULT_PLAN_OPTIONS: PlanOptions = {
   window: 3 * 3600,
   maxResults: 5,
   transferPenalty: 600,
+  alternatives: 2,
 };
 
 export interface PlanRequest {
@@ -62,6 +68,8 @@ export interface PlanRequest {
   date: string;
   /** Seconds after midnight. */
   time: number;
+  /** `time` is when to be there by, not when to leave. */
+  arriveBy?: boolean;
   options?: Partial<PlanOptions>;
 }
 
@@ -124,6 +132,8 @@ export interface Itinerary {
   waitTime: number;
   fare: FareQuote;
   risky: boolean;
+  /** A way on other lines than the best one's, offered besides it. */
+  alternative?: boolean;
 }
 
 interface Access {
@@ -169,6 +179,7 @@ export class Planner {
   }
 
   plan(request: PlanRequest): Itinerary[] {
+    if (request.arriveBy) return this.planArriveBy(request);
     const ctx = this.context(request);
     const found = new Map<string, Itinerary>();
     let t = request.time;
@@ -184,10 +195,86 @@ export class Planner {
     const results = [...found.values()];
     const direct = this.directWalk(request, ctx.opts);
     if (direct) results.push(direct);
-    return paretoFilter(results, ctx.opts.transferPenalty)
+    const main = paretoFilter(results, ctx.opts.transferPenalty)
       .sort((a, b) => a.arrive - b.arrive || b.depart - a.depart)
-      .slice(0, ctx.opts.maxResults)
+      .slice(0, ctx.opts.maxResults);
+    return [...main, ...this.alternatives(request, ctx, main)]
+      .sort((a, b) => a.arrive - b.arrive || b.depart - a.depart)
       .map((it) => this.withPaths(it));
+  }
+
+  /**
+   * Options that get there by `request.time`, leaving as late as possible.
+   * Whether a departure still makes it only changes once in a day (leaving
+   * earlier never hurts), so a binary search finds the latest one in ~8 RAPTOR
+   * runs; the options are then planned from an hour and a half before it.
+   */
+  private planArriveBy(request: PlanRequest): Itinerary[] {
+    const ctx = this.context(request);
+    const by = request.time;
+    const inTime = (t: number) => ctx.searchAt(t).some((it) => it.arrive <= by);
+    let lo = Math.max(0, by - ctx.opts.window);
+    let hi = by;
+    if (inTime(lo)) {
+      while (hi - lo > 60) {
+        const mid = Math.floor((lo + hi) / 2);
+        if (inTime(mid)) lo = mid;
+        else hi = mid;
+      }
+    }
+    const options = this.plan({ ...request, arriveBy: false, time: Math.max(0, lo - 90 * 60) });
+    return (
+      options
+        .map((it) => (it.rides === 0 ? shiftWalk(it, by - it.arrive) : it))
+        .filter((it) => it.arrive <= by)
+        // The one that leaves last first: "when must I go at the latest?"
+        .sort((a, b) => b.depart - a.depart || a.arrive - b.arrive || a.rides - b.rides)
+        .slice(0, ctx.opts.maxResults)
+    );
+  }
+
+  /**
+   * Ways on other lines: the best option with the lines of the best one (and
+   * of each alternative found) left out, while it arrives not much later.
+   */
+  private alternatives(
+    request: PlanRequest,
+    ctx: ReturnType<Planner['context']>,
+    main: readonly Itinerary[],
+  ): Itinerary[] {
+    const best = main.find((it) => it.rides > 0);
+    if (!best) return [];
+    // The lines an option rides, in order: another departure of the same buses is no other way.
+    const lines = (it: Itinerary) =>
+      it.legs.flatMap((l) => (l.kind === 'ride' ? [l.route] : [])).join('>');
+    const keys = new Set(main.map((it) => it.key));
+    const ways = new Set(main.map(lines));
+    const banned = new Set<number>();
+    const out: Itinerary[] = [];
+    // Later than this, a bus on another line is no real choice.
+    const latest = best.arrive + Math.max(45 * 60, best.duration * 0.75);
+    let current = best;
+    for (let n = 0; n < ctx.opts.alternatives; n++) {
+      for (const leg of current.legs) if (leg.kind === 'ride') banned.add(leg.route);
+      const options = ctx
+        .searchAt(request.time, banned)
+        .filter(
+          (it) => it.rides > 0 && !keys.has(it.key) && !ways.has(lines(it)) && it.arrive <= latest,
+        );
+      // A change of bus counts for ten minutes, as when the main options are sorted out.
+      const pick = options.sort(
+        (a, b) =>
+          a.arrive +
+            a.transfers * ctx.opts.transferPenalty -
+            (b.arrive + b.transfers * ctx.opts.transferPenalty) || b.depart - a.depart,
+      )[0];
+      if (!pick) break;
+      keys.add(pick.key);
+      ways.add(lines(pick));
+      out.push({ ...pick, alternative: true });
+      current = pick;
+    }
+    return out;
   }
 
   /** Draws each walk of an itinerary along the streets. */
@@ -239,7 +326,9 @@ export class Planner {
     const egress = new Map(this.access(request.to, opts).map((e) => [e.stop, e]));
     return {
       opts,
-      searchAt: (t: number) => this.search(day, request, access, egress, t, opts),
+      /** RAPTOR from time t; the lines in `banned` are left out. */
+      searchAt: (t: number, banned?: ReadonlySet<number>) =>
+        this.search(day, request, access, egress, t, opts, banned),
     };
   }
 
@@ -309,6 +398,7 @@ export class Planner {
     egress: Map<number, Access>,
     t0: number,
     opts: PlanOptions,
+    banned?: ReadonlySet<number>,
   ): Itinerary[] {
     const net = this.net;
     const n = net.stops.length;
@@ -356,6 +446,7 @@ export class Planner {
       const queue = new Map<number, number>();
       for (const s of marked) {
         for (const { pattern, pos } of net.stopPatterns[s]!) {
+          if (banned?.has(net.patterns[pattern]!.route)) continue;
           const cur = queue.get(pattern);
           if (cur === undefined || pos < cur) queue.set(pattern, pos);
         }
@@ -692,6 +783,16 @@ export class Planner {
       risky: false,
     };
   }
+}
+
+/** A walk only, leaving `by` seconds later. */
+function shiftWalk(it: Itinerary, by: number): Itinerary {
+  return {
+    ...it,
+    depart: it.depart + by,
+    arrive: it.arrive + by,
+    legs: it.legs.map((l) => ({ ...l, start: l.start + by, end: l.end + by })),
+  };
 }
 
 /** Drops options that leave earlier, arrive later and need more rides than another. */
