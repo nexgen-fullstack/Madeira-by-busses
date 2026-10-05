@@ -16,13 +16,7 @@ import { useI18n } from '../i18n.ts';
 import { isNative } from '../lib/device.ts';
 import { clock } from '../lib/format.ts';
 import { encodePlace } from '../lib/itinerary.ts';
-import {
-  RIDE_END,
-  RIDE_START,
-  rideColor,
-  type MapContent,
-  type MapPoint,
-} from '../lib/mapContent.ts';
+import { FLAG_FOOT, rideColor, type MapContent, type MapPoint } from '../lib/mapContent.ts';
 import { goBack, navigate } from '../lib/router.ts';
 import { useApp, useNetwork } from '../state/app.tsx';
 import { useTripTracking } from '../state/trip.tsx';
@@ -48,15 +42,19 @@ export function TripView() {
     if (!setup || !ride) return undefined;
     const color = `#${net.routes[ride.route]!.color}`;
     const last = setup.stops.length - 1;
-    const points: MapPoint[] = setup.stops.map((s, i) => ({
-      lat: s.lat,
-      lon: s.lon,
-      kind: i === last ? 'alight' : i === 0 ? 'board' : 'stop',
-      // Boarded at the red dot, left at the dark blue one, as on the route.
-      color: i === 0 || i === last ? '#ffffff' : '#14181F',
-      ...(i === 0 ? { fill: RIDE_START } : i === last ? { fill: RIDE_END } : {}),
-      label: i === 0 || i === last ? s.name : undefined,
-    }));
+    // Boarded at the start flag, left at the chequered one, on the bus's side of the road.
+    const ends = [setup.shape[0], setup.shape.at(-1)];
+    const points: MapPoint[] = setup.stops.map((s, i) => {
+      const at = (i === 0 ? ends[0] : i === last ? ends[1] : undefined) ?? s;
+      return {
+        lat: at.lat,
+        lon: at.lon,
+        kind: i === last ? 'alight' : i === 0 ? 'board' : 'stop',
+        color: i === 0 || i === last ? '#ffffff' : '#14181F',
+        ...(i === 0 || i === last ? { fill: FLAG_FOOT } : {}),
+        label: i === 0 || i === last ? s.name : undefined,
+      };
+    });
     if (state) points.push({ ...state.position, kind: 'bus', color });
     // The ride in the colour it has on the route, alone on the map.
     return {

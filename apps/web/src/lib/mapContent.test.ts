@@ -3,9 +3,8 @@ import type { Itinerary, Network } from '@madeirabus/engine';
 import type { Direction } from './lines.ts';
 import {
   itineraryContent,
+  FLAG_FOOT,
   RIDE_COLORS,
-  RIDE_END,
-  RIDE_START,
   routeContent,
   WAY_TURQUOISE,
   WAY_YELLOW,
@@ -135,7 +134,7 @@ describe('a route on the map', () => {
     expect(itineraryContent(net, it207, 0, true).focus).toBe(chosen);
   });
 
-  it('gives each bus its own colour, red where it is boarded and dark blue where left', () => {
+  it('gives each bus its own colour, its flags on its side of the road', () => {
     // There on the 207 and back on it: two buses, changing at Ribeira Brava.
     const back = { ...it207.legs[0]!, pattern: 1, from: ride(2), to: ride(4) };
     const twoBuses = { ...it207, legs: [it207.legs[0]!, back] } as Itinerary;
@@ -145,12 +144,27 @@ describe('a route on the map', () => {
       [RIDE_COLORS[1], true],
     ]);
     expect(RIDE_COLORS[0]).not.toBe(RIDE_COLORS[1]);
-    const dots = c.points.filter((p) => p.kind === 'board' || p.kind === 'alight');
-    expect(dots.map((p) => [p.kind, p.fill, p.stops?.[0]])).toEqual([
-      ['board', RIDE_START, 0],
-      ['alight', RIDE_END, 2],
-      ['board', RIDE_START, 2],
-      ['alight', RIDE_END, 4],
+    // A start flag where each bus is boarded and a chequered one where it is left, standing
+    // where the bus runs (the way back runs across the road from its stops).
+    const flags = c.points.filter((p) => p.kind === 'board' || p.kind === 'alight');
+    expect(flags.map((p) => [p.kind, p.fill, p.stops?.[0], p.lat])).toEqual([
+      ['board', FLAG_FOOT, 0, shapes[0]![0]!.lat],
+      ['alight', FLAG_FOOT, 2, shapes[0]![1]!.lat],
+      ['board', FLAG_FOOT, 2, shapes[1]![0]!.lat],
+      ['alight', FLAG_FOOT, 4, shapes[1]![1]!.lat],
     ]);
+    // The chequered flag says where the journey ends: no pin over it.
+    expect(c.points.some((p) => p.kind === 'destination')).toBe(false);
+  });
+
+  it('walks to the very spot where the bus is boarded', () => {
+    const walk = {
+      kind: 'walk',
+      from: { name: 'Hotel', lat: 32.64, lon: -16.9 },
+      to: ride(0),
+      path: [stop('', -16.9, 32.64), stop('Funchal', -16.91)],
+    };
+    const c = itineraryContent(net, { ...it207, legs: [walk, it207.legs[0]!] } as Itinerary);
+    expect(c.lines[0]!.coords.at(-1)).toEqual(shapes[0]![0]);
   });
 });

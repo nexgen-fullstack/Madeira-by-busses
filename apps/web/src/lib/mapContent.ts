@@ -64,17 +64,16 @@ const INK = '#14181F';
  */
 export const RIDE_COLORS = [WAY_YELLOW, '#FF3DF0', WAY_TURQUOISE, '#FF8A00', '#7CFF3A'];
 export const rideColor = (ride: number) => RIDE_COLORS[ride % RIDE_COLORS.length]!;
-/** Where each bus of a route is boarded: a big red dot. */
-export const RIDE_START = '#E53935';
-/** Where each bus of a route is left: a dark blue dot. */
-export const RIDE_END = '#0D2A6B';
+/** The foot of the flags where a bus is boarded and left. */
+export const FLAG_FOOT = INK;
 
 const routeColor = (net: Network, route: number) => `#${net.routes[route]!.color}`;
 
 /**
  * A route on the map, each of its buses in a neon of its own with arrows the way it goes,
- * a red dot where it is boarded and a dark blue one where it is left; `focus` brings one
- * of its legs close up. A route `chosen` to take is shown alone.
+ * a start flag where it is boarded and a chequered one where it is left, both on the bus's
+ * side of the road, where the walks lead; `focus` brings one of its legs close up. A route
+ * `chosen` to take is shown alone.
  */
 export function itineraryContent(
   net: Network,
@@ -84,33 +83,50 @@ export function itineraryContent(
 ): MapContent {
   const lines: MapLine[] = [];
   const points: MapPoint[] = [];
+  // Each bus from where its stop meets its road: the lane it runs in, not the pavement
+  // where the stop is mapped.
+  const rides = it.legs.map((leg) =>
+    leg.kind === 'ride' ? net.rideShape(leg.pattern, leg.boardPos, leg.alightPos) : undefined,
+  );
   let ride = 0;
-  it.legs.forEach((leg) => {
+  it.legs.forEach((leg, i) => {
     if (leg.kind === 'walk') {
-      // Along the streets when the walking network is loaded.
-      lines.push({ coords: leg.path ?? [leg.from, leg.to], color: '#002F85', dashed: true });
+      // Along the streets when the walking network is loaded, to the very spot of the bus.
+      const from = rides[i - 1]?.at(-1);
+      const to = rides[i + 1]?.[0];
+      const path = leg.path ?? [leg.from, leg.to];
+      lines.push({
+        coords: [...(from ? [from] : []), ...path, ...(to ? [to] : [])],
+        color: '#002F85',
+        dashed: true,
+      });
       return;
     }
+    const coords = rides[i]!;
+    const start = coords[0] ?? leg.from;
+    const end = coords.at(-1) ?? leg.to;
     lines.push({
-      coords: net.rideShape(leg.pattern, leg.boardPos, leg.alightPos),
+      coords,
       color: rideColor(ride++),
       width: 6,
       label: net.routes[leg.route]!.short,
       arrows: true,
     });
     points.push({
-      ...leg.from,
+      lat: start.lat,
+      lon: start.lon,
       kind: 'board',
       color: '#ffffff',
-      fill: RIDE_START,
+      fill: FLAG_FOOT,
       label: leg.from.name,
       stops: [leg.from.stop!],
     });
     points.push({
-      ...leg.to,
+      lat: end.lat,
+      lon: end.lon,
       kind: 'alight',
       color: '#ffffff',
-      fill: RIDE_END,
+      fill: FLAG_FOOT,
       label: leg.to.name,
       stops: [leg.to.stop!],
     });
@@ -123,7 +139,8 @@ export function itineraryContent(
   const last = it.legs[it.legs.length - 1];
   if (first?.kind === 'walk') points.push({ ...first.from, kind: 'origin', color: '#14181F' });
   // The yellow pin where the journey ends, as in a maps app (at the last stop when it ends there).
-  if (last) {
+  // Not over the chequered flag when the journey ends at the stop: that flag says it.
+  if (last?.kind === 'walk') {
     points.push({
       lat: last.to.lat,
       lon: last.to.lon,

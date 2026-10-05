@@ -207,11 +207,91 @@ function arrowImage(): ImageData | undefined {
   return ctx.getImageData(0, 0, size, size);
 }
 
+/** A canvas of `size` px drawn by `draw`, as an image for the map. */
+function canvasImage(
+  width: number,
+  height: number,
+  draw: (ctx: CanvasRenderingContext2D) => void,
+): ImageData | undefined {
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return undefined;
+  draw(ctx);
+  return ctx.getImageData(0, 0, width, height);
+}
+
+const FLAG_W = 64;
+const FLAG_H = 72;
+
+/**
+ * A flag as in Formula 1, its pole at the bottom corner standing on the stop: the green
+ * one where a bus is boarded (cloth to the right), the chequered one where it is left
+ * (cloth to the left), so that at a change of bus the two stand side by side.
+ */
+function flagImage(finish: boolean): ImageData | undefined {
+  return canvasImage(FLAG_W, FLAG_H, (ctx) => {
+    const pole = finish ? FLAG_W - 6 : 6;
+    const cloth = { x: finish ? 8 : 9, y: 5, w: FLAG_W - 17, h: 32 };
+    // The pole, white-edged to read on the aerial photos.
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 8;
+    ctx.beginPath();
+    ctx.moveTo(pole, 4);
+    ctx.lineTo(pole, FLAG_H - 4);
+    ctx.stroke();
+    ctx.strokeStyle = '#14181F';
+    ctx.lineWidth = 4;
+    ctx.stroke();
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(cloth.x - 2, cloth.y - 2, cloth.w + 4, cloth.h + 4);
+    if (finish) {
+      const cols = 5;
+      const rows = 4;
+      const cw = cloth.w / cols;
+      const ch = cloth.h / rows;
+      for (let r = 0; r < rows; r++)
+        for (let c = 0; c < cols; c++) {
+          ctx.fillStyle = (r + c) % 2 ? '#ffffff' : '#14181F';
+          ctx.fillRect(cloth.x + c * cw, cloth.y + r * ch, cw, ch);
+        }
+    } else {
+      ctx.fillStyle = '#00C853';
+      ctx.fillRect(cloth.x, cloth.y, cloth.w, cloth.h);
+    }
+    ctx.strokeStyle = '#14181F';
+    ctx.lineWidth = 2.5;
+    ctx.strokeRect(cloth.x, cloth.y, cloth.w, cloth.h);
+  });
+}
+
+/** A step of a walk: a white dot in a bright blue ring, on any map. */
+function walkDotImage(): ImageData | undefined {
+  return canvasImage(24, 24, (ctx) => {
+    ctx.beginPath();
+    ctx.arc(12, 12, 8, 0, Math.PI * 2);
+    ctx.fillStyle = '#ffffff';
+    ctx.fill();
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = '#1E6FFF';
+    ctx.stroke();
+  });
+}
+
 function addOverlay(map: MapLibreMap, base: BaseLayer) {
   if (map.getSource('mb-lines')) return;
-  if (!map.hasImage('mb-arrow')) {
-    const arrow = arrowImage();
-    if (arrow) map.addImage('mb-arrow', arrow, { pixelRatio: 2 });
+  const images: [string, () => ImageData | undefined][] = [
+    ['mb-arrow', arrowImage],
+    ['mb-flag-start', () => flagImage(false)],
+    ['mb-flag-finish', () => flagImage(true)],
+    ['mb-walk-dot', walkDotImage],
+  ];
+  for (const [id, make] of images) {
+    if (map.hasImage(id)) continue;
+    const image = make();
+    if (image) map.addImage(id, image, { pixelRatio: 2 });
   }
   const sideOffset = [
     'interpolate',
@@ -272,17 +352,32 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
       'line-offset': sideOffset,
     },
   });
+  // A walk: a faint band along the streets with bright dots on it, to see where it goes.
   map.addLayer({
     id: 'mb-walk',
     type: 'line',
     source: 'mb-lines',
     filter: ['get', 'dashed'],
-    layout: { 'line-cap': 'round' },
+    layout: { 'line-cap': 'round', 'line-join': 'round' },
     paint: {
-      // White dots read on the dark of the aerial photos, navy ones on the drawn maps.
-      'line-color': base === 'satellite' ? '#ffffff' : ['get', 'color'],
-      'line-width': 4.5,
-      'line-dasharray': [0.3, 1.6],
+      'line-color': base === 'satellite' ? '#ffffff' : '#1E6FFF',
+      'line-width': ['interpolate', ['linear'], ['zoom'], 12, 3, 17, 6],
+      'line-opacity': 0.45,
+    },
+  });
+  map.addLayer({
+    id: 'mb-walk-dots',
+    type: 'symbol',
+    source: 'mb-lines',
+    filter: ['get', 'dashed'],
+    layout: {
+      'symbol-placement': 'line',
+      'symbol-spacing': ['interpolate', ['linear'], ['zoom'], 12, 9, 17, 16],
+      'icon-image': 'mb-walk-dot',
+      'icon-size': ['interpolate', ['linear'], ['zoom'], 12, 0.7, 17, 1.15],
+      'icon-allow-overlap': true,
+      'icon-ignore-placement': true,
+      'icon-rotation-alignment': 'map',
     },
   });
   // Arrows the way the bus goes: on the line, or on its side of the road.
@@ -348,9 +443,9 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
           'bus',
           9,
           'board',
-          8,
+          4,
           'alight',
-          10,
+          4,
           'stop',
           0,
           6.5,
@@ -364,9 +459,9 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
           'bus',
           9,
           'board',
-          8,
+          4,
           'alight',
-          10,
+          4,
           'stop',
           1.8,
           6.5,
@@ -380,9 +475,9 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
           'bus',
           9,
           'board',
-          8,
+          4,
           'alight',
-          10,
+          4,
           'stop',
           3,
           6.5,
@@ -396,9 +491,9 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
           'bus',
           9,
           'board',
-          8,
+          4,
           'alight',
-          10,
+          4,
           'stop',
           4.5,
           6.5,
@@ -431,6 +526,23 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
         14,
         ['match', ['get', 'kind'], 'stop', 2, 3],
       ],
+    },
+  });
+  // The flags where each bus is boarded and left, standing on their stops.
+  map.addLayer({
+    id: 'mb-flag',
+    type: 'symbol',
+    source: 'mb-points',
+    filter: ['match', ['get', 'kind'], ['board', 'alight'], true, false],
+    layout: {
+      'icon-image': ['match', ['get', 'kind'], 'board', 'mb-flag-start', 'mb-flag-finish'],
+      'icon-anchor': ['match', ['get', 'kind'], 'board', 'bottom-left', 'bottom-right'],
+      // The pole's foot on the stop, the cloth up and to the side.
+      'icon-offset': ['match', ['get', 'kind'], 'board', ['literal', [-3, 2]], ['literal', [3, 2]]],
+      'icon-size': ['interpolate', ['linear'], ['zoom'], 10, 0.75, 14, 1.1, 17, 1.35],
+      'icon-allow-overlap': true,
+      'icon-ignore-placement': true,
+      'symbol-sort-key': ['match', ['get', 'kind'], 'board', 2, 1],
     },
   });
   if (map.getStyle().glyphs) {
