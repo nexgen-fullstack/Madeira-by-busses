@@ -109,7 +109,7 @@ jobs:
 
             **Google Play:** `Madeira-by-busses.aab` — файл для Play Console. `MadeiraBus.apk` — той самий застосунок під старою назвою, щоб працювали давні посилання.
 
-            Застосунок працює без інтернету, знає розклад Horários do Funchal і попереджає, коли виходити, навіть із вимкненим екраном. Новий розклад завантажує сам.
+            Застосунок працює без інтернету, знає розклад Horários do Funchal, CAM, Aerobus і SIGA Rodoeste і попереджає, коли виходити, навіть із вимкненим екраном. Новий розклад завантажує сам.
 
             **How to install:** open this page on your Android phone, download `Madeira-by-busses.apk`, open it and allow installing from this source. New versions install over the old one. `Madeira-by-busses.aab` is the bundle for Google Play.
 
