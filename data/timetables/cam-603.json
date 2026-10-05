@@ -1,0 +1,171 @@
+{
+  "line": "603",
+  "formerly": "114",
+  "operator": "CAM",
+  "name": "Funchal - Nogueira",
+  "source": {
+    "pdf": "https://siga.madeira.gov.pt/storage/horarios_pdf/114.pdf",
+    "sha256": "bd0586ebb98fa0bf",
+    "checked": "2026-10-05"
+  },
+  "notes": {
+    "a": {
+      "text": "via Ribeirinha",
+      "via": true
+    }
+  },
+  "directions": [
+    {
+      "to": "Nogueira",
+      "stops": [
+        {
+          "name": "Funchal",
+          "stop": "00025"
+        },
+        {
+          "name": "Nogueira",
+          "stop": "69021"
+        }
+      ],
+      "notes": {
+        "b": {
+          "text": "Até ao Largo da Achada",
+          "skip": true
+        },
+        "c": {
+          "text": "Até ao Camacha Shopping, via Largo da Achada",
+          "to": "68113",
+          "via": true
+        },
+        "e": {
+          "text": "Até à Achadinha",
+          "to": "68171"
+        }
+      },
+      "weekdays": [
+        "06:40",
+        "07:35",
+        "09:15 c",
+        "11:15",
+        "13:45",
+        "14:30",
+        "17:15",
+        "17:40",
+        "18:50",
+        "20:30",
+        "21:30",
+        "22:30",
+        "23:30",
+        "00:15 b"
+      ],
+      "saturdays": [
+        "06:30",
+        "07:40",
+        "08:45 e",
+        "10:00",
+        "11:15",
+        "13:45",
+        "14:30",
+        "16:30",
+        "17:40",
+        "18:50",
+        "19:20 a",
+        "20:30",
+        "22:00",
+        "23:30"
+      ],
+      "sundays": [
+        "06:30",
+        "07:35",
+        "08:45 e",
+        "10:00",
+        "11:15",
+        "14:30",
+        "16:30",
+        "17:40",
+        "20:30",
+        "22:00",
+        "23:30"
+      ]
+    },
+    {
+      "to": "Funchal",
+      "stops": [
+        {
+          "name": "Nogueira",
+          "stop": "69021"
+        },
+        {
+          "name": "Funchal",
+          "stop": "00025"
+        }
+      ],
+      "notes": {
+        "b": {
+          "text": "Do Largo da Achada",
+          "skip": true
+        },
+        "c": {
+          "text": "Do Camacha Shopping, via Largo da Achada",
+          "from": "68113",
+          "via": true
+        },
+        "d": {
+          "text": "Parte às 05:55 do Camacha Shopping",
+          "via": true
+        },
+        "e": {
+          "text": "Da Achadinha",
+          "from": "68171"
+        }
+      },
+      "weekdays": [
+        "06:00",
+        "06:50",
+        "07:30",
+        "08:00",
+        "08:15",
+        "10:00 c",
+        "11:55",
+        "14:30",
+        "15:15",
+        "18:00",
+        "18:20",
+        "19:30",
+        "21:15",
+        "22:05",
+        "23:30"
+      ],
+      "saturdays": [
+        "06:00",
+        "07:00",
+        "08:00 a",
+        "08:15",
+        "09:20 e",
+        "10:40",
+        "11:55",
+        "14:30",
+        "15:15",
+        "17:15",
+        "18:20",
+        "19:30",
+        "21:15",
+        "22:45"
+      ],
+      "sundays": [
+        "06:00 d",
+        "07:00",
+        "08:15 a",
+        "09:20 e",
+        "10:40",
+        "11:55",
+        "15:15",
+        "17:15",
+        "18:20",
+        "20:00 c",
+        "21:15",
+        "22:45"
+      ]
+    }
+  ]
+}

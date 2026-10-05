@@ -1,0 +1,201 @@
+{
+  "line": "625",
+  "formerly": "129",
+  "operator": "CAM",
+  "name": "Funchal - Camacha",
+  "source": {
+    "pdf": "https://siga.madeira.gov.pt/storage/horarios_pdf/129.pdf",
+    "sha256": "6b174dd59f68fa75",
+    "checked": "2026-10-05"
+  },
+  "notes": {
+    "a": {
+      "text": "via Achadinha",
+      "via": true
+    },
+    "b": {
+      "text": "Até / do Ribeiro Serrão (B. Gasolina)",
+      "skip": true
+    },
+    "E": {
+      "text": "Expresso",
+      "variant": false
+    },
+    "g": {
+      "text": "Parte às 06:55 do Ribeiro Serrão, só em dias letivos",
+      "skip": true
+    },
+    "h": {
+      "text": "Até / do Caminho da Portela",
+      "skip": true
+    },
+    "i": {
+      "text": "Só em dias letivos",
+      "school": "school"
+    }
+  },
+  "directions": [
+    {
+      "to": "Camacha",
+      "stops": [
+        {
+          "name": "Funchal",
+          "stop": "00025"
+        },
+        {
+          "name": "Camacha",
+          "stop": "68113"
+        }
+      ],
+      "notes": {
+        "c": {
+          "text": "Até ao Rochão (Borracheiro)",
+          "to": "68232"
+        },
+        "f": {
+          "text": "Até ao Rochão (Borracheiro), Expresso",
+          "to": "68232",
+          "variant": false
+        }
+      },
+      "weekdays": [
+        "08:00",
+        "09:00",
+        "10:00",
+        "11:00",
+        "11:45 c",
+        "12:15 b",
+        "13:00",
+        "13:30",
+        "14:30",
+        "15:30",
+        "17:00",
+        "17:30",
+        "18:00 E",
+        "18:15 b",
+        "18:30",
+        "19:00 a",
+        "19:30 f h",
+        "20:00",
+        "22:00",
+        "23:30"
+      ],
+      "saturdays": [
+        "08:15",
+        "09:00",
+        "10:00",
+        "11:00",
+        "11:45",
+        "13:25 c",
+        "14:35",
+        "15:30",
+        "17:00 c",
+        "18:30",
+        "19:00 a",
+        "19:50 c",
+        "20:25",
+        "22:00",
+        "23:30"
+      ],
+      "sundays": [
+        "09:00",
+        "10:00",
+        "11:00",
+        "12:30",
+        "13:30",
+        "14:30",
+        "15:30",
+        "17:00",
+        "18:00 c",
+        "20:00",
+        "20:30",
+        "22:00",
+        "23:30"
+      ]
+    },
+    {
+      "to": "Funchal",
+      "stops": [
+        {
+          "name": "Camacha",
+          "stop": "68113"
+        },
+        {
+          "name": "Funchal",
+          "stop": "00025"
+        }
+      ],
+      "notes": {
+        "c": {
+          "text": "Do Rochão (Borracheiro)",
+          "from": "68227"
+        },
+        "d": {
+          "text": "Do Rochão (Borracheiro), via Achadinha",
+          "from": "68227",
+          "via": true
+        },
+        "f": {
+          "text": "Do Rochão (Borracheiro), Expresso",
+          "from": "68227",
+          "variant": false
+        }
+      },
+      "weekdays": [
+        "07:00 E",
+        "07:15 g",
+        "07:30 b",
+        "07:30 f h",
+        "08:15 E",
+        "08:30 i",
+        "08:45",
+        "09:45",
+        "10:45",
+        "11:45",
+        "12:30 f",
+        "13:00 b",
+        "13:45",
+        "15:15",
+        "16:15",
+        "17:40",
+        "18:45",
+        "19:15",
+        "19:45",
+        "22:45"
+      ],
+      "saturdays": [
+        "06:45 d",
+        "08:05 c",
+        "08:50",
+        "09:45",
+        "10:45",
+        "11:45",
+        "12:30",
+        "13:15",
+        "14:15 c",
+        "15:15",
+        "16:15",
+        "17:45 c",
+        "19:15",
+        "19:45",
+        "21:00",
+        "22:45"
+      ],
+      "sundays": [
+        "06:45 d",
+        "08:15",
+        "09:45",
+        "10:45",
+        "11:45",
+        "13:15",
+        "14:15",
+        "15:15",
+        "16:15",
+        "17:45",
+        "18:45 c",
+        "21:00",
+        "22:45"
+      ]
+    }
+  ]
+}

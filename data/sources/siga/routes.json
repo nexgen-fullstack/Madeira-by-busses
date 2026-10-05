@@ -1,0 +1,8106 @@
+{
+ "fetchedAt": "2026-10-04T23:15:58.340Z",
+ "routes": [
+  {
+   "id": 6406,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "200",
+   "name": "Funchal - Ribeira Brava VIA RAPIDA",
+   "stops": 16,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6407,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "200",
+   "name": "Ribeira Brava - Funchal VIA RAPIDA",
+   "stops": 14,
+   "duration": "00:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6408,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "200",
+   "name": "Ribeira Brava - Funchal VIA RAPIDA (via Hospital)",
+   "stops": 17,
+   "duration": "00:35:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6409,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "201",
+   "name": "Funchal - Ponte dos Frades",
+   "stops": 37,
+   "duration": "00:35:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6410,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "201",
+   "name": "Funchal - Ponte dos Frades até Cam. Ribeiro Real",
+   "stops": 36,
+   "duration": "00:35:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6411,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "201",
+   "name": "Cam. Ribeiro Real e Ponte Frades - Funchal",
+   "stops": 49,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6412,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "202",
+   "name": "Funchal - Estreito Câmara Lobos via C. Lobos",
+   "stops": 51,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6413,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "202",
+   "name": "Funchal - Estreito C.Lobos Via Rapida Direto",
+   "stops": 15,
+   "duration": "00:35:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6414,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "202",
+   "name": "Funchal - Estreito Câmara Lobos via Fte. Rocha",
+   "stops": 48,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6415,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "202",
+   "name": "Estreito Câmara Lobos - Funchal via C.Lobos",
+   "stops": 51,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6416,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "202",
+   "name": "Estreito Câmara Lobos - Funchal Via Rápida",
+   "stops": 20,
+   "duration": "00:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6417,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "203",
+   "name": "Funchal - Castelejo",
+   "stops": 67,
+   "duration": "01:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6418,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "203",
+   "name": "Funchal - Castelejo",
+   "stops": 63,
+   "duration": "00:55:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6419,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "203",
+   "name": "Funchal - Castelejo Via Rapida",
+   "stops": 42,
+   "duration": "00:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6420,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "203",
+   "name": "Funchal - Castelejo Via Rapida",
+   "stops": 38,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6421,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "203",
+   "name": "Funchal - Castelejo até Ernesto Via Rápida",
+   "stops": 47,
+   "duration": "01:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6422,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "203",
+   "name": "Funchal - Castelejo",
+   "stops": 64,
+   "duration": "00:55:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6423,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "203",
+   "name": "Castelejo - Funchal via Covão",
+   "stops": 88,
+   "duration": "01:25:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6424,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "203",
+   "name": "Castelejo - Funchal via Fte. Rocha",
+   "stops": 68,
+   "duration": "01:05:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6425,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "203",
+   "name": "Castelejo - Funchal via C. Lobos",
+   "stops": 65,
+   "duration": "01:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6426,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "203",
+   "name": "Castelejo - Funchal Via Rápida",
+   "stops": 34,
+   "duration": "00:50:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6427,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "203",
+   "name": "Castelejo - Funchal Via Rapida S.Rita",
+   "stops": 47,
+   "duration": "00:50:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6428,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "203",
+   "name": "Castelejo e Fontes - Funchal Via Rapida",
+   "stops": 50,
+   "duration": "00:55:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6429,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "203",
+   "name": "Castelejo - Funchal Via Rapida - Direto",
+   "stops": 25,
+   "duration": "00:40:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6430,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "203",
+   "name": "Castelejo - Câmara de Lobos",
+   "stops": 23,
+   "duration": "00:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6431,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "207",
+   "name": "Funchal - Ribeira Brava via Cabo Girão",
+   "stops": 114,
+   "duration": "01:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6432,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "207",
+   "name": "Funchal - Ribeira Brava via Estreito C.Lobos",
+   "stops": 110,
+   "duration": "01:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6433,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "207",
+   "name": "Funchal - Ribeira Brava até C. Saúde",
+   "stops": 114,
+   "duration": "01:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6434,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "207",
+   "name": "Estreito C.Lobos - Ribeira Brava",
+   "stops": 62,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6435,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "207",
+   "name": "Funchal - Ribeira Brava via Estreito C.Lobos",
+   "stops": 116,
+   "duration": "01:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6436,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "207",
+   "name": "Funchal - Ribeira Brava via Estreito C.Lobos",
+   "stops": 118,
+   "duration": "01:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6437,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "207",
+   "name": "Ribeira Brava - Funchal via Cabo Girão",
+   "stops": 121,
+   "duration": "01:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6438,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "207",
+   "name": "Ribeira Brava - Funchal via Estreito C.Lobos",
+   "stops": 111,
+   "duration": "01:25:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6439,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "207",
+   "name": "Ribeira Brava - Funchal via Estreito C.Lobos",
+   "stops": 110,
+   "duration": "01:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6440,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "207",
+   "name": "Ribeira Brava - Funchal Via Rápida desde Estreito C.Lobos",
+   "stops": 73,
+   "duration": "01:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6441,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "209",
+   "name": "Funchal - Ribeira Brava Via Rápida até Q.Grande",
+   "stops": 61,
+   "duration": "00:55:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6442,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "209",
+   "name": "Funchal - Ribeira Brava Via Rápida Areeiro-Q.Grande via Tranqual",
+   "stops": 79,
+   "duration": "01:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6443,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "209",
+   "name": "Ribeira Brava - Funchal Via Rápida Q.Grande-Areeiro",
+   "stops": 75,
+   "duration": "01:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6444,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "209",
+   "name": "Ribeira Brava - Funchal Via Rapida desde Campanário",
+   "stops": 55,
+   "duration": "00:55:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6445,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "209",
+   "name": "Ribeira Brava - Funchal Via Rápida Q.Grande via Tranqual",
+   "stops": 56,
+   "duration": "01:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6446,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "218",
+   "name": "Vila da Calheta - Lombos - Arco Calheta - Calheta",
+   "stops": 60,
+   "duration": "00:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6447,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "218",
+   "name": "Vila da Calheta - Arco Calheta - Lombos - Calheta",
+   "stops": 53,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6448,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "220",
+   "name": "Ribeira Brava - Serra de Água",
+   "stops": 50,
+   "duration": "00:40:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6449,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "220",
+   "name": "Ribeira Brava - Serra de Água",
+   "stops": 31,
+   "duration": "00:25:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6450,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "220",
+   "name": "Ribeira Brava - Serra de Água",
+   "stops": 30,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6451,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "221",
+   "name": "Ribeira Brava - Pomar da Rocha e Furna",
+   "stops": 31,
+   "duration": "00:25:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6452,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "221",
+   "name": "Ribeira Brava - Furna",
+   "stops": 31,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6453,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "221",
+   "name": "Ribeira Brava - Fonte Cruzada (Poços)",
+   "stops": 27,
+   "duration": "00:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6454,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "221",
+   "name": "Pomar da Rocha e Furna - Ribeira Brava",
+   "stops": 49,
+   "duration": "00:35:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6455,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "221",
+   "name": "Fonte Cruzada - Ribeira Brava",
+   "stops": 24,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6456,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "222",
+   "name": "Ribeira Brava - Candelária",
+   "stops": 17,
+   "duration": "00:15:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6457,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "222",
+   "name": "Ribeira Brava - Ribeira Tabúa",
+   "stops": 17,
+   "duration": "00:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6458,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "222",
+   "name": "Ribeira Tabúa e Candelária - Ribeira Brava",
+   "stops": 40,
+   "duration": "00:40:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6459,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "222",
+   "name": "Candelária - Ribeira Brava via Ribeira Tabúa",
+   "stops": 37,
+   "duration": "00:35:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6460,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "223",
+   "name": "Funchal - São Paulo Via Rápida Areeiro-Q.Grande",
+   "stops": 67,
+   "duration": "01:35:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6461,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "224",
+   "name": "Ribeira Brava - Terreiros via Rápida (Campanário)",
+   "stops": 29,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6462,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "224",
+   "name": "Ribeira Brava - Terreiros via Escola Campanário",
+   "stops": 73,
+   "duration": "01:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6463,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "224",
+   "name": "Terreiros - Ribeira Brava via Campanário",
+   "stops": 29,
+   "duration": "00:40:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6464,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "225",
+   "name": "Ribeira Brava - Vera Cruz",
+   "stops": 24,
+   "duration": "00:20:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6465,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "225",
+   "name": "Ribeira Brava - Escola Campanário Via Rápida",
+   "stops": 7,
+   "duration": "00:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6466,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "225",
+   "name": "Escola Campanário - Ribeira Brava Via Rápida",
+   "stops": 7,
+   "duration": "00:10:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6467,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "226",
+   "name": "Ribeira Brava - Terreiros via Boa Morte",
+   "stops": 51,
+   "duration": "00:55:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6468,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "226",
+   "name": "Ribeira Brava - São Paulo e Lugar da Serra via Boa Morte",
+   "stops": 46,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6469,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "226",
+   "name": "Ribeira Brava - Lugar da Serra via Moreno e Boa Morte",
+   "stops": 61,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6470,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "226",
+   "name": "Ribeira Brava - Lugar da Serra via Boa Morte",
+   "stops": 54,
+   "duration": "01:00:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6471,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "226",
+   "name": "Terreiros e Lugar da Serra - Ribeira Brava via Moreno",
+   "stops": 55,
+   "duration": "01:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6472,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "226",
+   "name": "São Paulo e Lugar da Serra - Ribeira Brava via Boa Morte",
+   "stops": 57,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6473,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "226",
+   "name": "Lugar da Serra - Ribeira Brava via Boa Morte e Moreno",
+   "stops": 54,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6474,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "227",
+   "name": "Ribeira Brava - Boa Morte via Moreno-Barreiro-Jardim",
+   "stops": 40,
+   "duration": "00:40:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6475,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "227",
+   "name": "Ribeira Brava - Boa Morte",
+   "stops": 26,
+   "duration": "00:20:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6476,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "227",
+   "name": "Ribeira Brava - Boa Morte via Moreno",
+   "stops": 32,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6477,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "227",
+   "name": "Boa Morte - Ribeira Brava via Moreno",
+   "stops": 30,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6478,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "228",
+   "name": "Funchal - Boa Morte via Francelheira",
+   "stops": 127,
+   "duration": "01:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6479,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "228",
+   "name": "Funchal - Boa Morte",
+   "stops": 114,
+   "duration": "01:20:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6480,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "229",
+   "name": "Ribeira Brava - Terreiros via Rápida-Escola-Jardim",
+   "stops": 45,
+   "duration": "00:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6481,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "229",
+   "name": "Ribeira Brava - Adega-Jardim via Escola Campanário",
+   "stops": 33,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6482,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "229",
+   "name": "Jardim - Ribeira Brava via Escola Campanário",
+   "stops": 31,
+   "duration": "00:40:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6483,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "229",
+   "name": "Terreiros - Ribeira Brava via Escola Campanario",
+   "stops": 32,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6484,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "230",
+   "name": "Escola Campanario - Fontainhas via Aviceiro",
+   "stops": 53,
+   "duration": "00:40:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6485,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "230",
+   "name": "Cruz Caldeira - Escola Campanario",
+   "stops": 30,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6486,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "230",
+   "name": "Fontainhas - Ribeira Brava via Escola Campanario",
+   "stops": 34,
+   "duration": "00:40:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6487,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "231",
+   "name": "Espigão - Campanário - Pedregal",
+   "stops": 25,
+   "duration": "00:40:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6488,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "231",
+   "name": "São Paulo - Campanario - Pedregal",
+   "stops": 34,
+   "duration": "00:40:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6489,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "231",
+   "name": "Pedregal - Campanario - Espigão",
+   "stops": 38,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6490,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "231",
+   "name": "Pedregal - Campanario - São Paulo",
+   "stops": 37,
+   "duration": "00:35:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6491,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "232",
+   "name": "Ribeira Brava - Moreno - Pedra - Ribeira Brava",
+   "stops": 39,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6492,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "232",
+   "name": "Ribeira Brava - Pedra - Moreno - Ribeira Brava",
+   "stops": 33,
+   "duration": "00:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6493,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "233",
+   "name": "Ribeira Brava - Tabúa - Pico - Ribeira Brava",
+   "stops": 18,
+   "duration": "00:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6494,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "233",
+   "name": "Ribeira Brava - Pico - Tabúa - Ribeira Brava",
+   "stops": 17,
+   "duration": "00:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6495,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "236",
+   "name": "Funchal - Vargem até Cam. Ribeiro Real via Fte. Rocha",
+   "stops": 55,
+   "duration": "00:55:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6496,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "236",
+   "name": "Cam. Ribeiro Real e Vargem - Funchal",
+   "stops": 51,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6497,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "237",
+   "name": "Funchal - Corticeiras via Fontes via Covão",
+   "stops": 96,
+   "duration": "01:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6498,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "237",
+   "name": "Funchal - Estreito via Covão via Fte. Rocha",
+   "stops": 66,
+   "duration": "00:45:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6499,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "237",
+   "name": "Funchal - Covão até Estreito C.Lobos",
+   "stops": 58,
+   "duration": "01:00:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6500,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "237",
+   "name": "Funchal - Estreito via Covão Via Rápida",
+   "stops": 32,
+   "duration": "01:00:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6501,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "237",
+   "name": "Funchal - Ponte Frades-Covão-Castelejo",
+   "stops": 75,
+   "duration": "01:00:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6502,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "237",
+   "name": "Funchal - Ponte Frades-Covão-Estreito e Saraiva",
+   "stops": 71,
+   "duration": "00:55:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6503,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "237",
+   "name": "Foro - Estreito - Covão - Funchal via Fte. Rocha",
+   "stops": 81,
+   "duration": "00:50:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6504,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "237",
+   "name": "Estreito - Covão - Funchal ",
+   "stops": 66,
+   "duration": "00:55:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6505,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "237",
+   "name": "Estreito - Covão - Funchal Via Rápida",
+   "stops": 32,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6506,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "237",
+   "name": "Estreito - Covão - Fte. Rocha - Funchal Via Rápida",
+   "stops": 47,
+   "duration": "00:55:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6507,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "237",
+   "name": "Estreito - Covão - Funchal ",
+   "stops": 63,
+   "duration": "00:55:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6508,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "237",
+   "name": "Estreito - Covão - Funchal via Fte. Rocha",
+   "stops": 70,
+   "duration": "01:05:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6509,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "237",
+   "name": "Estreito - Covão - Funchal via Fte. Rocha",
+   "stops": 71,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6510,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "237",
+   "name": "Estreito - Covão - Funchal via Fte. Rocha",
+   "stops": 73,
+   "duration": "01:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6511,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "238",
+   "name": "Funchal - Castelejo/Ernesto via Fte. Rocha e Covão",
+   "stops": 70,
+   "duration": "01:00:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6512,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "238",
+   "name": "Funchal - Castelejo/Ernesto via Fte. Rocha e Covão",
+   "stops": 53,
+   "duration": "00:55:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6513,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "238",
+   "name": "Castelejo/Ernesto - Covão - Funchal",
+   "stops": 67,
+   "duration": "00:55:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6514,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "238",
+   "name": "Ernesto - Covão - Funchal Via Rápida",
+   "stops": 34,
+   "duration": "00:40:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6515,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "238",
+   "name": "Ernesto - Covão - Ponte Frades - Cª Lobos",
+   "stops": 33,
+   "duration": "00:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6516,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "238",
+   "name": "Ernesto - Covão - Funchal via Fte. Rocha",
+   "stops": 74,
+   "duration": "01:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6517,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "243",
+   "name": "Escola Calheta - Ponta do Pargo via Prazeres",
+   "stops": 62,
+   "duration": "01:05:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6518,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "243",
+   "name": "Ponta do Pargo - Escola Calheta Via Rápida",
+   "stops": 55,
+   "duration": "01:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6519,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "244",
+   "name": "Ribeira Brava - Miradouro Lombada",
+   "stops": 29,
+   "duration": "00:25:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6520,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "245",
+   "name": "Ponta do Sol - Miradouro Lombada",
+   "stops": 26,
+   "duration": "00:15:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6521,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "247",
+   "name": "Ponta Sol - Achada - Salões - Campo Futebol - Carvalhal - Socorro",
+   "stops": 67,
+   "duration": "00:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6522,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "247",
+   "name": "Ponta Sol - Lombo São João",
+   "stops": 21,
+   "duration": "00:15:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6523,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "247",
+   "name": "Ponta Sol - Reta Canhas - Torreão - Madalena Mar",
+   "stops": 41,
+   "duration": "00:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6524,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "247",
+   "name": "Ponta Sol - Reta Canhas - Salões - Campo Futebol - Carvalhal - Socorro",
+   "stops": 46,
+   "duration": "00:35:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6525,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "247",
+   "name": "Ponta Sol - Achada - Salões - Levada do Poiso",
+   "stops": 50,
+   "duration": "00:40:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6526,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "247",
+   "name": "Pinhal - Salões - Reta - Ponta Sol",
+   "stops": 30,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6527,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "247",
+   "name": "Serragem - Reta - Ponta Sol",
+   "stops": 27,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6528,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "247",
+   "name": "Levada do Poiso - Canhas - Ponta do Sol",
+   "stops": 31,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6529,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "247",
+   "name": "Carvalhal - Levada do Poiso - Cabouco - Ponta do Sol",
+   "stops": 36,
+   "duration": "00:25:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6530,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "247",
+   "name": "Socorro - Canhas - Ponta do Sol",
+   "stops": 26,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6531,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "249",
+   "name": "Ponta do Sol - Madalena do Mar",
+   "stops": 12,
+   "duration": "00:05:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6532,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "250",
+   "name": "São Vicente - Achadas da Cruz via Eira da Achada",
+   "stops": 68,
+   "duration": "01:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6533,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "250",
+   "name": "São Vicente - Achadas da Cruz via Eira da Achada",
+   "stops": 94,
+   "duration": "01:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6534,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "250",
+   "name": "Santa Porto Moniz - São Vicente via Eira Achada",
+   "stops": 64,
+   "duration": "01:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6535,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "250",
+   "name": "Santa Porto Moniz - São Vicente via Eira Achada",
+   "stops": 63,
+   "duration": "01:05:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6536,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "251",
+   "name": "Porto Moniz - Seixal via Eira Achada",
+   "stops": 29,
+   "duration": "00:35:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6537,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "251",
+   "name": "Seixal - Porto Moniz",
+   "stops": 12,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6538,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "252",
+   "name": "Porto Moniz - Achadas da Cruz",
+   "stops": 37,
+   "duration": "00:35:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6539,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "252",
+   "name": "Achadas da Cruz - Santa P. Moniz",
+   "stops": 6,
+   "duration": "00:10:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6540,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "253",
+   "name": "Funchal - Furneira via Francelheira",
+   "stops": 40,
+   "duration": "00:55:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6541,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "253",
+   "name": "Estreito C.Lobos - Francelheira",
+   "stops": 14,
+   "duration": "00:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6542,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "253",
+   "name": "Francelheira - Funchal via Fte. Rocha",
+   "stops": 70,
+   "duration": "01:10:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6543,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "253",
+   "name": "Francelheira - Estreito C. Lobos",
+   "stops": 10,
+   "duration": "00:10:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6544,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "254",
+   "name": "Funchal - Fontaínhas via Francelheira",
+   "stops": 72,
+   "duration": "01:00:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6545,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "254",
+   "name": "Estreito C.Lobos - Fontaínhas",
+   "stops": 35,
+   "duration": "00:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6546,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "254",
+   "name": "Funchal - Fontaínhas",
+   "stops": 78,
+   "duration": "01:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6547,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "254",
+   "name": "Funchal - Fontaínhas via Fte.Rocha",
+   "stops": 77,
+   "duration": "01:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6548,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "254",
+   "name": "Funchal - Fontaínhas via Francelheira via Furneira",
+   "stops": 103,
+   "duration": "01:40:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6549,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "254",
+   "name": "Estreito Câmara Lobos - Fontainhas via Francelheira e Furneira",
+   "stops": 61,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6550,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "254",
+   "name": "Fontaínhas - Estreito C.Lobos via Francelheira",
+   "stops": 42,
+   "duration": "00:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6551,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "254",
+   "name": "Fontaínhas - Estreito C.Lobos",
+   "stops": 30,
+   "duration": "00:25:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6552,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "254",
+   "name": "Fontaínhas e Furneira - Funchal Via Rápida-Limoeiro",
+   "stops": 51,
+   "duration": "01:05:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6553,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "254",
+   "name": "Fontaínhas - Estreito C.Lobos via Furneira e Francelheira",
+   "stops": 55,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6554,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "254",
+   "name": "Furneira-Fontainhas-Francelheira - Funchal Via Rápida (S.Rita)",
+   "stops": 105,
+   "duration": "01:55:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6555,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "254",
+   "name": "Fontaínhas-Furneira-Francelheira - Funchal Via Rápida",
+   "stops": 74,
+   "duration": "01:05:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6556,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "255",
+   "name": "Funchal - Quinta Grande via Aviceiro Via Rápida-Limoeiro",
+   "stops": 30,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6557,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "256",
+   "name": "Carmo - Quinta Grande via Francelheira e Furneira",
+   "stops": 41,
+   "duration": "00:35:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6558,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "256",
+   "name": "Quinta Grande - Carmo via Furneira e Francelheira",
+   "stops": 54,
+   "duration": "00:40:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6559,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "257",
+   "name": "Carmo - Caldeira até Fonte da Rocha",
+   "stops": 33,
+   "duration": "00:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6560,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "257",
+   "name": "Francelheira - Caldeira - Carmo",
+   "stops": 38,
+   "duration": "00:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6561,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "258",
+   "name": "Escola Torre - Estreito até Levada Nova",
+   "stops": 39,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6562,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "258",
+   "name": "Câmara de Lobos - Estreito via Covão",
+   "stops": 37,
+   "duration": "00:25:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6563,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "258",
+   "name": "Jardim São Francisco - Estreito via Covão",
+   "stops": 30,
+   "duration": "00:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6564,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "258",
+   "name": "Levada Nova - Estreito - Castelejo",
+   "stops": 38,
+   "duration": "00:35:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6565,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "258",
+   "name": "Covão - Escola Torre",
+   "stops": 23,
+   "duration": "00:25:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6566,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "258",
+   "name": "Covão - Escola Torre",
+   "stops": 35,
+   "duration": "00:35:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6567,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "259",
+   "name": "Estreito Câmara Lobos - Corrida via Fontes",
+   "stops": 40,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6568,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "259",
+   "name": "Estreito Câmara Lobos - Corticeiras via Fontes",
+   "stops": 34,
+   "duration": "00:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6569,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "259",
+   "name": "Estreito Câmara Lobos - Corrida via Fontes",
+   "stops": 21,
+   "duration": "00:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6570,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "260",
+   "name": "Estreito Câmara Lobos - Castelejo",
+   "stops": 20,
+   "duration": "00:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6571,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "260",
+   "name": "Estreito Câmara Lobos - Castelejo",
+   "stops": 16,
+   "duration": "00:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6572,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "260",
+   "name": "Estreito Câmara Lobos - Castelejo",
+   "stops": 16,
+   "duration": "00:10:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6573,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "260",
+   "name": "Castelejo - Estreito Câmara Lobos",
+   "stops": 16,
+   "duration": "00:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6574,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "261",
+   "name": "Estreito Câmara Lobos - Jardim da Serra via Fôro",
+   "stops": 23,
+   "duration": "00:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6575,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "261",
+   "name": "Estreito Câmara Lobos - Jardim da Serra via Fôro",
+   "stops": 28,
+   "duration": "00:15:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6576,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "261",
+   "name": "Estreito Câmara Lobos - Jardim da Serra via Corticeiras",
+   "stops": 29,
+   "duration": "00:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6577,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "261",
+   "name": "Estreito Câmara Lobos - Corticeiras",
+   "stops": 19,
+   "duration": "00:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6578,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "261",
+   "name": "Jardim da Serra - Estreito Câmara Lobos via Corticeiras",
+   "stops": 28,
+   "duration": "00:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6579,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "262",
+   "name": "Estreito Câmara Lobos - Corrida via Fôro e Marco",
+   "stops": 35,
+   "duration": "00:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6580,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "262",
+   "name": "Estreito Câmara Lobos - Corrida",
+   "stops": 17,
+   "duration": "00:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6581,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "262",
+   "name": "Estreito Câmara Lobos - Corrida via Fôro",
+   "stops": 29,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6582,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "262",
+   "name": "Marco-Corrida - Estreito Câmara Lobos via Fôro",
+   "stops": 39,
+   "duration": "00:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6583,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "262",
+   "name": "Corrida-Marco - Estreito Câmara Lobos via Corticeiras",
+   "stops": 36,
+   "duration": "00:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6584,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "262",
+   "name": "Marco-Corrida - Estreito Câmara Lobos via Fôro",
+   "stops": 37,
+   "duration": "00:25:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6585,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "263",
+   "name": "Escola Calheta - Paúl do Mar via Fazendinha",
+   "stops": 33,
+   "duration": "00:35:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6586,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "263",
+   "name": "Escola Calheta - Paúl do Mar via Ribeira Funda",
+   "stops": 39,
+   "duration": "00:35:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6587,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "263",
+   "name": "Calheta - Paúl do Mar",
+   "stops": 26,
+   "duration": "00:20:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6588,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "263",
+   "name": "Calheta - Paul do Mar e Raposeira",
+   "stops": 44,
+   "duration": "00:55:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6589,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "263",
+   "name": "Prazeres - Escola da Raposeira - Calheta",
+   "stops": 29,
+   "duration": "00:50:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6590,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "263",
+   "name": "Paul do Mar - Escola da Calheta",
+   "stops": 10,
+   "duration": "00:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6591,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "263",
+   "name": "Escola Raposeira - Prazeres - Paul do Mar",
+   "stops": 34,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6592,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "264",
+   "name": "Escola Calheta - Lombos, Ledo - Calheta",
+   "stops": 52,
+   "duration": "00:55:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6593,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "264",
+   "name": "Escola Calheta - Fajã - Cova Arco",
+   "stops": 59,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6594,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "264",
+   "name": "Escola Calheta - Lombos - Ledo",
+   "stops": 56,
+   "duration": "00:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6595,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "264",
+   "name": "Escola Calheta - Cova do Arco via Fajã",
+   "stops": 93,
+   "duration": "00:55:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6596,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "264",
+   "name": "Escola Calheta - Atouguia",
+   "stops": 31,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6597,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "264",
+   "name": "Escola Calheta - Loreto e Ledo",
+   "stops": 49,
+   "duration": "00:35:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6598,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "264",
+   "name": "Cova do Arco - Escola da Calheta ",
+   "stops": 43,
+   "duration": "00:25:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6599,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "264",
+   "name": "Loreto - Arco Calheta - Fajã - Escola Calheta",
+   "stops": 26,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6600,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "264",
+   "name": "Lombos - Atouguia - Escola Calheta",
+   "stops": 25,
+   "duration": "00:25:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6601,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "264",
+   "name": "Ledo - Escola Calheta",
+   "stops": 14,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6602,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "265",
+   "name": "Terra Chã - Ginjas e Lameiros até Escola",
+   "stops": 51,
+   "duration": "00:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6603,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "265",
+   "name": "São Vicente - Ginjas e Lameiros até Escola",
+   "stops": 46,
+   "duration": "00:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6604,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "265",
+   "name": "Escola São Vicente - Terra Chã - Ginjas - Lameiros",
+   "stops": 42,
+   "duration": "00:40:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6605,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "266",
+   "name": "São Vicente - Arco de São Jorge",
+   "stops": 105,
+   "duration": "01:05:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6606,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "266",
+   "name": "São Vicente - Falca (Arco São Jorge)",
+   "stops": 69,
+   "duration": "00:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6607,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "266",
+   "name": "Lameiros - São Vicente - Arco São Jorge",
+   "stops": 121,
+   "duration": "01:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6608,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "266",
+   "name": "Falca - Arco São Jorge - São Vicente",
+   "stops": 117,
+   "duration": "01:35:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6609,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "266",
+   "name": "Fajã do Penedo - São Vicente",
+   "stops": 104,
+   "duration": "01:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6610,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "266",
+   "name": "Arco São Jorge - São Vicente via Túnel",
+   "stops": 51,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6611,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "266",
+   "name": "Fajã do Penedo - São Vicente via Túnel",
+   "stops": 38,
+   "duration": "00:40:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6612,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "267",
+   "name": "Funchal - Ribeira Brava via Cabo Girão e Aviceiro",
+   "stops": 117,
+   "duration": "01:35:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6613,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "267",
+   "name": "Ribeira Brava - Funchal via Aviceiro e Fte. Rocha",
+   "stops": 125,
+   "duration": "01:40:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6614,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "270",
+   "name": "Preces-Caldeira - Funchal via Ponte Frades",
+   "stops": 76,
+   "duration": "01:10:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6615,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "270",
+   "name": "Preces-Caldeira - Funchal via Fte. Rocha",
+   "stops": 69,
+   "duration": "00:55:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6616,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "270",
+   "name": "Preces-Caldeira - Câmara de Lobos via Fte. Rocha",
+   "stops": 39,
+   "duration": "00:25:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6617,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "270",
+   "name": "Preces-Caldeira - Funchal",
+   "stops": 67,
+   "duration": "00:50:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6618,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "270",
+   "name": "Preces-Caldeira - Funchal Via Rápida (S. Rita)",
+   "stops": 47,
+   "duration": "00:50:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6619,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "270",
+   "name": "Preces-Caldeira - Funchal via Serrado Mar e Fte. Rocha",
+   "stops": 72,
+   "duration": "01:05:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6620,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "271",
+   "name": "Funchal - Preces-Caldeira até Rancho via Fte. Rocha",
+   "stops": 65,
+   "duration": "01:05:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6621,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "271",
+   "name": "Funchal - Serrado do Mar via Fte. Rocha (Preces-Caldeira)",
+   "stops": 44,
+   "duration": "00:40:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6622,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "271",
+   "name": "Funchal - Rotunda Rancho (Preces-Caldeira) via Fte. Rocha",
+   "stops": 39,
+   "duration": "00:35:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6623,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "271",
+   "name": "Câmara de Lobos - Preces-Caldeira até Rancho",
+   "stops": 37,
+   "duration": "00:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6624,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "271",
+   "name": "Câmara de Lobos - Rotunda Rancho (Preces-Caldeira)",
+   "stops": 11,
+   "duration": "00:05:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6625,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "271",
+   "name": "Funchal - Rotunda Rancho (Preces-Caldeira) Via Rápida (S.Rita)",
+   "stops": 25,
+   "duration": "00:35:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6626,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "272",
+   "name": "Funchal - Caldeira-Preces Via Rápida",
+   "stops": 35,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6627,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "277",
+   "name": "Funchal - Ribeira Brava via Aviceiro e Moreno",
+   "stops": 129,
+   "duration": "01:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6628,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "277",
+   "name": "Funchal - Ribeira Brava via Moreno",
+   "stops": 125,
+   "duration": "01:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6629,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "277",
+   "name": "Funchal - Ribeira Brava via Moreno",
+   "stops": 125,
+   "duration": "01:15:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6630,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "277",
+   "name": "Ribeira Brava - Funchal via Moreno-C.Girão",
+   "stops": 133,
+   "duration": "01:35:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6631,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "277",
+   "name": "Ribeira Brava - Funchal via Moreno e Fte. Rocha",
+   "stops": 121,
+   "duration": "01:40:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6632,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "277",
+   "name": "Ribeira Brava - Funchal via Moreno",
+   "stops": 119,
+   "duration": "01:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6633,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "277",
+   "name": "Ribeira Brava - Funchal via Moreno",
+   "stops": 121,
+   "duration": "01:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6634,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "277",
+   "name": "Ribeira Brava - Funchal via Moreno e Cabo Girão",
+   "stops": 127,
+   "duration": "01:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6635,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "283",
+   "name": "Funchal - Ribeira Brava|via Francelheira",
+   "stops": 119,
+   "duration": "01:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6636,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "286",
+   "name": "São Paulo - Espigão",
+   "stops": 2,
+   "duration": "00:05:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6637,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "287",
+   "name": "Funchal - Ribeira Brava via Adega - Jardim",
+   "stops": 112,
+   "duration": "01:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6638,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "290",
+   "name": "Funchal - Fôro-Fontes Via Rápida",
+   "stops": 51,
+   "duration": "00:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6639,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "290",
+   "name": "Fontes-Fôro - Funchal Via Rápida",
+   "stops": 60,
+   "duration": "01:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6640,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "290",
+   "name": "Corticeiras - Foro - Funchal DIRETO",
+   "stops": 31,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6641,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "291",
+   "name": "Funchal - Jardim da Serra via Fôro",
+   "stops": 77,
+   "duration": "01:00:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6642,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "291",
+   "name": "Funchal - Jardim da Serra via Fôro Via Rápida",
+   "stops": 51,
+   "duration": "01:00:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6643,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "291",
+   "name": "Jardim da Serra - Funchal via Fôro via Covão",
+   "stops": 91,
+   "duration": "01:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6644,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "291",
+   "name": "Eira das Moças - Funchal via Fôro Via Rápida",
+   "stops": 51,
+   "duration": "00:55:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6645,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "291",
+   "name": "Jardim da Serra - Funchal via Fôro Via Rápida",
+   "stops": 47,
+   "duration": "00:50:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6646,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "292",
+   "name": "Funchal - Corrida-Marco via Fôro",
+   "stops": 90,
+   "duration": "01:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6647,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "292",
+   "name": "Funchal - Corrida via Fôro",
+   "stops": 76,
+   "duration": "01:00:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6648,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "292",
+   "name": "Marco-Corrida - Funchal via Fôro e Covão",
+   "stops": 107,
+   "duration": "01:25:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6649,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "292",
+   "name": "Marco-Corrida - Funchal via Fôro",
+   "stops": 87,
+   "duration": "01:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6650,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "292",
+   "name": "Corrida - Funchal via Fôro Via Rápida",
+   "stops": 48,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6651,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "292",
+   "name": "Marco-Corrida via Fôro Funchal VIA RÁPIDA",
+   "stops": 54,
+   "duration": "00:50:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6652,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "293",
+   "name": "Funchal - Corticeiras via Fontes",
+   "stops": 72,
+   "duration": "01:00:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6653,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "293",
+   "name": "Pereira - Funchal via Fontes",
+   "stops": 74,
+   "duration": "01:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6654,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "294",
+   "name": "Funchal - Jardim da Serra via Castelejo e Fontes",
+   "stops": 88,
+   "duration": "01:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6655,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "294",
+   "name": "Funchal - Eira das Moças via Fontes",
+   "stops": 87,
+   "duration": "01:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6656,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "294",
+   "name": "Funchal - Jardim da Serra via Fontes",
+   "stops": 83,
+   "duration": "01:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6657,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "294",
+   "name": "Jardim da Serra - Funchal via Fontes-Castelejo",
+   "stops": 89,
+   "duration": "01:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6658,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "294",
+   "name": "Eira das Moças - Funchal via Fontes",
+   "stops": 87,
+   "duration": "01:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6659,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "294",
+   "name": "Jardim da Serra - Funchal via Fontes Via Rápida",
+   "stops": 52,
+   "duration": "00:55:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6660,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "295",
+   "name": "Funchal - Marco-Corrida via Castelejo e Fontes",
+   "stops": 94,
+   "duration": "01:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6661,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "295",
+   "name": "Funchal - Marco-Corrida via Fontes",
+   "stops": 88,
+   "duration": "01:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6662,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "295",
+   "name": "Funchal - Marco via Fontes (Corrida)",
+   "stops": 69,
+   "duration": "01:10:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6663,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "295",
+   "name": "Funchal - Marco-Corrida via Fte. Rocha e Fontes",
+   "stops": 87,
+   "duration": "01:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6664,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "295",
+   "name": "Funchal - Corrida via Fontes VIA RÁPIDA",
+   "stops": 46,
+   "duration": "00:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6665,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "295",
+   "name": "Marco-Corrida - Funchal via Fontes Via Rápida Direto",
+   "stops": 53,
+   "duration": "01:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6666,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "296",
+   "name": "Funchal - Eira das Moças via Corticeiras",
+   "stops": 82,
+   "duration": "01:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6667,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "296",
+   "name": "Funchal - Jardim da Serra via Corticeiras",
+   "stops": 77,
+   "duration": "00:50:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6668,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "296",
+   "name": "Câmara de Lobos - Jardim da Serra via Carmo",
+   "stops": 60,
+   "duration": "00:55:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6669,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "296",
+   "name": "Funchal - Jardim da Serra via Fte. Rocha via Romeiras",
+   "stops": 76,
+   "duration": "01:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6670,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "296",
+   "name": "Funchal - Jardim da Serra via Romeiras Via Rápida",
+   "stops": 43,
+   "duration": "01:00:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6671,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "296",
+   "name": "Jardim Serra - Funchal via Corticeiras e Fte. Rocha",
+   "stops": 80,
+   "duration": "01:10:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6672,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "296",
+   "name": "Jardim da Serra - Funchal via Corticeiras Via Rápida",
+   "stops": 46,
+   "duration": "00:55:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6673,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "296",
+   "name": "Jardim da Serra - Funchal Via Rápida - Direto",
+   "stops": 37,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6674,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "296",
+   "name": "Eira das Moças - Funchal via Corticeiras",
+   "stops": 81,
+   "duration": "00:55:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6675,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "297",
+   "name": "Funchal - Corticeiras até Fôro",
+   "stops": 75,
+   "duration": "01:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6676,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "297",
+   "name": "Pereira - Funchal ",
+   "stops": 68,
+   "duration": "00:55:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6677,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "297",
+   "name": "Corticeiras - Funchal DIRETO",
+   "stops": 28,
+   "duration": "00:40:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6678,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "298",
+   "name": "Funchal - Corrida via Escola e Corticeiras",
+   "stops": 78,
+   "duration": "01:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6679,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "298",
+   "name": "Funchal - Marco via Romeiras (Corrida)",
+   "stops": 65,
+   "duration": "01:00:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6680,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "298",
+   "name": "Marco-Corrida via Fte. Rocha e Romeiras",
+   "stops": 64,
+   "duration": "00:55:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6681,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "298",
+   "name": "Funchal - Corrida Via Rápida-Direto",
+   "stops": 29,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6682,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "298",
+   "name": "Funchal - Corrida via Romeiras",
+   "stops": 76,
+   "duration": "01:00:00",
+   "directions": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": 6683,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "298",
+   "name": "Marco-Corrida - Funchal via Fte. Rocha",
+   "stops": 89,
+   "duration": "01:05:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6684,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "298",
+   "name": "Marco-Corrida - Funchal via Corticeiras",
+   "stops": 86,
+   "duration": "01:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6685,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "299",
+   "name": "Circulação - Fontes-Corticeiras-Fôro",
+   "stops": 46,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6686,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "300",
+   "name": "Funchal - São Vicente Via Rápida",
+   "stops": 57,
+   "duration": "00:55:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6687,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "301",
+   "name": "São Vicente - Funchal Via Rápida",
+   "stops": 55,
+   "duration": "01:05:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6688,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "304",
+   "name": "Funchal - Arco de São Jorge via Encumeada e Falca",
+   "stops": 252,
+   "duration": "03:40:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6689,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "304",
+   "name": "Funchal - Arco de São Jorge via Encumeada",
+   "stops": 240,
+   "duration": "03:35:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6690,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "305",
+   "name": "Arco São Jorge - Funchal via Falca e Encumeada",
+   "stops": 241,
+   "duration": "03:35:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6691,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "306",
+   "name": "Funchal - Fajã do Penedo via Cabo Girão",
+   "stops": 250,
+   "duration": "03:40:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6692,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "306",
+   "name": "Funchal - Boaventura via Cabo Girão",
+   "stops": 237,
+   "duration": "03:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6693,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "307",
+   "name": "Boaventura - Funchal via Ginjas",
+   "stops": 216,
+   "duration": "03:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6694,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "310",
+   "name": "Funchal - Arco São Jorge Via Rápida até Quinta Grande",
+   "stops": 213,
+   "duration": "03:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6695,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "310",
+   "name": "Serra de Água - Arco de São Jorge via Lameiros",
+   "stops": 144,
+   "duration": "02:00:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6696,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "311",
+   "name": "Arco São Jorge - Funchal Via Rápida",
+   "stops": 142,
+   "duration": "02:40:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6697,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "311",
+   "name": "Arco São Jorge - Funchal Via Rápida",
+   "stops": 142,
+   "duration": "02:40:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6698,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "320",
+   "name": "Funchal - Ponta do Sol via Lombada Via Rápida",
+   "stops": 47,
+   "duration": "01:05:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6699,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "321",
+   "name": "Auto Silo Campo da Barca (01705) - Clube  (34568)",
+   "stops": 44,
+   "duration": "01:10:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6700,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "322",
+   "name": "Funchal - Ponta do Sol via Cabo Girão",
+   "stops": 154,
+   "duration": "02:00:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6701,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "323",
+   "name": "Auto Silo Campo da Barca (01705) - Clube  (34568)",
+   "stops": 157,
+   "duration": "02:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6702,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "323",
+   "name": "Ponta do Sol - Funchal via Lugar de Baixo e Cabo Girão",
+   "stops": 128,
+   "duration": "01:55:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6703,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "324",
+   "name": "Funchal - Carvalhal via Estrada Regional",
+   "stops": 176,
+   "duration": "02:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6704,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "325",
+   "name": "Carvalhal - Funchal via Estrada Regional",
+   "stops": 176,
+   "duration": "02:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6705,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "325",
+   "name": "Carvalhal - Funchal Via Rápida desde Q.Grande-P.Frades via Fte. Rocha",
+   "stops": 156,
+   "duration": "01:40:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6706,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "326",
+   "name": "Funchal - Carvalhal via Monte Via Rápida",
+   "stops": 77,
+   "duration": "02:00:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6707,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "327",
+   "name": "Monte-Carvalhal - Funchal via Rápida",
+   "stops": 89,
+   "duration": "01:50:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6708,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "328",
+   "name": "Funchal - Madalena do Mar Via Rápida",
+   "stops": 50,
+   "duration": "01:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6709,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "329",
+   "name": "Auto Silo Campo da Barca (01705) - Campo- Madalena do Mar  (34554)",
+   "stops": 157,
+   "duration": "02:25:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6710,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "334",
+   "name": "Funchal - Carvalhal via Fte. Rocha e Monte",
+   "stops": 184,
+   "duration": "02:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6711,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "334",
+   "name": "Funchal - Carvalhal via Estrada Regional, L.Baixo e Monte",
+   "stops": 151,
+   "duration": "02:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6712,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "335",
+   "name": "Carvalhal - Funchal via Monte e Estrada Regional",
+   "stops": 174,
+   "duration": "02:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6713,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "335",
+   "name": "Carvalhal - Funchal via Monte e Estrada Regional",
+   "stops": 181,
+   "duration": "02:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6714,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "335",
+   "name": "Carvalhal - Funchal via Monte/Achada e Estrada Regional",
+   "stops": 181,
+   "duration": "02:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6715,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "336",
+   "name": "Ribeira Brava - Carvalhal via Lombada e Achada",
+   "stops": 68,
+   "duration": "00:55:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6716,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "336",
+   "name": "Ribeira Brava - Carvalhal via Canhas",
+   "stops": 65,
+   "duration": "00:35:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6717,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "336",
+   "name": "Ribeira Brava - Canhas",
+   "stops": 28,
+   "duration": "00:35:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6718,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "337",
+   "name": "Estacao R Brava  (24114) - CZ Levada do Poiso  (34602)",
+   "stops": 70,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6719,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "337",
+   "name": "Canhas - Ribeira Brava",
+   "stops": 30,
+   "duration": "00:35:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6720,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "340",
+   "name": "Funchal - Porto Moniz via Cabo Girão, Encumeada e São Vicente",
+   "stops": 186,
+   "duration": "03:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6721,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "341",
+   "name": "Porto Moniz - Funchal via São Vicente e Via Rápida",
+   "stops": 89,
+   "duration": "02:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6722,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "350",
+   "name": "Funchal - Achadas da Cruz Via Rápida, Túnel, Ginjas e Eira da Achada",
+   "stops": 127,
+   "duration": "03:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6723,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "351",
+   "name": "Auto Silo Campo da Barca (01705) - Achadas da Cruz Centro  (95600)",
+   "stops": 104,
+   "duration": "02:05:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6724,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "352",
+   "name": "Ribeira Brava - Achadas da Cruz via Eira da Achada",
+   "stops": 125,
+   "duration": "02:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6725,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "352",
+   "name": "Ribeira Brava - Achadas da Cruz via Eira da Achada",
+   "stops": 107,
+   "duration": "02:05:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6726,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "353",
+   "name": "Estacao R Brava  (24114) - Achadas da Cruz Centro  (95600)",
+   "stops": 141,
+   "duration": "02:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6727,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "353",
+   "name": "Achadas Cruz - Ribeira Brava via Eira Achada, PDelgada e Lameiros",
+   "stops": 170,
+   "duration": "02:40:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6728,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "353",
+   "name": "Achadas Cruz - Ribeira Brava via Eira Achada e Lameiros",
+   "stops": 133,
+   "duration": "02:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6729,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "370",
+   "name": "Funchal - Paul do Mar via Estrada Regional e Canhas",
+   "stops": 244,
+   "duration": "03:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6730,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "370",
+   "name": "Funchal - Estrela Calheta (até Paul do Mar) via Estrada Regional e Canhas",
+   "stops": 211,
+   "duration": "02:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6731,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "371",
+   "name": "Paul do Mar - Funchal via Madalena do Mar, Estrada Regional e Fte. Rocha",
+   "stops": 177,
+   "duration": "02:40:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6732,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "372",
+   "name": "Ribeira Brava - Paul do Mar e Fajã da Ovelha via Madalena Mar e Arco da Calheta",
+   "stops": 78,
+   "duration": "01:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6733,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "373",
+   "name": "Estacao R Brava  (24114) - Faja Ovelha-Faias  (45297)",
+   "stops": 124,
+   "duration": "02:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6734,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "373",
+   "name": "Fajã Ovelha - Funchal via Ribeira Funda, Escola Calheta, Canhas Via Rápida",
+   "stops": 143,
+   "duration": "02:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6735,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "379",
+   "name": "Fajã Ovelha - Funchal via Prazeres, Paul do Mar, Vila Calheta, Madalena Mar, Moreno e Cabo Girão",
+   "stops": 211,
+   "duration": "03:40:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6736,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "380",
+   "name": "Funchal - Porto Moniz via Calheta Via Rápida - Madalena Mar - Paul do Mar",
+   "stops": 128,
+   "duration": "03:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6737,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "380",
+   "name": "Funchal - Porto Moniz via Calheta Via Rápida - Madalena Mar - Paul do Mar",
+   "stops": 127,
+   "duration": "03:00:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6738,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "381",
+   "name": "Porto Moniz - Funchal via Calheta-Canhas e Via Rápida",
+   "stops": 226,
+   "duration": "03:40:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6739,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "381",
+   "name": "Porto Moniz - Funchal via Calheta- Paul do Mar - Madalena do Mar e Via Rápida",
+   "stops": 124,
+   "duration": "02:40:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6740,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "390",
+   "name": "Funchal - Ponta Pargo Via Rápida via Canhas",
+   "stops": 133,
+   "duration": "02:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6741,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "391",
+   "name": "Auto Silo Campo da Barca (01705) - CZ Cabo  (45224)",
+   "stops": 136,
+   "duration": "02:35:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6742,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "391",
+   "name": "Ponta Pargo - Funchal Via Rápida via Vila da Calheta, Arco Calheta, Canhas",
+   "stops": 182,
+   "duration": "03:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6743,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "391",
+   "name": "Ponta Pargo - Funchal Via Rápida via Arco Calheta e Canhas",
+   "stops": 162,
+   "duration": "03:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6744,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "392",
+   "name": "Funchal - Ponta Pargo via Estrada Regional via Canhas, Escola Calheta, Escola Raposeira",
+   "stops": 268,
+   "duration": "03:40:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6745,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "394",
+   "name": "Funchal - Ponta Pargo via Estrada Regional, Cabo Girão, Canhas, Arco Calheta e Vila da Calheta",
+   "stops": 278,
+   "duration": "03:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6746,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "395",
+   "name": "Ponta Pargo - Funchal via Vila Calheta, Arco Calheta, Canhas e Estrada Regional",
+   "stops": 282,
+   "duration": "03:40:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6747,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "396",
+   "name": "Funchal - Ponta Pargo via Estrada Regional, Lugar Baixo, Canhas, Fajã, Vila Calheta",
+   "stops": 230,
+   "duration": "03:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6748,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "397",
+   "name": "Ponta Pargo - Funchal Via Rápida - via Vila Calheta, Fajã, Canhas e Lugar Baixo",
+   "stops": 125,
+   "duration": "02:05:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6749,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "397",
+   "name": "Ponta Pargo - Funchal Via Rápida - via Vila Calheta, Fajã, Canhas e Lombada",
+   "stops": 147,
+   "duration": "02:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6750,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "398",
+   "name": "Funchal - Ponta Pargo via C.Girão-Moreno",
+   "stops": 274,
+   "duration": "04:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6751,
+   "agency": 2,
+   "operator": "SIGA RODOESTE",
+   "line": "398",
+   "name": "Funchal - Ponta Pargo (Salão) via Cabo Girão e Moreno",
+   "stops": 268,
+   "duration": "03:55:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6752,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "500",
+   "name": "Aerobus Praia Formosa - Aeroporto",
+   "stops": 25,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6753,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "500",
+   "name": "Aerobus Aeroporto - Praia Formosa",
+   "stops": 25,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6754,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "501",
+   "name": "Boqueirão  0I",
+   "stops": 63,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6755,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "501",
+   "name": "Boqueirão AI",
+   "stops": 62,
+   "duration": "00:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6756,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "501",
+   "name": "Boqueirão 0V",
+   "stops": 67,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6757,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "501",
+   "name": "Boqueirão AV",
+   "stops": 64,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6758,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "502",
+   "name": "Boqueirão 0I",
+   "stops": 75,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6759,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "502",
+   "name": "Boqueirão0V",
+   "stops": 68,
+   "duration": "00:50:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6760,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "503",
+   "name": "Boqueirão0I",
+   "stops": 80,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6761,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "503",
+   "name": "BoqueirãoAI",
+   "stops": 87,
+   "duration": "01:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6762,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "503",
+   "name": "BoqueirãoBI",
+   "stops": 58,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6763,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "503",
+   "name": "BoqueirãoCI",
+   "stops": 62,
+   "duration": "00:40:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6764,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "503",
+   "name": "BoqueirãoDI",
+   "stops": 84,
+   "duration": "00:55:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6765,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "503",
+   "name": "Boqueirão 0V",
+   "stops": 78,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6766,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "503",
+   "name": "BoqueirãoAV",
+   "stops": 86,
+   "duration": "01:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6767,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "503",
+   "name": "BoqueirãoBV",
+   "stops": 57,
+   "duration": "00:50:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6768,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "503",
+   "name": "BoqueirãoCV",
+   "stops": 61,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6769,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "504",
+   "name": "Achada (Santa Cruz)0I",
+   "stops": 70,
+   "duration": "00:55:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6770,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "505",
+   "name": "Moinhos Santa CruzAI",
+   "stops": 92,
+   "duration": "01:05:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6771,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "505",
+   "name": "Santa Cruz-MoinhosBI",
+   "stops": 92,
+   "duration": "01:05:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6772,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "525",
+   "name": "Boqueirão0I",
+   "stops": 34,
+   "duration": "00:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6773,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "525",
+   "name": "BoqueirãoAI",
+   "stops": 30,
+   "duration": "00:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6774,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "525",
+   "name": "Boqueirão0V",
+   "stops": 33,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6775,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "525",
+   "name": "BoqueirãoAV",
+   "stops": 29,
+   "duration": "00:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6776,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "525",
+   "name": "BoqueirãoDV",
+   "stops": 41,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6777,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "526",
+   "name": "Achada (Santa Cruz)0I",
+   "stops": 33,
+   "duration": "00:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6778,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "526",
+   "name": "Achada (Santa Cruz)AI",
+   "stops": 35,
+   "duration": "00:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6779,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "526",
+   "name": "Achada (Santa Cruz)BI",
+   "stops": 40,
+   "duration": "00:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6780,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "526",
+   "name": "Achada (Santa Cruz)CI",
+   "stops": 39,
+   "duration": "00:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6781,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "526",
+   "name": "Achada (Santa Cruz)EI",
+   "stops": 40,
+   "duration": "00:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6782,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "526",
+   "name": "Achada (Santa Cruz)V",
+   "stops": 37,
+   "duration": "00:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6783,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "526",
+   "name": "Achada (Santa Cruz)AV",
+   "stops": 35,
+   "duration": "00:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6784,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "526",
+   "name": "Achada (Santa Cruz)BV",
+   "stops": 40,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6785,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "526",
+   "name": "Achada (Santa Cruz)CV",
+   "stops": 39,
+   "duration": "00:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6786,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "526",
+   "name": "Achada (Santa Cruz)DV",
+   "stops": 32,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6787,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "527",
+   "name": "Moinhos - St. Cruz0I",
+   "stops": 14,
+   "duration": "00:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6788,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "527",
+   "name": "Moinhos - St. CruzAI",
+   "stops": 30,
+   "duration": "00:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6789,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "527",
+   "name": "Moinhos - St. CruzBI",
+   "stops": 14,
+   "duration": "00:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6790,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "527",
+   "name": "Moinhos - St. CruzCI",
+   "stops": 15,
+   "duration": "00:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6791,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "527",
+   "name": "Moinhos - St. Cruz0V",
+   "stops": 32,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6792,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "527",
+   "name": "Moinhos - St. CruzAV",
+   "stops": 14,
+   "duration": "00:10:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6793,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "527",
+   "name": "Moinhos - St. CruzBV",
+   "stops": 31,
+   "duration": "00:25:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6794,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "528",
+   "name": "Morena0I",
+   "stops": 23,
+   "duration": "00:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6795,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "528",
+   "name": "MorenaAI",
+   "stops": 15,
+   "duration": "00:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6796,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "528",
+   "name": "MorenaCI",
+   "stops": 14,
+   "duration": "00:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6797,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "528",
+   "name": "Morena0V",
+   "stops": 14,
+   "duration": "00:10:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6798,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "528",
+   "name": "MorenaAV",
+   "stops": 15,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6799,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "528",
+   "name": "MorenaBV",
+   "stops": 16,
+   "duration": "00:40:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6800,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "551",
+   "name": "Assomada (Portinho)0I",
+   "stops": 44,
+   "duration": "00:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6801,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "551",
+   "name": "Assomada (Portinho)0V",
+   "stops": 44,
+   "duration": "00:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6802,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "551",
+   "name": "Assomada (Portinho)AV",
+   "stops": 16,
+   "duration": "00:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6803,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "552",
+   "name": "EirasBI",
+   "stops": 34,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6804,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "552",
+   "name": "Eiras0I",
+   "stops": 33,
+   "duration": "00:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6805,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "552",
+   "name": "EirasBV",
+   "stops": 36,
+   "duration": "00:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6806,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "552",
+   "name": "Eiras0V",
+   "stops": 35,
+   "duration": "00:25:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6807,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "553",
+   "name": "MoinhosAI",
+   "stops": 59,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6808,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "553",
+   "name": "MoinhosBI",
+   "stops": 51,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6809,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "553",
+   "name": "MoinhosCI",
+   "stops": 52,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6810,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "553",
+   "name": "MoinhosDI",
+   "stops": 24,
+   "duration": "00:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6811,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "553",
+   "name": "Moinhos FontesEI",
+   "stops": 23,
+   "duration": "00:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6812,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "553",
+   "name": "MoinhosAV",
+   "stops": 59,
+   "duration": "00:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6813,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "553",
+   "name": "MoinhosBV",
+   "stops": 51,
+   "duration": "00:40:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6814,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "553",
+   "name": "MoinhosCV",
+   "stops": 50,
+   "duration": "00:35:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6815,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "553",
+   "name": "Moinhos AdufaDV",
+   "stops": 33,
+   "duration": "00:25:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6816,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "553",
+   "name": "Moinhos FontesEV",
+   "stops": 23,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6817,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "555",
+   "name": "Ponta da OliveiraAI",
+   "stops": 47,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6818,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "555",
+   "name": "Ponta da OliveiraBI",
+   "stops": 44,
+   "duration": "00:40:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6819,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "555",
+   "name": "Ponta da OliveiraPI",
+   "stops": 13,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6820,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "555",
+   "name": "Ponta da OliveiraAV",
+   "stops": 53,
+   "duration": "00:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6821,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "555",
+   "name": "Ponta da OliveiraBV",
+   "stops": 46,
+   "duration": "00:35:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6822,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "555",
+   "name": "Ponta da OliveiraCV",
+   "stops": 16,
+   "duration": "00:10:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6823,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "555",
+   "name": "Ponta da OliveiraPV",
+   "stops": 16,
+   "duration": "00:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6824,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "556",
+   "name": "Reis Magos0I",
+   "stops": 45,
+   "duration": "00:40:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6825,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "556",
+   "name": "Reis Magos0V",
+   "stops": 50,
+   "duration": "00:40:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6826,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "557",
+   "name": "Mãe de DeusAI",
+   "stops": 43,
+   "duration": "00:35:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6827,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "557",
+   "name": "Mãe de DeusBV",
+   "stops": 46,
+   "duration": "00:35:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6828,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "560",
+   "name": "Cristo Rei BI",
+   "stops": 0,
+   "duration": "",
+   "directions": []
+  },
+  {
+   "id": 6829,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "560",
+   "name": "Cristo ReiAI",
+   "stops": 0,
+   "duration": "",
+   "directions": []
+  },
+  {
+   "id": 6830,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "560",
+   "name": "Cristo ReiBV",
+   "stops": 0,
+   "duration": "",
+   "directions": []
+  },
+  {
+   "id": 6831,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "560",
+   "name": "Cristo ReiAV",
+   "stops": 0,
+   "duration": "",
+   "directions": []
+  },
+  {
+   "id": 6832,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "575",
+   "name": "Eiras0I",
+   "stops": 17,
+   "duration": "00:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6833,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "575",
+   "name": "Eiras0V",
+   "stops": 15,
+   "duration": "00:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6834,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "601",
+   "name": "Achadinha0I",
+   "stops": 61,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6835,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "601",
+   "name": "AchadinhaBI",
+   "stops": 63,
+   "duration": "00:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6836,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "601",
+   "name": "Achadinha0V",
+   "stops": 59,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6837,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "601",
+   "name": "AchadinhaAV",
+   "stops": 54,
+   "duration": "01:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6838,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "601",
+   "name": "AchadinhaDV",
+   "stops": 74,
+   "duration": "01:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6839,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "602",
+   "name": "Rochão de Cima0I",
+   "stops": 56,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6840,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "602",
+   "name": "Rochão de CimaAV",
+   "stops": 68,
+   "duration": "00:55:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6841,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "602",
+   "name": "Rochão de CimaV",
+   "stops": 51,
+   "duration": "00:50:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6842,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "603",
+   "name": "Nogueira0I",
+   "stops": 46,
+   "duration": "00:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6843,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "603",
+   "name": "NogueiraAI",
+   "stops": 56,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6844,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "603",
+   "name": "NogueiraBI",
+   "stops": 57,
+   "duration": "00:55:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6845,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "603",
+   "name": "NogueiraDI",
+   "stops": 52,
+   "duration": "00:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6846,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "603",
+   "name": "NogueiraEI",
+   "stops": 53,
+   "duration": "00:35:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6847,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "603",
+   "name": "Nogueira0V",
+   "stops": 43,
+   "duration": "00:35:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6848,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "603",
+   "name": "NogueiraAV",
+   "stops": 54,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6849,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "603",
+   "name": "NogueiraBV",
+   "stops": 54,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6850,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "603",
+   "name": "NogueiraCV",
+   "stops": 46,
+   "duration": "00:35:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6851,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "603",
+   "name": "NogueiraEV",
+   "stops": 52,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6852,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "604",
+   "name": "Camacha / Sta Cruz0I",
+   "stops": 60,
+   "duration": "00:35:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6853,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "604",
+   "name": "Camacha / Sta CruzAI",
+   "stops": 67,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6854,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "604",
+   "name": "Camacha / Sta Cruz0V",
+   "stops": 60,
+   "duration": "00:35:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6855,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "604",
+   "name": "Camacha / Sta CruzAV",
+   "stops": 67,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6856,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "605",
+   "name": "Camacha - Santo da Serra0I",
+   "stops": 80,
+   "duration": "00:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6857,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "625",
+   "name": "Camacha0I",
+   "stops": 51,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6858,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "625",
+   "name": "CamachaAI",
+   "stops": 64,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6859,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "625",
+   "name": "CamachaBI",
+   "stops": 16,
+   "duration": "00:40:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6860,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "625",
+   "name": "CamachaCI",
+   "stops": 63,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6861,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "625",
+   "name": "CamachaDI",
+   "stops": 33,
+   "duration": "00:55:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6862,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "625",
+   "name": "CamachaEI",
+   "stops": 65,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6863,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "625",
+   "name": "CamachaFI",
+   "stops": 52,
+   "duration": "00:40:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6864,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "625",
+   "name": "Camacha0V",
+   "stops": 48,
+   "duration": "00:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6865,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "625",
+   "name": "CamachaAV",
+   "stops": 63,
+   "duration": "00:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6866,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "625",
+   "name": "CamachaBV",
+   "stops": 15,
+   "duration": "00:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6867,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "625",
+   "name": "CamachaCV",
+   "stops": 64,
+   "duration": "00:50:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6868,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "625",
+   "name": "CamachaFV",
+   "stops": 17,
+   "duration": "00:50:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6869,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "625",
+   "name": "CamachaIV",
+   "stops": 73,
+   "duration": "00:50:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6870,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "625",
+   "name": "CamachaPV",
+   "stops": 33,
+   "duration": "01:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6871,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "651",
+   "name": "Santo da Serra0I",
+   "stops": 89,
+   "duration": "00:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6872,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "651",
+   "name": "Santo da SerraAI",
+   "stops": 97,
+   "duration": "01:00:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6873,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "651",
+   "name": "Santo da SerraBI",
+   "stops": 103,
+   "duration": "01:00:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6874,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "651",
+   "name": "Santo da Serra0V",
+   "stops": 81,
+   "duration": "00:50:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6875,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "651",
+   "name": "Santo da SerraAV",
+   "stops": 88,
+   "duration": "01:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6876,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "651",
+   "name": "Santo da SerraCV",
+   "stops": 85,
+   "duration": "01:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6877,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "675",
+   "name": "Santo Serra0I",
+   "stops": 15,
+   "duration": "00:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6878,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "675",
+   "name": "Santo SerraAI",
+   "stops": 18,
+   "duration": "00:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6879,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "675",
+   "name": "Santo Serra0V",
+   "stops": 18,
+   "duration": "00:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6880,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "675",
+   "name": "Santo SerraAV",
+   "stops": 16,
+   "duration": "00:25:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6881,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "701",
+   "name": "MachicoBI",
+   "stops": 33,
+   "duration": "00:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6882,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "701",
+   "name": "MachicoEI",
+   "stops": 13,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6883,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "701",
+   "name": "MachicoFI",
+   "stops": 12,
+   "duration": "00:40:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6884,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "701",
+   "name": "Machico0V",
+   "stops": 58,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6885,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "701",
+   "name": "MachicoAV",
+   "stops": 79,
+   "duration": "01:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6886,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "701",
+   "name": "MachicoBV",
+   "stops": 7,
+   "duration": "00:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6887,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "701",
+   "name": "MachicoCV",
+   "stops": 29,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6888,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "701",
+   "name": "MachicoEV",
+   "stops": 16,
+   "duration": "00:45:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6889,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "701",
+   "name": "MachicoFV",
+   "stops": 13,
+   "duration": "00:40:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6890,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "701",
+   "name": "MachicoGV",
+   "stops": 13,
+   "duration": "00:35:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6891,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'Abra0I",
+   "stops": 88,
+   "duration": "01:05:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6892,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'AbraAI",
+   "stops": 104,
+   "duration": "01:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6893,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'AbraBI",
+   "stops": 87,
+   "duration": "01:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6894,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'AbraCI",
+   "stops": 47,
+   "duration": "01:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6895,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'AbraDI",
+   "stops": 54,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6896,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'AbraEI",
+   "stops": 105,
+   "duration": "01:35:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6897,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'AbraFI",
+   "stops": 81,
+   "duration": "01:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6898,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'AbraGI",
+   "stops": 51,
+   "duration": "00:40:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6899,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'AbraHI",
+   "stops": 97,
+   "duration": "01:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6900,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'AbraLI",
+   "stops": 48,
+   "duration": "01:00:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6901,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'AbraMI",
+   "stops": 28,
+   "duration": "00:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6902,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'AbraNI",
+   "stops": 41,
+   "duration": "00:47:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6903,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'AbraOI",
+   "stops": 47,
+   "duration": "01:00:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6904,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'AbraPI",
+   "stops": 23,
+   "duration": "00:55:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6905,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'Abra0V",
+   "stops": 92,
+   "duration": "01:10:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6906,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'AbraAV",
+   "stops": 112,
+   "duration": "01:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6907,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'AbraCV",
+   "stops": 41,
+   "duration": "01:10:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6908,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'AbraEV",
+   "stops": 52,
+   "duration": "00:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6909,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'AbraFV",
+   "stops": 85,
+   "duration": "01:10:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6910,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'AbraHV",
+   "stops": 106,
+   "duration": "01:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6911,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'AbraJV",
+   "stops": 38,
+   "duration": "01:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6912,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'AbraLV",
+   "stops": 48,
+   "duration": "01:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6913,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'AbraMV",
+   "stops": 28,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6914,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'AbraPV",
+   "stops": 41,
+   "duration": "00:40:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6915,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'AbraQV",
+   "stops": 19,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6916,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'AbraRV",
+   "stops": 36,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6917,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "702",
+   "name": "Baia D'AbraSV",
+   "stops": 57,
+   "duration": "00:50:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6918,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "703",
+   "name": "Ribeira Seca0I",
+   "stops": 93,
+   "duration": "01:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6919,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "703",
+   "name": "Ribeira SecaAI",
+   "stops": 24,
+   "duration": "00:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6920,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "703",
+   "name": "Ribeira SecaBI",
+   "stops": 8,
+   "duration": "00:05:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6921,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "703",
+   "name": "Ribeira SecaCI",
+   "stops": 35,
+   "duration": "01:00:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6922,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "703",
+   "name": "Ribeira SecaGI",
+   "stops": 36,
+   "duration": "00:55:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6923,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "703",
+   "name": "Ribeira SecaHI",
+   "stops": 20,
+   "duration": "00:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6924,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "703",
+   "name": "Ribeira Seca0V",
+   "stops": 99,
+   "duration": "01:10:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6925,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "703",
+   "name": "Ribeira SecaAV",
+   "stops": 23,
+   "duration": "00:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6926,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "703",
+   "name": "Ribeira SecaBV",
+   "stops": 8,
+   "duration": "00:05:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6927,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "703",
+   "name": "Ribeira SecaFV",
+   "stops": 36,
+   "duration": "01:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6928,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "703",
+   "name": "Ribeira SecaGV",
+   "stops": 33,
+   "duration": "00:55:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6929,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "703",
+   "name": "Ribeira SecaIV",
+   "stops": 85,
+   "duration": "01:05:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6930,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "703",
+   "name": "Ribeira SecaPV",
+   "stops": 30,
+   "duration": "00:25:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6931,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "704",
+   "name": "Maroços0I",
+   "stops": 87,
+   "duration": "01:00:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6932,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "704",
+   "name": "MaroçosBI",
+   "stops": 105,
+   "duration": "00:55:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6933,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "704",
+   "name": "MaroçosCI",
+   "stops": 72,
+   "duration": "01:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6934,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "704",
+   "name": "MaroçosDI",
+   "stops": 19,
+   "duration": "00:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6935,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "704",
+   "name": "MaroçosFI",
+   "stops": 43,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6936,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "704",
+   "name": "MaroçosKI",
+   "stops": 31,
+   "duration": "00:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6937,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "704",
+   "name": "MaroçosLI",
+   "stops": 36,
+   "duration": "00:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6938,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "704",
+   "name": "Maroços0V",
+   "stops": 96,
+   "duration": "01:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6939,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "704",
+   "name": "MaroçosBV",
+   "stops": 53,
+   "duration": "00:50:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6940,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "704",
+   "name": "MaroçosDV",
+   "stops": 19,
+   "duration": "00:10:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6941,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "704",
+   "name": "MaroçosFV",
+   "stops": 47,
+   "duration": "00:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6942,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "704",
+   "name": "MaroçosGV",
+   "stops": 28,
+   "duration": "00:25:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6943,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "704",
+   "name": "MaroçosKV",
+   "stops": 31,
+   "duration": "00:50:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6944,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "725",
+   "name": "Agua de PenaAC",
+   "stops": 32,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6945,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "725",
+   "name": "Sant'AnaBC",
+   "stops": 30,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6946,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "725",
+   "name": "Agua Pena e Sant'AnaCI",
+   "stops": 18,
+   "duration": "00:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6947,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "726",
+   "name": "Ribeira Seca0I",
+   "stops": 21,
+   "duration": "00:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6948,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "726",
+   "name": "Ribeira SecaAI",
+   "stops": 11,
+   "duration": "00:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6949,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "726",
+   "name": "Ribeira Seca0V",
+   "stops": 26,
+   "duration": "00:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6950,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "726",
+   "name": "Ribeira SecaAV",
+   "stops": 15,
+   "duration": "00:10:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6951,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "727",
+   "name": "Maroços0I",
+   "stops": 19,
+   "duration": "00:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6952,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "727",
+   "name": "MaroçosAI",
+   "stops": 32,
+   "duration": "00:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6953,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "727",
+   "name": "MaroçosAV",
+   "stops": 19,
+   "duration": "00:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6954,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "727",
+   "name": "Maroços0V",
+   "stops": 19,
+   "duration": "00:10:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6955,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "750",
+   "name": "Santo da Serra0I",
+   "stops": 104,
+   "duration": "01:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6956,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "750",
+   "name": "Santo da SerraAI",
+   "stops": 121,
+   "duration": "01:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6957,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "750",
+   "name": "Santo da SerraBI",
+   "stops": 52,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6958,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "750",
+   "name": "Santo da SerraEI",
+   "stops": 57,
+   "duration": "00:43:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6959,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "750",
+   "name": "Santo da SerraFI",
+   "stops": 60,
+   "duration": "00:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6960,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "750",
+   "name": "Santo da SerraGI",
+   "stops": 130,
+   "duration": "01:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6961,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "750",
+   "name": "Santo da SerraII",
+   "stops": 48,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6962,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "750",
+   "name": "Santo da SerraMI",
+   "stops": 79,
+   "duration": "01:05:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6963,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "760",
+   "name": "Santo da Serra0V",
+   "stops": 105,
+   "duration": "01:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6964,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "760",
+   "name": "Santo da SerraAV",
+   "stops": 126,
+   "duration": "01:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6965,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "760",
+   "name": "Santo da SerraBV",
+   "stops": 48,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6966,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "760",
+   "name": "Santo da SerraEV",
+   "stops": 47,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6967,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "760",
+   "name": "Santo da SerraIV",
+   "stops": 44,
+   "duration": "00:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6968,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "760",
+   "name": "Santo da SerraJV",
+   "stops": 54,
+   "duration": "00:35:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6969,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "760",
+   "name": "Santo da SerraKV",
+   "stops": 76,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6970,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "760",
+   "name": "Santo da SerraLV",
+   "stops": 25,
+   "duration": "00:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6971,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "760",
+   "name": "Santo da SerraMV",
+   "stops": 25,
+   "duration": "00:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6972,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "760",
+   "name": "Santo da SerraPV",
+   "stops": 40,
+   "duration": "00:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6973,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "785",
+   "name": "Porto da Cruz0I",
+   "stops": 39,
+   "duration": "00:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6974,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "785",
+   "name": "Porto da CruzAI",
+   "stops": 38,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6975,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "785",
+   "name": "Porto da CruzBI",
+   "stops": 69,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6976,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "785",
+   "name": "Porto da CruzCI",
+   "stops": 41,
+   "duration": "00:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6977,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "785",
+   "name": "Porto da CruzAV",
+   "stops": 42,
+   "duration": "00:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6978,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "785",
+   "name": "Porto da CruzCV",
+   "stops": 41,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6979,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "801",
+   "name": "Santana0I",
+   "stops": 87,
+   "duration": "01:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6980,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "801",
+   "name": "SantanaBI",
+   "stops": 113,
+   "duration": "01:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6981,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "801",
+   "name": "SantanaCI",
+   "stops": 123,
+   "duration": "01:55:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6982,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "801",
+   "name": "SantanaEI",
+   "stops": 77,
+   "duration": "01:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6983,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "801",
+   "name": "SantanaLI",
+   "stops": 85,
+   "duration": "01:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6984,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "801",
+   "name": "SantanaMI",
+   "stops": 25,
+   "duration": "00:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6985,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "801",
+   "name": "SantanaAV",
+   "stops": 108,
+   "duration": "01:55:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6986,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "801",
+   "name": "SantanaFV",
+   "stops": 84,
+   "duration": "01:50:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6987,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "801",
+   "name": "SantanaGV",
+   "stops": 76,
+   "duration": "01:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6988,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "801",
+   "name": "SantanaHV",
+   "stops": 74,
+   "duration": "01:30:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6989,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "801",
+   "name": "SantanaMV",
+   "stops": 27,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6990,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "802",
+   "name": "Santana0I",
+   "stops": 34,
+   "duration": "00:40:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6991,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "802",
+   "name": "SantanaAI",
+   "stops": 31,
+   "duration": "00:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6992,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "803",
+   "name": "Santana0I",
+   "stops": 40,
+   "duration": "00:55:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6993,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "803",
+   "name": "SantanaAI",
+   "stops": 44,
+   "duration": "01:00:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6994,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "803",
+   "name": "SantanaBI",
+   "stops": 40,
+   "duration": "01:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6995,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "803",
+   "name": "SantanaDI",
+   "stops": 17,
+   "duration": "00:55:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6996,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "803",
+   "name": "SantanaMI",
+   "stops": 16,
+   "duration": "00:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6997,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "804",
+   "name": "SantanaFI",
+   "stops": 81,
+   "duration": "01:05:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 6998,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "804",
+   "name": "SantanaBV",
+   "stops": 107,
+   "duration": "01:25:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 6999,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "804",
+   "name": "SantanaDV",
+   "stops": 52,
+   "duration": "01:10:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 7000,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "804",
+   "name": "SantanaFV",
+   "stops": 54,
+   "duration": "01:00:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 7001,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "825",
+   "name": "Faial0I",
+   "stops": 70,
+   "duration": "01:00:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7002,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "825",
+   "name": "FaialAI",
+   "stops": 149,
+   "duration": "01:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7003,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "825",
+   "name": "FaialBI",
+   "stops": 65,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7004,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "825",
+   "name": "FaialCI",
+   "stops": 81,
+   "duration": "00:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7005,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "825",
+   "name": "Faial0V",
+   "stops": 108,
+   "duration": "01:05:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 7006,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "826",
+   "name": "Faial0I",
+   "stops": 126,
+   "duration": "01:40:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7007,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "826",
+   "name": "FaialAI",
+   "stops": 142,
+   "duration": "01:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7008,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "826",
+   "name": "FaialCI",
+   "stops": 73,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7009,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "826",
+   "name": "FaialDI",
+   "stops": 84,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7010,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "826",
+   "name": "FaialI",
+   "stops": 71,
+   "duration": "01:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7011,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "827",
+   "name": "Faial0I",
+   "stops": 103,
+   "duration": "01:35:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7012,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "827",
+   "name": "FaialAI",
+   "stops": 79,
+   "duration": "01:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7013,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "827",
+   "name": "FaialBI",
+   "stops": 61,
+   "duration": "01:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7014,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "827",
+   "name": "FaialDI",
+   "stops": 51,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7015,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "827",
+   "name": "FaialEI",
+   "stops": 103,
+   "duration": "01:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7016,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "827",
+   "name": "FaialII",
+   "stops": 127,
+   "duration": "01:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7017,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "836",
+   "name": "Faial0V",
+   "stops": 130,
+   "duration": "01:05:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7018,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "836",
+   "name": "FaialAV",
+   "stops": 151,
+   "duration": "01:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7019,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "836",
+   "name": "FaialCV",
+   "stops": 97,
+   "duration": "01:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7020,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "836",
+   "name": "FaialDV",
+   "stops": 91,
+   "duration": "02:00:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7021,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "836",
+   "name": "FaialEV",
+   "stops": 86,
+   "duration": "00:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7022,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "836",
+   "name": "FaialFV",
+   "stops": 86,
+   "duration": "00:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7023,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "836",
+   "name": "FaialGV",
+   "stops": 71,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7024,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "837",
+   "name": "Faial0V",
+   "stops": 77,
+   "duration": "00:55:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7025,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "837",
+   "name": "FaialAV",
+   "stops": 126,
+   "duration": "01:40:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7026,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "837",
+   "name": "FaialBV",
+   "stops": 68,
+   "duration": "01:05:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7027,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "837",
+   "name": "FaialCV",
+   "stops": 66,
+   "duration": "01:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7028,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "837",
+   "name": "FaialDV",
+   "stops": 49,
+   "duration": "00:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7029,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "837",
+   "name": "FaialEV",
+   "stops": 45,
+   "duration": "01:05:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7030,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "837",
+   "name": "FaialFV",
+   "stops": 44,
+   "duration": "01:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7031,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "837",
+   "name": "FaialGV",
+   "stops": 25,
+   "duration": "00:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7032,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "837",
+   "name": "FaialHV",
+   "stops": 63,
+   "duration": "01:05:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7033,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "837",
+   "name": "FaialIV",
+   "stops": 77,
+   "duration": "01:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7034,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "837",
+   "name": "FaialJV",
+   "stops": 61,
+   "duration": "00:45:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7035,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "837",
+   "name": "FaialLV",
+   "stops": 127,
+   "duration": "02:00:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7036,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "837",
+   "name": "FaialMV",
+   "stops": 49,
+   "duration": "00:35:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7037,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "850",
+   "name": "Arco São JorgeAI",
+   "stops": 176,
+   "duration": "02:05:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7038,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "850",
+   "name": "Arco São JorgeCI",
+   "stops": 216,
+   "duration": "02:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7039,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "850",
+   "name": "Arco São JorgeDI",
+   "stops": 215,
+   "duration": "02:55:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7040,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "850",
+   "name": "Arco São JorgeII",
+   "stops": 112,
+   "duration": "01:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7041,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "850",
+   "name": "Arco São JorgeMI",
+   "stops": 124,
+   "duration": "02:05:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7042,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "850",
+   "name": "Arco São JorgeKI",
+   "stops": 77,
+   "duration": "01:40:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7043,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "850",
+   "name": "Arco São JorgeLI",
+   "stops": 94,
+   "duration": "00:40:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7044,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "850",
+   "name": "Arco Sao Jorge0I",
+   "stops": 195,
+   "duration": "02:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7045,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "860",
+   "name": "Arco São Jorge0V",
+   "stops": 226,
+   "duration": "02:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7046,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "860",
+   "name": "Arco São JorgeDV",
+   "stops": 214,
+   "duration": "02:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7047,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "860",
+   "name": "Arco São JorgeEV",
+   "stops": 188,
+   "duration": "02:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7048,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "860",
+   "name": "Arco São JorgeGV",
+   "stops": 151,
+   "duration": "02:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7049,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "860",
+   "name": "Arco São JorgeIV",
+   "stops": 115,
+   "duration": "02:00:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7050,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "860",
+   "name": "Arco São JorgeMV",
+   "stops": 125,
+   "duration": "02:30:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7051,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "860",
+   "name": "Arco São JorgeOV",
+   "stops": 145,
+   "duration": "02:40:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7052,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "860",
+   "name": "Arco São JorgeQV",
+   "stops": 116,
+   "duration": "01:55:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7053,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "875",
+   "name": "São Jorge0I",
+   "stops": 136,
+   "duration": "02:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7054,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "875",
+   "name": "São JorgeAI",
+   "stops": 142,
+   "duration": "02:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7055,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "875",
+   "name": "São JorgeBI",
+   "stops": 5,
+   "duration": "00:50:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7056,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "885",
+   "name": "São JorgeCV",
+   "stops": 191,
+   "duration": "02:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7057,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "885",
+   "name": "São JorgePV",
+   "stops": 156,
+   "duration": "02:40:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7058,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "991",
+   "name": "Camacha0I",
+   "stops": 13,
+   "duration": "00:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7059,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "991",
+   "name": "CamachaEI",
+   "stops": 17,
+   "duration": "00:20:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7060,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "991",
+   "name": "CamachaEV",
+   "stops": 22,
+   "duration": "00:15:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 7061,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "991",
+   "name": "Camacha0V",
+   "stops": 10,
+   "duration": "00:10:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 7062,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "992",
+   "name": "Serra de ForaEI",
+   "stops": 15,
+   "duration": "00:12:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7063,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "992",
+   "name": "Serra de Fora0I",
+   "stops": 8,
+   "duration": "00:15:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7064,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "992",
+   "name": "Serra de ForaEV",
+   "stops": 15,
+   "duration": "00:12:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 7065,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "992",
+   "name": "Serra de Fora0V",
+   "stops": 8,
+   "duration": "00:12:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 7066,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "993",
+   "name": "Campo de CimaEI",
+   "stops": 31,
+   "duration": "00:12:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7067,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "993",
+   "name": "Campo de CimaAI",
+   "stops": 16,
+   "duration": "00:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7068,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "993",
+   "name": "Campo de CimaEV",
+   "stops": 29,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 7069,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "993",
+   "name": "Campo de CimaAV",
+   "stops": 8,
+   "duration": "00:10:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 7070,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "994",
+   "name": "CalhetaAI",
+   "stops": 17,
+   "duration": "00:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7071,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "994",
+   "name": "Calheta0I",
+   "stops": 14,
+   "duration": "00:12:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7072,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "994",
+   "name": "CalhetaBI",
+   "stops": 15,
+   "duration": "00:25:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7073,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "994",
+   "name": "CalhetaAV",
+   "stops": 17,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 7074,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "994",
+   "name": "Calheta0V",
+   "stops": 13,
+   "duration": "00:10:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 7075,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "994",
+   "name": "CalhetaBV",
+   "stops": 11,
+   "duration": "00:20:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 7076,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "995",
+   "name": "Porto de Abrigo0I",
+   "stops": 2,
+   "duration": "00:10:00",
+   "directions": [
+    0
+   ]
+  },
+  {
+   "id": 7077,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "995",
+   "name": "Porto de Abrigo0V",
+   "stops": 3,
+   "duration": "00:12:00",
+   "directions": [
+    1
+   ]
+  },
+  {
+   "id": 7078,
+   "agency": 3,
+   "operator": "Companhia de Autocarros da Madeira (CAM), S.A.",
+   "line": "995",
+   "name": "Centro  (99800) - Porto de Abrigo  (99829)",
+   "stops": 2,
+   "duration": "00:10:00",
+   "directions": [
+    1
+   ]
+  }
+ ]
+}

@@ -1,0 +1,77 @@
+{
+  "line": "601",
+  "formerly": "111B",
+  "operator": "CAM",
+  "name": "Funchal - Achadinha (via Ribeirinha)",
+  "source": {
+    "pdf": "https://siga.madeira.gov.pt/storage/horarios_pdf/111.pdf",
+    "sha256": "ea6490f0b2ea1c9b",
+    "checked": "2026-10-05"
+  },
+  "directions": [
+    {
+      "to": "Achadinha",
+      "stops": [
+        {
+          "name": "Funchal",
+          "stop": "00025"
+        },
+        {
+          "name": "Achadinha",
+          "stop": "68171"
+        }
+      ],
+      "notes": {
+        "d": {
+          "text": "via Bairro da Nogueira",
+          "via": true
+        }
+      },
+      "weekdays": ["07:15", "08:30", "10:15", "13:00", "15:45", "18:15", "19:15 d", "19:45"],
+      "saturdays": ["13:00"],
+      "sundays": ["13:00"]
+    },
+    {
+      "to": "Funchal",
+      "stops": [
+        {
+          "name": "Achadinha",
+          "stop": "68171"
+        },
+        {
+          "name": "Funchal",
+          "stop": "00025"
+        }
+      ],
+      "notes": {
+        "a": {
+          "text": "Com partida do Camacha Shopping, via Largo da Achada",
+          "from": "68113",
+          "via": true
+        },
+        "b": {
+          "text": "Em dias letivos via Palheiro Ferreiro; em dias não letivos via Largo da Achada e Palheiro Ferreiro",
+          "via": true
+        },
+        "c": {
+          "text": "via Largo da Achada e Palheiro Ferreiro",
+          "via": true
+        }
+      },
+      "weekdays": [
+        "06:30",
+        "07:10",
+        "07:12 b",
+        "07:45",
+        "08:15 c",
+        "09:15",
+        "11:00",
+        "12:15 a",
+        "13:45",
+        "16:30"
+      ],
+      "saturdays": ["13:45"],
+      "sundays": ["13:45"]
+    }
+  ]
+}

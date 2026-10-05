@@ -1,0 +1,183 @@
+{
+  "line": "380",
+  "formerly": "80",
+  "operator": "Rodoeste",
+  "name": "Funchal - Calheta - Porto Moniz",
+  "lines": ["380", "381"],
+  "names": {
+    "381": "Porto Moniz - Calheta - Funchal"
+  },
+  "source": {
+    "pdf": "https://siga.madeira.gov.pt/storage/horarios_pdf/6B1E0B53-B03C-4ED6-96C5-B7A43462413E.pdf",
+    "sha256": "fd3a529aa92a4ea1",
+    "checked": "2026-10-05"
+  },
+  "notes": {
+    "X": {
+      "text": "via Calheta e Canhas (ER 222)",
+      "via": true
+    }
+  },
+  "directions": [
+    {
+      "to": "Porto Moniz",
+      "stops": [
+        {
+          "name": "Funchal",
+          "stop": "01705"
+        },
+        {
+          "name": "Ribeira Brava",
+          "stop": "24114"
+        },
+        {
+          "name": "Lugar de Baixo",
+          "stop": "34710"
+        },
+        {
+          "name": "Ponta do Sol",
+          "stop": "34728"
+        },
+        {
+          "name": "Madalena do Mar",
+          "stop": "34554"
+        },
+        {
+          "name": "Fajã da Calheta",
+          "stop": "45284"
+        },
+        {
+          "name": "Vila da Calheta",
+          "stop": "45506"
+        },
+        {
+          "name": "Estrela da Calheta",
+          "stop": "45316"
+        },
+        {
+          "name": "Estreito da Calheta",
+          "stop": "45270"
+        },
+        {
+          "name": "Jardim do Mar",
+          "stop": "45328"
+        },
+        {
+          "name": "Paul do Mar",
+          "stop": "45384"
+        },
+        {
+          "name": "Fajã da Ovelha",
+          "stop": "45288"
+        },
+        {
+          "name": "Ponta do Pargo",
+          "stop": "45408"
+        },
+        {
+          "name": "Achadas da Cruz",
+          "stop": "95601"
+        },
+        {
+          "name": "Santa",
+          "stop": "95607"
+        },
+        {
+          "name": "Porto Moniz",
+          "stop": "95688"
+        }
+      ],
+      "weekdays": [
+        "10:00 | 11:00 | 11:02 | 11:05 | 11:15 | 11:20 | 11:25 | 11:30 | 11:35 | 11:45 | 11:50 | 12:00 | 12:10 | 12:35 | 12:45 | 13:05"
+      ],
+      "saturdays": [
+        "10:00 | 11:00 | 11:02 | 11:05 | 11:15 | 11:20 | 11:25 | - | - | 11:35 | 11:40 | 11:50 | 12:00 | 12:20 | 12:30 | 12:45"
+      ],
+      "sundays": [
+        "10:00 | 11:00 | 11:02 | 11:05 | 11:15 | 11:20 | 11:25 | - | - | 11:35 | 11:40 | 11:50 | 12:00 | 12:20 | 12:30 | 12:45"
+      ]
+    },
+    {
+      "to": "Funchal",
+      "stops": [
+        {
+          "name": "Porto Moniz",
+          "stop": "95688"
+        },
+        {
+          "name": "Santa",
+          "stop": "95607"
+        },
+        {
+          "name": "Achadas da Cruz",
+          "stop": "95601"
+        },
+        {
+          "name": "Ponta do Pargo",
+          "stop": "45408"
+        },
+        {
+          "name": "Fajã da Ovelha",
+          "stop": "45288"
+        },
+        {
+          "name": "Paul do Mar",
+          "stop": "45384"
+        },
+        {
+          "name": "Jardim do Mar",
+          "stop": "45328"
+        },
+        {
+          "name": "Estreito da Calheta",
+          "stop": "45270"
+        },
+        {
+          "name": "Estrela da Calheta",
+          "stop": "45316"
+        },
+        {
+          "name": "Vila da Calheta",
+          "stop": "45506"
+        },
+        {
+          "name": "Fajã da Calheta",
+          "stop": "45284"
+        },
+        {
+          "name": "Madalena do Mar",
+          "stop": "34554"
+        },
+        {
+          "name": "Ponta do Sol",
+          "stop": "34728"
+        },
+        {
+          "name": "Lugar de Baixo",
+          "stop": "34710"
+        },
+        {
+          "name": "Ribeira Brava",
+          "stop": "24114"
+        },
+        {
+          "name": "Funchal",
+          "stop": "01705"
+        }
+      ],
+      "variants": {
+        "": ["6739:1"],
+        "X": ["6738:1"]
+      },
+      "weekdays": [
+        "16:00 X | 16:10 | 16:15 | 16:40 | 16:50 | - | - | 17:10 | 17:15 | 17:45 | - | - | 18:30 | - | 19:00 | 19:40"
+      ],
+      "saturdays": [
+        "16:00 | 16:10 | 16:15 | 16:40 | 16:50 | 17:00 | 17:05 | - | - | 17:30 | 17:35 | 17:40 | 17:45 | 17:50 | 18:05 | 18:40"
+      ],
+      "sundays": [
+        "16:00 | 16:10 | 16:15 | 16:40 | 16:50 | 17:00 | 17:05 | - | - | 17:30 | 17:35 | 17:40 | 17:45 | 17:50 | 18:05 | 18:40"
+      ]
+    }
+  ]
+}

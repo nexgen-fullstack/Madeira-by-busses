@@ -1,0 +1,53 @@
+name: Collect SIGA routes
+
+# Every day, records the stops and running times of the CAM and SIGA Rodoeste
+# route variants that run that day on the SIGA website (scripts/fetch-siga.mjs)
+# and commits data/sources/siga/ on the same branch. The site only shows a
+# variant on days it runs, so a week of runs sees weekdays, Saturdays and
+# Sundays; the pipeline then gives more printed trips their every stop.
+on:
+  schedule:
+    - cron: '23 6 * * *'
+  push:
+    paths:
+      - scripts/fetch-siga.mjs
+      - .github/workflows/siga.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: siga-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Collect
+        run: node scripts/fetch-siga.mjs data/sources/siga
+      - name: Summary
+        run: |
+          {
+            echo '### SIGA routes'
+            echo "- variants known: $(wc -l < data/sources/siga/variants.jsonl)"
+            echo "- stops known: $(grep -c '":\[' data/sources/siga/stops.json)"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/sources/siga
+          if git diff --cached --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git commit -q -m "Update SIGA routes ($(date -u +%Y-%m-%d))"
+          git pull -q --rebase origin "${GITHUB_REF_NAME}"
+          git push -q origin "HEAD:${GITHUB_REF_NAME}"

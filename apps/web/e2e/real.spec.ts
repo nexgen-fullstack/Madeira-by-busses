@@ -12,7 +12,7 @@ test.beforeEach(async ({ page }) => {
 test('real timetable: notice, journey, grouped lines and the demo switch', async ({ page }) => {
   await page.goto('./');
   const notice = page.locator('.banner--info');
-  await expect(notice).toContainText('Ще не додано: CAM, SIGA Rodoeste');
+  await expect(notice).toContainText('Деяких ліній CAM, SIGA Rodoeste ще немає');
   await notice.getByRole('button', { name: 'Закрити' }).click();
   await expect(notice).toBeHidden();
   await page.reload();

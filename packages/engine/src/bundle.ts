@@ -24,6 +24,8 @@ export interface NetworkBundle {
   projected?: { officialUntil: string; until: string };
   /** Operators of the network that this bundle does not include yet. */
   missingOperators?: string[];
+  /** Operators of which this bundle has some lines but not all yet. */
+  partialOperators?: string[];
   sources: BundleSource[];
   validity: { from: string; to: string };
   agencies: BAgency[];
@@ -145,7 +147,17 @@ export interface BuildOptions {
   /** Carry an expired weekly pattern forward up to this ISO date (see `projectServices`). */
   extendUntil?: string;
   missingOperators?: string[];
+  partialOperators?: string[];
+  /**
+   * Stops of later feeds with the id of an earlier feed's stop, at the same
+   * place (within 30 m), become that stop: SIGA's stop codes are Horários do
+   * Funchal's stop ids, and a pole served by both operators is one stop.
+   */
+  shareStops?: boolean;
 }
+
+/** How far apart two feeds' stops with one id may be and still be the same stop (m). */
+const SHARED_STOP_RADIUS = 30;
 
 export interface BuildReport {
   warnings: string[];
@@ -179,6 +191,9 @@ export function buildBundle(
   const patterns: BPattern[] = [];
   const sources: BundleSource[] = [];
 
+  /** Stops of earlier feeds by their own (unprefixed) id, for `shareStops`. */
+  const byRawId = new Map<string, number>();
+
   for (const { feed, source, prefix = '' } of inputs) {
     sources.push({ ...source, feedVersion: source.feedVersion ?? feed.feedInfo?.feed_version });
     const id = (v: string) => `${prefix}${v}`;
@@ -206,11 +221,20 @@ export function buildBundle(
         report.warnings.push(`Stop ${s.stop_id} has no coordinates; skipped`);
         continue;
       }
+      const shared = options.shareStops ? byRawId.get(s.stop_id) : undefined;
+      if (
+        shared !== undefined &&
+        haversine(stops[shared]!, { lat: s.stop_lat, lon: s.stop_lon }) <= SHARED_STOP_RADIUS
+      ) {
+        stopIndex.set(s.stop_id, shared);
+        continue;
+      }
       const tagged = isMunicipalityCode(s.zone_id)
         ? (s.zone_id!.toUpperCase() as string)
         : municipalityFromIne(s.municipality);
       if (!tagged) report.guessedMunicipalities++;
       stopIndex.set(s.stop_id, stops.length);
+      if (!byRawId.has(s.stop_id)) byRawId.set(s.stop_id, stops.length);
       stops.push({
         id: id(s.stop_id),
         name: options.stopName ? options.stopName(s) : s.stop_name,
@@ -467,6 +491,7 @@ export function buildBundle(
       ? { projected: { officialUntil: projection.officialUntil, until: options.extendUntil! } }
       : {}),
     ...(options.missingOperators?.length ? { missingOperators: options.missingOperators } : {}),
+    ...(options.partialOperators?.length ? { partialOperators: options.partialOperators } : {}),
     sources,
     validity,
     agencies,

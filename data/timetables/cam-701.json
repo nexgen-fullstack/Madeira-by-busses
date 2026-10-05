@@ -1,0 +1,54 @@
+{
+  "line": "701",
+  "formerly": "23",
+  "operator": "CAM",
+  "name": "Machico - Funchal",
+  "source": {
+    "pdf": "https://siga.madeira.gov.pt/storage/horarios_pdf/sam_23.pdf",
+    "sha256": "e72367d0422aa0c0",
+    "checked": "2026-10-05"
+  },
+  "notes": {
+    "a": {
+      "text": "via Aeroporto",
+      "via": true,
+      "pass": "68420"
+    },
+    "b": {
+      "text": "via Bemposta",
+      "via": true,
+      "pass": "56519"
+    },
+    "g": {
+      "text": "via Gaula",
+      "via": true
+    },
+    "sc": {
+      "text": "Até Santa Cruz",
+      "to": "68252"
+    }
+  },
+  "directions": [
+    {
+      "to": "Funchal",
+      "stops": [
+        {
+          "name": "Machico",
+          "stop": "56434"
+        },
+        {
+          "name": "Funchal",
+          "stop": "00652"
+        }
+      ],
+      "weekdays": ["07:30 b g | 08:30", "09:30 b g | 10:30", "15:20 a g | 16:20"],
+      "saturdays": [
+        "08:00 a | 09:00",
+        "14:25 b sc",
+        "15:45 b | 16:45",
+        "16:30 a | 17:30",
+        "18:45 b | 19:45"
+      ]
+    }
+  ]
+}

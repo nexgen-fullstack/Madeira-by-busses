@@ -16,6 +16,7 @@ export const cs: Dict = {
   'data.projected':
     'Oficiální jízdní řád je zveřejněn do {date}. Dále opakujeme jeho týdenní vzorec – časy se mohly změnit, ověřte si je na zastávce.',
   'data.missing': 'Zatím chybí: {operators}. Jejich autobusy se zatím nezobrazují.',
+  'data.partial': 'Některé linky {operators} v aplikaci ještě nejsou.',
   from: 'Odkud',
   to: 'Kam',
   swap: 'Prohodit',

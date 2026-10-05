@@ -1,0 +1,41 @@
+{
+  "line": "556",
+  "formerly": "157",
+  "operator": "CAM",
+  "name": "Funchal - Reis Magos (via Garajau)",
+  "source": {
+    "pdf": "https://siga.madeira.gov.pt/storage/horarios_pdf/C157.pdf",
+    "sha256": "a79054c7322d014b",
+    "checked": "2026-10-05"
+  },
+  "directions": [
+    {
+      "to": "Reis Magos",
+      "stops": [
+        {
+          "name": "Funchal",
+          "stop": "00025"
+        },
+        {
+          "name": "Reis Magos",
+          "stop": "67970"
+        }
+      ],
+      "sundays": ["20:00"]
+    },
+    {
+      "to": "Funchal",
+      "stops": [
+        {
+          "name": "Reis Magos",
+          "stop": "67970"
+        },
+        {
+          "name": "Funchal",
+          "stop": "00025"
+        }
+      ],
+      "sundays": ["19:15"]
+    }
+  ]
+}

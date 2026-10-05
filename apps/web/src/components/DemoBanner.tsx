@@ -19,8 +19,12 @@ export function StatusBanners() {
       ? bundle.projected
       : undefined;
   const missing = bundle?.missingOperators ?? [];
+  const partial = bundle?.partialOperators ?? [];
   const showNotice =
-    bundle && !bundle.demo && (projected || missing.length > 0) && dismissed !== bundle.generatedAt;
+    bundle &&
+    !bundle.demo &&
+    (projected || missing.length > 0 || partial.length > 0) &&
+    dismissed !== bundle.generatedAt;
   return (
     <>
       {bundle?.demo && (
@@ -36,6 +40,8 @@ export function StatusBanners() {
             {projected && t.t('data.projected', { date: fullDate(t, projected.officialUntil) })}
             {projected && missing.length > 0 && ' '}
             {missing.length > 0 && t.t('data.missing', { operators: missing.join(', ') })}
+            {(projected || missing.length > 0) && partial.length > 0 && ' '}
+            {partial.length > 0 && t.t('data.partial', { operators: partial.join(', ') })}
           </span>
           <button
             type="button"

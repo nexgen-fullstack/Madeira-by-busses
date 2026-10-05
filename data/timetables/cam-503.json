@@ -1,0 +1,59 @@
+{
+  "line": "503",
+  "formerly": "110",
+  "operator": "CAM",
+  "name": "Funchal - Boqueirão (via Caniço)",
+  "source": {
+    "pdf": "https://siga.madeira.gov.pt/storage/horarios_pdf/5BCE8B18-50BB-4773-B78D-335E8F0E0B08.pdf",
+    "sha256": "590ffc8a0cbcc8cf",
+    "checked": "2026-10-05"
+  },
+  "notes": {
+    "a": {
+      "text": "De / até Camacha",
+      "skip": true
+    },
+    "b": {
+      "text": "via Ribeiro Serrão",
+      "via": true
+    },
+    "c": {
+      "text": "via Bairro da Nogueira",
+      "via": true
+    }
+  },
+  "directions": [
+    {
+      "to": "Boqueirão (Fonte Almocreves)",
+      "stops": [
+        {
+          "name": "Funchal",
+          "stop": "00025"
+        },
+        {
+          "name": "Fonte Almocreves",
+          "stop": "68137"
+        }
+      ],
+      "weekdays": ["09:45 a", "12:30", "15:30", "16:30 a c", "18:30 c"],
+      "saturdays": ["12:30 b", "16:00"],
+      "sundays": ["07:45", "18:30 b"]
+    },
+    {
+      "to": "Funchal",
+      "stops": [
+        {
+          "name": "Fonte Almocreves",
+          "stop": "68137"
+        },
+        {
+          "name": "Funchal",
+          "stop": "00025"
+        }
+      ],
+      "weekdays": ["07:20", "08:45 b", "10:30 a", "13:45", "17:15 a c"],
+      "saturdays": ["07:30", "13:45"],
+      "sundays": ["08:45"]
+    }
+  ]
+}

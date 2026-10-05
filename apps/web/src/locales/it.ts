@@ -16,6 +16,7 @@ export const it: Dict = {
   'data.projected':
     'Orario ufficiale pubblicato fino al {date}. Dopo ripetiamo lo schema settimanale: gli orari potrebbero essere cambiati, verificali alla fermata.',
   'data.missing': 'Non ancora inclusi: {operators}. I loro autobus non compaiono ancora.',
+  'data.partial': 'Alcune linee di {operators} non sono ancora nell’app.',
   from: 'Da',
   to: 'A',
   swap: 'Inverti',

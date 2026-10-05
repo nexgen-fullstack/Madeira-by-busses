@@ -27,6 +27,9 @@ import { DEMO_PLACES } from './demo/places.ts';
 import { placesFromOsm } from './places.ts';
 import { buildReportMarkdown, diffBundles, diffMarkdown } from './report.ts';
 import { buildWalkGraph, type OsmWay } from './walk.ts';
+import { AGENCIES, buildTimetableFeed } from './timetables/build.ts';
+import { loadLocalities, loadSiga, loadTimetables } from './timetables/load.ts';
+import { timetableReportMarkdown } from './timetables/report.ts';
 import { validateBundle, validateFeed, type Issue } from './validate.ts';
 
 const USAGE = `madeirabus-pipeline <command>
@@ -39,6 +42,9 @@ const USAGE = `madeirabus-pipeline <command>
         [--missing <op1,op2>]        operators not covered yet (shown in the app)
         [--places <osm.json>]        searchable places from an Overpass answer (skipped if absent)
         [--walk <walk.bin>]          the walking network, copied next to the bundle (skipped if absent)
+        [--timetables <dir> --siga <dir>]  add CAM and SIGA Rodoeste from their printed
+                                     timetables and the SIGA website's routes
+        [--timetable-days <n>]       how far ahead their calendar goes (default 180)
   validate --feed [name=]<dir|zip|url> …  validate feeds only
   diff <old.json> <new.json>              summarise timetable changes
   walk  --osm <overpass.json> --out <walk.bin>   the walking network from OpenStreetMap ways
@@ -119,10 +125,60 @@ async function loadFeeds(args: Args) {
   return { loaded, today };
 }
 
+/** The feed made from the printed timetables (--timetables, --siga), if asked for. */
+async function timetableFeed(args: Args, today: string) {
+  const dir = flag(args, 'timetables');
+  const sigaDir = flag(args, 'siga');
+  if (!dir || !sigaDir) return undefined;
+  const files = await loadTimetables(dir);
+  const siga = await loadSiga(sigaDir);
+  const days = Number(flag(args, 'timetable-days') ?? 180);
+  const placesPath = flag(args, 'places');
+  const localities = placesPath ? await loadLocalities(placesPath) : [];
+  const built = buildTimetableFeed(files, siga, {
+    from: today,
+    to: addDays(today, days),
+    localities,
+  });
+  const full = built.lines.reduce((n, l) => n + l.full, 0);
+  const outline = built.lines.reduce((n, l) => n + l.outline, 0);
+  const skipped = built.lines.reduce((n, l) => n + l.skipped.length, 0);
+  console.log(
+    `Printed timetables: ${files.length} files, ${built.feed.trips.length} trips ` +
+      `(${full} with every stop, ${outline} between the printed places only, ${skipped} rows left out); ` +
+      `SIGA: ${siga.variants.length} variants, ${Object.keys(siga.stops).length} stops`,
+  );
+  for (const l of built.lines) {
+    for (const w of l.warnings) console.log(`  ! ${l.file}: ${w}`);
+  }
+  for (const [op, lines] of Object.entries(built.missing)) {
+    if (lines.length > 0)
+      console.log(`  Not yet in the printed timetables, ${op}: ${lines.join(' ')}`);
+  }
+  const issues = validateFeed(built.feed, today);
+  printIssues('Feed timetables', issues);
+  return { built, issues };
+}
+
 async function build(args: Args) {
   const out = flag(args, 'out');
   if (!out) throw new Error('--out is required');
   const { loaded, today } = await loadFeeds(args);
+  const timetables = await timetableFeed(args, today);
+  if (timetables) {
+    loaded.push({
+      input: {
+        feed: timetables.built.feed,
+        source: {
+          name: 'CAM, SIGA Rodoeste',
+          url: 'https://siga.madeira.gov.pt/horarios',
+          fetchedAt: new Date().toISOString(),
+        },
+        prefix: 'siga:',
+      },
+      issues: timetables.issues,
+    });
+  }
   const extendDays = flag(args, 'extend-days');
   const extendUntil = extendDays ? addDays(today, Number(extendDays)) : undefined;
   // An expired feed is expected when we are about to carry it forward.
@@ -152,6 +208,12 @@ async function build(args: Args) {
         ?.split(',')
         .map((s) => s.trim())
         .filter(Boolean),
+      shareStops: timetables !== undefined,
+      partialOperators: timetables
+        ? (Object.entries(timetables.built.missing) as [keyof typeof AGENCIES, string[]][])
+            .filter(([, lines]) => lines.length > 0)
+            .map(([op]) => AGENCIES[op].name)
+        : undefined,
     },
   );
   if (bundle.projected) {
@@ -192,7 +254,12 @@ async function build(args: Args) {
       bundleIssues,
       json.length,
     );
-    await writeText(reportPath, md);
+    await writeText(
+      reportPath,
+      timetables
+        ? md + timetableReportMarkdown(timetables.built.lines, timetables.built.missing)
+        : md,
+    );
     console.log(`Report written to ${reportPath}`);
   }
   const diffPath = flag(args, 'diff');

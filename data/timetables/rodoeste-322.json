@@ -1,0 +1,124 @@
+{
+  "line": "322",
+  "formerly": "4",
+  "operator": "Rodoeste",
+  "name": "Funchal - Câmara de Lobos - Ribeira Brava - Ponta do Sol",
+  "lines": ["320", "321", "322", "323"],
+  "names": {
+    "320": "Funchal - Ribeira Brava - Ponta do Sol (Via Rápida)",
+    "321": "Ponta do Sol - Ribeira Brava - Funchal (Via Rápida)",
+    "323": "Ponta do Sol - Ribeira Brava - Câmara de Lobos - Funchal"
+  },
+  "source": {
+    "pdf": "https://siga.madeira.gov.pt/storage/horarios_pdf/rod_4funchal.pdf",
+    "sha256": "72c37ebec339e79d",
+    "checked": "2026-10-05"
+  },
+  "notes": {
+    "VR": {
+      "text": "Via Rápida",
+      "via": true
+    },
+    "A": {
+      "text": "Só no período escolar",
+      "school": "school"
+    }
+  },
+  "directions": [
+    {
+      "to": "Ponta do Sol",
+      "stops": [
+        {
+          "name": "Funchal",
+          "stop": "01705"
+        },
+        {
+          "name": "Cª Lobos",
+          "stop": "12904"
+        },
+        {
+          "name": "Estreito C.Lobos",
+          "stop": "12794"
+        },
+        {
+          "name": "Qª Grande",
+          "stop": "13172"
+        },
+        {
+          "name": "Campanário",
+          "stop": "23994"
+        },
+        {
+          "name": "Rª Brava",
+          "stop": "24114"
+        },
+        {
+          "name": "Tabúa",
+          "stop": "24099"
+        },
+        {
+          "name": "Lugar Baixo",
+          "stop": "34710"
+        },
+        {
+          "name": "Ponta Sol",
+          "stop": "34728"
+        }
+      ],
+      "weekdays": [
+        "12:05 #322 | 12:30 | 12:40 | 12:55 | 13:05 | 13:20 | - | - | -",
+        "13:05 #320 VR | - | - | - | - | 13:30 | 13:35 | - | 13:50"
+      ],
+      "saturdays": [
+        "13:30 #320 VR | - | - | - | - | 14:15 | 14:20 | - | 14:30",
+        "14:35 #322 | 14:55 | 15:10 | 15:20 | 15:30 | 15:45 | - | 15:50 | 15:55"
+      ]
+    },
+    {
+      "to": "Funchal",
+      "stops": [
+        {
+          "name": "Ponta Sol",
+          "stop": "34728"
+        },
+        {
+          "name": "Lugar Baixo",
+          "stop": "34710"
+        },
+        {
+          "name": "Tabúa",
+          "stop": "24099"
+        },
+        {
+          "name": "Rª Brava",
+          "stop": "24114"
+        },
+        {
+          "name": "Campanário",
+          "stop": "23994"
+        },
+        {
+          "name": "Qª Grande",
+          "stop": "13172"
+        },
+        {
+          "name": "Estreito C.Lobos",
+          "stop": "12794"
+        },
+        {
+          "name": "Cª Lobos",
+          "stop": "12904"
+        },
+        {
+          "name": "Funchal",
+          "stop": "01705"
+        }
+      ],
+      "weekdays": [
+        "07:00 #321 VR A | - | 07:10 | 07:20 | - | - | - | - | 07:55",
+        "14:05 #323 | - | 14:15 | 14:30 | 14:45 | 14:55 | 15:10 | 15:25 | 15:55"
+      ],
+      "saturdays": ["15:15 #323 | 15:20 | - | 15:30 | 15:45 | 15:55 | 16:15 | 16:25 | 16:55"]
+    }
+  ]
+}

@@ -16,6 +16,7 @@ export const pt: Dict = {
   'data.projected':
     'Horário oficial publicado até {date}. Depois repetimos o padrão semanal — os horários podem ter mudado, confirme na paragem.',
   'data.missing': 'Ainda não incluídos: {operators}. Os seus autocarros ainda não aparecem.',
+  'data.partial': 'Algumas linhas de {operators} ainda não estão na app.',
   from: 'De',
   to: 'Para',
   swap: 'Trocar',
