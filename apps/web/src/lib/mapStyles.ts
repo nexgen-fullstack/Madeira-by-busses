@@ -246,6 +246,79 @@ export function withHouseNumbers(style: StyleSpecification): StyleSpecification 
   return { ...style, layers };
 }
 
+/**
+ * Icons that only clutter a map for getting about by bus (OpenMapTiles POI classes and
+ * subclasses): litter bins and recycling, information boards and signposts, benches,
+ * drinking fountains, toilets in the parks, stiles and gates, sports pitches and
+ * playgrounds, swimming pools, statues, post boxes and car parks. Bus stops, hotels,
+ * restaurants and cafés, shops, pharmacies, hospitals, museums, viewpoints, landmarks,
+ * banks and tourist offices stay.
+ */
+export const CLUTTER_CLASSES = [
+  'waste_basket',
+  'recycling',
+  'waste_disposal',
+  'bench',
+  'drinking_water',
+  'toilets',
+  'stile',
+  'gate',
+  'lift_gate',
+  'entrance',
+  'pitch',
+  'playground',
+  'swimming_pool',
+  'fitness_station',
+  'dog_park',
+  'picnic_site',
+  'bbq',
+  'shelter',
+  'fountain',
+  'vending',
+  'telephone',
+  'clock',
+  'charging_station',
+  'hunting_stand',
+  'parking',
+  'bicycle_parking',
+];
+export const CLUTTER_SUBCLASSES = [
+  ...CLUTTER_CLASSES,
+  // Information points, but not the tourist office.
+  'information',
+  'board',
+  'guidepost',
+  'map',
+  'route_marker',
+  'terminal',
+  'tactile_map',
+  'artwork',
+  'post_box',
+  'vending_machine',
+  'picnic_table',
+  'kissing_gate',
+  'parking_entrance',
+  'motorcycle_parking',
+];
+
+/** The style without the icons that only clutter (see CLUTTER_CLASSES), on every base layer. */
+export function withoutClutter(style: StyleSpecification): StyleSpecification {
+  const clutter = [
+    'any',
+    ['match', ['get', 'class'], CLUTTER_CLASSES, true, false],
+    ['match', ['get', 'subclass'], CLUTTER_SUBCLASSES, true, false],
+  ];
+  return {
+    ...style,
+    layers: style.layers.map((l) => {
+      if (sourceLayer(l) !== 'poi') return l;
+      const own = 'filter' in l ? l.filter : undefined;
+      const filter = own ? ['all', own, ['!', clutter]] : ['!', clutter];
+      return { ...l, filter } as LayerSpecification;
+    }),
+  };
+}
+
 let vectorStyle: Promise<StyleSpecification> | undefined;
 
 async function fetchVectorStyle(): Promise<StyleSpecification> {
@@ -254,7 +327,7 @@ async function fetchVectorStyle(): Promise<StyleSpecification> {
   try {
     const res = await fetch(VECTOR_STYLE, { signal: ctrl.signal });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return withHouseNumbers((await res.json()) as StyleSpecification);
+    return withoutClutter(withHouseNumbers((await res.json()) as StyleSpecification));
   } finally {
     clearTimeout(timer);
   }
@@ -347,7 +420,6 @@ const POI_LABELS: Record<string, Record<Lang, string>> = {
   place_of_worship: { uk: 'Храм', en: 'Place of worship', pt: 'Igreja', es: 'Lugar de culto', fr: 'Lieu de culte', it: 'Luogo di culto', de: 'Gotteshaus', cs: 'Kostel', pl: 'Świątynia', ru: 'Храм' },
   bus: { uk: 'Зупинка', en: 'Bus stop', pt: 'Paragem', es: 'Parada de autobús', fr: 'Arrêt de bus', it: 'Fermata', de: 'Bushaltestelle', cs: 'Zastávka', pl: 'Przystanek', ru: 'Остановка' },
   fuel: { uk: 'АЗС', en: 'Fuel', pt: 'Combustível', es: 'Gasolinera', fr: 'Station-service', it: 'Distributore', de: 'Tankstelle', cs: 'Čerpací stanice', pl: 'Stacja paliw', ru: 'АЗС' },
-  parking: { uk: 'Паркінг', en: 'Parking', pt: 'Estacionamento', es: 'Aparcamiento', fr: 'Parking', it: 'Parcheggio', de: 'Parkplatz', cs: 'Parkoviště', pl: 'Parking', ru: 'Парковка' },
   park: { uk: 'Парк', en: 'Park', pt: 'Parque', es: 'Parque', fr: 'Parc', it: 'Parco', de: 'Park', cs: 'Park', pl: 'Park', ru: 'Парк' },
   beach: { uk: 'Пляж', en: 'Beach', pt: 'Praia', es: 'Playa', fr: 'Plage', it: 'Spiaggia', de: 'Strand', cs: 'Pláž', pl: 'Plaża', ru: 'Пляж' },
   aerodrome: { uk: 'Аеропорт', en: 'Airport', pt: 'Aeroporto', es: 'Aeropuerto', fr: 'Aéroport', it: 'Aeroporto', de: 'Flughafen', cs: 'Letiště', pl: 'Lotnisko', ru: 'Аэропорт' },
@@ -359,6 +431,11 @@ const POI_LABELS: Record<string, Record<Lang, string>> = {
   cinema: { uk: 'Кінотеатр', en: 'Cinema', pt: 'Cinema', es: 'Cine', fr: 'Cinéma', it: 'Cinema', de: 'Kino', cs: 'Kino', pl: 'Kino', ru: 'Кинотеатр' },
   theatre: { uk: 'Театр', en: 'Theatre', pt: 'Teatro', es: 'Teatro', fr: 'Théâtre', it: 'Teatro', de: 'Theater', cs: 'Divadlo', pl: 'Teatr', ru: 'Театр' },
   stadium: { uk: 'Стадіон', en: 'Stadium', pt: 'Estádio', es: 'Estadio', fr: 'Stade', it: 'Stadio', de: 'Stadion', cs: 'Stadion', pl: 'Stadion', ru: 'Стадион' },
+  gallery: { uk: 'Галерея', en: 'Gallery', pt: 'Galeria', es: 'Galería', fr: 'Galerie', it: 'Galleria', de: 'Galerie', cs: 'Galerie', pl: 'Galeria', ru: 'Галерея' },
+  monument: { uk: 'Пам’ятник', en: 'Monument', pt: 'Monumento', es: 'Monumento', fr: 'Monument', it: 'Monumento', de: 'Denkmal', cs: 'Pomník', pl: 'Pomnik', ru: 'Памятник' },
+  castle: { uk: 'Фортеця', en: 'Fort', pt: 'Forte', es: 'Fuerte', fr: 'Fort', it: 'Forte', de: 'Festung', cs: 'Pevnost', pl: 'Twierdza', ru: 'Крепость' },
+  bakery: { uk: 'Пекарня', en: 'Bakery', pt: 'Padaria', es: 'Panadería', fr: 'Boulangerie', it: 'Panetteria', de: 'Bäckerei', cs: 'Pekárna', pl: 'Piekarnia', ru: 'Пекарня' },
+  ice_cream: { uk: 'Морозиво', en: 'Ice cream', pt: 'Gelataria', es: 'Heladería', fr: 'Glacier', it: 'Gelateria', de: 'Eisdiele', cs: 'Zmrzlinárna', pl: 'Lodziarnia', ru: 'Мороженое' },
   viewpoint: { uk: 'Оглядовий майданчик', en: 'Viewpoint', pt: 'Miradouro', es: 'Mirador', fr: 'Point de vue', it: 'Belvedere', de: 'Aussichtspunkt', cs: 'Vyhlídka', pl: 'Punkt widokowy', ru: 'Смотровая площадка' },
 };
 
