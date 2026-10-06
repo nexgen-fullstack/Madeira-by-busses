@@ -61,3 +61,33 @@ describe('the sheet of a line', () => {
     expect(sheet.formerly).toBe('formerly 10A');
   });
 });
+
+describe('the sheet under a chosen route', () => {
+  // The 08:00 boarded at Escola on Tuesday 6 October.
+  const escola = net.stops.findIndex((s) => s.id === 'E');
+  const pattern = out!.patterns[0]!;
+  const trip = net.patterns[pattern]!.trips.find((x) => formatClock(x[1]) === '08:00')![3];
+  const sheet = lineSheet(net, uk, line!.routes[0]!, FROM, FROM, {
+    stop: escola,
+    pattern,
+    tripId: trip,
+    date: FROM,
+  });
+  const weekdays = sheet.days.find((d) => d.label === 'Пн–Пт')!;
+
+  it('has a column for the stop boarded at, which stands out on that way only', () => {
+    expect(weekdays.ways[0]!.columns).toEqual(['Centro', 'Escola', 'Barreira']);
+    expect(weekdays.ways[0]!.marked).toBe(1);
+    expect(weekdays.ways[1]!.marked).toBeUndefined();
+  });
+
+  it('marks the bus taken in the band of its day, and says what stands out', () => {
+    const chosen = weekdays.ways[0]!.rows.filter((r) => r.chosen);
+    expect(chosen.map((r) => r.times.map((t) => t && formatClock(t)))).toEqual([
+      ['08:00', '08:05', '08:15'],
+    ]);
+    const saturday = sheet.days.find((d) => d.label === 'Субота')!;
+    expect(saturday.ways.flatMap((w) => w.rows).some((r) => r.chosen)).toBe(false);
+    expect(sheet.notes[0]).toBe('Жовтим — зупинка «Escola», де сідати, і ваш автобус о 08:05.');
+  });
+});

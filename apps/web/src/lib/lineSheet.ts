@@ -1,4 +1,4 @@
-import { municipalityName, type Network } from '@madeirabus/engine';
+import { madeiraHolidays, municipalityName, weekday, type Network } from '@madeirabus/engine';
 import type { I18n } from '../i18n.ts';
 import { clock, fullDate } from './format.ts';
 import { lineDirections, lineOf, type Direction } from './lines.ts';
@@ -38,8 +38,21 @@ export interface SheetWay {
   direction: string;
   /** The main stops of the way, in riding order. */
   columns: string[];
+  /** The column of the stop boarded at, which stands out. */
+  marked?: number;
   /** Each bus with its time at each column (none where it does not stop there). */
-  rows: { times: (number | undefined)[]; mark?: string }[];
+  rows: { times: (number | undefined)[]; mark?: string; chosen?: boolean }[];
+}
+
+/** Where a line is boarded (and which bus is taken) to stand out on its sheet. */
+export interface SheetMark {
+  /** The stop boarded at. */
+  stop: number;
+  /** The way taken, one of the line's patterns: the stop stands out on that way only. */
+  pattern?: number;
+  /** The bus taken, and the day: its time there stands out too. */
+  tripId?: string;
+  date?: string;
 }
 
 const norm = (s: string) => s.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
@@ -50,9 +63,9 @@ const MAX_COLUMNS = 5;
 /**
  * Positions in a pattern of the stops a sheet gives times for: the ends, and in each
  * town of the line's name ("Funchal - Câmara de Lobos - Ribeira Brava") the stop most
- * lines serve, its bus station or main square.
+ * lines serve, its bus station or main square; and `keep`, the stop boarded at.
  */
-export function keyStops(net: Network, pattern: number, name: string): number[] {
+export function keyStops(net: Network, pattern: number, name: string, keep?: number): number[] {
   const stops = net.patterns[pattern]!.stops;
   const last = stops.length - 1;
   const lines = new Map<number, Set<number>>();
@@ -86,8 +99,13 @@ export function keyStops(net: Network, pattern: number, name: string): number[] 
   }
   // A long way named after its ends only: its middle too.
   if (picks.size < 3 && stops.length >= 12) picks.add(Math.round(last / 2));
+  if (keep !== undefined && keep >= 0 && keep <= last) picks.add(keep);
   const sorted = [...picks].sort((a, b) => a - b);
-  return sorted.length <= MAX_COLUMNS ? sorted : [...sorted.slice(0, MAX_COLUMNS - 1), last];
+  if (sorted.length <= MAX_COLUMNS) return sorted;
+  // Too many: the ends and the stop boarded at stay, and the first of the others that fit.
+  const must = new Set([0, last, ...(keep !== undefined ? [keep] : [])]);
+  const others = sorted.filter((i) => !must.has(i)).slice(0, MAX_COLUMNS - must.size);
+  return [...must, ...others].sort((a, b) => a - b);
 }
 
 /**
@@ -157,15 +175,39 @@ export function variantNote(
   };
 }
 
-/** The sheet of the line a route variant belongs to, for the week from `from`. */
-export function lineSheet(net: Network, t: I18n, route: number, from: string, printedOn: string) {
+/**
+ * The sheet of the line a route variant belongs to, for the week from `from`; with
+ * `board`, the stop it is boarded at (and the bus taken) standing out.
+ */
+export function lineSheet(
+  net: Network,
+  t: I18n,
+  route: number,
+  from: string,
+  printedOn: string,
+  board?: SheetMark,
+) {
   const variants = lineOf(net, route);
   const r = net.routes[variants[0] ?? route]!;
   const directions = lineDirections(net, variants);
   const ways = directions.map((d) => {
     const main = d.patterns[0]!;
-    const keys = keyStops(net, main, r.long);
     const mainStops = net.patterns[main]!.stops;
+    // Where the way taken is boarded: the stop itself, or one of its name; not at its end.
+    let boardAt = -1;
+    if (
+      board &&
+      (board.pattern !== undefined
+        ? d.patterns.includes(board.pattern)
+        : d.patterns.some((p) => net.patterns[p]!.stops.includes(board.stop)))
+    ) {
+      const name = net.stops[board.stop]!.name;
+      boardAt = mainStops.indexOf(board.stop);
+      if (boardAt < 0) boardAt = mainStops.findIndex((s) => net.stops[s]!.name === name);
+      if (boardAt === mainStops.length - 1) boardAt = -1;
+    }
+    const keys = keyStops(net, main, r.long, boardAt >= 0 ? boardAt : undefined);
+    const marked = boardAt >= 0 ? keys.indexOf(boardAt) : -1;
     // Where each variant stops at the main stops: the same stop, or one of the same name.
     const at = new Map(
       d.patterns.map((p) => {
@@ -184,7 +226,7 @@ export function lineSheet(net: Network, t: I18n, route: number, from: string, pr
         ];
       }),
     );
-    return { d, keys, mainStops, at };
+    return { d, keys, mainStops, at, marked };
   });
 
   // Letters for the variants that go another way, the most frequent first; the same
@@ -207,16 +249,23 @@ export function lineSheet(net: Network, t: I18n, route: number, from: string, pr
 
   const { groups, basis } = groupWeek(net, from, (date) => {
     const value = ways.map(({ d, at }) => {
-      const rows: { start: number; times: (number | undefined)[]; mark?: string }[] = [];
+      const rows: {
+        start: number;
+        times: (number | undefined)[];
+        mark?: string;
+        trip: string;
+        chosen?: boolean;
+      }[] = [];
       for (const p of d.patterns) {
         const text = texts.get(p);
-        net.patterns[p]!.trips.forEach(([service, start], trip) => {
+        net.patterns[p]!.trips.forEach(([service, start, , id], trip) => {
           if (!net.isServiceActive(service, date)) return;
           const times = tripTimes(net, p, trip);
           rows.push({
             start,
             times: at.get(p)!.map((i) => (i === undefined ? undefined : times[i])),
             mark: text ? letters.get(text) : undefined,
+            trip: id,
           });
         });
       }
@@ -228,11 +277,35 @@ export function lineSheet(net: Network, t: I18n, route: number, from: string, pr
     };
   });
 
+  // The bus taken stands out in the band of its day (a holiday's, or its weekday's).
+  let chosenAt: number | undefined;
+  if (board?.tripId && board.date) {
+    const date = board.date;
+    const holiday = madeiraHolidays(Number(date.slice(0, 4))).some((h) => h.date === date);
+    const band = groups.find((g) => (holiday ? g.holidays : g.days.includes(weekday(date))));
+    band?.value.forEach((rows, i) => {
+      const row = rows.find((x) => x.trip === board.tripId);
+      if (!row) return;
+      row.chosen = true;
+      const marked = ways[i]!.marked;
+      if (marked >= 0) chosenAt = row.times[marked];
+    });
+  }
+
   const b = net.bundle;
   const operator = b.agencies[r.agency]!.name;
   const notes = groups
     .filter((g) => g.value.every((rows) => rows.length === 0))
     .map((g) => t.t('print.closed', { days: dayGroupLabel(t, g) }));
+  // What stands out, for whoever the picture is sent to.
+  if (board && ways.some((w) => w.marked >= 0)) {
+    const stop = net.stops[board.stop]!.name;
+    notes.unshift(
+      chosenAt !== undefined
+        ? t.t('sheet.boardingBus', { stop, t: clock(chosenAt) })
+        : t.t('sheet.boarding', { stop }),
+    );
+  }
   if (b.demo) notes.push(t.t('demo.banner'));
   if (b.projected && basis.to > b.projected.officialUntil) {
     notes.push(t.t('data.projected', { date: fullDate(t, b.projected.officialUntil) }));
@@ -250,10 +323,15 @@ export function lineSheet(net: Network, t: I18n, route: number, from: string, pr
       .filter((g) => g.value.some((rows) => rows.length > 0))
       .map((g) => ({
         label: dayGroupLabel(t, g),
-        ways: ways.map(({ d, keys, mainStops }, i) => ({
+        ways: ways.map(({ d, keys, mainStops, marked }, i) => ({
           direction: d.label,
           columns: keys.map((k) => net.stops[mainStops[k]!]!.name),
-          rows: g.value[i]!.map(({ times, mark }) => ({ times, mark })),
+          ...(marked >= 0 ? { marked } : {}),
+          rows: g.value[i]!.map(({ times, mark, chosen }) => ({
+            times,
+            mark,
+            ...(chosen ? { chosen } : {}),
+          })),
         })),
       })),
     legend: [...letters.entries()]

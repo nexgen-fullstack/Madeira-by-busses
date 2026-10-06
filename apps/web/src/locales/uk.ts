@@ -358,6 +358,9 @@ export const uk = {
   'ahead.past': 'Цей час сьогодні вже минув',
   'ahead.day': 'Поїздка {day}',
   'lineCard.gone': 'Сьогодні вже не їде',
+  'sheet.boarding': 'Жовтим — зупинка «{stop}», де сідати.',
+  'sheet.boardingBus': 'Жовтим — зупинка «{stop}», де сідати, і ваш автобус о {t}.',
+  'detail.sheets': 'Розклад ліній картинкою',
 } satisfies Record<string, Entry>;
 
 export type Key = keyof typeof uk;

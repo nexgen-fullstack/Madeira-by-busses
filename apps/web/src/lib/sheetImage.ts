@@ -18,6 +18,13 @@ const NAVY = '#002F85';
 const LINE = '#C9CED6';
 const STRIPE = '#F1F4F8';
 const MARK = '#0B5FFF';
+/** The stop boarded at: its column in the yellow of the route on the map. */
+const BOARD_HEAD = '#FFD84D';
+const BOARD = '#FFF6D1';
+const BOARD_STRIPE = '#FCEDB4';
+/** The bus taken: its row, and its time where it is boarded. */
+const CHOSEN_ROW = '#FFF1B8';
+const CHOSEN = '#FFD400';
 
 const PAD = 20;
 const COL = 86;
@@ -136,6 +143,10 @@ function draw(ctx: Ctx, sheet: LineSheet, width: number): number {
         const w = way.columns.length * COL;
         ctx.fillStyle = '#E4E9F2';
         ctx.fillRect(x, top, w, head);
+        if (way.marked !== undefined) {
+          ctx.fillStyle = BOARD_HEAD;
+          ctx.fillRect(x + way.marked * COL, top + 22, COL, head - 22);
+        }
         ctx.fillStyle = NAVY;
         ctx.font = font(11, true);
         ctx.textAlign = 'center';
@@ -154,11 +165,19 @@ function draw(ctx: Ctx, sheet: LineSheet, width: number): number {
             ctx.fillStyle = STRIPE;
             ctx.fillRect(x, ry, w, ROW);
           }
+          if (row.chosen) {
+            ctx.fillStyle = CHOSEN_ROW;
+            ctx.fillRect(x, ry, w, ROW);
+          }
+          if (way.marked !== undefined) {
+            ctx.fillStyle = row.chosen ? CHOSEN : r % 2 === 1 ? BOARD_STRIPE : BOARD;
+            ctx.fillRect(x + way.marked * COL, ry, COL, ROW);
+          }
           let marked = false;
           row.times.forEach((time, i) => {
             const cx = x + i * COL + COL / 2;
             ctx.fillStyle = time === undefined ? LINE : INK;
-            ctx.font = font(13);
+            ctx.font = font(13, Boolean(row.chosen));
             ctx.textAlign = 'center';
             const text = time === undefined ? '–' : clock(time);
             ctx.fillText(text, cx, ry + ROW / 2 + 1);

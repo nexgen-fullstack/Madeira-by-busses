@@ -323,4 +323,7 @@ export const en: Dict = {
   'ahead.past': 'That time has already passed today',
   'ahead.day': 'Trip {day}',
   'lineCard.gone': 'No more buses today',
+  'sheet.boarding': 'In yellow: «{stop}», where you get on.',
+  'sheet.boardingBus': 'In yellow: «{stop}», where you get on, and your bus at {t}.',
+  'detail.sheets': 'Line timetables as pictures',
 };

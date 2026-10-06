@@ -1,16 +1,14 @@
-import { useEffect, useMemo, useState } from 'react';
-import { ChevronRight, Download, Loader2, Share2, X } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { ChevronRight, X } from 'lucide-react';
 import { addDays, fareClassOf, haversine, type LatLon, type Network } from '@madeirabus/engine';
 import { useI18n, type I18n } from '../i18n.ts';
 import type { Key } from '../locales/uk.ts';
-import { isNative } from '../lib/device.ts';
-import { canShareFiles, saveFile, shareFile } from '../lib/files.ts';
 import { aheadFrom, clock, price } from '../lib/format.ts';
-import { lineSheet } from '../lib/lineSheet.ts';
 import { lineOf } from '../lib/lines.ts';
 import { navigate } from '../lib/router.ts';
 import { useNow } from '../lib/useNow.ts';
 import { useNetwork } from '../state/app.tsx';
+import { LineSheetBlock } from './LineSheetBlock.tsx';
 import { RouteBadge } from './RouteBadge.tsx';
 
 /** A line tapped on the map: which, which way, and where (its stop when known). */
@@ -89,60 +87,8 @@ export function LineCard({ pick, onClose }: { pick: LinePick; onClose: () => voi
     return undefined;
   }, [net, stop, next.length, now.date, variants]);
 
-  // The whole timetable as a picture, drawn when the card opens.
-  const [sheet, setSheet] = useState<{
-    url: string;
-    bytes: Uint8Array;
-    fileName: string;
-    title: string;
-  }>();
-  const [failed, setFailed] = useState(false);
-  const [busy, setBusy] = useState<'save' | 'share' | undefined>();
-  const [toast, setToast] = useState<string>();
   // The picture alone, filling the map, to read it or take a screenshot of it whole.
   const [whole, setWhole] = useState(false);
-  useEffect(() => {
-    let url: string | undefined;
-    let cancelled = false;
-    setSheet(undefined);
-    setFailed(false);
-    void (async () => {
-      try {
-        const { lineSheetPng } = await import('../lib/sheetImage.ts');
-        const made = lineSheet(net, t, pick.route, now.date, now.date);
-        const bytes = await lineSheetPng(made);
-        if (cancelled) return;
-        url = URL.createObjectURL(new Blob([bytes as BlobPart], { type: 'image/png' }));
-        setSheet({ url, bytes, fileName: made.fileName, title: made.title });
-      } catch {
-        if (!cancelled) setFailed(true);
-      }
-    })();
-    return () => {
-      cancelled = true;
-      if (url) URL.revokeObjectURL(url);
-    };
-    // A new picture for another line or day, not for every tick of the clock.
-  }, [net, pick.route, now.date, t]);
-
-  const flash = (message: string) => {
-    setToast(message);
-    window.setTimeout(() => setToast(undefined), 2500);
-  };
-  const act = async (action: 'save' | 'share') => {
-    if (!sheet) return;
-    setBusy(action);
-    try {
-      if (action === 'share')
-        await shareFile(sheet.bytes, sheet.fileName, sheet.title, 'image/png');
-      else if (await saveFile(sheet.bytes, sheet.fileName, 'image/png'))
-        flash(t.t(isNative() ? 'sheet.savedGallery' : 'sheet.saved'));
-    } catch {
-      flash(t.t('sheet.failed'));
-    } finally {
-      setBusy(undefined);
-    }
-  };
   const headsign = pattern >= 0 ? net.patterns[pattern]!.headsign : route.long;
 
   return (
@@ -177,69 +123,18 @@ export function LineCard({ pick, onClose }: { pick: LinePick; onClose: () => voi
           )}
         </div>
       )}
-      <div className="line-card__sheet">
-        {sheet ? (
-          <button
-            type="button"
-            className="line-card__picture"
-            aria-pressed={whole}
-            onClick={() => setWhole(!whole)}
-          >
-            <img src={sheet.url} alt={sheet.title} />
-          </button>
-        ) : failed ? (
-          <p className="muted small">{t.t('sheet.failed')}</p>
-        ) : (
-          <p className="muted small">
-            <Loader2 size={16} className="spin" aria-hidden /> {t.t('lineCard.making')}
-          </p>
-        )}
-      </div>
-      <div className="line-card__actions">
-        <button
-          type="button"
-          className="button button--primary button--small"
-          disabled={!sheet || busy !== undefined}
-          onClick={() => void act('save')}
-        >
-          {busy === 'save' ? (
-            <Loader2 size={14} className="spin" aria-hidden />
-          ) : (
-            <Download size={14} />
-          )}{' '}
-          {t.t('lineCard.save')}
-        </button>
-        {canShareFiles() && (
-          <button
-            type="button"
-            className="button button--small"
-            disabled={!sheet || busy !== undefined}
-            onClick={() => void act('share')}
-          >
-            {busy === 'share' ? (
-              <Loader2 size={14} className="spin" aria-hidden />
-            ) : (
-              <Share2 size={14} />
-            )}{' '}
-            {t.t('lineCard.share')}
-          </button>
-        )}
-        <button
-          type="button"
-          className="button button--small"
-          onClick={() => {
-            onClose();
-            navigate(`lines/${variants[0] ?? pick.route}`);
-          }}
-        >
-          {t.t('lineCard.open')} <ChevronRight size={14} aria-hidden />
-        </button>
-      </div>
-      {toast && (
-        <div className="line-card__toast small" role="status">
-          {toast}
-        </div>
-      )}
+      <LineSheetBlock
+        route={pick.route}
+        date={now.date}
+        board={stop !== undefined ? { stop, pattern: pick.pattern } : undefined}
+        look="card"
+        whole={whole}
+        onWhole={setWhole}
+        onOpenLine={() => {
+          onClose();
+          navigate(`lines/${variants[0] ?? pick.route}`);
+        }}
+      />
     </div>
   );
 }

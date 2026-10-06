@@ -326,4 +326,7 @@ export const fr: Dict = {
   'ahead.past': "Cette heure est déjà passée aujourd'hui",
   'ahead.day': 'Trajet {day}',
   'lineCard.gone': "Plus de passage aujourd'hui",
+  'sheet.boarding': 'En jaune : «{stop}», où vous montez.',
+  'sheet.boardingBus': 'En jaune : «{stop}», où vous montez, et votre bus à {t}.',
+  'detail.sheets': 'Horaires des lignes en image',
 };

@@ -1846,6 +1846,15 @@ input[type='time'],
   gap: 6px;
   margin: 12px;
 }
+/* Under a chosen route, the sheet of each line ridden. */
+.detail__sheet + .detail__sheet {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.detail__sheet .sheet-preview {
+  margin-top: 8px;
+}
 .line-card__sheet {
   flex: 1 1 auto;
   min-height: 0;

@@ -6,6 +6,7 @@ import {
   ArrowLeft,
   Clock,
   Footprints,
+  Image,
   MapPin,
   Navigation,
   PlayCircle,
@@ -19,10 +20,12 @@ import { useI18n, type Key } from '../i18n.ts';
 import { isNative, remind } from '../lib/device.ts';
 import { clock, dayAhead, dayMonth, duration, longDate, price } from '../lib/format.ts';
 import { fareRides, isExpress, ridesOf } from '../lib/itinerary.ts';
+import { lineOf } from '../lib/lines.ts';
 import { rideColor } from '../lib/mapContent.ts';
 import { canSimulate } from '../lib/simulator.ts';
 import { useNow } from '../lib/useNow.ts';
 import { planOptions, useApp, useNetwork } from '../state/app.tsx';
+import { LineSheetBlock } from './LineSheetBlock.tsx';
 import { RideTimetable } from './RideTimetable.tsx';
 import { RouteBadge } from './RouteBadge.tsx';
 import { routeColor } from '../lib/color.ts';
@@ -80,6 +83,16 @@ export function ItineraryDetail({ it, date, ahead, onFocusLeg, onBack, onStart, 
   }, [it, date, planner, settings, firstLeg, lastLeg]);
 
   const rides = useMemo(() => fareRides(net, it), [net, it]);
+  // Each line ridden once, for its sheet: where it is boarded and the bus taken stand out.
+  const lines = useMemo(() => {
+    const seen = new Set<number>();
+    return ridesOf(it).filter((leg) => {
+      const line = lineOf(net, leg.route)[0] ?? leg.route;
+      if (seen.has(line)) return false;
+      seen.add(line);
+      return true;
+    });
+  }, [net, it]);
   const advice = useMemo(
     () => (rides.length ? adviseTicket([...rides, ...rides], net.bundle.fares) : undefined),
     [rides, net],
@@ -292,6 +305,29 @@ export function ItineraryDetail({ it, date, ahead, onFocusLeg, onBack, onStart, 
             ? t.t('detail.reminded', { t: clock(reminder) })
             : t.t('detail.remind')}
         </button>
+      )}
+
+      {lines.length > 0 && (
+        <section className="card print-card">
+          <h3 className="card__title">
+            <Image size={16} aria-hidden /> {t.t('detail.sheets')}
+          </h3>
+          {lines.map((leg) => (
+            <div key={leg.route} className="detail__sheet">
+              <div className="timeline__route">
+                <RouteBadge route={net.routes[leg.route]!} size="sm" />{' '}
+                {t.t('detail.towards', { h: leg.headsign })}
+              </div>
+              <LineSheetBlock
+                route={leg.route}
+                date={date}
+                board={{ stop: leg.from.stop!, pattern: leg.pattern, tripId: leg.tripId, date }}
+                look="page"
+                lazy
+              />
+            </div>
+          ))}
+        </section>
       )}
 
       {it.rides > 0 && (

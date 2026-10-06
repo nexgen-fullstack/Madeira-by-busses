@@ -354,4 +354,7 @@ export const ru: Dict = {
   'ahead.past': 'Это время сегодня уже прошло',
   'ahead.day': 'Поездка {day}',
   'lineCard.gone': 'Сегодня уже не едет',
+  'sheet.boarding': 'Жёлтым — остановка «{stop}», где садиться.',
+  'sheet.boardingBus': 'Жёлтым — остановка «{stop}», где садиться, и ваш автобус в {t}.',
+  'detail.sheets': 'Расписание линий картинкой',
 };

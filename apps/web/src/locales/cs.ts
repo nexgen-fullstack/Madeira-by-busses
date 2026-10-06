@@ -355,4 +355,7 @@ export const cs: Dict = {
   'ahead.past': 'Tento čas už dnes minul',
   'ahead.day': 'Cesta {day}',
   'lineCard.gone': 'Dnes už nejede',
+  'sheet.boarding': 'Žlutě: «{stop}», kde nastupujete.',
+  'sheet.boardingBus': 'Žlutě: «{stop}», kde nastupujete, a váš autobus v {t}.',
+  'detail.sheets': 'Jízdní řády linek jako obrázek',
 };

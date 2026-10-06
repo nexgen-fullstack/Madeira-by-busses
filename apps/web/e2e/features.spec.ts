@@ -73,3 +73,17 @@ test('back from a shared link stays in the app', async ({ page }) => {
   await expect(page).toHaveURL(/#\/nearby/);
   await expect(page.getByRole('heading', { name: 'Відправлення поруч' })).toBeVisible();
 });
+
+test("under a chosen route, each line's timetable as a picture with its buttons", async ({
+  page,
+}) => {
+  await page.goto('./');
+  await page.getByRole('button', { name: /Mercado dos Lavradores → Monte/ }).click();
+  await page.locator('.it-card').first().click();
+  const sheets = page.locator('.detail__sheet');
+  await expect(sheets.first()).toBeVisible();
+  await sheets.first().scrollIntoViewIfNeeded();
+  // Drawn once near the screen: the picture, then the button to keep it.
+  await expect(sheets.first().locator('img')).toBeVisible({ timeout: 15_000 });
+  await expect(sheets.first().getByRole('button', { name: 'Завантажити картинку' })).toBeEnabled();
+});
