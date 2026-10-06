@@ -583,3 +583,145 @@ describe('more bus, less walking', () => {
     expect(results[0]!.arrive).toBeLessThan(at(7, 50));
   });
 });
+
+describe('changing buses at a big station', () => {
+  const time = (t: number) =>
+    `${String(Math.floor(t / 3600)).padStart(2, '0')}:${String((t / 60) % 60).padStart(2, '0')}:00`;
+  /**
+   * The 200 from Funchal (F) by Murteira (M), on the hill, down to Ribeira Brava's bus
+   * station (S); the 322 from Campanário (R) by M and S on to Tabua (T). Ten more
+   * lines leave S. `back`: the other way, the 322 T → S → M and the 200 S → M → F.
+   */
+  function boaMorte(o: { stationAt200?: number; back?: boolean } = {}) {
+    const stops: (string | number)[][] = [
+      ['F', 'Hospital', 32.6497, -16.9145, 'FNC'],
+      ['R', 'Campanário', 32.6667, -17.03, 'RBR'],
+      ['M', 'Murteira, Boa Morte', 32.6705, -17.0605, 'RBR'],
+      ['S', 'Estacao Ribeira Brava', 32.673209, -17.064304, 'RBR'],
+      ['T', 'Reta Zimbreiros, Tabua', 32.6779, -17.0781, 'RBR'],
+    ];
+    const routes: (string | number)[][] = [
+      ['200', 'T', '200', 'Funchal - Ribeira Brava', 3],
+      ['322', 'T', '322', 'Campanário - Ponta do Sol', 3],
+    ];
+    const trips: string[][] = [
+      ['200', 'WK', 'a'],
+      ['322', 'WK', 'b'],
+    ];
+    const run = (trip: string, calls: [string, number][]) =>
+      calls.map(([s, t], k) => [trip, time(t), time(t), s, k + 1]);
+    const times: (string | number)[][] = o.back
+      ? [
+          ...run('b', [
+            ['T', at(13, 0)],
+            ['S', at(13, 11)],
+            ['M', at(13, 16)],
+            ['R', at(13, 31)],
+          ]),
+          ...run('a', [
+            ['S', at(13, 20)],
+            ['M', at(13, 22)],
+            ['F', at(13, 43)],
+          ]),
+        ]
+      : [
+          ...run('a', [
+            ['F', at(13, 7)],
+            ['M', at(13, 28)],
+            ['S', o.stationAt200 ?? at(13, 30)],
+          ]),
+          ...run('b', [
+            ['R', at(13, 20)],
+            ['M', at(13, 35)],
+            ['S', at(13, 40)],
+            ['T', at(13, 51)],
+          ]),
+        ];
+    for (let k = 1; k <= 10; k++) {
+      routes.push([`L${k}`, 'T', `${100 + k}`, `Line ${k}`, 3]);
+      trips.push([`L${k}`, 'WK', `l${k}`]);
+      times.push([`l${k}`, time(at(9, k)), time(at(9, k)), 'S', 1]);
+      times.push([`l${k}`, time(at(9, 30 + k)), time(at(9, 30 + k)), 'R', 2]);
+    }
+    const feed = parseGtfs({
+      'agency.txt': toCsv(
+        ['agency_id', 'agency_name', 'agency_url', 'agency_timezone'],
+        [['T', 'Test', 'https://example.com', 'Atlantic/Madeira']],
+      ),
+      'stops.txt': toCsv(['stop_id', 'stop_name', 'stop_lat', 'stop_lon', 'zone_id'], stops),
+      'routes.txt': toCsv(
+        ['route_id', 'agency_id', 'route_short_name', 'route_long_name', 'route_type'],
+        routes,
+      ),
+      'trips.txt': toCsv(['route_id', 'service_id', 'trip_id'], trips),
+      'stop_times.txt': toCsv(
+        ['trip_id', 'arrival_time', 'departure_time', 'stop_id', 'stop_sequence'],
+        times,
+      ),
+      'calendar.txt': toCsv(
+        [
+          'service_id',
+          'monday',
+          'tuesday',
+          'wednesday',
+          'thursday',
+          'friday',
+          'saturday',
+          'sunday',
+          'start_date',
+          'end_date',
+        ],
+        [['WK', 1, 1, 1, 1, 1, 0, 0, '20260101', '20271231']],
+      ),
+    });
+    const net = new Network(
+      buildBundle([{ feed, source: { name: 'test' } }], { demo: true, fares: SIGA_FARES_2026 })
+        .bundle,
+    );
+    const stop = (id: string) => {
+      const i = net.stops.findIndex((s) => s.id === id);
+      return { ...net.stops[i]!, name: net.stops[i]!.name, stops: [i] };
+    };
+    const plan = (from: string, to: string) =>
+      new Planner(net).plan({
+        from: stop(from),
+        to: stop(to),
+        date: WEEKDAY,
+        time: at(13, 0),
+        options: { stopWalk: 0, longWalk: 0 },
+      })[0]!;
+    const changeAt = (it: Itinerary) => {
+      const [first, second] = it.legs.filter((l): l is RideLeg => l.kind === 'ride');
+      return { off: first!.to.name, on: second!.from.name, wait: second!.wait };
+    };
+    return { plan, changeAt };
+  }
+
+  it('changes at the bus station rather than on the hill, getting there as soon', () => {
+    const { plan, changeAt } = boaMorte();
+    const best = plan('F', 'T');
+    expect(changeAt(best)).toEqual({
+      off: 'Estacao Ribeira Brava',
+      on: 'Estacao Ribeira Brava',
+      wait: 10 * 60,
+    });
+    expect(best.walkDistance).toBe(0);
+    expect(best.arrive).toBe(at(13, 51));
+  });
+
+  it('stays on the hill when the next bus leaves the station before the first gets there', () => {
+    // The 200 at the station at 13:39, the 322 away from it at 13:40: no time to change.
+    const { plan, changeAt } = boaMorte({ stationAt200: at(13, 39) });
+    const best = plan('F', 'T');
+    expect(changeAt(best).on).toBe('Murteira, Boa Morte');
+    expect(best.arrive).toBe(at(13, 51));
+  });
+
+  it('changes at the bus station the other way round too', () => {
+    // T → S → M on the 322, S → M → F on the 200: off the 322 at the station, on the 200 there.
+    const { plan, changeAt } = boaMorte({ back: true });
+    const best = plan('T', 'F');
+    expect(changeAt(best).off).toBe('Estacao Ribeira Brava');
+    expect(changeAt(best).on).toBe('Estacao Ribeira Brava');
+  });
+});
