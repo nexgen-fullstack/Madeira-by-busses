@@ -351,6 +351,12 @@ export const uk = {
   'lineCard.share': 'Поділитися',
   'lineCard.open': 'Відкрити лінію повністю',
   'lineCard.which': 'Яка лінія?',
+  'day.tomorrow': 'завтра',
+  'day.on': "у понеділок|у вівторок|у середу|у четвер|у п'ятницю|у суботу|у неділю",
+  'ahead.from': '{day} з {t}',
+  'ahead.none': 'Сьогодні автобусів туди вже немає',
+  'ahead.day': 'Поїздка {day}',
+  'lineCard.gone': 'Сьогодні вже не їде',
 } satisfies Record<string, Entry>;
 
 export type Key = keyof typeof uk;

@@ -351,4 +351,10 @@ export const pl: Dict = {
   'lineCard.share': 'Udostępnij',
   'lineCard.open': 'Otwórz całą linię',
   'lineCard.which': 'Która linia?',
+  'day.tomorrow': 'jutro',
+  'day.on': 'w poniedziałek|we wtorek|w środę|w czwartek|w piątek|w sobotę|w niedzielę',
+  'ahead.from': '{day} od {t}',
+  'ahead.none': 'Dziś nie ma już tam autobusów',
+  'ahead.day': 'Podróż {day}',
+  'lineCard.gone': 'Dziś już nie jedzie',
 };

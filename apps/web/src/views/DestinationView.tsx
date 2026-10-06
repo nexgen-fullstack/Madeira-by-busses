@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import {
   ArrowLeft,
   CalendarClock,
@@ -7,13 +7,14 @@ import {
   Navigation,
   Route as RouteIcon,
 } from 'lucide-react';
-import { madeiraNow, type Itinerary } from '@madeirabus/engine';
+import { madeiraNow } from '@madeirabus/engine';
 import { ItineraryCard } from '../components/ItineraryCard.tsx';
 import { ItineraryDetail } from '../components/ItineraryDetail.tsx';
 import { useMapContent } from '../components/mapContext.tsx';
 import { TripsBlock } from '../components/TripsBlock.tsx';
 import { useI18n, type Key } from '../i18n.ts';
-import { longDate } from '../lib/format.ts';
+import { findOptions, firstDeparture, type Found } from '../lib/ahead.ts';
+import { aheadFrom, capitalise, dayAhead, longDate } from '../lib/format.ts';
 import { useGeolocation } from '../lib/geolocation.ts';
 import { encodePlace } from '../lib/itinerary.ts';
 import { itineraryContent, type MapContent } from '../lib/mapContent.ts';
@@ -68,7 +69,9 @@ export function DestinationView({ d, route }: { d: Destination; route: Route }) 
     if (fromHere && !geo.position && !geo.pending && !geo.error) geo.request();
   }, [fromHere, geo]);
 
-  const [results, setResults] = useState<Itinerary[] | undefined>();
+  // The ways there, each with its day: today's, or the next day's when none goes any more.
+  const [found, setFound] = useState<Found | undefined>();
+  const results = found?.options;
   const [loading, setLoading] = useState(false);
   const target = useMemo(() => ({ lat: d.lat, lon: d.lon, name: d.name }), [d]);
   const searchKey = origin
@@ -76,22 +79,27 @@ export function DestinationView({ d, route }: { d: Destination; route: Route }) 
     : '';
   useEffect(() => {
     if (!origin || !served) {
-      setResults(undefined);
+      setFound(undefined);
       return;
     }
     let cancelled = false;
     setLoading(true);
-    planner
-      .plan({
+    const today = madeiraNow().date;
+    findOptions(
+      planner,
+      {
         from: origin,
         to: target,
         date,
         // Today from now; another day from the first buses.
-        time: date === madeiraNow().date ? madeiraNow().time : 5 * 3600,
+        time: date === today ? madeiraNow().time : 5 * 3600,
         options: planOptions(settings),
-      })
-      .then((r) => !cancelled && setResults(r))
-      .catch(() => !cancelled && setResults([]))
+      },
+      // Nothing there any more today: the next day a bus goes.
+      date === today,
+    )
+      .then((r) => !cancelled && setFound(r))
+      .catch(() => !cancelled && setFound({ options: [], days: [] }))
       .finally(() => !cancelled && setLoading(false));
     return () => {
       cancelled = true;
@@ -112,6 +120,7 @@ export function DestinationView({ d, route }: { d: Destination; route: Route }) 
   }, [net, d, date, served, walk]);
 
   const selectedIt = selected !== undefined ? results?.[selected] : undefined;
+  const selectedDay = (selected !== undefined && found?.days[selected]) || date;
   useMapContent(
     useMemo<MapContent>(() => {
       const it = selectedIt ?? results?.find((r) => r.rides > 0);
@@ -133,10 +142,16 @@ export function DestinationView({ d, route }: { d: Destination; route: Route }) 
     return (
       <ItineraryDetail
         it={selectedIt}
-        date={date}
+        date={selectedDay}
+        ahead={selectedDay !== date}
         onBack={() => setParams({ i: undefined })}
         onStart={(simulate) => {
-          setTrip({ itinerary: selectedIt, date, simulate, generatedAt: net.bundle.generatedAt });
+          setTrip({
+            itinerary: selectedIt,
+            date: selectedDay,
+            simulate,
+            generatedAt: net.bundle.generatedAt,
+          });
           navigate('trip');
         }}
         onShare={async () => {
@@ -238,16 +253,36 @@ export function DestinationView({ d, route }: { d: Destination; route: Route }) 
             {!loading && results && results.length === 0 && (
               <p className="muted">{t.t('scenic.noTrips')}</p>
             )}
-            {shownResults.length > 0 && (
+            {shownResults.length > 0 && found && (
               <div className="results">
-                {shownResults.map((it, i) => (
-                  <ItineraryCard
-                    key={`${it.key}@${it.depart}`}
-                    it={it}
-                    now={date === now.date ? now.time : undefined}
-                    onSelect={() => setParams({ i: String(i) })}
-                  />
-                ))}
+                {shownResults.map((it, i) => {
+                  const day = found.days[i]!;
+                  const later = day !== date;
+                  return (
+                    <Fragment key={`${day}|${it.key}@${it.depart}`}>
+                      {later && found.days[i - 1] !== day && (
+                        <div className="banner banner--ahead" role="status">
+                          <CalendarClock size={18} aria-hidden />
+                          <div>
+                            <strong>{t.t('ahead.none')}</strong>
+                            {aheadFrom(
+                              t,
+                              day,
+                              now.date,
+                              firstDeparture(found.options.filter((_, k) => found.days[k] === day)),
+                            )}
+                          </div>
+                        </div>
+                      )}
+                      <ItineraryCard
+                        it={it}
+                        day={later ? capitalise(t, dayAhead(t, day, now.date)) : undefined}
+                        now={day === now.date ? now.time : undefined}
+                        onSelect={() => setParams({ i: String(i) })}
+                      />
+                    </Fragment>
+                  );
+                })}
               </div>
             )}
             {plannerLink && (

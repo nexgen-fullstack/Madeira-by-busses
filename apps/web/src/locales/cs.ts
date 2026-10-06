@@ -348,4 +348,10 @@ export const cs: Dict = {
   'lineCard.share': 'Sdílet',
   'lineCard.open': 'Otevřít celou linku',
   'lineCard.which': 'Která linka?',
+  'day.tomorrow': 'zítra',
+  'day.on': 'v pondělí|v úterý|ve středu|ve čtvrtek|v pátek|v sobotu|v neděli',
+  'ahead.from': '{day} od {t}',
+  'ahead.none': 'Dnes už tam žádný autobus nejede',
+  'ahead.day': 'Cesta {day}',
+  'lineCard.gone': 'Dnes už nejede',
 };

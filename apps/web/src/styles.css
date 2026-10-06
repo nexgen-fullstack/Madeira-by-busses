@@ -20,6 +20,7 @@
   --muted: #5b6573;
   --border: #dfe7f0;
   --danger: #c62828;
+  --danger-bg: #fdeeee;
   --warn-bg: #fff4dc;
   --warn: #8a5300;
   --ok: #2e7d32;
@@ -44,6 +45,8 @@
     --border: #2a313c;
     --warn-bg: #3a2a08;
     --warn: #ffcf70;
+    --danger: #ff8a80;
+    --danger-bg: #3a1716;
     --express-bg: #3a3006;
     --express: #ffdc4d;
     --shadow: 0 1px 2px rgb(0 0 0 / 40%);
@@ -881,6 +884,28 @@ input[type='time'],
   background: var(--express-bg);
   color: var(--express);
 }
+/* A way on a later day than asked ("Tomorrow from 07:30"): told in red, the card tinted. */
+.it-card--ahead {
+  background: var(--danger-bg);
+  border-color: color-mix(in srgb, var(--danger) 40%, var(--border));
+}
+.it-card--ahead .it-card__times {
+  color: var(--danger);
+}
+.it-card__tag--ahead {
+  background: color-mix(in srgb, var(--danger) 14%, transparent);
+  color: var(--danger);
+}
+.banner--ahead {
+  background: var(--danger-bg);
+  color: var(--danger);
+  border: 1px solid color-mix(in srgb, var(--danger) 35%, transparent);
+  margin: 4px 0 0;
+}
+.banner--ahead strong {
+  display: block;
+  font-size: 15px;
+}
 
 /* ---------- Itinerary detail ---------- */
 
@@ -897,6 +922,15 @@ input[type='time'],
   font-size: 22px;
   font-weight: 800;
   letter-spacing: -0.01em;
+}
+/* The day of a trip that is not today's ("Trip tomorrow · Wednesday 7 October"). */
+.detail__day {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.detail__day--ahead {
+  color: var(--danger);
 }
 .detail__sub {
   color: var(--muted);
@@ -1786,6 +1820,11 @@ input[type='time'],
 }
 .line-card__next .strong {
   font-variant-numeric: tabular-nums;
+}
+/* No more buses from the stop today: when the next one is, in red. */
+.line-card__ahead {
+  color: var(--danger);
+  font-weight: 700;
 }
 /* A line's timetable as a picture on its page, above the buttons to save or send it. */
 .sheet-preview {

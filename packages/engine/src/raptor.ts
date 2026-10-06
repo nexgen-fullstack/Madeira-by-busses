@@ -1,6 +1,7 @@
 import { quoteFare, type FareQuote, type FareRide } from './fares.ts';
 import { haversine, walkSeconds, type LatLon } from './geo.ts';
 import type { DayTimetable, Network } from './network.ts';
+import { addDays } from './time.ts';
 import type { WalkGraph, WalkHit } from './walk.ts';
 
 /**
@@ -597,6 +598,32 @@ export class Planner {
     }
     const last = found.sort((a, b) => b.depart - a.depart || a.arrive - b.arrive)[0];
     return last && this.withPaths(this.refine(last, request, ctx.opts));
+  }
+
+  /**
+   * For when no bus gets there any more on the day asked (late at night, or on a day
+   * the line does not run): the options by bus of the first day after it on which one
+   * does, within `days` — from that day's first bus or, arriving by a time, by that
+   * time on that day.
+   */
+  planAhead(
+    request: PlanRequest,
+    days = 7,
+  ): { date: string; itineraries: Itinerary[] } | undefined {
+    for (let d = 1; d <= days; d++) {
+      const date = addDays(request.date, d);
+      let time = request.time;
+      if (!request.arriveBy) {
+        const first = this.context({ ...request, date })
+          .searchAt(0)
+          .filter((it) => it.rides > 0);
+        if (first.length === 0) continue;
+        time = Math.min(...first.map((it) => it.depart));
+      }
+      const itineraries = this.plan({ ...request, date, time }).filter((it) => it.rides > 0);
+      if (itineraries.length > 0) return { date, itineraries };
+    }
+    return undefined;
   }
 
   private context(request: PlanRequest) {

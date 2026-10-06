@@ -473,6 +473,40 @@ describe('the best of the options, arriving by a time', () => {
   });
 });
 
+describe('the first buses of a later day', () => {
+  // Friday 9 October 2026: the 1 runs on weekdays, from 06:00 to 20:00.
+  const FRIDAY = '2026-10-09';
+
+  it('are those of the next day a bus goes, from its first bus', () => {
+    const late = { from: place('A'), to: place('D'), date: FRIDAY, time: at(21) };
+    expect(planner.plan(late).filter((it) => it.rides > 0)).toEqual([]);
+    // No bus on Saturday or Sunday: Monday from 06:00.
+    const ahead = planner.planAhead(late);
+    expect(ahead?.date).toBe('2026-10-12');
+    expect(Math.min(...ahead!.itineraries.map((it) => it.depart))).toBe(at(6));
+    expect(ahead!.itineraries.every((it) => it.rides > 0)).toBe(true);
+  });
+
+  it('arriving by a time, are those there by that time that day', () => {
+    const ahead = planner.planAhead({
+      from: place('A'),
+      to: place('D'),
+      date: SATURDAY,
+      time: at(9),
+      arriveBy: true,
+    });
+    expect(ahead?.date).toBe('2026-10-12');
+    expect(ahead!.itineraries.every((it) => it.arrive <= at(9))).toBe(true);
+  });
+
+  it('are none when no bus goes there within the week', () => {
+    // From A to G only on weekdays too; a week of nothing is asked for with one day.
+    expect(
+      planner.planAhead({ from: place('A'), to: place('G'), date: FRIDAY, time: at(21) }, 1),
+    ).toBeUndefined();
+  });
+});
+
 describe('ways on other lines', () => {
   it('offers another line besides the best one', () => {
     // X takes 20 minutes, Y the slower road takes 35.

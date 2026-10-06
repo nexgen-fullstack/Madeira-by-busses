@@ -17,7 +17,7 @@ import {
 import { adviseTicket, type Itinerary } from '@madeirabus/engine';
 import { useI18n, type Key } from '../i18n.ts';
 import { isNative, remind } from '../lib/device.ts';
-import { clock, duration, longDate, price } from '../lib/format.ts';
+import { clock, dayAhead, dayMonth, duration, longDate, price } from '../lib/format.ts';
 import { fareRides, isExpress, ridesOf } from '../lib/itinerary.ts';
 import { rideColor } from '../lib/mapContent.ts';
 import { canSimulate } from '../lib/simulator.ts';
@@ -30,6 +30,8 @@ import { routeColor } from '../lib/color.ts';
 interface Props {
   it: Itinerary;
   date: string;
+  /** A later day than asked, as nothing went any more that day: told in red. */
+  ahead?: boolean;
   /** A step was tapped: show that part of the way on the map. */
   onFocusLeg?: (leg: number) => void;
   onBack: () => void;
@@ -37,7 +39,7 @@ interface Props {
   onShare: () => void;
 }
 
-export function ItineraryDetail({ it, date, onFocusLeg, onBack, onStart, onShare }: Props) {
+export function ItineraryDetail({ it, date, ahead, onFocusLeg, onBack, onStart, onShare }: Props) {
   const t = useI18n();
   const { net, planner } = useNetwork();
   const { settings } = useApp();
@@ -122,6 +124,11 @@ export function ItineraryDetail({ it, date, onFocusLeg, onBack, onStart, onShare
           <div className="detail__times">
             {clock(it.depart)} – {clock(it.arrive)}
           </div>
+          {date > now.date && (
+            <div className={`detail__day${ahead ? ' detail__day--ahead' : ''}`}>
+              {t.t('ahead.day', { day: dayAhead(t, date, now.date) })} · {dayMonth(t, date)}
+            </div>
+          )}
           <div className="detail__sub">
             {duration(t, it.duration)} ·{' '}
             {it.rides === 0

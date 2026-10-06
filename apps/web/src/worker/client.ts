@@ -1,5 +1,5 @@
 import type { Itinerary, PlanRequest } from '@madeirabus/engine';
-import type { WorkerRequest, WorkerResponse } from './planner.worker.ts';
+import type { Ahead, WorkerRequest, WorkerResponse } from './planner.worker.ts';
 
 type Pending = { resolve: (v: unknown) => void; reject: (e: Error) => void };
 type WithoutId<T> = T extends unknown ? Omit<T, 'id'> : never;
@@ -40,6 +40,11 @@ export class PlannerClient {
 
   plan(request: PlanRequest): Promise<Itinerary[]> {
     return this.call({ method: 'plan', request });
+  }
+
+  /** When no bus gets there any more on the day asked: the first later day one does. */
+  ahead(request: PlanRequest): Promise<Ahead | null> {
+    return this.call({ method: 'ahead', request });
   }
 
   lastConnection(request: PlanRequest): Promise<Itinerary | null> {

@@ -319,4 +319,10 @@ export const fr: Dict = {
   'lineCard.share': 'Partager',
   'lineCard.open': 'Ouvrir toute la ligne',
   'lineCard.which': 'Quelle ligne ?',
+  'day.tomorrow': 'demain',
+  'day.on': 'lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche',
+  'ahead.from': '{day} à partir de {t}',
+  'ahead.none': "Plus de bus pour y aller aujourd'hui",
+  'ahead.day': 'Trajet {day}',
+  'lineCard.gone': "Plus de passage aujourd'hui",
 };

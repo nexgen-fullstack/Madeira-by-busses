@@ -347,4 +347,10 @@ export const ru: Dict = {
   'lineCard.share': 'Поделиться',
   'lineCard.open': 'Открыть линию полностью',
   'lineCard.which': 'Какая линия?',
+  'day.tomorrow': 'завтра',
+  'day.on': 'в понедельник|во вторник|в среду|в четверг|в пятницу|в субботу|в воскресенье',
+  'ahead.from': '{day} с {t}',
+  'ahead.none': 'Сегодня автобусов туда уже нет',
+  'ahead.day': 'Поездка {day}',
+  'lineCard.gone': 'Сегодня уже не едет',
 };

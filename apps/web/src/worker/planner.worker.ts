@@ -6,10 +6,14 @@ export type WorkerRequest =
   | { id: number; method: 'init'; json: string }
   | { id: number; method: 'walk'; url: string }
   | { id: number; method: 'plan'; request: PlanRequest }
+  | { id: number; method: 'ahead'; request: PlanRequest }
   | { id: number; method: 'last'; request: PlanRequest };
 
+/** The first later day a bus gets there, and its options. */
+export type Ahead = { date: string; itineraries: Itinerary[] };
+
 export type WorkerResponse =
-  | { id: number; ok: true; result: Itinerary[] | Itinerary | null | true }
+  | { id: number; ok: true; result: Itinerary[] | Itinerary | Ahead | null | true }
   | { id: number; ok: false; error: string };
 
 let planner: Planner | undefined;
@@ -56,6 +60,8 @@ self.onmessage = (e: MessageEvent<WorkerRequest>) => {
     void Promise.race([walkReady, timeout]).then(() => {
       try {
         if (msg.method === 'plan') reply({ id: msg.id, ok: true, result: ready.plan(msg.request) });
+        else if (msg.method === 'ahead')
+          reply({ id: msg.id, ok: true, result: ready.planAhead(msg.request) ?? null });
         else reply({ id: msg.id, ok: true, result: ready.lastConnection(msg.request) ?? null });
       } catch (err) {
         reply(failure(msg.id, err));

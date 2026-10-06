@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ChevronRight, Download, Loader2, Share2, X } from 'lucide-react';
-import { fareClassOf, haversine, type LatLon, type Network } from '@madeirabus/engine';
+import { addDays, fareClassOf, haversine, type LatLon, type Network } from '@madeirabus/engine';
 import { useI18n, type I18n } from '../i18n.ts';
 import type { Key } from '../locales/uk.ts';
 import { isNative } from '../lib/device.ts';
 import { canShareFiles, saveFile, shareFile } from '../lib/files.ts';
-import { clock, price } from '../lib/format.ts';
+import { aheadFrom, clock, price } from '../lib/format.ts';
 import { lineSheet } from '../lib/lineSheet.ts';
 import { lineOf } from '../lib/lines.ts';
 import { navigate } from '../lib/router.ts';
@@ -78,6 +78,16 @@ export function LineCard({ pick, onClose }: { pick: LinePick; onClose: () => voi
       .filter((d) => variants.includes(d.route))
       .slice(0, 4);
   }, [net, stop, now.date, now.time, variants]);
+  // None more today: the first bus of the next day it runs from here (within a week).
+  const later = useMemo(() => {
+    if (stop === undefined || next.length > 0) return undefined;
+    for (let d = 1; d <= 7; d++) {
+      const date = addDays(now.date, d);
+      const first = net.departures([stop], date, 0, 1000).find((x) => variants.includes(x.route));
+      if (first) return { date, time: first.time };
+    }
+    return undefined;
+  }, [net, stop, next.length, now.date, variants]);
 
   // The whole timetable as a picture, drawn when the card opens.
   const [sheet, setSheet] = useState<{
@@ -158,6 +168,10 @@ export function LineCard({ pick, onClose }: { pick: LinePick; onClose: () => voi
           <span className="muted">{t.t('lineCard.next', { stop: net.stops[stop]!.name })}</span>{' '}
           {next.length > 0 ? (
             <span className="strong">{next.map((d) => clock(d.time)).join(' · ')}</span>
+          ) : later ? (
+            <span className="line-card__ahead">
+              {t.t('lineCard.gone')} · {aheadFrom(t, later.date, now.date, later.time, false)}
+            </span>
           ) : (
             <span>{t.t('lineCard.none')}</span>
           )}

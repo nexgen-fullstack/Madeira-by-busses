@@ -1,15 +1,24 @@
-import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowUpDown, ChevronRight, History, Loader2, MapPinned, Sparkles } from 'lucide-react';
-import { madeiraNow, normalise, type Itinerary } from '@madeirabus/engine';
+import { Fragment, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  ArrowUpDown,
+  CalendarClock,
+  ChevronRight,
+  History,
+  Loader2,
+  MapPinned,
+  Sparkles,
+} from 'lucide-react';
+import { madeiraNow, normalise } from '@madeirabus/engine';
 import { ItineraryCard } from '../components/ItineraryCard.tsx';
 import { ItineraryDetail } from '../components/ItineraryDetail.tsx';
 import { MapContentContext, useMapContent } from '../components/mapContext.tsx';
 import { PlaceSearch, type PlaceValue } from '../components/PlaceSearch.tsx';
 import { ScenicCard } from '../components/ScenicCard.tsx';
 import { useI18n } from '../i18n.ts';
-import { parseTimeInput, toTimeInput } from '../lib/format.ts';
+import { dayGroups, findOptions, firstDeparture, type Found } from '../lib/ahead.ts';
+import { aheadFrom, capitalise, dayAhead, parseTimeInput, toTimeInput } from '../lib/format.ts';
 import { useGeolocation } from '../lib/geolocation.ts';
-import { decodePlace, encodePlace, optionTags } from '../lib/itinerary.ts';
+import { decodePlace, encodePlace, optionTags, type OptionTag } from '../lib/itinerary.ts';
 import {
   EMPTY_CONTENT,
   itineraryContent,
@@ -55,7 +64,9 @@ export function PlanView({ route }: { route: Route }) {
   const dateParam = q.get('d');
   const selected = q.get('i') !== null ? Number(q.get('i')) : undefined;
 
-  const [results, setResults] = useState<Itinerary[] | undefined>();
+  // The options found, each with its day: today's, and tomorrow's when nothing goes any more.
+  const [found, setFound] = useState<Found | undefined>();
+  const results = found?.options;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
   const [toast, setToast] = useState<string | undefined>();
@@ -122,27 +133,31 @@ export function PlanView({ route }: { route: Route }) {
   const searchKey = baseKey && `${baseKey}|${refresh}`;
   useEffect(() => {
     if (!from || !to) {
-      setResults(undefined);
+      setFound(undefined);
       return;
     }
     let cancelled = false;
     setLoading(true);
     setError(undefined);
-    planner
-      .plan({
+    findOptions(
+      planner,
+      {
         from,
         to,
         date,
         time: timeParam ? parseTimeInput(timeParam) : madeiraNow().time,
         arriveBy,
         options: planOptions(settings),
-      })
+      },
+      // No bus any more today: the first day one goes. Another day chosen is shown as it is.
+      date === madeiraNow().date,
+    )
       .then((r) => {
         if (cancelled) return;
-        setResults(r);
+        setFound(r);
         // Remember named trips ("my location" changes, so it is left out).
         const named = (p: PlaceValue) => p.kind === 'stop' || p.name !== myLocation;
-        if (r.length > 0 && named(from) && named(to)) {
+        if (r.options.length > 0 && named(from) && named(to)) {
           addRecent({ from: encode(from), to: encode(to), fromName: from.name, toName: to.name });
         }
       })
@@ -161,6 +176,7 @@ export function PlanView({ route }: { route: Route }) {
     date === now.date &&
     results !== undefined &&
     results.length > 0 &&
+    found?.days[0] === now.date &&
     results[0]!.depart < now.time - 60;
   useEffect(() => {
     if (firstGone && selected === undefined) setRefresh((r) => r + 1);
@@ -174,11 +190,19 @@ export function PlanView({ route }: { route: Route }) {
   }, [results, loading, baseKey]);
 
   const selectedIt = selected !== undefined ? results?.[selected] : undefined;
-  // The fastest, the cheapest and the one with least walking, told on their cards.
-  const tags = useMemo(
-    () => optionTags(results ?? [], settings.payment, arriveBy),
-    [results, settings.payment, arriveBy],
-  );
+  // The day of the option chosen: a later one when nothing went any more on the day asked.
+  const selectedDay = (selected !== undefined && found?.days[selected]) || date;
+  // The options in runs of one day; each run has its best, fastest, cheapest…
+  const groups = useMemo(() => (found ? dayGroups(found) : []), [found]);
+  const tags = useMemo(() => {
+    const all = new Map<number, OptionTag[]>();
+    for (const g of groups) {
+      for (const [k, v] of optionTags(g.options, settings.payment, arriveBy)) {
+        all.set(g.start + k, v);
+      }
+    }
+    return all;
+  }, [groups, settings.payment, arriveBy]);
   // A step of the selected route tapped: the map shows it close up, as a maps app does.
   const [focusLeg, setFocusLeg] = useState<number | undefined>();
   useEffect(() => setFocusLeg(undefined), [selectedIt]);
@@ -220,13 +244,14 @@ export function PlanView({ route }: { route: Route }) {
     return (
       <ItineraryDetail
         it={selectedIt}
-        date={date}
+        date={selectedDay}
+        ahead={selectedDay !== date}
         onFocusLeg={setFocusLeg}
         onBack={() => setParams({ i: undefined })}
         onStart={(simulate) => {
           setTrip({
             itinerary: selectedIt,
-            date,
+            date: selectedDay,
             simulate,
             generatedAt: net.bundle.generatedAt,
           });
@@ -345,16 +370,35 @@ export function PlanView({ route }: { route: Route }) {
 
       {results && results.length > 0 && (
         <div className="results" aria-live="polite" aria-busy={loading} ref={resultsRef}>
-          {results.map((it, i) => (
-            <ItineraryCard
-              key={`${it.key}@${it.depart}`}
-              it={it}
-              best={i === 0 && results.length > 1}
-              tags={tags.get(i)}
-              now={date === now.date ? now.time : undefined}
-              onSelect={() => setParams({ i: String(i) })}
-            />
-          ))}
+          {groups.map((g) => {
+            // Nothing goes there any more on the day asked: the first day one does, in red.
+            const later = g.day !== date;
+            const label = later ? capitalise(t, dayAhead(t, g.day, now.date)) : undefined;
+            return (
+              <Fragment key={g.day}>
+                {later && (
+                  <div className="banner banner--ahead" role="status">
+                    <CalendarClock size={18} aria-hidden />
+                    <div>
+                      <strong>{t.t('ahead.none')}</strong>
+                      {aheadFrom(t, g.day, now.date, firstDeparture(g.options))}
+                    </div>
+                  </div>
+                )}
+                {g.options.map((it, k) => (
+                  <ItineraryCard
+                    key={`${g.day}|${it.key}@${it.depart}`}
+                    it={it}
+                    best={k === 0 && g.options.length > 1}
+                    tags={tags.get(g.start + k)}
+                    day={label}
+                    now={g.day === now.date ? now.time : undefined}
+                    onSelect={() => setParams({ i: String(g.start + k) })}
+                  />
+                ))}
+              </Fragment>
+            );
+          })}
         </div>
       )}
 

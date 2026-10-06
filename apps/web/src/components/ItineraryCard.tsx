@@ -1,5 +1,6 @@
 import {
   AlertTriangle,
+  CalendarClock,
   ChevronRight,
   Coins,
   Footprints,
@@ -23,12 +24,14 @@ interface Props {
   tags?: OptionTag[];
   /** Seconds after midnight now, when planning for today. */
   now?: number;
+  /** A later day than asked ("Tomorrow"): told in red. */
+  day?: string;
   onSelect: () => void;
 }
 
 const TAG_ICONS = { fastest: Timer, cheapest: Coins, lessWalking: Footprints } as const;
 
-export function ItineraryCard({ it, best, tags = [], now, onSelect }: Props) {
+export function ItineraryCard({ it, best, tags = [], now, day, onSelect }: Props) {
   const t = useI18n();
   const { net } = useNetwork();
   const { settings } = useApp();
@@ -37,9 +40,18 @@ export function ItineraryCard({ it, best, tags = [], now, onSelect }: Props) {
   const express = ridesExpress(net, it);
 
   return (
-    <button type="button" className={`it-card${best ? ' it-card--best' : ''}`} onClick={onSelect}>
-      {(best || it.alternative || express || tags.length > 0) && (
+    <button
+      type="button"
+      className={`it-card${best ? ' it-card--best' : ''}${day ? ' it-card--ahead' : ''}`}
+      onClick={onSelect}
+    >
+      {(best || day || it.alternative || express || tags.length > 0) && (
         <div className="it-card__tags">
+          {day && (
+            <span className="it-card__tag it-card__tag--ahead">
+              <CalendarClock size={12} aria-hidden /> {day}
+            </span>
+          )}
           {best && (
             <span className="it-card__tag it-card__tag--best">
               <Star size={12} aria-hidden /> {t.t('it.best')}
