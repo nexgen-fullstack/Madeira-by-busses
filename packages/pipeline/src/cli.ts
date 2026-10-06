@@ -30,6 +30,7 @@ import { buildReportMarkdown, diffBundles, diffMarkdown } from './report.ts';
 import { buildWalkGraph, type OsmWay } from './walk.ts';
 import { driveKind, reverseDriveKind } from './drive.ts';
 import { RoadRouter } from './shapes.ts';
+import { checkShapes, offRoadMarkdown } from './checkShapes.ts';
 import { AGENCIES, buildTimetableFeed } from './timetables/build.ts';
 import { loadLocalities, loadSiga, loadTimetables } from './timetables/load.ts';
 import { timetableReportMarkdown } from './timetables/report.ts';
@@ -45,7 +46,7 @@ const USAGE = `madeirabus-pipeline <command>
         [--missing <op1,op2>]        operators not covered yet (shown in the app)
         [--places <osm.json>]        searchable places from an Overpass answer (skipped if absent)
         [--walk <walk.bin>]          the walking network, copied next to the bundle (skipped if absent)
-        [--drive <drive.bin>]        the roads: lines without shapes are drawn along them
+        [--drive <drive.bin>]        the roads: every line is drawn along them, in its lane
         [--timetables <dir> --siga <dir>]  add CAM and SIGA Rodoeste from their printed
                                      timetables and the SIGA website's routes
         [--timetable-days <n>]       how far ahead their calendar goes (default 180)
@@ -53,6 +54,8 @@ const USAGE = `madeirabus-pipeline <command>
   diff <old.json> <new.json>              summarise timetable changes
   walk  --osm <overpass.json> --out <walk.bin>   the walking network from OpenStreetMap ways
   drive --osm <overpass.json> --out <drive.bin>  the roads buses drive on, from OpenStreetMap ways
+  check-shapes --bundle <bundle.json> --drive <drive.bin> [--report <md>]
+                                          every stretch of a line off the roads
 `;
 
 interface Args {
@@ -200,7 +203,8 @@ async function build(args: Args) {
       issues: timetables.issues,
     });
   }
-  // The roads, to draw lines without shapes (CAM, SIGA Rodoeste) the way their buses drive.
+  // The roads: lines without shapes (CAM, SIGA Rodoeste) drawn the way their buses drive,
+  // drawn ones (Horários do Funchal) put on the roads they follow, every one in its lane.
   const drivePath = flag(args, 'drive');
   let router: RoadRouter | undefined;
   if (drivePath && existsSync(drivePath)) {
@@ -239,6 +243,7 @@ async function build(args: Args) {
         .filter(Boolean),
       shareStops: timetables !== undefined,
       routeShape: router ? (points) => router.shape(points) : undefined,
+      matchShape: router ? (shape) => router.match(shape) : undefined,
       partialOperators: timetables
         ? (Object.entries(timetables.built.missing) as [keyof typeof AGENCIES, string[]][])
             .filter(([, lines]) => lines.length > 0)
@@ -249,7 +254,8 @@ async function build(args: Args) {
   if (router) {
     const s = router.stats;
     console.log(
-      `Lines along the roads: ${s.patterns} stop sequences, ${s.routed} sections routed, ${s.straight} left straight`,
+      `Lines along the roads: ${s.patterns} stop sequences, ${s.routed} sections routed, ${s.straight} left straight; ` +
+        `${s.matched} drawn lines put on the roads, ${s.kept} left as drawn`,
     );
   }
   if (bundle.projected) {
@@ -266,6 +272,14 @@ async function build(args: Args) {
     console.log(`! No places file at ${placesPath}; searching stops only`);
   }
   if (!bundle.places && bundle.demo) bundle.places = DEMO_PLACES;
+  // Every line checked against the roads: where one still crosses grass or houses.
+  const offRoad = router ? checkShapes(bundle, roadDistance(router)) : undefined;
+  if (offRoad) {
+    const metres = Math.round(offRoad.reduce((m, s) => m + s.end - s.start, 0));
+    console.log(
+      `Lines off the roads: ${offRoad.length} stretches further than 10 m from a road, ${metres} m in all`,
+    );
+  }
   const bundleIssues = validateBundle(bundle, today);
   printIssues('Network', bundleIssues);
 
@@ -290,17 +304,20 @@ async function build(args: Args) {
       bundleIssues,
       json.length,
     );
+    const lines = new Set(bundle.patterns.map((p) => p.shape)).size;
+    const roads = offRoad ? `\n${offRoadMarkdown(offRoad, lines)}` : '';
     await writeText(
       reportPath,
       timetables
         ? md +
+            roads +
             timetableReportMarkdown(
               timetables.built.lines,
               timetables.built.missing,
               timetables.built.observed,
               timetables.built.planner,
             )
-        : md,
+        : md + roads,
     );
     console.log(`Report written to ${reportPath}`);
   }
@@ -387,6 +404,33 @@ async function drive(args: Args) {
   console.log(`Written to ${out}: ${kb(bytes.length)} (${kb(gzipSync(bytes).length)} gzipped)`);
 }
 
+/** How far a point is from the nearest road, looking no further than 60 m (by the metre, remembered). */
+function roadDistance(router: RoadRouter) {
+  const known = new Map<string, number>();
+  return (p: { lat: number; lon: number }) => {
+    const key = `${Math.round(p.lat * 1e5)},${Math.round(p.lon * 1e5)}`;
+    let d = known.get(key);
+    if (d === undefined) {
+      d = router.nearest(p, 60)?.offset ?? Number.POSITIVE_INFINITY;
+      known.set(key, d);
+    }
+    return d;
+  };
+}
+
+async function checkShapesCommand(args: Args) {
+  const bundlePath = flag(args, 'bundle');
+  const drivePath = flag(args, 'drive');
+  if (!bundlePath || !drivePath) throw new Error('check-shapes needs --bundle and --drive');
+  const bundle = JSON.parse(await readFile(bundlePath, 'utf8')) as NetworkBundle;
+  const router = new RoadRouter(decodeWalkGraphData(await readFile(drivePath)));
+  const found = checkShapes(bundle, roadDistance(router));
+  const md = offRoadMarkdown(found, new Set(bundle.patterns.map((p) => p.shape)).size);
+  const reportPath = flag(args, 'report');
+  if (reportPath) await writeText(reportPath, md);
+  process.stdout.write(`${md}\n`);
+}
+
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   const command = args._[0];
@@ -397,6 +441,7 @@ async function main() {
     diff,
     walk,
     drive,
+    'check-shapes': checkShapesCommand,
   };
   const run = command ? commands[command] : undefined;
   if (!run) {

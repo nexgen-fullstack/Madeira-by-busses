@@ -3,6 +3,7 @@ export * from './csv.ts';
 export * from './fares.ts';
 export * from './geo.ts';
 export * from './gtfs.ts';
+export * from './lanes.ts';
 export * from './municipality.ts';
 export * from './network.ts';
 export * from './raptor.ts';

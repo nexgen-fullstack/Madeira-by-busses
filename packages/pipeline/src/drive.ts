@@ -5,13 +5,16 @@
  * each line along them from stop to stop, so the map draws the road the bus
  * takes instead of straight lines between the stops.
  *
- * The file has the format of walk.bin; an edge's kind is its class × 4 plus
- * its direction: 0 both ways, 1 only from its first node to its last, 2 only
- * the other way.
+ * The file has the format of walk.bin; an edge's kind packs its direction
+ * (0 both ways, 1 only from its first node to its last, 2 only the other way),
+ * its class and how far right of the road's middle a bus keeps, in decimetres:
+ * direction + class × 4 + side × 32.
  */
 
 /** Road classes, fastest first: motorway, primary, secondary, tertiary, minor, service, busway. */
 export const ROAD_SPEED_KMH = [75, 50, 42, 35, 28, 14, 40];
+/** A lane of each class of road, when OpenStreetMap does not give the road's width (m). */
+export const LANE_WIDTH_M = [3.5, 3.3, 3.2, 3.0, 2.8, 2.6, 3.2];
 
 const CLASS: Record<string, number> = {
   motorway: 0,
@@ -32,6 +35,9 @@ const CLASS: Record<string, number> = {
   busway: 6,
   bus_guideway: 6,
 };
+/** The class of a road for cars (an index of ROAD_SPEED_KMH), or undefined for other ways. */
+export const highwayClass = (highway: string | undefined) => CLASS[highway ?? ''];
+
 /** Service roads a bus does not take. */
 const PRIVATE_SERVICE = new Set(['parking_aisle', 'driveway', 'drive-through', 'emergency_access']);
 const NO_ACCESS = new Set(['no', 'private', 'military', 'agricultural', 'forestry', 'delivery']);
@@ -41,7 +47,59 @@ export const BOTH_WAYS = 0;
 export const FORWARD = 1;
 export const BACKWARD = 2;
 
-/** How a bus may take a way (class × 4 + direction), or undefined where it may not. */
+/** Which way a road may be driven (BOTH_WAYS, FORWARD or BACKWARD). */
+export const roadDirection = (kind: number) => kind & 3;
+/** The class of a road (an index of ROAD_SPEED_KMH). */
+export const roadClass = (kind: number) => (kind >> 2) & 7;
+/** How far right of the road's middle a bus drives, in the centre of its lane (m). */
+export const roadSide = (kind: number) => (kind >> 5) / 10;
+/** The furthest a lane is kept from the middle of a road (m): what fits in the file's kind. */
+const MAX_SIDE = 6.3;
+
+/** A number of metres from a tag like "5", "5.5 m" or "5,5", if it is one. */
+function metres(value: string | undefined): number | undefined {
+  const m = /^\s*(\d+(?:[.,]\d+)?)\s*m?\s*$/.exec(value ?? '');
+  return m ? Number(m[1]!.replace(',', '.')) : undefined;
+}
+
+/** A road's carriageway: how many lanes, each how wide (m). */
+export function carriageway(
+  tags: Record<string, string>,
+  cls: number,
+  oneWay: boolean,
+): { lanes: number; lane: number } {
+  const lanesTag = Number.parseInt(tags.lanes ?? '', 10);
+  const width = metres(tags.width);
+  const usableWidth = width !== undefined && width >= 2 && width <= 30 ? width : undefined;
+  const typical = LANE_WIDTH_M[cls] ?? 3;
+  let lanes: number;
+  if (lanesTag >= 1 && lanesTag <= 8) lanes = lanesTag;
+  else if (usableWidth !== undefined)
+    lanes = Math.max(1, Math.min(4, Math.round(usableWidth / typical)));
+  // Untagged: a lane each way on a two-way road (one on a service road), one on a one-way street.
+  else lanes = oneWay || cls === 5 ? 1 : 2;
+  const lane =
+    usableWidth !== undefined ? Math.max(2.2, Math.min(4, usableWidth / lanes)) : typical;
+  return { lanes, lane };
+}
+
+/**
+ * How far right of a road's middle (its line in OpenStreetMap) a bus keeps, in
+ * the centre of the rightmost lane (traffic keeps right on Madeira): half a
+ * lane on a two-way road with a lane each way, none on a one-way street of one
+ * lane. An expressway's carriageways are mapped apart already, one way each,
+ * so a bus on one is not shifted again. A narrow two-way road of a single lane
+ * is shared, a bus a little to its right.
+ */
+export function laneSide(tags: Record<string, string>, cls: number, dir: number): number {
+  const oneWay = dir !== BOTH_WAYS;
+  if (oneWay && cls === 0) return 0;
+  const { lanes, lane } = carriageway(tags, cls, oneWay);
+  const side = !oneWay && lanes === 1 ? lane / 4 : ((lanes - 1) * lane) / 2;
+  return Math.min(MAX_SIDE, Math.round(side * 10) / 10);
+}
+
+/** How a bus may take a way (direction, class and side packed), or undefined where it may not. */
 export function driveKind(tags: Record<string, string> = {}): number | undefined {
   const cls = CLASS[tags.highway ?? ''];
   if (cls === undefined || tags.area === 'yes') return undefined;
@@ -68,11 +126,12 @@ export function driveKind(tags: Record<string, string> = {}): number | undefined
   ) {
     dir = FORWARD;
   }
-  return cls * 4 + dir;
+  const side = Math.round(laneSide(tags, cls, dir) * 10);
+  return dir + cls * 4 + side * 32;
 }
 
 /** The kind of a way taken the other way round. */
 export function reverseDriveKind(kind: number): number {
-  const dir = kind % 4;
+  const dir = roadDirection(kind);
   return kind - dir + (dir === FORWARD ? BACKWARD : dir === BACKWARD ? FORWARD : dir);
 }

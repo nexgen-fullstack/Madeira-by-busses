@@ -1,6 +1,7 @@
 import type { FareTable } from './fares.ts';
 import { encodePolyline, haversine, type LatLon } from './geo.ts';
 import type { GtfsAgency, GtfsFeed, GtfsRoute, GtfsStop, GtfsStopTime } from './gtfs.ts';
+import { encodeSides } from './lanes.ts';
 import { isMunicipalityCode, municipalityFromIne, nearestMunicipality } from './municipality.ts';
 import { addDays, gtfsDateToIso, madeiraHolidays, weekday } from './time.ts';
 
@@ -34,6 +35,11 @@ export interface NetworkBundle {
   services: BService[];
   /** Google-encoded polylines. */
   shapes: string[];
+  /**
+   * For each shape, how far right of the road's middle each of its steps runs
+   * (see `encodeSides`); empty or missing where it is not known.
+   */
+  shapeSides?: string[];
   patterns: BPattern[];
   fares: FareTable;
   stats: { stops: number; routes: number; patterns: number; trips: number };
@@ -158,7 +164,15 @@ export interface BuildOptions {
    * The way between a trip's stops when its feed has no shape (shapes.txt),
    * e.g. along the roads; straight lines between the stops when it gives none.
    */
-  routeShape?: (stops: readonly LatLon[]) => LatLon[] | undefined;
+  routeShape?: (stops: readonly LatLon[]) => SidedShape | undefined;
+  /** A feed's own shape put on the roads it follows; undefined to keep it as it is. */
+  matchShape?: (shape: readonly LatLon[]) => SidedShape | undefined;
+}
+
+/** A shape with, for each step, how far right of the road's middle it runs (m). */
+export interface SidedShape {
+  points: LatLon[];
+  sides: number[];
 }
 
 /** How far apart two feeds' stops with one id may be and still be the same stop (m). */
@@ -193,6 +207,7 @@ export function buildBundle(
   const routes: BRoute[] = [];
   const services: BService[] = [];
   const shapes: string[] = [];
+  const shapeSides: string[] = [];
   const patterns: BPattern[] = [];
   const sources: BundleSource[] = [];
 
@@ -340,7 +355,9 @@ export function buildBundle(
         if (i === undefined) {
           const pts = shapePoints.get(shapeId)!.sort((a, b) => a.sequence - b.sequence);
           i = shapes.length;
-          shapes.push(encodePolyline(pts));
+          const onRoads = options.matchShape?.(pts);
+          shapes.push(encodePolyline(onRoads?.points ?? pts));
+          shapeSides.push(onRoads ? encodeSides(onRoads.sides) : '');
           shapeIndex.set(shapeId, i);
         }
         return i;
@@ -351,7 +368,9 @@ export function buildBundle(
       if (made === undefined) {
         const points = stopSeq.map((s) => stops[s]!);
         made = shapes.length;
-        shapes.push(encodePolyline(options.routeShape?.(points) ?? points));
+        const routed = options.routeShape?.(points);
+        shapes.push(encodePolyline(routed?.points ?? points));
+        shapeSides.push(routed ? encodeSides(routed.sides) : '');
         madeShapes.set(key, made);
       }
       return made;
@@ -534,6 +553,7 @@ export function buildBundle(
     routes,
     services,
     shapes,
+    ...(shapeSides.some(Boolean) && { shapeSides }),
     patterns,
     fares: options.fares,
     stats: {
