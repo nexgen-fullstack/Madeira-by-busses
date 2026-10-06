@@ -39,6 +39,7 @@ import { placesFromOsm, type OsmElement } from './places.ts';
 import { buildReportMarkdown, diffBundles, diffMarkdown } from './report.ts';
 import { addressesFromOsm } from './addresses.ts';
 import { buildWalkGraph, type OsmWay } from './walk.ts';
+import { addScenery, loadTerrain, SegmentIndex, tilesFor, type Scenery } from './terrain.ts';
 import { driveKind, reverseDriveKind } from './drive.ts';
 import { RoadRouter } from './shapes.ts';
 import { checkShapes, offRoadMarkdown } from './checkShapes.ts';
@@ -69,6 +70,11 @@ const USAGE = `madeirabus-pipeline <command>
   addresses --osm <overpass.json> --places <osm.json> --out <addresses.json>
                                           streets and house numbers to search for
   drive --osm <overpass.json> --out <drive.bin>  the roads buses drive on, from OpenStreetMap ways
+  scenery --walk <walk.bin> --tiles <dir> [--coast <overpass.json>] [--bridges <overpass.json>]
+        [--places <osm.json>] --out <walk.bin>
+                                          how much each walkable way climbs (free elevation tiles,
+                                          fetched into <dir>) and which have a view (the sea, a
+                                          promenade, a viewpoint)
   areas --bounds <overpass.json> --anchors <overpass.json> --out <areas.json>
                                           bounds of towns, villages and parishes; churches, town halls, squares
   check-shapes --bundle <bundle.json> --drive <drive.bin> [--report <md>]
@@ -470,6 +476,66 @@ async function walk(args: Args) {
   console.log(`Written to ${out}: ${kb(bytes.length)} (${kb(gzipSync(bytes).length)} gzipped)`);
 }
 
+async function scenery(args: Args) {
+  const input = flag(args, 'walk');
+  const tiles = flag(args, 'tiles');
+  const out = flag(args, 'out');
+  if (!input || !tiles || !out) throw new Error('scenery needs --walk, --tiles and --out');
+  const graph = decodeWalkGraphData(await readFile(input));
+  type Geo = {
+    type?: string;
+    tags?: Record<string, string>;
+    geometry?: { lat: number; lon: number }[];
+  };
+  const ways = async (path?: string) =>
+    path && existsSync(path)
+      ? ((JSON.parse(await readFile(path, 'utf8')) as { elements?: Geo[] }).elements ?? []).filter(
+          (e) => e.type === 'way' && e.geometry && e.geometry.length > 1,
+        )
+      : [];
+  // Bridges and tunnels: the way runs level between their ends, not into the ravine.
+  const bridges = await ways(flag(args, 'bridges'));
+  const level = bridges.length > 0 ? new SegmentIndex(bridges.map((w) => w.geometry!)) : undefined;
+  const coast = await ways(flag(args, 'coast'));
+  const placesPath = flag(args, 'places');
+  const viewpoints =
+    placesPath && existsSync(placesPath)
+      ? placesFromOsm(JSON.parse(await readFile(placesPath, 'utf8'))).filter(
+          (p) => p.kind === 'viewpoint',
+        )
+      : [];
+  const view: Scenery | undefined =
+    coast.length > 0
+      ? {
+          coast: new SegmentIndex(
+            coast.filter((w) => w.tags?.natural === 'coastline').map((w) => w.geometry!),
+          ),
+          promenades: new SegmentIndex(
+            coast.filter((w) => w.tags?.natural !== 'coastline').map((w) => w.geometry!),
+          ),
+          viewpoints: new SegmentIndex(viewpoints.map((v) => [v, v])),
+        }
+      : undefined;
+  const all = [...graph.nodes, ...graph.edges.flatMap((e) => e.points)];
+  const { terrain, fetched, bytes } = await loadTerrain(tiles, tilesFor(all));
+  if (fetched > 0) {
+    console.log(
+      `Elevation tiles: ${fetched} fetched (${(bytes / 1e6).toFixed(1)} MB) into ${tiles}`,
+    );
+  }
+  const { climbing, scenic } = addScenery(graph, terrain, view, level && ((p) => level.near(p, 6)));
+  const encoded = encodeWalkGraph(graph);
+  WalkGraph.decode(encoded);
+  await mkdir(dirname(out), { recursive: true });
+  await writeFile(out, encoded);
+  const climbs = graph.edges.reduce((m, e) => m + (e.up ?? 0), 0);
+  console.log(
+    `Walking network: ${climbing} of ${graph.edges.length} ways climb (${Math.round(climbs / 1000)} km up in all), ` +
+      `${scenic} with a view (${bridges.length} bridges and tunnels kept level, ${viewpoints.length} viewpoints); ` +
+      `${Math.round(encoded.length / 1024)} KiB`,
+  );
+}
+
 async function drive(args: Args) {
   const input = flag(args, 'osm');
   const out = flag(args, 'out');
@@ -533,6 +599,7 @@ async function main() {
     validate,
     diff,
     walk,
+    scenery,
     addresses,
     drive,
     areas: areasCommand,

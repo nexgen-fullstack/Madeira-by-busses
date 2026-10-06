@@ -2,7 +2,7 @@ import { quoteFare, type FareQuote, type FareRide } from './fares.ts';
 import { haversine, walkSeconds, type LatLon } from './geo.ts';
 import type { DayTimetable, Network } from './network.ts';
 import { addDays } from './time.ts';
-import type { WalkGraph, WalkHit } from './walk.ts';
+import type { WalkDistance, WalkGraph, WalkHit } from './walk.ts';
 
 /**
  * Journey planner based on RAPTOR (Delling, Pajor, Werneck — "Round-Based
@@ -59,6 +59,13 @@ export interface PlanOptions {
   fareWeight: number;
   /** Each second on foot counts this much extra when ranking (walking is more tiring). */
   walkReluctance: number;
+  /**
+   * Each second of the walk to the first bus and from the last one beyond five minutes
+   * counts this much more again: a bus nearer the door is worth a change.
+   */
+  endWalkReluctance: number;
+  /** What each metre climbed on foot adds when ranking (s): a climb is worse than the level. */
+  climbReluctance: number;
 }
 
 export const DEFAULT_PLAN_OPTIONS: PlanOptions = {
@@ -76,6 +83,8 @@ export const DEFAULT_PLAN_OPTIONS: PlanOptions = {
   longWalk: 3000,
   fareWeight: 240,
   walkReluctance: 0.5,
+  endWalkReluctance: 1.5,
+  climbReluctance: 6,
 };
 
 /** What the best option should be best at, as in a maps app's route options. */
@@ -86,8 +95,8 @@ export const ROUTE_PREFERENCES: Record<RoutePreference, Partial<PlanOptions>> = 
   best: {},
   // Half an hour for each change of bus, and a long walk is no way round one.
   fewerTransfers: { transferCost: 30 * 60, walkReluctance: 1 },
-  // Each minute on foot counts four, and no long walks to buses farther off.
-  lessWalking: { walkReluctance: 3, longWalk: 0 },
+  // Each minute on foot counts four, no long walks to buses farther off, climbs count double.
+  lessWalking: { walkReluctance: 3, longWalk: 0, endWalkReluctance: 3, climbReluctance: 12 },
 };
 
 export interface PlanRequest {
@@ -123,6 +132,11 @@ export interface WalkLeg {
   path?: LatLon[];
   /** For each step of `path`, how far the pavement is from the road's middle (m; 0 off the roads). */
   kerb?: number[];
+  /** Metres climbed on the way and gone down, where the heights are known. */
+  up?: number;
+  down?: number;
+  /** Metres of it along the sea, on a promenade or past a viewpoint. */
+  scenic?: number;
 }
 
 export interface RideStop {
@@ -178,6 +192,9 @@ interface Access {
   stop: number;
   seconds: number;
   distance: number;
+  /** Metres climbed walking it (to the stop, or from it to the destination), and down. */
+  up?: number;
+  down?: number;
 }
 
 const INF = Number.POSITIVE_INFINITY;
@@ -195,10 +212,15 @@ const SOONER = 5 * 60;
 const WALK_ALWAYS = 2000;
 /** …and up to this far when no bus gets there sooner (m). */
 const WALK_FAR = 8000;
+/**
+ * A walk to or from the buses up to this is a short one (s); a longer one sends the
+ * planner looking for a bus nearer the door (and counts more, see `endWalkReluctance`).
+ */
+export const SHORT_END_WALK = 5 * 60;
 /** A walk to or from the buses long enough to look for a bus instead (s). */
-const LONG_ACCESS = 10 * 60;
+const LONG_ACCESS = SHORT_END_WALK;
 /** A walk to or from the buses short enough not to look further (s). */
-const SHORT_ACCESS = 6 * 60;
+const SHORT_ACCESS = SHORT_END_WALK;
 /** How much less on foot a way with another bus must ask for to be offered (s). */
 const LESS_WALK = 5 * 60;
 /** Stops this far apart (m, as the crow flies) may be a change of bus on foot. */
@@ -303,10 +325,13 @@ export class Planner {
     let best = main[0];
     let others = [...main.slice(1), ...alternatives];
     // A way on other lines may be better still (the bus a minute after the dearer Aerobus):
-    // then it is the best, and the one found first is the way on other lines.
-    const better = best && bestOf([best, ...alternatives], ctx.opts);
+    // then it is the best, and the one found first is the way on other lines; or the way
+    // with a bus nearer the door instead of a long walk.
+    const nearer = main.filter((it) => it.lessWalking);
+    const better = best && bestOf([best, ...nearer, ...alternatives], ctx.opts);
     if (best && better && better !== best) {
-      others = [...others.filter((it) => it !== better), { ...best, alternative: true }];
+      const old = better.alternative ? { ...best, alternative: true } : best;
+      others = [...others.filter((it) => it !== better), old];
       best = { ...better };
       delete best.alternative;
     }
@@ -389,7 +414,7 @@ export class Planner {
     const { opts } = ctx;
     if (opts.longWalk <= opts.maxAccessWalk * STREET_ALLOWANCE) return [];
     const access = this.longAccess(request.from, opts, ctx.access);
-    const egress = this.longAccess(request.to, opts, [...ctx.egress.values()]);
+    const egress = this.longAccess(request.to, opts, [...ctx.egress.values()], true);
     if (!access && !egress) return [];
     const day = this.net.timetable(request.date);
     const egressMap = egress ? new Map(egress.map((e) => [e.stop, e])) : ctx.egress;
@@ -403,13 +428,19 @@ export class Planner {
     const byBus = found.filter((it) => it.rides > 0);
     const bar = Math.min(...byBus.map((it) => itineraryCost(it, opts)));
     const best = byBus.find((it) => itineraryCost(it, opts) === bar);
+    const fresh = [...far.values()].filter((it) => it.rides > 0 && !known.has(it.key));
     // Better in all, or there sooner for those who do not mind the walk.
-    return [...far.values()].filter(
-      (it) =>
-        it.rides > 0 &&
-        !known.has(it.key) &&
-        (itineraryCost(it, opts) < bar || !best || it.arrive <= best.arrive - SOONER),
+    const offered = fresh.filter(
+      (it) => itineraryCost(it, opts) < bar || !best || it.arrive <= best.arrive - SOONER,
     );
+    // And the cheapest way, long walk and all, when no other is as cheap and it gets there
+    // not much later: the one bus and the walk down, besides two buses to the door.
+    const fare = Math.min(...byBus.map(fareOf));
+    const latest = best ? best.arrive + Math.max(45 * 60, best.duration * 0.5) : Infinity;
+    const thrifty = fresh
+      .filter((it) => !offered.includes(it) && fareOf(it) < fare && it.arrive <= latest)
+      .sort((a, b) => itineraryCost(a, opts) - itineraryCost(b, opts))[0];
+    return thrifty ? [...offered, thrifty] : offered;
   }
 
   /**
@@ -420,11 +451,12 @@ export class Planner {
     place: Place,
     opts: PlanOptions,
     usual: readonly Access[],
+    back = false,
   ): Access[] | undefined {
     // A stop chosen with no other stops around it: that stop and no other.
     if (place.stops && place.stops.length > 0 && opts.stopWalk <= 0) return undefined;
     const walked =
-      this.walkAccess(place, opts, opts.longWalk) ??
+      this.walkAccess(place, opts, opts.longWalk, back) ??
       this.net.nearbyStops(place, opts.longWalk / STREET_ALLOWANCE).map((h) => ({
         stop: h.stop,
         distance: Math.round(h.distance),
@@ -583,7 +615,14 @@ export class Planner {
       const route = walk.route(leg.from, leg.to);
       // A walk that the streets make far longer than planned is better left straight.
       if (!route || route.length > leg.distance * 3 + 300) return leg;
-      return { ...leg, path: route.path, kerb: route.kerb, distance: Math.round(route.length) };
+      return {
+        ...leg,
+        path: route.path,
+        kerb: route.kerb,
+        distance: Math.round(route.length),
+        ...climbs(route),
+        ...(route.scenic > 0 ? { scenic: Math.round(route.scenic) } : {}),
+      };
     });
     const walkDistance = legs.reduce((d, l) => d + (l.kind === 'walk' ? l.distance : 0), 0);
     return { ...it, legs, walkDistance };
@@ -648,7 +687,7 @@ export class Planner {
     const opts = { ...DEFAULT_PLAN_OPTIONS, ...request.options };
     const day = this.net.timetable(request.date);
     const access = this.access(request.from, opts);
-    const egress = new Map(this.access(request.to, opts).map((e) => [e.stop, e]));
+    const egress = new Map(this.access(request.to, opts, true).map((e) => [e.stop, e]));
     return {
       opts,
       access,
@@ -659,7 +698,8 @@ export class Planner {
     };
   }
 
-  private access(place: Place, opts: PlanOptions): Access[] {
+  /** The stops around a place and the walk to each (with `back`, from each to it). */
+  private access(place: Place, opts: PlanOptions, back = false): Access[] {
     if (place.stops && place.stops.length > 0) {
       const best = new Map<number, Access>();
       for (const stop of place.stops) best.set(stop, { stop, seconds: 0, distance: 0 });
@@ -675,7 +715,7 @@ export class Planner {
       }
       return [...best.values()];
     }
-    const walked = this.walkAccess(place, opts);
+    const walked = this.walkAccess(place, opts, undefined, back);
     if (walked && walked.length > 0) return walked;
     let hits = this.net.nearbyStops(place, opts.maxAccessWalk);
     if (hits.length === 0) {
@@ -691,11 +731,15 @@ export class Planner {
     }));
   }
 
-  /** The stops around a point and the walk to each along the streets (up to `max` m). */
+  /**
+   * The stops around a point and the walk to each along the streets (up to `max` m of
+   * level pavement); with `back`, the walk from each stop to the point.
+   */
   private walkAccess(
     place: LatLon,
     opts: PlanOptions,
     max = opts.maxAccessWalk * STREET_ALLOWANCE,
+    back = false,
   ): Access[] | undefined {
     const walk = this.walk;
     if (!walk) return undefined;
@@ -707,6 +751,7 @@ export class Planner {
       start,
       near.map((h) => hits[h.stop]!),
       max,
+      back,
     );
     const out: Access[] = [];
     near.forEach((h, i) => {
@@ -716,6 +761,8 @@ export class Planner {
         stop: h.stop,
         distance: Math.round(d.length),
         seconds: Math.round(d.cost / opts.walkSpeed),
+        up: Math.round(d.up),
+        down: Math.round(d.down),
       });
     });
     return out;
@@ -870,8 +917,18 @@ export class Planner {
       marked = newMarked;
     }
 
+    const accessAt = new Map(access.map((a) => [a.stop, a]));
     return results.map(({ round, egress: e }) =>
-      this.reconstruct(day, request, round, e, egress.get(e)!, { tau, kind, la, lb, lc, ld }, opts),
+      this.reconstruct(
+        day,
+        request,
+        round,
+        e,
+        egress.get(e)!,
+        { tau, kind, la, lb, lc, ld },
+        opts,
+        accessAt,
+      ),
     );
   }
 
@@ -890,6 +947,7 @@ export class Planner {
       ld: Int32Array[];
     },
     opts: PlanOptions,
+    accessAt?: ReadonlyMap<number, Access>,
   ): Itinerary {
     const net = this.net;
     type Step =
@@ -900,11 +958,13 @@ export class Planner {
     let r = round;
     let accessSeconds = 0;
     let accessDistance = 0;
+    let accessClimb: Access | undefined;
     for (let guard = 0; guard < 10_000; guard++) {
       const k = labels.kind[r]![s]!;
       if (k === ACCESS) {
         accessSeconds = labels.lb[r]![s]!;
         accessDistance = labels.la[r]![s]!;
+        accessClimb = accessAt?.get(s);
         break;
       }
       if (k === WALK) {
@@ -963,6 +1023,7 @@ export class Planner {
         start: clock,
         end: clock + accessSeconds,
         distance: accessDistance,
+        ...climbs(accessClimb),
       });
     }
     clock += accessSeconds;
@@ -1002,6 +1063,10 @@ export class Planner {
         last.to = toRef;
         last.end = clock + egress.seconds;
         last.distance += egress.distance;
+        if (egress.up || egress.down) {
+          last.up = (last.up ?? 0) + (egress.up ?? 0);
+          last.down = (last.down ?? 0) + (egress.down ?? 0);
+        }
       } else {
         legs.push({
           kind: 'walk',
@@ -1010,6 +1075,7 @@ export class Planner {
           start: clock,
           end: clock + egress.seconds,
           distance: egress.distance,
+          ...climbs(egress),
         });
       }
     }
@@ -1096,7 +1162,7 @@ export class Planner {
     to: readonly number[],
     opts: PlanOptions,
     max: number,
-  ): ({ distance: number; seconds: number } | undefined)[] {
+  ): (StepWalk | undefined)[] {
     const a = this.net.stops[from]!;
     const walk = this.walk;
     if (!walk) {
@@ -1120,19 +1186,21 @@ export class Planner {
     return to.map((t, i) => {
       if (t === from) return { distance: 0, seconds: 0 };
       const d = hits[t] ? found[i] : undefined;
-      return d
-        ? { distance: Math.round(d.length), seconds: Math.round(d.cost / opts.walkSpeed) }
-        : undefined;
+      return d ? stepWalk(d, opts) : undefined;
     });
   }
 
-  /** Walking between a place and each of some stops (either way; undefined beyond `max` m). */
+  /**
+   * Walking from a place to each of some stops (with `back`, from each to the place;
+   * undefined beyond `max` m).
+   */
   private placeWalk(
     place: LatLon,
     to: readonly number[],
     opts: PlanOptions,
     max: number,
-  ): ({ distance: number; seconds: number } | undefined)[] {
+    back = false,
+  ): (StepWalk | undefined)[] {
     const walk = this.walk;
     const start = walk?.snap(place, 400);
     if (!walk || !start) {
@@ -1148,12 +1216,11 @@ export class Planner {
       start,
       to.map((t) => hits[t] ?? start),
       max,
+      back,
     );
     return to.map((t, i) => {
       const d = hits[t] ? found[i] : undefined;
-      return d
-        ? { distance: Math.round(d.length), seconds: Math.round(d.cost / opts.walkSpeed) }
-        : undefined;
+      return d ? stepWalk(d, opts) : undefined;
     });
   }
 
@@ -1304,18 +1371,26 @@ export class Planner {
           options.map((a) => p.stops[a]!),
           opts,
           Math.max(opts.maxAccessWalk * STREET_ALLOWANCE, walkAfter.distance + STATION_WALK),
+          true,
         );
-        type Stay = { a: number; walk: { distance: number; seconds: number } };
+        type Stay = { a: number; walk: StepWalk };
         let best: Stay | undefined;
         options.forEach((a, k) => {
           const w = walks[k];
           if (!w || arrAt(a) + w.seconds > it.arrive) return;
-          if (!best || w.distance < best.walk.distance) best = { a, walk: w };
+          if (!best || w.seconds < best.walk.seconds) best = { a, walk: w };
         });
-        const shorter = best && best.walk.distance < walkAfter.distance ? best : undefined;
+        const quicker = (w: StepWalk) =>
+          w.seconds < walkAfter.end - walkAfter.start ||
+          (w.seconds === walkAfter.end - walkAfter.start && w.distance < walkAfter.distance);
+        const shorter = best && quicker(best.walk) ? best : undefined;
         const chosen: Stay = shorter ?? {
           a: leg.alightPos,
-          walk: { distance: walkAfter.distance, seconds: walkAfter.end - walkAfter.start },
+          walk: {
+            distance: walkAfter.distance,
+            seconds: walkAfter.end - walkAfter.start,
+            ...climbs(walkAfter),
+          },
         };
         let station: Stay | undefined;
         if (!isBusStation(net.stops[p.stops[chosen.a]!]!.name)) {
@@ -1346,6 +1421,7 @@ export class Planner {
             start: ride.end,
             end: ride.end + stay.walk.seconds,
             distance: stay.walk.distance,
+            ...climbs(stay.walk),
           });
         }
       }
@@ -1364,15 +1440,20 @@ export class Planner {
         opts,
         opts.maxAccessWalk * STREET_ALLOWANCE,
       );
-      let best: { b: number; walk: { distance: number; seconds: number } } | undefined;
+      let best: { b: number; walk: StepWalk } | undefined;
       options.forEach((b, k) => {
         const w = walks[k];
         if (!w) return;
         const leave = net.departureAt(first.pattern, dp, first.dayTrip, b) - w.seconds;
         if (leave < access.start) return;
-        if (!best || w.distance < best.walk.distance) best = { b, walk: w };
+        if (!best || w.seconds < best.walk.seconds) best = { b, walk: w };
       });
-      if (best && best.walk.distance < access.distance) {
+      const took = access.end - access.start;
+      if (
+        best &&
+        (best.walk.seconds < took ||
+          (best.walk.seconds === took && best.walk.distance < access.distance))
+      ) {
         const ride = this.ride(day, first.pattern, first.dayTrip, best.b, first.alightPos, 0);
         ride.wait = 0;
         tryChange(
@@ -1386,6 +1467,7 @@ export class Planner {
             start: ride.start - best.walk.seconds,
             end: ride.start,
             distance: best.walk.distance,
+            ...climbs(best.walk),
           },
           ride,
         );
@@ -1534,7 +1616,14 @@ export class Planner {
           start: request.time,
           end: request.time + seconds,
           distance: Math.round(distance),
-          ...(route ? { path: route.path, kerb: route.kerb } : {}),
+          ...(route
+            ? {
+                path: route.path,
+                kerb: route.kerb,
+                ...climbs(route),
+                ...(route.scenic > 0 ? { scenic: Math.round(route.scenic) } : {}),
+              }
+            : {}),
         },
       ],
       depart: request.time,
@@ -1583,6 +1672,28 @@ const biggerAtNoCost = (x: Change, y: Change) =>
   x.walk.distance <= y.walk.distance + HUB_WALK &&
   x.buffer >= Math.min(y.buffer, HUB_BUFFER);
 
+/** A walk between two points: how far, how long, and how much it climbs. */
+interface StepWalk {
+  distance: number;
+  seconds: number;
+  up?: number;
+  down?: number;
+}
+
+const stepWalk = (d: WalkDistance, opts: PlanOptions): StepWalk => ({
+  distance: Math.round(d.length),
+  seconds: Math.round(d.cost / opts.walkSpeed),
+  up: Math.round(d.up),
+  down: Math.round(d.down),
+});
+
+/** The climbs of a walk, for a walk leg (none when it neither climbs nor goes down). */
+function climbs(w: { up?: number; down?: number } | undefined): { up?: number; down?: number } {
+  const up = Math.round(w?.up ?? 0);
+  const down = Math.round(w?.down ?? 0);
+  return up > 0 || down > 0 ? { up, down } : {};
+}
+
 /** A change of bus with a short buffer, the next bus long after: worth a warning. */
 function isRisky(leg: RideLeg, ready: number, opts: PlanOptions): boolean {
   const buffer = leg.start - ready;
@@ -1615,17 +1726,38 @@ const fareOf = (it: Itinerary) =>
 const walkTime = (it: Itinerary) =>
   it.legs?.reduce((t, l) => t + (l.kind === 'walk' ? l.end - l.start : 0), 0) ?? 0;
 
+/** Metres climbed on foot. */
+export const climbOnFoot = (it: Itinerary) =>
+  it.legs?.reduce((m, l) => m + (l.kind === 'walk' ? (l.up ?? 0) : 0), 0) ?? 0;
+
+/**
+ * Seconds of the walk to the first bus and from the last one beyond SHORT_END_WALK
+ * (none for walking all the way, which is no walk to a bus).
+ */
+export function longEndWalks(it: Itinerary): number {
+  const legs = it.legs ?? [];
+  if (it.rides === 0 || legs.length === 0) return 0;
+  const over = (l: Leg | undefined) =>
+    l?.kind === 'walk' ? Math.max(0, l.end - l.start - SHORT_END_WALK) : 0;
+  return over(legs[0]) + (legs.length > 1 ? over(legs[legs.length - 1]) : 0);
+}
+
 /**
  * What an option costs a passenger, in seconds, to rank the options by: the
  * arrival (or, arriving by a time, how early one must leave), a tenth of the
  * time on the way, ten minutes for each change of bus, four minutes for each
- * euro and half again the time on foot. Of two options arriving at the same
- * time, the one with fewer changes, a lower fare and less walking wins;
- * waiting at home costs nothing.
+ * euro, half again the time on foot, one and a half again each second of the
+ * walk to the first bus or from the last one beyond five minutes (a bus nearer
+ * the door is worth a change), and six seconds for each metre climbed on foot.
+ * Of two options arriving at the same time, the one with fewer changes, a lower
+ * fare and less walking wins; waiting at home costs nothing.
  */
 export function itineraryCost(
   it: Itinerary,
-  opts: Pick<PlanOptions, 'transferCost' | 'fareWeight' | 'walkReluctance'> = DEFAULT_PLAN_OPTIONS,
+  opts: Pick<
+    PlanOptions,
+    'transferCost' | 'fareWeight' | 'walkReluctance' | 'endWalkReluctance' | 'climbReluctance'
+  > = DEFAULT_PLAN_OPTIONS,
   arriveBy = false,
 ): number {
   return (
@@ -1633,7 +1765,9 @@ export function itineraryCost(
     0.1 * it.duration +
     opts.transferCost * it.transfers +
     opts.fareWeight * fareOf(it) +
-    opts.walkReluctance * walkTime(it)
+    opts.walkReluctance * walkTime(it) +
+    opts.endWalkReluctance * longEndWalks(it) +
+    opts.climbReluctance * climbOnFoot(it)
   );
 }
 

@@ -8,6 +8,7 @@ import {
   bestOf,
   isBusStation,
   itineraryCost,
+  longEndWalks,
   outdoes,
   paretoFilter,
   Planner,
@@ -338,17 +339,18 @@ describe('walking', () => {
     expect(results[0]!.walkDistance).toBeGreaterThan(2000);
   });
 
-  it('offers a bus to the bus besides a long walk to it', () => {
-    // From C the 3 to G is a long walk away at F; the 2 goes to E, round the corner from F.
+  it('takes a bus to the bus rather than a long walk to it, and offers the walk too', () => {
+    // From C the 3 to G is a long walk away at F; the 2 goes to E, round the corner from F,
+    // and gets there as soon: more than five minutes on foot is worth a change of bus.
     const from = { ...STOPS.C, name: 'C' };
     const results = planner.plan({ from, to: place('G'), date: WEEKDAY, time: at(9, 0) });
     const best = results[0]!;
-    expect(rides(best).map(routeOf)).toEqual(['3']);
-    expect(onFoot(best)).toBeGreaterThan(10 * 60);
-    const less = results.find((it) => rides(it).map(routeOf).join() === '2,3');
-    expect(less).toBeDefined();
-    expect(onFoot(less!)).toBeLessThan(onFoot(best) - 5 * 60);
-    expect(less!.arrive).toBe(best.arrive);
+    expect(rides(best).map(routeOf)).toEqual(['2', '3']);
+    const walk = results.find((it) => rides(it).map(routeOf).join() === '3');
+    expect(walk).toBeDefined();
+    expect(onFoot(walk!)).toBeGreaterThan(10 * 60);
+    expect(onFoot(best)).toBeLessThan(onFoot(walk!) - 5 * 60);
+    expect(best.arrive).toBe(walk!.arrive);
   });
 });
 
@@ -411,8 +413,8 @@ describe('the best of the options, arriving by a time', () => {
     const quick = option(at(18, 4), at(19, 9), 2, 4.6, 14 * 60);
     const slow = option(at(18, 17), at(19, 51), 2, 4.6, 33 * 60);
     expect(bestOf([slow, quick], DEFAULT_PLAN_OPTIONS, true)).toBe(quick);
-    // Leaving much earlier for it, the later one stays the best.
-    const early = option(at(17, 40), at(18, 45), 2, 4.6, 14 * 60);
+    // Leaving much earlier for it (and walking as much), the later one stays the best.
+    const early = option(at(17, 40), at(18, 45), 2, 4.6, 33 * 60);
     expect(bestOf([slow, early], DEFAULT_PLAN_OPTIONS, true)).toBe(slow);
   });
 
@@ -591,10 +593,27 @@ describe('itineraryCost', () => {
 
   it('prefers fewer changes and a lower fare to leaving a little later', () => {
     // Levada Cavalo → Tabua, both at 16:42: three buses for 6.60 € leaving at 14:08,
-    // or two for 4.60 € leaving at 13:41.
-    const threeBuses = option(at(14, 8), at(16, 42), 2, 6.6, 12 * 60);
-    const twoBuses = option(at(13, 41), at(16, 42), 1, 4.6, 20 * 60);
+    // or two for 4.60 € leaving at 13:41 (short walks to and from both).
+    const threeBuses = option(at(14, 8), at(16, 42), 2, 6.6, 4 * 60);
+    const twoBuses = option(at(13, 41), at(16, 42), 1, 4.6, 5 * 60);
     expect(itineraryCost(twoBuses)).toBeLessThan(itineraryCost(threeBuses));
+  });
+
+  it('takes a bus nearer the door over more than five minutes on foot', () => {
+    // Funchal → Tabua at dawn, both there at 08:09: 40 minutes down to the 207 and the 222
+    // for 4.60 €, or the 110 from round the corner, then the 207 and the 222 for 6.60 €.
+    const walkDown = option(at(5, 56), at(8, 9), 1, 4.6, 43 * 60);
+    const busToIt = option(at(6, 9), at(8, 9), 2, 6.6, 8 * 60);
+    expect(itineraryCost(busToIt)).toBeLessThan(itineraryCost(walkDown));
+    // Up to five minutes on foot is no long walk.
+    expect(longEndWalks(option(at(6), at(7), 1, 2.6, 5 * 60))).toBe(0);
+    expect(longEndWalks(option(at(6), at(7), 1, 2.6, 12 * 60))).toBe(7 * 60);
+  });
+
+  it('counts a climb on foot as worse than the level', () => {
+    const level = option(at(9), at(10), 1, 2.6, 4 * 60);
+    const uphill = { ...level, legs: [{ ...level.legs[0]!, up: 80 }] } as Itinerary;
+    expect(itineraryCost(uphill) - itineraryCost(level)).toBe(80 * 6);
   });
 
   it('still prefers getting there much sooner', () => {
@@ -624,8 +643,8 @@ describe('itineraryCost', () => {
     );
   });
 
-  it('with less walking, takes the bus to the door over a long walk a little sooner', () => {
-    const walkMore = option(at(9), at(10, 15), 1, 4.6, 25 * 60);
+  it('with less walking, takes the bus to the door over a long walk much sooner', () => {
+    const walkMore = option(at(9), at(9, 50), 1, 4.6, 25 * 60);
     const walkLess = option(at(9), at(10, 30), 1, 4.6, 5 * 60);
     expect(itineraryCost(walkMore, prefer('best'))).toBeLessThan(
       itineraryCost(walkLess, prefer('best')),
