@@ -52,6 +52,12 @@ const PACES = [
   { value: 1.5, key: 'settings.fast' },
 ] as const;
 
+const ROUTES = [
+  { value: 'best', key: 'settings.routeBest', hint: 'settings.routeBestHint' },
+  { value: 'fewerTransfers', key: 'settings.routeTransfers', hint: 'settings.routeTransfersHint' },
+  { value: 'lessWalking', key: 'settings.routeWalk', hint: 'settings.routeWalkHint' },
+] as const;
+
 export function SettingsView() {
   const t = useI18n();
   const { settings, setSettings, data } = useApp();
@@ -98,6 +104,24 @@ export function SettingsView() {
             {t.t('settings.giro')}
           </button>
         </div>
+      </section>
+      <section className="card">
+        <h3 className="card__title">{t.t('settings.route')}</h3>
+        <div className="segmented segmented--wrap" role="group" aria-label={t.t('settings.route')}>
+          {ROUTES.map((r) => (
+            <button
+              key={r.value}
+              type="button"
+              aria-pressed={settings.route === r.value}
+              onClick={() => setSettings({ route: r.value })}
+            >
+              {t.t(r.key)}
+            </button>
+          ))}
+        </div>
+        <p className="muted small">
+          {t.t(ROUTES.find((r) => r.value === settings.route)?.hint ?? 'settings.routeBestHint')}
+        </p>
       </section>
       <section className="card">
         <h3 className="card__title">{t.t('settings.walk')}</h3>

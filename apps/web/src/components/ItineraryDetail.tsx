@@ -21,7 +21,7 @@ import { clock, duration, longDate, price } from '../lib/format.ts';
 import { fareRides, isExpress, ridesOf } from '../lib/itinerary.ts';
 import { rideColor } from '../lib/mapContent.ts';
 import { useNow } from '../lib/useNow.ts';
-import { useApp, useNetwork } from '../state/app.tsx';
+import { planOptions, useApp, useNetwork } from '../state/app.tsx';
 import { RideTimetable } from './RideTimetable.tsx';
 import { RouteBadge } from './RouteBadge.tsx';
 
@@ -63,7 +63,7 @@ export function ItineraryDetail({ it, date, onFocusLeg, onBack, onStart, onShare
         to: origin,
         date,
         time: it.arrive,
-        options: { walkSpeed: settings.walkSpeed },
+        options: planOptions(settings),
       })
       .then((r) => {
         if (!cancelled)
@@ -73,7 +73,7 @@ export function ItineraryDetail({ it, date, onFocusLeg, onBack, onStart, onShare
     return () => {
       cancelled = true;
     };
-  }, [it, date, planner, settings.walkSpeed, firstLeg, lastLeg]);
+  }, [it, date, planner, settings, firstLeg, lastLeg]);
 
   const rides = useMemo(() => fareRides(net, it), [net, it]);
   const advice = useMemo(

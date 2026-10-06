@@ -7,7 +7,14 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import { madeiraNow, Network, type Itinerary } from '@madeirabus/engine';
+import {
+  madeiraNow,
+  Network,
+  ROUTE_PREFERENCES,
+  type Itinerary,
+  type PlanOptions,
+  type RoutePreference,
+} from '@madeirabus/engine';
 import { detectLang, I18nContext, makeI18n, type Lang } from '../i18n.ts';
 import { loadBundleText, refreshRemote } from '../lib/data.ts';
 import { DEFAULT_LAYERS, type MapLayers } from '../lib/mapStyles.ts';
@@ -22,6 +29,8 @@ export interface Settings {
   paymentChosen?: boolean;
   /** m/s */
   walkSpeed: number;
+  /** What the best way should be best at: the balance, fewer changes or less walking. */
+  route: RoutePreference;
   map: MapLayers;
   /** Real timetables, or the invented whole-island demo network. */
   dataset: 'real' | 'demo';
@@ -93,6 +102,11 @@ export function useNetwork(): { net: Network; planner: PlannerClient } {
   return data;
 }
 
+/** The planner options the settings ask for: walking pace and route preference. */
+export function planOptions(settings: Settings): Partial<PlanOptions> {
+  return { walkSpeed: settings.walkSpeed, ...ROUTE_PREFERENCES[settings.route] };
+}
+
 const SETTINGS_KEY = 'madeirabus.settings.v1';
 const TRIP_KEY = 'madeirabus.trip.v1';
 const RECENT_KEY = 'madeirabus.recent.v1';
@@ -118,12 +132,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
       lang: detectLang(),
       payment: 'cash',
       walkSpeed: 1.25,
+      route: 'best',
       map: DEFAULT_LAYERS,
       dataset: 'real',
     });
     // Most visitors pay cash on the bus; GIRO only for those who said they have the card.
     const payment = stored.paymentChosen ? stored.payment : 'cash';
-    return { ...stored, payment, map: { ...DEFAULT_LAYERS, ...stored.map } };
+    const route = stored.route in ROUTE_PREFERENCES ? stored.route : 'best';
+    return { ...stored, payment, route, map: { ...DEFAULT_LAYERS, ...stored.map } };
   });
   const [data, setData] = useState<DataState>({ status: 'loading' });
   const dataset = settings.dataset;

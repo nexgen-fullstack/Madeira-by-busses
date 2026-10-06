@@ -20,7 +20,7 @@ import { navigate, type Route } from '../lib/router.ts';
 import { DESTINATIONS, reachable } from '../lib/scenic.ts';
 import { APP_NAME } from '../lib/site.ts';
 import { useNow } from '../lib/useNow.ts';
-import { useApp, useNetwork } from '../state/app.tsx';
+import { planOptions, useApp, useNetwork } from '../state/app.tsx';
 
 /** Popular trips; the ones whose stops exist in the loaded network are offered. */
 const SUGGESTIONS: [string, string][] = [
@@ -117,7 +117,7 @@ export function PlanView({ route }: { route: Route }) {
   // Plan whenever both ends are known.
   const baseKey =
     from && to
-      ? `${encodePlace(from)}>${encodePlace(to)}@${date}T${timeParam ?? 'now'}${arriveBy ? '<' : ''}|${settings.walkSpeed}`
+      ? `${encodePlace(from)}>${encodePlace(to)}@${date}T${timeParam ?? 'now'}${arriveBy ? '<' : ''}|${settings.walkSpeed}|${settings.route}`
       : '';
   const searchKey = baseKey && `${baseKey}|${refresh}`;
   useEffect(() => {
@@ -135,7 +135,7 @@ export function PlanView({ route }: { route: Route }) {
         date,
         time: timeParam ? parseTimeInput(timeParam) : madeiraNow().time,
         arriveBy,
-        options: { walkSpeed: settings.walkSpeed },
+        options: planOptions(settings),
       })
       .then((r) => {
         if (cancelled) return;

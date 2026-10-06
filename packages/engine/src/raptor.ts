@@ -41,6 +41,8 @@ export interface PlanOptions {
    * this much later per transfer saved.
    */
   transferPenalty: number;
+  /** What each change of bus adds to an option's cost when the options are ranked (s). */
+  transferCost: number;
   /**
    * How many ways on other lines to offer besides the best one, as a maps app
    * does ("by the 702, or by the 701 and the 704").
@@ -68,10 +70,23 @@ export const DEFAULT_PLAN_OPTIONS: PlanOptions = {
   window: 3 * 3600,
   maxResults: 5,
   transferPenalty: 600,
+  transferCost: 600,
   alternatives: 2,
   longWalk: 3000,
   fareWeight: 240,
   walkReluctance: 0.5,
+};
+
+/** What the best option should be best at, as in a maps app's route options. */
+export type RoutePreference = 'best' | 'fewerTransfers' | 'lessWalking';
+
+/** The ranking each preference asks for, on top of the defaults. */
+export const ROUTE_PREFERENCES: Record<RoutePreference, Partial<PlanOptions>> = {
+  best: {},
+  // Half an hour for each change of bus, and a long walk is no way round one.
+  fewerTransfers: { transferCost: 30 * 60, walkReluctance: 1 },
+  // Each minute on foot counts four, and no long walks to buses farther off.
+  lessWalking: { walkReluctance: 3, longWalk: 0 },
 };
 
 export interface PlanRequest {
@@ -312,7 +327,8 @@ export class Planner {
   ): void {
     const waiting = [...found.values()]
       .filter((it) => it.rides > 1 && it.waitTime > LONG_WAIT)
-      .sort((a, b) => itineraryCost(a, opts) - itineraryCost(b, opts))
+      // By the usual ranking, so the same ways are found whatever the route preference.
+      .sort((a, b) => itineraryCost(a) - itineraryCost(b))
       .slice(0, 3);
     for (const it of waiting) {
       const makes = (t: number) =>
@@ -510,8 +526,8 @@ export class Planner {
       const pick = options.sort(
         (a, b) =>
           a.arrive +
-            a.transfers * ctx.opts.transferPenalty -
-            (b.arrive + b.transfers * ctx.opts.transferPenalty) || b.depart - a.depart,
+            a.transfers * ctx.opts.transferCost -
+            (b.arrive + b.transfers * ctx.opts.transferCost) || b.depart - a.depart,
       )[0];
       if (!pick) break;
       keys.add(pick.key);
@@ -1440,16 +1456,13 @@ const walkTime = (it: Itinerary) =>
  */
 export function itineraryCost(
   it: Itinerary,
-  opts: Pick<
-    PlanOptions,
-    'transferPenalty' | 'fareWeight' | 'walkReluctance'
-  > = DEFAULT_PLAN_OPTIONS,
+  opts: Pick<PlanOptions, 'transferCost' | 'fareWeight' | 'walkReluctance'> = DEFAULT_PLAN_OPTIONS,
   arriveBy = false,
 ): number {
   return (
     (arriveBy ? -it.depart : it.arrive) +
     0.1 * it.duration +
-    opts.transferPenalty * it.transfers +
+    opts.transferCost * it.transfers +
     opts.fareWeight * fareOf(it) +
     opts.walkReluctance * walkTime(it)
   );

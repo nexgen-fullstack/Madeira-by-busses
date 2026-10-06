@@ -29,7 +29,7 @@ import {
   type Destination,
 } from '../lib/scenic.ts';
 import { useNow } from '../lib/useNow.ts';
-import { useApp, useNetwork } from '../state/app.tsx';
+import { planOptions, useApp, useNetwork } from '../state/app.tsx';
 
 /** How many ways there to list before "more in the planner". */
 const SHOWN = 3;
@@ -71,7 +71,9 @@ export function DestinationView({ d, route }: { d: Destination; route: Route }) 
   const [results, setResults] = useState<Itinerary[] | undefined>();
   const [loading, setLoading] = useState(false);
   const target = useMemo(() => ({ lat: d.lat, lon: d.lon, name: d.name }), [d]);
-  const searchKey = origin ? `${encodePlace(origin)}>${d.id}@${date}|${settings.walkSpeed}` : '';
+  const searchKey = origin
+    ? `${encodePlace(origin)}>${d.id}@${date}|${settings.walkSpeed}|${settings.route}`
+    : '';
   useEffect(() => {
     if (!origin || !served) {
       setResults(undefined);
@@ -86,7 +88,7 @@ export function DestinationView({ d, route }: { d: Destination; route: Route }) 
         date,
         // Today from now; another day from the first buses.
         time: date === madeiraNow().date ? madeiraNow().time : 5 * 3600,
-        options: { walkSpeed: settings.walkSpeed },
+        options: planOptions(settings),
       })
       .then((r) => !cancelled && setResults(r))
       .catch(() => !cancelled && setResults([]))

@@ -8,6 +8,8 @@ import {
   itineraryCost,
   paretoFilter,
   Planner,
+  DEFAULT_PLAN_OPTIONS,
+  ROUTE_PREFERENCES,
   type Itinerary,
   type RideLeg,
   type WalkLeg,
@@ -453,6 +455,37 @@ describe('itineraryCost', () => {
     const expressAndWalk = option(at(13, 41), at(15, 30), 1, 4.6, 35 * 60);
     const toTheDoor = option(at(13, 41), at(16, 42), 1, 4.6, 12 * 60);
     expect(itineraryCost(expressAndWalk)).toBeLessThan(itineraryCost(toTheDoor));
+  });
+
+  const prefer = (p: keyof typeof ROUTE_PREFERENCES) => ({
+    ...DEFAULT_PLAN_OPTIONS,
+    ...ROUTE_PREFERENCES[p],
+  });
+
+  it('with fewer transfers, takes the direct bus over a change that saves twenty minutes', () => {
+    const change = option(at(9), at(10, 10), 1, 4.6, 10 * 60);
+    const direct = option(at(9), at(10, 30), 0, 2.6, 10 * 60);
+    expect(itineraryCost(change, prefer('best'))).toBeLessThan(
+      itineraryCost(direct, prefer('best')),
+    );
+    expect(itineraryCost(direct, prefer('fewerTransfers'))).toBeLessThan(
+      itineraryCost(change, prefer('fewerTransfers')),
+    );
+    // Both stay on offer: only which one comes first changes.
+    expect(paretoFilter([change, direct], prefer('fewerTransfers').transferPenalty)).toHaveLength(
+      2,
+    );
+  });
+
+  it('with less walking, takes the bus to the door over a long walk a little sooner', () => {
+    const walkMore = option(at(9), at(10, 15), 1, 4.6, 25 * 60);
+    const walkLess = option(at(9), at(10, 30), 1, 4.6, 5 * 60);
+    expect(itineraryCost(walkMore, prefer('best'))).toBeLessThan(
+      itineraryCost(walkLess, prefer('best')),
+    );
+    expect(itineraryCost(walkLess, prefer('lessWalking'))).toBeLessThan(
+      itineraryCost(walkMore, prefer('lessWalking')),
+    );
   });
 
   it('puts the best option first, then the others by arrival', () => {
