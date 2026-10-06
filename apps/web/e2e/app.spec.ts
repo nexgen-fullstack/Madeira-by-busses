@@ -1,4 +1,4 @@
-import { pinDemoData } from './demo.ts';
+import { allowSimulation, pinDemoData } from './demo.ts';
 import { expect, test } from '@playwright/test';
 
 // Wednesday 7 Oct 2026, 09:00 in Madeira (WEST = UTC+1). Demo data only.
@@ -26,10 +26,11 @@ test('plans a trip with transfers, fares and the last bus back', async ({ page }
 });
 
 test('the simulated ride warns before the stop and arrives', async ({ page }) => {
+  await allowSimulation(page);
   await page.goto('./');
   await page.getByRole('button', { name: /Mercado dos Lavradores → Monte/ }).click();
   await page.locator('.it-card').first().click();
-  await page.getByRole('button', { name: 'Симуляція' }).click();
+  await page.getByRole('button', { name: 'Simulate' }).click();
 
   await expect(page.locator('.trip__status--next')).toBeVisible({ timeout: 90_000 });
   await expect(page.getByText('Виходьте на наступній!')).toBeVisible();

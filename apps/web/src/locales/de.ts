@@ -77,7 +77,6 @@ export const de: Dict = {
   'detail.towards': 'Richtung {h}',
   'detail.next': 'nächster um {t}',
   'detail.start': 'Fahrt starten',
-  'detail.simulate': 'Simulieren',
   'detail.share': 'Teilen',
   'detail.shared': 'Link kopiert',
   back: 'Zurück',
@@ -167,9 +166,6 @@ export const de: Dict = {
   'trip.showDriver': 'Dem Fahrer zeigen',
   'trip.driverText': 'Por favor, quero sair em:',
   'trip.end': 'Beenden',
-  'trip.simulate': 'Fahrt simulieren',
-  'trip.simulateHint':
-    'Demo: Der Bus fährt die Strecke 20× schneller, mit einem Tunnel in der Mitte',
   'trip.waitBus': 'Auf {route} um {t} warten',
   'trip.walkTo': 'Zu Fuß zu „{stop}“ ({m} Min.)',
   'trip.transfer': 'Umstieg in {route}',

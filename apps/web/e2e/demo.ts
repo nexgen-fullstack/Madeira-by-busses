@@ -11,3 +11,11 @@ export async function pinDemoData(page: Page): Promise<void> {
     localStorage.setItem(key, JSON.stringify({ ...stored, dataset: stored.dataset ?? 'demo' }));
   });
 }
+
+/**
+ * The simulated ride is for developers and these tests only: a production build offers
+ * it once this key is set (the phone app never does).
+ */
+export async function allowSimulation(page: Page): Promise<void> {
+  await page.addInitScript(() => localStorage.setItem('madeirabus.simulator', '1'));
+}

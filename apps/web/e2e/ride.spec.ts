@@ -1,4 +1,4 @@
-import { pinDemoData } from './demo.ts';
+import { allowSimulation, pinDemoData } from './demo.ts';
 import { expect, test } from '@playwright/test';
 
 // A clock that only moves when told to: Wednesday 7 Oct 2026, 08:59:30 in
@@ -10,10 +10,11 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('the ride keeps being followed on other screens', async ({ page }) => {
+  await allowSimulation(page);
   await page.goto('./');
   await page.getByRole('button', { name: /Funchal \(Avenida.* → Santana/ }).click();
   await page.locator('.it-card').first().click();
-  await page.getByRole('button', { name: 'Симуляція' }).click();
+  await page.getByRole('button', { name: 'Simulate' }).click();
   await expect(page.locator('.trip__header')).toBeVisible();
 
   // Look at the lines for 100 s: 33 minutes of the 20× simulation.

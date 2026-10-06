@@ -75,7 +75,6 @@ export const es: Dict = {
   'detail.towards': 'dirección {h}',
   'detail.next': 'siguiente a las {t}',
   'detail.start': 'Iniciar viaje',
-  'detail.simulate': 'Simular',
   'detail.share': 'Compartir',
   'detail.shared': 'Enlace copiado',
   back: 'Atrás',
@@ -164,9 +163,6 @@ export const es: Dict = {
   'trip.showDriver': 'Mostrar al conductor',
   'trip.driverText': 'Por favor, quero sair em:',
   'trip.end': 'Terminar',
-  'trip.simulate': 'Simular viaje',
-  'trip.simulateHint':
-    'Demo: el autobús recorre la ruta 20× más rápido, con un túnel a mitad de camino',
   'trip.waitBus': 'Espere el {route} a las {t}',
   'trip.walkTo': 'Camine hasta «{stop}» ({m} min)',
   'trip.transfer': 'Transbordo al {route}',

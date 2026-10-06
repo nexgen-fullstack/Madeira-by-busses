@@ -7,8 +7,25 @@ import {
   type TrackedStop,
 } from '@madeirabus/engine';
 
+/** Set to '1' (by the browser tests) to offer the simulated ride in a production build. */
+export const SIMULATOR_KEY = 'madeirabus.simulator';
+
 /**
- * Fake GPS for demos and tests: drives along the ride's shape following the
+ * Whether a ride can be simulated: only to try the app out while developing it and in
+ * the browser tests. Passengers never see it, and the phone app has none.
+ */
+export function canSimulate(): boolean {
+  if (import.meta.env.MODE === 'app') return false;
+  if (import.meta.env.DEV) return true;
+  try {
+    return localStorage.getItem(SIMULATOR_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Fake GPS for development and tests: drives along the ride's shape following the
  * timetable plus a fixed delay, with light jitter and a "tunnel" (no fixes)
  * in the middle of longer rides.
  */

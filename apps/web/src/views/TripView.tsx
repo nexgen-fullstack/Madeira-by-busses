@@ -128,7 +128,7 @@ export function TripView() {
           <div className="muted small">
             {rides.length > 1 && `${rideIndex + 1}/${rides.length} · `}
             {trip.simulate
-              ? t.t('trip.simulate')
+              ? 'Simulation'
               : state?.source === 'timetable'
                 ? t.t('trip.gpsLost')
                 : 'GPS'}
@@ -232,7 +232,6 @@ export function TripView() {
               </button>
             )}
           </div>
-          {trip.simulate && <p className="muted small">{t.t('trip.simulateHint')}</p>}
           {!trip.simulate && !isNative() && (
             <p className="muted small trip__note">
               <Info size={14} aria-hidden /> {t.t('trip.keepOpen')}

@@ -20,6 +20,7 @@ import { isNative, remind } from '../lib/device.ts';
 import { clock, duration, longDate, price } from '../lib/format.ts';
 import { fareRides, isExpress, ridesOf } from '../lib/itinerary.ts';
 import { rideColor } from '../lib/mapContent.ts';
+import { canSimulate } from '../lib/simulator.ts';
 import { useNow } from '../lib/useNow.ts';
 import { planOptions, useApp, useNetwork } from '../state/app.tsx';
 import { RideTimetable } from './RideTimetable.tsx';
@@ -255,14 +256,12 @@ export function ItineraryDetail({ it, date, onFocusLeg, onBack, onStart, onShare
           <button type="button" className="button button--primary" onClick={() => onStart(false)}>
             <Navigation size={18} /> {t.t('detail.start')}
           </button>
-          <button
-            type="button"
-            className="button"
-            onClick={() => onStart(true)}
-            title={t.t('trip.simulateHint')}
-          >
-            <PlayCircle size={18} /> {t.t('detail.simulate')}
-          </button>
+          {/* Developers and the browser tests only: not translated, never in the phone app. */}
+          {canSimulate() && (
+            <button type="button" className="button" onClick={() => onStart(true)}>
+              <PlayCircle size={18} /> Simulate
+            </button>
+          )}
           <button
             type="button"
             className="button button--ghost"
