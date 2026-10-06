@@ -25,8 +25,9 @@ import {
   sigaRouteNumber,
 } from './names.ts';
 import { DEMO_PLACES } from './demo/places.ts';
-import { placesFromOsm } from './places.ts';
+import { placesFromOsm, type OsmElement } from './places.ts';
 import { buildReportMarkdown, diffBundles, diffMarkdown } from './report.ts';
+import { addressesFromOsm } from './addresses.ts';
 import { buildWalkGraph, type OsmWay } from './walk.ts';
 import { driveKind, reverseDriveKind } from './drive.ts';
 import { RoadRouter } from './shapes.ts';
@@ -46,6 +47,7 @@ const USAGE = `madeirabus-pipeline <command>
         [--missing <op1,op2>]        operators not covered yet (shown in the app)
         [--places <osm.json>]        searchable places from an Overpass answer (skipped if absent)
         [--walk <walk.bin>]          the walking network, copied next to the bundle (skipped if absent)
+        [--addresses <json>]         streets and house numbers, copied next to the bundle (skipped if absent)
         [--drive <drive.bin>]        the roads: every line is drawn along them, in its lane
         [--timetables <dir> --siga <dir>]  add CAM and SIGA Rodoeste from their printed
                                      timetables and the SIGA website's routes
@@ -53,6 +55,8 @@ const USAGE = `madeirabus-pipeline <command>
   validate --feed [name=]<dir|zip|url> …  validate feeds only
   diff <old.json> <new.json>              summarise timetable changes
   walk  --osm <overpass.json> --out <walk.bin>   the walking network from OpenStreetMap ways
+  addresses --osm <overpass.json> --places <osm.json> --out <addresses.json>
+                                          streets and house numbers to search for
   drive --osm <overpass.json> --out <drive.bin>  the roads buses drive on, from OpenStreetMap ways
   check-shapes --bundle <bundle.json> --drive <drive.bin> [--report <md>]
                                           every stretch of a line off the roads
@@ -340,6 +344,36 @@ async function build(args: Args) {
   } else if (walkPath) {
     console.log(`! No walking network at ${walkPath}; walks are drawn as the crow flies`);
   }
+
+  // Streets and house numbers too, as addresses.json, which the app loads once someone types.
+  const addressPath = flag(args, 'addresses');
+  if (addressPath && existsSync(addressPath)) {
+    const target = join(dirname(out), 'addresses.json');
+    await writeFile(target, await readFile(addressPath));
+    console.log(`Addresses copied to ${target}`);
+  } else if (addressPath) {
+    console.log(`! No addresses at ${addressPath}; only stops and places can be searched`);
+  }
+}
+
+async function addresses(args: Args) {
+  const input = flag(args, 'osm');
+  const placesPath = flag(args, 'places');
+  const out = flag(args, 'out');
+  if (!input || !placesPath || !out) {
+    throw new Error('addresses needs --osm <overpass.json> --places <osm.json> --out <json>');
+  }
+  const json = JSON.parse(await readFile(input, 'utf8')) as { elements?: OsmElement[] };
+  const places = placesFromOsm(JSON.parse(await readFile(placesPath, 'utf8')));
+  const book = addressesFromOsm(json.elements ?? [], places);
+  await mkdir(dirname(out), { recursive: true });
+  const text = JSON.stringify(book);
+  await writeFile(out, text);
+  const houses = book.streets.reduce((n, s) => n + s[5].length, 0);
+  console.log(
+    `Addresses: ${book.streets.length} streets, ${houses} house numbers, ` +
+      `${book.areas.length} villages and towns, ${Math.round(text.length / 1024)} KiB`,
+  );
 }
 
 async function validate(args: Args) {
@@ -440,6 +474,7 @@ async function main() {
     validate,
     diff,
     walk,
+    addresses,
     drive,
     'check-shapes': checkShapesCommand,
   };

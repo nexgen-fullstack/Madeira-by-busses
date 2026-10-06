@@ -24,6 +24,7 @@ import { useNow } from '../lib/useNow.ts';
 import { planOptions, useApp, useNetwork } from '../state/app.tsx';
 import { RideTimetable } from './RideTimetable.tsx';
 import { RouteBadge } from './RouteBadge.tsx';
+import { routeColor } from '../lib/color.ts';
 
 interface Props {
   it: Itinerary;
@@ -167,7 +168,7 @@ export function ItineraryDetail({ it, date, onFocusLeg, onBack, onStart, onShare
             <li
               key={i}
               className="timeline__ride"
-              style={{ ['--route' as string]: `#${route.color}` }}
+              style={{ ['--route' as string]: routeColor(route) }}
               onClick={() => onFocusLeg?.(i)}
             >
               {leg.wait >= 60 && (

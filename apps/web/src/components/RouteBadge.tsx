@@ -1,5 +1,5 @@
 import type { BRoute } from '@madeirabus/engine';
-import { readableOn } from '../lib/color.ts';
+import { readableOn, routeColor } from '../lib/color.ts';
 
 interface Props {
   route: BRoute;
@@ -7,7 +7,7 @@ interface Props {
 }
 
 export function RouteBadge({ route, size = 'md' }: Props) {
-  const bg = `#${route.color}`;
+  const bg = routeColor(route);
   // Names rather than numbers ("Aerobus") get a smaller type in the large sizes.
   const long = route.short.length > 4 ? ' route-badge--long' : '';
   return (

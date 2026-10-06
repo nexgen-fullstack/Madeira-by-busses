@@ -254,6 +254,15 @@ async function osm() {
      out geom qt;`,
   );
   writeFileSync(join(dir, 'drive-ways.json'), JSON.stringify(roads));
+  // Named streets and house numbers, to find an address typed in the search
+  // (`madeirabus-pipeline addresses` turns them into addresses.json; this file is not kept).
+  const addresses = await overpass(
+    `[out:json][timeout:300];
+     (nwr["addr:housenumber"](${BBOX});
+      way["highway"]["name"]["highway"!~"^(motorway|motorway_link|proposed|construction|abandoned|razed)$"](${BBOX}););
+     out center tags qt;`,
+  );
+  writeFileSync(join(dir, 'addresses-raw.json'), JSON.stringify(addresses));
   const relations = routes.elements.filter((e) => e.type === 'relation');
   return {
     routeRelations: relations.filter((r) => r.tags?.type === 'route').length,

@@ -158,6 +158,10 @@ describe('Network', () => {
     expect(names('curral')).toEqual(['Curral Romeiros', 'Igreja Curral Freiras']);
     expect(names('Av Mar')).toEqual(['Avenida do Mar']);
     expect(names('mar')).toEqual(['Avenida do Mar']);
+    // A slip of the finger in a longer word, but not in a short one.
+    expect(names('Cural Freiras')).toEqual(['Igreja Curral Freiras']);
+    expect(names('Avenisa')).toEqual(['Avenida do Mar']);
+    expect(names('mor')).toEqual([]);
   });
 });
 

@@ -410,7 +410,9 @@ const LINKING_WORDS = new Set(['a', 'as', 'o', 'os', 'da', 'das', 'de', 'do', 'd
 
 /**
  * Lower is better: the name starts with the query, contains it at a word
- * start, has every query word as a word prefix, or merely contains it.
+ * start, has every query word as a word prefix, merely contains it, or has
+ * every query word as a word prefix but for a slip of the finger ("Ribera bra"
+ * for Ribeira Brava).
  */
 function matchScore(q: string, words: string[], k: { key: string; words: string[] }): number {
   const idx = k.key.indexOf(q);
@@ -419,8 +421,64 @@ function matchScore(q: string, words: string[], k: { key: string; words: string[
   else if (idx > 0 && k.key[idx - 1] === ' ') tier = 1;
   else if (words.length > 0 && words.every((w) => k.words.some((kw) => kw.startsWith(w)))) tier = 2;
   else if (idx > 0) tier = 3;
+  else if (
+    words.length > 0 &&
+    words.every((w) => k.words.some((kw) => kw.startsWith(w) || nearPrefix(w, kw)))
+  )
+    tier = 4;
   else return Infinity;
   return tier * 1000 + k.key.length;
+}
+
+/** A name's search key: its normalised form and the words that count. */
+export function searchKey(name: string): { key: string; words: string[] } {
+  const key = normalise(name);
+  return { key, words: significantWords(key) };
+}
+
+/**
+ * How well a name (its `searchKey`) matches what was typed; lower is better,
+ * Infinity for no match. The same matching as the stop and place search.
+ */
+export function nameScore(query: string, k: { key: string; words: string[] }): number {
+  const q = normalise(query);
+  return q ? matchScore(q, significantWords(q), k) : Infinity;
+}
+
+/**
+ * The start of `word` is `typed` but for one slip (two in a long word): a letter
+ * missed, added or wrong. Short words must match exactly.
+ */
+function nearPrefix(typed: string, word: string): boolean {
+  if (typed.length < 4) return false;
+  const allowed = typed.length >= 7 ? 2 : 1;
+  for (let n = typed.length - allowed; n <= typed.length + allowed; n++) {
+    if (n < 1 || n > word.length) continue;
+    if (editDistance(typed, word.slice(0, n), allowed) <= allowed) return true;
+  }
+  return false;
+}
+
+/** Levenshtein distance, stopping early once it exceeds `max`. */
+function editDistance(a: string, b: string, max: number): number {
+  if (Math.abs(a.length - b.length) > max) return max + 1;
+  let prev = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i++) {
+    const row = [i];
+    let least = i;
+    for (let j = 1; j <= b.length; j++) {
+      const v = Math.min(
+        prev[j]! + 1,
+        row[j - 1]! + 1,
+        prev[j - 1]! + (a[i - 1] === b[j - 1] ? 0 : 1),
+      );
+      row.push(v);
+      least = Math.min(least, v);
+    }
+    if (least > max) return max + 1;
+    prev = row;
+  }
+  return prev[b.length]!;
 }
 
 function significantWords(normalised: string): string[] {

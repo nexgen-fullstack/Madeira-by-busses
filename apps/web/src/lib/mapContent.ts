@@ -1,6 +1,7 @@
 import { GridIndex, haversine, offsetPolyline, pavementSides } from '@madeirabus/engine';
 import type { Itinerary, LatLon, Network, StopGroup } from '@madeirabus/engine';
 import type { Direction } from './lines.ts';
+import { routeColor as colorOf } from './color.ts';
 
 export interface MapLine {
   coords: LatLon[];
@@ -94,7 +95,7 @@ function walkLine(leg: { from: LatLon; to: LatLon; path?: LatLon[]; kerb?: numbe
   return offsetPolyline(leg.path, pavementSides(leg.path, leg.kerb));
 }
 
-const routeColor = (net: Network, route: number) => `#${net.routes[route]!.color}`;
+const routeColor = (net: Network, route: number) => colorOf(net.routes[route]!);
 
 /**
  * A route on the map, each of its buses in a neon of its own with arrows the way it goes,

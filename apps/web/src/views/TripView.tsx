@@ -26,6 +26,7 @@ import {
 import { goBack, navigate } from '../lib/router.ts';
 import { useApp, useNetwork } from '../state/app.tsx';
 import { useTripTracking } from '../state/trip.tsx';
+import { routeColor } from '../lib/color.ts';
 
 /** The ride being followed (the following itself runs in state/trip.tsx). */
 export function TripView() {
@@ -46,7 +47,7 @@ export function TripView() {
 
   const content = useMemo<MapContent | undefined>(() => {
     if (!setup || !ride) return undefined;
-    const color = `#${net.routes[ride.route]!.color}`;
+    const color = routeColor(net.routes[ride.route]!);
     const last = setup.stops.length - 1;
     // Boarded at the start flag, left at the chequered one, on the bus's side of the road.
     const ends = [setup.shape[0], setup.shape.at(-1)];
@@ -200,7 +201,7 @@ export function TripView() {
             </div>
           )}
 
-          <ol className="trip__stops" style={{ ['--route' as string]: `#${route.color}` }}>
+          <ol className="trip__stops" style={{ ['--route' as string]: routeColor(route) }}>
             {setup.stops.map((s, i) => {
               const passed = state ? i < state.nextStop : i === 0;
               const isNext = state ? i === state.nextStop : i === 1;

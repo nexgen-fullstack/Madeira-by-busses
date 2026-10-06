@@ -17,6 +17,7 @@ import { lineUrl } from '../lib/site.ts';
 import { useLineSheet } from '../lib/useLineSheet.ts';
 import { useNow } from '../lib/useNow.ts';
 import { useNetwork } from '../state/app.tsx';
+import { routeColor } from '../lib/color.ts';
 
 type PdfAction = 'save' | 'print' | 'share';
 type ImageAction = 'image' | 'imageShare';
@@ -319,7 +320,7 @@ export function LineDetail({ routeIndex }: { routeIndex: number }) {
 
       <section className="card">
         <h3 className="card__title">{t.t('lines.stops')}</h3>
-        <ol className="stop-line" style={{ ['--route' as string]: `#${line.color}` }}>
+        <ol className="stop-line" style={{ ['--route' as string]: routeColor(line) }}>
           {mainStops.map((s, i) => (
             <li key={`${s}-${i}`} className={s === stop ? 'is-chosen' : undefined}>
               <button type="button" onClick={() => navigate('stop', { ids: String(s) })}>

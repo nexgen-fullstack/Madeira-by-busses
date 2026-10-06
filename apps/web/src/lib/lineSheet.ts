@@ -4,6 +4,7 @@ import { clock, fullDate } from './format.ts';
 import { lineDirections, lineOf, type Direction } from './lines.ts';
 import { dayGroupLabel, groupWeek } from './printable.ts';
 import { FILE_PREFIX } from './site.ts';
+import { routeColor } from './color.ts';
 
 /**
  * A whole line on one sheet, as the operators print it at the bus station: for each kind
@@ -244,7 +245,7 @@ export function lineSheet(net: Network, t: I18n, route: number, from: string, pr
     formerly: r.formerly ? t.t('lines.formerly', { n: r.formerly }) : undefined,
     name: r.long,
     operator,
-    color: `#${r.color}`,
+    color: routeColor(r),
     days: groups
       .filter((g) => g.value.some((rows) => rows.length > 0))
       .map((g) => ({

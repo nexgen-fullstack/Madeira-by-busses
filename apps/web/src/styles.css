@@ -1465,6 +1465,70 @@ input[type='time'],
   }
 }
 
+/* Phones, a route on the map: the map takes the screen between the bars and the options
+   and steps lie in a sheet over it, pulled up and down by its handle. */
+@media (max-width: 899px) {
+  .app.app--sheet {
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas: 'top' 'map' 'tabs';
+  }
+  .app--sheet .panel {
+    grid-area: map;
+    align-self: end;
+    position: relative;
+    z-index: 6;
+    height: var(--sheet-h, 50%);
+    min-height: 120px;
+    padding-top: 0;
+    border-radius: 18px 18px 0 0;
+    background: var(--bg);
+    box-shadow: 0 -6px 24px rgb(0 0 0 / 18%);
+    transition: height 0.24s ease;
+    overscroll-behavior: contain;
+  }
+  .app--sheet .panel--dragging {
+    transition: none;
+  }
+  /* The map's own buttons along its bottom stay above the sheet while it is low. */
+  .app--sheet .layers,
+  .app--sheet .maplibregl-ctrl-bottom-left,
+  .app--sheet .maplibregl-ctrl-bottom-right {
+    bottom: calc(min(var(--sheet-h, 50%), 55%) + 6px);
+    transition: bottom 0.24s ease;
+  }
+}
+.sheet-handle {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: calc(100% + 32px);
+  height: 26px;
+  margin: 0 -16px 4px;
+  padding: 0;
+  border: 0;
+  background: var(--bg);
+  border-radius: 18px 18px 0 0;
+  cursor: grab;
+  touch-action: none;
+}
+.sheet-handle span {
+  width: 42px;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--border);
+}
+.sheet-handle:focus-visible span {
+  background: var(--brand);
+}
+@media (prefers-reduced-motion: reduce) {
+  .app--sheet .panel,
+  .app--sheet .layers {
+    transition: none;
+  }
+}
+
 /* The pin of a maps app, yellow and glossy like the logo's pin: destination, dropped pin,
    the spot being chosen. Pressed or chosen (and lifted while the map moves under it), it
    turns turquoise. */

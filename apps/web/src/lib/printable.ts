@@ -10,6 +10,7 @@ import type { I18n } from '../i18n.ts';
 import { fullDate } from './format.ts';
 import { directionStops, lineDirections, lineOf, type Direction } from './lines.ts';
 import { FILE_PREFIX } from './site.ts';
+import { routeColor } from './color.ts';
 
 /**
  * A line's timetable as it is printed for a bus stop: the departures from one
@@ -258,7 +259,7 @@ export function printableTimetable(
     formerly: route.formerly,
     name: route.long,
     operator,
-    color: `#${route.color}`,
+    color: routeColor(route),
     sections: sections.map((s) => s.section),
     basis,
     notes,

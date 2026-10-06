@@ -58,6 +58,18 @@ jobs:
             echo "::warning title=Road network not refreshed::No roads from Overpass; keeping the previous drive.bin."
             git checkout HEAD -- data/sources/osm/drive.bin || true
           fi
+      - name: Streets and house numbers
+        run: |
+          if [ -f data/sources/osm/addresses-raw.json ]; then
+            pnpm --filter @madeirabus/pipeline cli addresses \
+              --osm ../../data/sources/osm/addresses-raw.json \
+              --places ../../data/sources/osm/places.json \
+              --out ../../data/sources/osm/addresses.json
+            rm data/sources/osm/addresses-raw.json
+          else
+            echo "::warning title=Addresses not refreshed::No addresses from Overpass; keeping the previous addresses.json."
+            git checkout HEAD -- data/sources/osm/addresses.json || true
+          fi
       - name: Summary
         run: |
           {

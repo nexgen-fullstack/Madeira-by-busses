@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Check, Flag, MapPin, X } from 'lucide-react';
 import {
   GeolocateControl,
@@ -38,6 +38,7 @@ import {
   type MapLayers,
 } from '../lib/mapStyles.ts';
 import { pointName } from '../lib/pointName.ts';
+import { useBack } from '../lib/back.ts';
 import { navigate } from '../lib/router.ts';
 import { useApp } from '../state/app.tsx';
 import { LayerSwitcher } from './LayerSwitcher.tsx';
@@ -666,9 +667,15 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
         filter: ['!=', ['get', 'label'], ''],
         layout: {
           'symbol-placement': 'line',
-          'symbol-spacing': ['interpolate', ['linear'], ['zoom'], 10, 260, 14, 200],
+          // Closer together from afar, so each bus of the way has its plate on the island.
+          'symbol-spacing': ['interpolate', ['linear'], ['zoom'], 9, 70, 12, 140, 14, 200],
+          // Level plates may sit on a winding mountain road (the default asks for a straight one).
+          'text-max-angle': 180,
+          // Stop names and flags do not push the number off; they keep clear of it instead.
+          'text-allow-overlap': true,
+          'icon-allow-overlap': true,
           'text-field': ['get', 'label'],
-          'text-size': ['interpolate', ['linear'], ['zoom'], 10, 9, 13, 10.5, 15, 12],
+          'text-size': ['interpolate', ['linear'], ['zoom'], 9, 10, 13, 11, 15, 12],
           'text-font': ['Noto Sans Bold'],
           'text-rotation-alignment': 'viewport',
           'text-pitch-alignment': 'viewport',
@@ -805,6 +812,15 @@ export default function MapView({ className }: { className?: string }) {
   const [lineChoice, setLineChoice] = useState<
     { routes: { route: number; pattern?: number; board?: number }[]; at: LatLon } | undefined
   >();
+  // The phone's back button closes a line's card (or the choice of lines) first.
+  useBack(
+    useCallback(() => {
+      if (!linePick && !lineChoice) return false;
+      setLinePick(undefined);
+      setLineChoice(undefined);
+      return true;
+    }, [linePick, lineChoice]),
+  );
   const transitControl = useRef<TransitControl | null>(null);
   const transitRef = useRef<{ data?: TransitData; on: boolean }>({ on: false });
   // A chosen route is shown alone: every stop and line step aside until asked for again.
@@ -958,7 +974,14 @@ export default function MapView({ className }: { className?: string }) {
       if (bounds && !moved && !pickRef.current) fitTo(map, bounds, 0);
     });
     ro.observe(container.current);
+    // The sheet over the map on a phone came to rest at another height.
+    const onInset = () => {
+      const { bounds, moved } = fitted.current;
+      if (bounds && !moved && !pickRef.current) fitTo(map, bounds, 300);
+    };
+    window.addEventListener('mb-map-inset', onInset);
     return () => {
+      window.removeEventListener('mb-map-inset', onInset);
       ro.disconnect();
       map.remove();
       mapRef.current = null;
@@ -1261,9 +1284,20 @@ interface Fit {
 }
 
 function fitTo(map: MapLibreMap, bounds: LngLatBounds, duration: number) {
-  // Clear of the buttons down the right side and of the pin's height at the top.
+  // Clear of the buttons down the right side, of the pin's height at the top and, on a
+  // phone, of the sheet over the map's bottom.
+  const sheet = parseFloat(
+    getComputedStyle(map.getContainer()).getPropertyValue('--map-bottom-inset'),
+  );
+  const bottom = 40 + (Number.isFinite(sheet) ? sheet : 0);
+  const room = map.getContainer().clientHeight;
   map.fitBounds(bounds, {
-    padding: { top: 56, bottom: 40, left: 40, right: 64 },
+    padding: {
+      top: 56,
+      bottom: Math.min(bottom, Math.max(40, room - 56 - 80)),
+      left: 40,
+      right: 64,
+    },
     maxZoom: 15.5,
     duration,
   });
