@@ -468,3 +468,118 @@ describe('itineraryCost', () => {
     expect(arrivals).toEqual([...arrivals].sort((a, b) => a - b));
   });
 });
+
+describe('more bus, less walking', () => {
+  /**
+   * The 207 down from X past Cruz, on the hill, to Ribeira Brava's bus station, 370 m
+   * on; the 222 on to Tabua from the station. On foot from Cruz one is at the station
+   * sooner than the 207, and both make the 222.
+   */
+  function ribeiraBrava() {
+    const time = (h: number, m: number) =>
+      `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:00`;
+    const feed = parseGtfs({
+      'agency.txt': toCsv(
+        ['agency_id', 'agency_name', 'agency_url', 'agency_timezone'],
+        [['T', 'Test', 'https://example.com', 'Atlantic/Madeira']],
+      ),
+      'stops.txt': toCsv(
+        ['stop_id', 'stop_name', 'stop_lat', 'stop_lon', 'zone_id'],
+        [
+          ['X', 'Campanário', 32.6667, -17.03, 'RBR'],
+          ['C', 'Cruz Ribeira Brava', 32.671482, -17.060921, 'RBR'],
+          ['S', 'Estacao Ribeira Brava', 32.673209, -17.064304, 'RBR'],
+          ['T', 'Reta Tabua', 32.6779, -17.0781, 'RBR'],
+        ],
+      ),
+      'routes.txt': toCsv(
+        ['route_id', 'agency_id', 'route_short_name', 'route_long_name', 'route_type'],
+        [
+          ['207', 'T', '207', 'Funchal - Ribeira Brava', 3],
+          ['222', 'T', '222', 'Ribeira Brava - Furna', 3],
+        ],
+      ),
+      'trips.txt': toCsv(
+        ['route_id', 'service_id', 'trip_id'],
+        [
+          ['207', 'WK', 'a'],
+          ['222', 'WK', 'b'],
+        ],
+      ),
+      'stop_times.txt': toCsv(
+        ['trip_id', 'arrival_time', 'departure_time', 'stop_id', 'stop_sequence'],
+        [
+          ['a', time(7, 20), time(7, 20), 'X', 1],
+          ['a', time(7, 42), time(7, 42), 'C', 2],
+          ['a', time(7, 50), time(7, 50), 'S', 3],
+          ['b', time(8, 0), time(8, 0), 'S', 1],
+          ['b', time(8, 6), time(8, 6), 'T', 2],
+        ],
+      ),
+      'calendar.txt': toCsv(
+        [
+          'service_id',
+          'monday',
+          'tuesday',
+          'wednesday',
+          'thursday',
+          'friday',
+          'saturday',
+          'sunday',
+          'start_date',
+          'end_date',
+        ],
+        [['WK', 1, 1, 1, 1, 1, 0, 0, '20260101', '20271231']],
+      ),
+    });
+    const net = new Network(
+      buildBundle([{ feed, source: { name: 'test' } }], { demo: true, fares: SIGA_FARES_2026 })
+        .bundle,
+    );
+    const stop = (id: string) => {
+      const i = net.stops.findIndex((s) => s.id === id);
+      return { ...net.stops[i]!, name: net.stops[i]!.name, stops: [i] };
+    };
+    return { net, stop };
+  }
+
+  it('stays on the bus to the station the next one leaves from', () => {
+    const { net, stop } = ribeiraBrava();
+    const [best] = new Planner(net).plan({
+      from: stop('X'),
+      to: stop('T'),
+      date: WEEKDAY,
+      time: at(7, 0),
+      options: { stopWalk: 0, longWalk: 0 },
+    });
+    const legs = best!.legs;
+    // The 207 to the station and the 222 from there, no 370 m down the hill on foot.
+    expect(legs.map((l) => (l.kind === 'ride' ? net.routes[l.route]!.short : 'walk'))).toEqual([
+      '207',
+      '222',
+    ]);
+    const [first, second] = legs as RideLeg[];
+    expect(first!.to.name).toBe('Estacao Ribeira Brava');
+    expect(first!.end).toBe(at(7, 50));
+    expect(second!.from.stop).toBe(first!.to.stop);
+    expect(second!.wait).toBe(10 * 60);
+    expect(best!.walkDistance).toBe(0);
+    expect(best!.arrive).toBe(at(8, 6));
+  });
+
+  it('still walks the last bit when riding on would get there later', () => {
+    const { net, stop } = ribeiraBrava();
+    // Right by the station: on foot from Cruz at 07:48, by the 207 only at 07:50.
+    const station = stop('S');
+    const results = new Planner(net).plan({
+      from: stop('X'),
+      to: { lat: station.lat, lon: station.lon, name: 'By the station' },
+      date: WEEKDAY,
+      time: at(7, 0),
+      options: { stopWalk: 0, longWalk: 0 },
+    });
+    const ride = results[0]!.legs.find((l): l is RideLeg => l.kind === 'ride')!;
+    expect(ride.to.name).toBe('Cruz Ribeira Brava');
+    expect(results[0]!.arrive).toBeLessThan(at(7, 50));
+  });
+});

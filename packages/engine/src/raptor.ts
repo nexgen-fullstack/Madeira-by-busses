@@ -180,6 +180,8 @@ const LONG_ACCESS = 10 * 60;
 const SHORT_ACCESS = 6 * 60;
 /** How much less on foot a way with another bus must ask for to be offered (s). */
 const LESS_WALK = 5 * 60;
+/** Stops this far apart (m, as the crow flies) may be a change of bus on foot. */
+const TRANSFER_LOOK = 600;
 
 export class Planner {
   private walk?: WalkGraph;
@@ -243,7 +245,11 @@ export class Planner {
       best = { ...better };
       delete best.alternative;
     }
-    return [...(best ? [best] : []), ...others.sort(byArrival)].map((it) => this.withPaths(it));
+    const seen = new Set<string>();
+    return [...(best ? [best] : []), ...others.sort(byArrival)]
+      .map((it) => this.refine(it, request, ctx.opts))
+      .filter((it) => !seen.has(it.key) && Boolean(seen.add(it.key)))
+      .map((it) => this.withPaths(it));
   }
 
   /**
@@ -533,7 +539,7 @@ export class Planner {
       }
     }
     const last = found.sort((a, b) => b.depart - a.depart || a.arrive - b.arrive)[0];
-    return last && this.withPaths(last);
+    return last && this.withPaths(this.refine(last, request, ctx.opts));
   }
 
   private context(request: PlanRequest) {
@@ -820,10 +826,7 @@ export class Planner {
       }
     }
 
-    const stopRef = (i: number): PlaceRef => {
-      const st = net.stops[i]!;
-      return { name: st.name, lat: st.lat, lon: st.lon, stop: i };
-    };
+    const stopRef = (i: number) => this.stopRef(i);
     const fromRef: PlaceRef = {
       name: request.from.name ?? '',
       lat: request.from.lat,
@@ -884,46 +887,11 @@ export class Planner {
         clock += step.seconds;
         continue;
       }
-      const dp = day.patterns[step.pattern]!;
-      const p = net.patterns[step.pattern]!;
-      const start = net.departureAt(step.pattern, dp, step.trip, step.board);
-      const end = net.arrivalAt(step.pattern, dp, step.trip, step.alight);
-      const rideStops: RideStop[] = [];
-      for (let i = step.board; i <= step.alight; i++) {
-        rideStops.push({
-          stop: p.stops[i]!,
-          arr: net.arrivalAt(step.pattern, dp, step.trip, i),
-          dep: net.departureAt(step.pattern, dp, step.trip, i),
-        });
-      }
-      const wait = Math.max(0, start - clock);
-      const leg: RideLeg = {
-        kind: 'ride',
-        pattern: step.pattern,
-        route: p.route,
-        dayTrip: step.trip,
-        tripId: p.trips[dp.trip[step.trip]!]![3],
-        headsign: p.headsign,
-        from: stopRef(p.stops[step.board]!),
-        to: stopRef(p.stops[step.alight]!),
-        boardPos: step.board,
-        alightPos: step.alight,
-        start,
-        end,
-        stops: rideStops,
-        wait,
-      };
-      if (step.trip + 1 < dp.start.length) {
-        leg.nextDeparture = net.departureAt(step.pattern, dp, step.trip + 1, step.board);
-      }
-      if (prevRideEnd !== undefined) {
-        const buffer = start - clock;
-        const gap = leg.nextDeparture === undefined ? Infinity : leg.nextDeparture - start;
-        leg.risky = buffer < Math.max(180, opts.minTransferTime + 60) && gap > 30 * 60;
-      }
+      const leg = this.ride(day, step.pattern, step.trip, step.board, step.alight, clock);
+      if (prevRideEnd !== undefined) leg.risky = isRisky(leg, clock, opts);
       legs.push(leg);
-      clock = end;
-      prevRideEnd = end;
+      clock = leg.end;
+      prevRideEnd = leg.end;
     }
 
     if (egress.distance > 0) {
@@ -945,6 +913,60 @@ export class Planner {
     }
     clock += egress.seconds;
 
+    return this.summary(legs, depart, clock);
+  }
+
+  private stopRef(i: number): PlaceRef {
+    const st = this.net.stops[i]!;
+    return { name: st.name, lat: st.lat, lon: st.lon, stop: i };
+  }
+
+  /** A ride on day trip `trip` of a pattern from one of its stops to a later one. */
+  private ride(
+    day: DayTimetable,
+    pattern: number,
+    trip: number,
+    board: number,
+    alight: number,
+    ready: number,
+  ): RideLeg {
+    const net = this.net;
+    const dp = day.patterns[pattern]!;
+    const p = net.patterns[pattern]!;
+    const start = net.departureAt(pattern, dp, trip, board);
+    const stops: RideStop[] = [];
+    for (let i = board; i <= alight; i++) {
+      stops.push({
+        stop: p.stops[i]!,
+        arr: net.arrivalAt(pattern, dp, trip, i),
+        dep: net.departureAt(pattern, dp, trip, i),
+      });
+    }
+    const leg: RideLeg = {
+      kind: 'ride',
+      pattern,
+      route: p.route,
+      dayTrip: trip,
+      tripId: p.trips[dp.trip[trip]!]![3],
+      headsign: p.headsign,
+      from: this.stopRef(p.stops[board]!),
+      to: this.stopRef(p.stops[alight]!),
+      boardPos: board,
+      alightPos: alight,
+      start,
+      end: net.arrivalAt(pattern, dp, trip, alight),
+      stops,
+      wait: Math.max(0, start - ready),
+    };
+    if (trip + 1 < dp.start.length) {
+      leg.nextDeparture = net.departureAt(pattern, dp, trip + 1, board);
+    }
+    return leg;
+  }
+
+  /** An itinerary of these legs, leaving at `depart` and there at `arrive`. */
+  private summary(legs: Leg[], depart: number, arrive: number): Itinerary {
+    const net = this.net;
     const rides = legs.filter((l): l is RideLeg => l.kind === 'ride');
     const fareRides: FareRide[] = rides.map((l) => ({
       aerobus: Boolean(net.routes[l.route]!.aerobus),
@@ -955,14 +977,275 @@ export class Planner {
       key: rides.map((l) => `${l.tripId}:${l.boardPos}-${l.alightPos}`).join('|'),
       legs,
       depart,
-      arrive: clock,
-      duration: clock - depart,
+      arrive,
+      duration: arrive - depart,
       rides: rides.length,
       transfers: Math.max(0, rides.length - 1),
       walkDistance: legs.reduce((acc, l) => acc + (l.kind === 'walk' ? l.distance : 0), 0),
       waitTime: rides.slice(1).reduce((acc, l) => acc + l.wait, 0),
       fare: quoteFare(fareRides, net.bundle.fares),
       risky: rides.some((l) => l.risky),
+    };
+  }
+
+  /** Walking between two stops (undefined when further than `max` m along the streets). */
+  private stopWalk(
+    from: number,
+    to: readonly number[],
+    opts: PlanOptions,
+    max: number,
+  ): ({ distance: number; seconds: number } | undefined)[] {
+    const a = this.net.stops[from]!;
+    const walk = this.walk;
+    if (!walk) {
+      return to.map((t) => {
+        if (t === from) return { distance: 0, seconds: 0 };
+        const d = haversine(a, this.net.stops[t]!);
+        return d * 1.25 > max
+          ? undefined
+          : { distance: Math.round(d), seconds: walkSeconds(d, opts.walkSpeed) };
+      });
+    }
+    const hits = this.hits();
+    const start = hits[from];
+    const found = start
+      ? walk.distances(
+          start,
+          to.map((t) => hits[t] ?? start),
+          max,
+        )
+      : [];
+    return to.map((t, i) => {
+      if (t === from) return { distance: 0, seconds: 0 };
+      const d = hits[t] ? found[i] : undefined;
+      return d
+        ? { distance: Math.round(d.length), seconds: Math.round(d.cost / opts.walkSpeed) }
+        : undefined;
+    });
+  }
+
+  /** Walking between a place and each of some stops (either way; undefined beyond `max` m). */
+  private placeWalk(
+    place: LatLon,
+    to: readonly number[],
+    opts: PlanOptions,
+    max: number,
+  ): ({ distance: number; seconds: number } | undefined)[] {
+    const walk = this.walk;
+    const start = walk?.snap(place, 400);
+    if (!walk || !start) {
+      return to.map((t) => {
+        const d = haversine(place, this.net.stops[t]!);
+        return d * 1.25 > max
+          ? undefined
+          : { distance: Math.round(d), seconds: walkSeconds(d, opts.walkSpeed) };
+      });
+    }
+    const hits = this.hits();
+    const found = walk.distances(
+      start,
+      to.map((t) => hits[t] ?? start),
+      max,
+    );
+    return to.map((t, i) => {
+      const d = hits[t] ? found[i] : undefined;
+      return d
+        ? { distance: Math.round(d.length), seconds: Math.round(d.cost / opts.walkSpeed) }
+        : undefined;
+    });
+  }
+
+  /**
+   * More bus and less walking where it costs no time: of the stops of the same
+   * trip, a bus is left where the walk to the next one (or to the destination)
+   * is shortest, and boarded where the walk to it is, as long as the next bus
+   * is still caught, the destination reached no later and the first bus not
+   * left for earlier. The 207 goes on to Ribeira Brava's bus station, where
+   * the 222 leaves: stay on it rather than walk there from the hill above.
+   * Only the trips' own stops, as their timetables give them.
+   */
+  private refine(it: Itinerary, request: PlanRequest, opts: PlanOptions): Itinerary {
+    if (it.rides === 0) return it;
+    const net = this.net;
+    const day = net.timetable(request.date);
+    const legs = it.legs.slice();
+    let changed = false;
+    const rideAt = (i: number) => (legs[i]?.kind === 'ride' ? (legs[i] as RideLeg) : undefined);
+    for (let i = 0; i < legs.length; i++) {
+      const leg = rideAt(i);
+      if (!leg) continue;
+      const walkAfter = legs[i + 1]?.kind === 'walk' ? (legs[i + 1] as WalkLeg) : undefined;
+      const nextIndex = walkAfter ? i + 2 : i + 1;
+      const next = rideAt(nextIndex);
+      const p = net.patterns[leg.pattern]!;
+      const dp = day.patterns[leg.pattern]!;
+      const arrAt = (pos: number) => net.arrivalAt(leg.pattern, dp, leg.dayTrip, pos);
+      const later = (from: number) => {
+        const out: number[] = [];
+        for (let pos = leg.boardPos + 1; pos < p.stops.length; pos++) out.push(pos);
+        return out.filter((pos) => pos !== from);
+      };
+      const current = walkAfter?.distance ?? 0;
+      if (next && current > 0) {
+        // On to the next bus: where this one is left and that one boarded, the shortest walk.
+        const np = net.patterns[next.pattern]!;
+        const ndp = day.patterns[next.pattern]!;
+        const boards: number[] = [];
+        for (let pos = 0; pos < next.alightPos; pos++) boards.push(pos);
+        let best: { a: number; b: number; walk: { distance: number; seconds: number } } | undefined;
+        for (const a of [leg.alightPos, ...later(leg.alightPos)]) {
+          const s = p.stops[a]!;
+          const near = boards.filter(
+            (b) => haversine(net.stops[s]!, net.stops[np.stops[b]!]!) <= TRANSFER_LOOK,
+          );
+          if (near.length === 0) continue;
+          const walks = this.stopWalk(
+            s,
+            near.map((b) => np.stops[b]!),
+            opts,
+            TRANSFER_LOOK * 1.5,
+          );
+          near.forEach((b, k) => {
+            const w = walks[k];
+            if (!w) return;
+            const same = np.stops[b] === s;
+            const slack = same ? opts.minTransferTime : opts.walkTransferSlack;
+            if (
+              arrAt(a) + w.seconds + slack >
+              net.departureAt(next.pattern, ndp, next.dayTrip, b)
+            ) {
+              return;
+            }
+            if (!best || w.distance < best.walk.distance) best = { a, b, walk: w };
+          });
+        }
+        if (best && best.walk.distance < current) {
+          const ride = this.ride(
+            day,
+            leg.pattern,
+            leg.dayTrip,
+            leg.boardPos,
+            best.a,
+            leg.start - leg.wait,
+          );
+          const onward = this.ride(
+            day,
+            next.pattern,
+            next.dayTrip,
+            best.b,
+            next.alightPos,
+            ride.end,
+          );
+          if (leg.risky !== undefined) ride.risky = leg.risky;
+          const between: Leg[] =
+            best.walk.distance === 0 && np.stops[best.b] === p.stops[best.a]
+              ? []
+              : [
+                  {
+                    kind: 'walk',
+                    from: ride.to,
+                    to: onward.from,
+                    start: ride.end,
+                    end: ride.end + best.walk.seconds,
+                    distance: best.walk.distance,
+                  },
+                ];
+          onward.wait = Math.max(0, onward.start - (ride.end + best.walk.seconds));
+          onward.risky = isRisky(onward, ride.end + best.walk.seconds, opts);
+          legs.splice(i, nextIndex - i + 1, ride, ...between, onward);
+          changed = true;
+        }
+        continue;
+      }
+      if (!next && walkAfter && i + 2 === legs.length && !walkAfter.to.stop) {
+        // The last bus: left where the walk to the destination is shortest, there no later.
+        const options = [leg.alightPos, ...later(leg.alightPos)];
+        const walks = this.placeWalk(
+          walkAfter.to,
+          options.map((a) => p.stops[a]!),
+          opts,
+          opts.maxAccessWalk * STREET_ALLOWANCE,
+        );
+        let best: { a: number; walk: { distance: number; seconds: number } } | undefined;
+        options.forEach((a, k) => {
+          const w = walks[k];
+          if (!w || arrAt(a) + w.seconds > it.arrive) return;
+          if (!best || w.distance < best.walk.distance) best = { a, walk: w };
+        });
+        if (best && best.walk.distance < walkAfter.distance) {
+          const ride = this.ride(
+            day,
+            leg.pattern,
+            leg.dayTrip,
+            leg.boardPos,
+            best.a,
+            leg.start - leg.wait,
+          );
+          if (leg.risky !== undefined) ride.risky = leg.risky;
+          legs.splice(i, 2, ride, {
+            kind: 'walk',
+            from: ride.to,
+            to: walkAfter.to,
+            start: ride.end,
+            end: ride.end + best.walk.seconds,
+            distance: best.walk.distance,
+          });
+          changed = true;
+        }
+      }
+    }
+    // The first bus: boarded where the walk to it is shortest, leaving home no earlier.
+    const access = legs[0]?.kind === 'walk' ? (legs[0] as WalkLeg) : undefined;
+    const first = rideAt(1);
+    if (access && first && !access.from.stop && access.distance > 0) {
+      const p = net.patterns[first.pattern]!;
+      const dp = day.patterns[first.pattern]!;
+      const options: number[] = [];
+      for (let pos = 0; pos < first.alightPos; pos++) options.push(pos);
+      const walks = this.placeWalk(
+        access.from,
+        options.map((b) => p.stops[b]!),
+        opts,
+        opts.maxAccessWalk * STREET_ALLOWANCE,
+      );
+      let best: { b: number; walk: { distance: number; seconds: number } } | undefined;
+      options.forEach((b, k) => {
+        const w = walks[k];
+        if (!w) return;
+        const leave = net.departureAt(first.pattern, dp, first.dayTrip, b) - w.seconds;
+        if (leave < access.start) return;
+        if (!best || w.distance < best.walk.distance) best = { b, walk: w };
+      });
+      if (best && best.walk.distance < access.distance) {
+        const ride = this.ride(day, first.pattern, first.dayTrip, best.b, first.alightPos, 0);
+        ride.wait = 0;
+        legs.splice(
+          0,
+          2,
+          {
+            kind: 'walk',
+            from: access.from,
+            to: ride.from,
+            start: ride.start - best.walk.seconds,
+            end: ride.start,
+            distance: best.walk.distance,
+          },
+          ride,
+        );
+        changed = true;
+      }
+    }
+    if (!changed) return it;
+    const refined = this.summary(legs, legs[0]!.start, legs[legs.length - 1]!.end);
+    // Never dearer, never later.
+    const dearer =
+      (refined.fare.cash ?? 0) > (it.fare.cash ?? 0) ||
+      (refined.fare.knownGiro ?? 0) > (it.fare.knownGiro ?? 0);
+    if (dearer || refined.arrive > it.arrive) return it;
+    return {
+      ...refined,
+      ...(it.alternative ? { alternative: true } : {}),
+      ...(it.lessWalking ? { lessWalking: true } : {}),
     };
   }
 
@@ -1006,6 +1289,13 @@ export class Planner {
       risky: false,
     };
   }
+}
+
+/** A change of bus with a short buffer, the next bus long after: worth a warning. */
+function isRisky(leg: RideLeg, ready: number, opts: PlanOptions): boolean {
+  const buffer = leg.start - ready;
+  const gap = leg.nextDeparture === undefined ? Infinity : leg.nextDeparture - leg.start;
+  return buffer < Math.max(180, opts.minTransferTime + 60) && gap > 30 * 60;
 }
 
 /** A walk only, leaving `by` seconds later. */
