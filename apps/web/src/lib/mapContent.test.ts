@@ -127,7 +127,17 @@ describe('a route on the map', () => {
   it('is neon yellow with arrows the way the bus goes', () => {
     const c = itineraryContent(net, it207);
     expect(c.lines).toEqual([
-      { coords: shapes[0], color: WAY_YELLOW, width: RIDE_WIDTH, label: '207', arrows: true },
+      {
+        coords: shapes[0],
+        color: WAY_YELLOW,
+        width: RIDE_WIDTH,
+        label: '207',
+        arrows: true,
+        // Tapped, its card: which bus, and the next ones from where it is boarded.
+        route: 7,
+        pattern: 0,
+        board: 0,
+      },
     ]);
   });
 

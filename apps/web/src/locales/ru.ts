@@ -327,4 +327,11 @@ export const ru: Dict = {
   'sheet.download': 'Скачать картинку',
   'sheet.saved': 'Картинка сохранена',
   'sheet.failed': 'Не удалось создать картинку',
+  'lineCard.next': 'Ближайшие от «{stop}»',
+  'lineCard.none': 'Сегодня отсюда уже не идёт',
+  'lineCard.making': 'Рисую расписание…',
+  'lineCard.save': 'Сохранить в галерею',
+  'lineCard.share': 'Поделиться',
+  'lineCard.open': 'Открыть линию полностью',
+  'lineCard.which': 'Какая линия?',
 };

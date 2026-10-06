@@ -40,6 +40,7 @@ import { pointName } from '../lib/pointName.ts';
 import { navigate } from '../lib/router.ts';
 import { useApp } from '../state/app.tsx';
 import { LayerSwitcher } from './LayerSwitcher.tsx';
+import { LineCard, LineChooser, type LinePick } from './LineCard.tsx';
 import { MapContentContext } from './mapContext.tsx';
 
 // MapLibre computes its worker URL at runtime, which bundlers cannot see; point it at the bundled worker.
@@ -151,6 +152,9 @@ function toGeoJson(content: MapContent) {
           arrows: Boolean(l.arrows),
           side: Boolean(l.side),
           note: l.note ? JSON.stringify(l.note) : '',
+          route: l.route ?? -1,
+          pattern: l.pattern ?? -1,
+          board: l.board ?? -1,
         },
         geometry: { type: 'LineString' as const, coordinates: l.coords.map((c) => [c.lon, c.lat]) },
       })),
@@ -319,6 +323,14 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
       'line-opacity': 0.7,
     },
   });
+  // A wide band along each line, invisible, for a finger to find it by.
+  map.addLayer({
+    id: 'mb-net-line-hit',
+    type: 'line',
+    source: 'mb-net-lines',
+    layout: { 'line-cap': 'round', visibility: 'none' },
+    paint: { 'line-color': '#000000', 'line-width': HIT_WIDTH, 'line-opacity': 0 },
+  });
   map.addLayer({
     id: 'mb-net-stop',
     type: 'circle',
@@ -358,6 +370,14 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
       'line-width': ['get', 'width'],
       'line-offset': sideOffset,
     },
+  });
+  map.addLayer({
+    id: 'mb-line-hit',
+    type: 'line',
+    source: 'mb-lines',
+    filter: ['>=', ['get', 'route'], 0],
+    layout: { 'line-cap': 'round' },
+    paint: { 'line-color': '#000000', 'line-width': HIT_WIDTH, 'line-opacity': 0 },
   });
   // A walk: a faint band along the pavements with small bright dots close together on it.
   map.addLayer({
@@ -630,7 +650,39 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
   }
 }
 
-const TRANSIT_LAYERS = ['mb-net-line', 'mb-net-stop', 'mb-net-label'];
+const TRANSIT_LAYERS = ['mb-net-line', 'mb-net-line-hit', 'mb-net-stop', 'mb-net-label'];
+/** How wide a line is to a finger (px): easy to tap on a phone. */
+const HIT_WIDTH = 22;
+
+/**
+ * The different lines among tapped line features, each number once (its ways and
+ * variants are the same bus to the person tapping; the card tells which way), in the
+ * order of their numbers.
+ */
+function tappedLines(
+  features: { layer: { id: string }; properties: Record<string, unknown> | null }[],
+  net: Network | undefined,
+): { route: number; pattern?: number; board?: number }[] {
+  const out = new Map<string, { route: number; pattern?: number; board?: number }>();
+  for (const f of features) {
+    if (f.layer.id !== 'mb-line-hit' && f.layer.id !== 'mb-net-line-hit') continue;
+    const route = Number(f.properties?.route ?? -1);
+    if (!(route >= 0)) continue;
+    const pattern = Number(f.properties?.pattern ?? -1);
+    const board = Number(f.properties?.board ?? -1);
+    const key = net?.routes[route]?.short ?? String(route);
+    if (out.has(key)) continue;
+    out.set(key, {
+      route,
+      ...(pattern >= 0 ? { pattern } : {}),
+      ...(board >= 0 ? { board } : {}),
+    });
+  }
+  const number = (r: number) => net?.routes[r]?.short ?? '';
+  return [...out.values()].sort((a, b) =>
+    number(a.route).localeCompare(number(b.route), undefined, { numeric: true }),
+  );
+}
 
 type TransitData = ReturnType<typeof transitGeoJson>;
 
@@ -682,6 +734,11 @@ export default function MapView({ className }: { className?: string }) {
   const shownStyle = useRef(`${layers.base}:fallback`);
   const [picked, setPicked] = useState<PickedPlace | undefined>();
   const [note, setNote] = useState<LineNote | undefined>();
+  // A line tapped: its card, or a short list when several lie under the finger.
+  const [linePick, setLinePick] = useState<LinePick | undefined>();
+  const [lineChoice, setLineChoice] = useState<
+    { routes: { route: number; pattern?: number; board?: number }[]; at: LatLon } | undefined
+  >();
   const transitControl = useRef<TransitControl | null>(null);
   const transitRef = useRef<{ data?: TransitData; on: boolean }>({ on: false });
   // A chosen route is shown alone: every stop and line step aside until asked for again.
@@ -768,10 +825,29 @@ export default function MapView({ className }: { className?: string }) {
       const run = features.find((f) => f.layer.id.startsWith('mb-line') && f.properties?.note);
       if (run) {
         setPicked(undefined);
+        setLinePick(undefined);
+        setLineChoice(undefined);
         setNote(JSON.parse(String(run.properties.note)) as LineNote);
         return;
       }
       setNote(undefined);
+      // A bus's line: its card (which one, when several are under the finger).
+      const lines = tappedLines(features, netRef.current);
+      if (lines.length > 0) {
+        const at = { lat: e.lngLat.lat, lon: e.lngLat.lng };
+        setPicked(undefined);
+        if (lines.length === 1) {
+          const [only] = lines;
+          setLineChoice(undefined);
+          setLinePick({ route: only!.route, pattern: only!.pattern, stop: only!.board, at });
+        } else {
+          setLinePick(undefined);
+          setLineChoice({ routes: lines, at });
+        }
+        return;
+      }
+      setLinePick(undefined);
+      setLineChoice(undefined);
       const poi = features.find((f) => f.sourceLayer === 'poi' && f.properties?.name);
       if (poi && poi.geometry.type === 'Point') {
         const [lon, lat] = poi.geometry.coordinates as [number, number];
@@ -804,7 +880,7 @@ export default function MapView({ className }: { className?: string }) {
       const c = map.getCenter();
       setCenter({ lat: c.lat, lon: c.lng });
     });
-    for (const id of ['mb-point', 'mb-net-stop']) {
+    for (const id of ['mb-point', 'mb-net-stop', 'mb-line-hit', 'mb-net-line-hit']) {
       map.on('mouseenter', id, () => (map.getCanvas().style.cursor = 'pointer'));
       map.on('mouseleave', id, () => (map.getCanvas().style.cursor = ''));
     }
@@ -872,8 +948,12 @@ export default function MapView({ className }: { className?: string }) {
   useMarker(mapRef, ready, destination);
   // And on a place tapped or a pin dropped.
   useMarker(mapRef, ready, pick ? undefined : picked);
-  // A run tapped belongs to the line on the map; another one, another day, forget it.
-  useEffect(() => setNote(undefined), [content]);
+  // A run or a line tapped belongs to the map shown; another one, forget it.
+  useEffect(() => {
+    setNote(undefined);
+    setLinePick(undefined);
+    setLineChoice(undefined);
+  }, [content]);
 
   // Choosing a place: start where the field's place is, or near the other end of the trip.
   useEffect(() => {
@@ -984,6 +1064,20 @@ export default function MapView({ className }: { className?: string }) {
             </button>
           </div>
         </div>
+      )}
+      {linePick && !pick && <LineCard pick={linePick} onClose={() => setLinePick(undefined)} />}
+      {lineChoice && !pick && (
+        <LineChooser
+          routes={lineChoice.routes}
+          onClose={() => setLineChoice(undefined)}
+          onPick={(r) => {
+            const board = lineChoice.routes.find(
+              (x) => x.route === r.route && x.pattern === r.pattern,
+            )?.board;
+            setLinePick({ route: r.route, pattern: r.pattern, stop: board, at: lineChoice.at });
+            setLineChoice(undefined);
+          }}
+        />
       )}
       {picked && !pick && (
         <div className="place-card" role="dialog" aria-label={pickedLabel}>

@@ -300,4 +300,11 @@ export const fr: Dict = {
   'sheet.download': 'Télécharger l’image',
   'sheet.saved': 'Image enregistrée',
   'sheet.failed': 'Impossible de créer l’image',
+  'lineCard.next': 'Prochains départs de « {stop} »',
+  'lineCard.none': 'Plus de bus d’ici aujourd’hui',
+  'lineCard.making': 'Dessin de l’horaire…',
+  'lineCard.save': 'Enregistrer dans la galerie',
+  'lineCard.share': 'Partager',
+  'lineCard.open': 'Ouvrir toute la ligne',
+  'lineCard.which': 'Quelle ligne ?',
 };

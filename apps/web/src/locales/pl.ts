@@ -331,4 +331,11 @@ export const pl: Dict = {
   'sheet.download': 'Pobierz obrazek',
   'sheet.saved': 'Obrazek zapisany',
   'sheet.failed': 'Nie udało się utworzyć obrazka',
+  'lineCard.next': 'Najbliższe z „{stop}”',
+  'lineCard.none': 'Dziś stąd już nic nie odjeżdża',
+  'lineCard.making': 'Rysuję rozkład…',
+  'lineCard.save': 'Zapisz w galerii',
+  'lineCard.share': 'Udostępnij',
+  'lineCard.open': 'Otwórz całą linię',
+  'lineCard.which': 'Która linia?',
 };

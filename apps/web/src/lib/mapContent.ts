@@ -19,6 +19,11 @@ export interface MapLine {
   side?: boolean;
   /** Shown when the line is tapped: what it is and when it runs. */
   note?: LineNote;
+  /** The bus it is (route and pattern indices), for its card when tapped. */
+  route?: number;
+  pattern?: number;
+  /** The stop it is boarded at on a route: its card shows the next buses from there. */
+  board?: number;
 }
 
 export interface LineNote {
@@ -133,6 +138,9 @@ export function itineraryContent(
       width: RIDE_WIDTH,
       label: net.routes[leg.route]!.short,
       arrows: true,
+      route: leg.route,
+      pattern: leg.pattern,
+      board: leg.from.stop,
     });
     points.push({
       lat: start.lat,
@@ -313,6 +321,8 @@ export function routeContent(
           width: i === 0 ? WAY_WIDTH : RUN_WIDTH,
           arrows: true,
           side: true,
+          route: net.patterns[p]!.route,
+          pattern: p,
           ...(about ? { note: about } : {}),
         });
       }
@@ -350,7 +360,13 @@ export function networkContent(net: Network): MapContent {
   net.patterns.forEach((p, i) => {
     if (seen.has(p.shape)) return;
     seen.add(p.shape);
-    lines.push({ coords: net.lane(i), color: routeColor(net, p.route), width: 2.5 });
+    lines.push({
+      coords: net.lane(i),
+      color: routeColor(net, p.route),
+      width: 2.5,
+      route: p.route,
+      pattern: i,
+    });
   });
   return {
     lines,
@@ -389,7 +405,7 @@ export function transitGeoJson(net: Network) {
     return [
       {
         type: 'Feature' as const,
-        properties: { color: routeColor(net, p.route) },
+        properties: { color: routeColor(net, p.route), route: p.route, pattern: i },
         geometry: {
           type: 'LineString' as const,
           coordinates: net.lane(i).map((c) => [c.lon, c.lat]),

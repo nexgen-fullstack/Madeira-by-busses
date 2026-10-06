@@ -331,6 +331,13 @@ export const uk = {
   'sheet.download': 'Завантажити картинку',
   'sheet.saved': 'Картинку збережено',
   'sheet.failed': 'Не вдалося створити картинку',
+  'lineCard.next': 'Найближчі від «{stop}»',
+  'lineCard.none': 'Сьогодні звідси вже не їде',
+  'lineCard.making': 'Малюю розклад…',
+  'lineCard.save': 'Зберегти в галерею',
+  'lineCard.share': 'Поділитися',
+  'lineCard.open': 'Відкрити лінію повністю',
+  'lineCard.which': 'Яка лінія?',
 } satisfies Record<string, Entry>;
 
 export type Key = keyof typeof uk;

@@ -297,4 +297,11 @@ export const it: Dict = {
   'sheet.download': 'Scarica immagine',
   'sheet.saved': 'Immagine salvata',
   'sheet.failed': 'Impossibile creare l’immagine',
+  'lineCard.next': 'Prossimi da «{stop}»',
+  'lineCard.none': 'Oggi non partono più autobus da qui',
+  'lineCard.making': 'Disegno l’orario…',
+  'lineCard.save': 'Salva nella galleria',
+  'lineCard.share': 'Condividi',
+  'lineCard.open': 'Apri tutta la linea',
+  'lineCard.which': 'Quale linea?',
 };

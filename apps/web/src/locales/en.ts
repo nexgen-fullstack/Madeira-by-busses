@@ -296,4 +296,11 @@ export const en: Dict = {
   'sheet.download': 'Download picture',
   'sheet.saved': 'Picture saved',
   'sheet.failed': 'Could not make the picture',
+  'lineCard.next': 'Next from «{stop}»',
+  'lineCard.none': 'No more buses from here today',
+  'lineCard.making': 'Drawing the timetable…',
+  'lineCard.save': 'Save to gallery',
+  'lineCard.share': 'Share',
+  'lineCard.open': 'Open the whole line',
+  'lineCard.which': 'Which line?',
 };

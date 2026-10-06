@@ -328,4 +328,11 @@ export const cs: Dict = {
   'sheet.download': 'Stáhnout obrázek',
   'sheet.saved': 'Obrázek uložen',
   'sheet.failed': 'Obrázek se nepodařilo vytvořit',
+  'lineCard.next': 'Nejbližší ze zastávky „{stop}“',
+  'lineCard.none': 'Dnes odtud už nic nejede',
+  'lineCard.making': 'Kreslím jízdní řád…',
+  'lineCard.save': 'Uložit do galerie',
+  'lineCard.share': 'Sdílet',
+  'lineCard.open': 'Otevřít celou linku',
+  'lineCard.which': 'Která linka?',
 };

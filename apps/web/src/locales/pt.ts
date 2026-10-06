@@ -298,4 +298,11 @@ export const pt: Dict = {
   'sheet.download': 'Descarregar imagem',
   'sheet.saved': 'Imagem guardada',
   'sheet.failed': 'Não foi possível criar a imagem',
+  'lineCard.next': 'Próximos de «{stop}»',
+  'lineCard.none': 'Hoje já não há autocarros daqui',
+  'lineCard.making': 'A desenhar o horário…',
+  'lineCard.save': 'Guardar na galeria',
+  'lineCard.share': 'Partilhar',
+  'lineCard.open': 'Abrir a linha completa',
+  'lineCard.which': 'Que linha?',
 };

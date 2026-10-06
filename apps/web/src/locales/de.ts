@@ -304,4 +304,11 @@ export const de: Dict = {
   'sheet.download': 'Bild herunterladen',
   'sheet.saved': 'Bild gespeichert',
   'sheet.failed': 'Bild konnte nicht erstellt werden',
+  'lineCard.next': 'Nächste ab „{stop}“',
+  'lineCard.none': 'Heute fährt hier kein Bus mehr',
+  'lineCard.making': 'Fahrplan wird gezeichnet…',
+  'lineCard.save': 'In der Galerie speichern',
+  'lineCard.share': 'Teilen',
+  'lineCard.open': 'Ganze Linie öffnen',
+  'lineCard.which': 'Welche Linie?',
 };
