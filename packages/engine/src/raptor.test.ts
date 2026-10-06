@@ -5,8 +5,10 @@ import { SIGA_FARES_2026 } from './fares.ts';
 import { parseGtfs } from './gtfs.ts';
 import { Network } from './network.ts';
 import {
+  bestOf,
   isBusStation,
   itineraryCost,
+  outdoes,
   paretoFilter,
   Planner,
   DEFAULT_PLAN_OPTIONS,
@@ -384,6 +386,90 @@ describe('the best of the options', () => {
     expect(results.map(line)).toEqual([['Town'], ['Aerobus']]);
     expect(results[0]!.alternative).toBeUndefined();
     expect(results[1]!.alternative).toBe(true);
+  });
+});
+
+describe('the best of the options, arriving by a time', () => {
+  /** An option of `rides` buses for `cash` €, with `walk` seconds on foot. */
+  const option = (depart: number, arrive: number, rides: number, cash: number, walk: number) =>
+    ({
+      key: `${depart}|${arrive}|${rides}|${cash}|${walk}`,
+      depart,
+      arrive,
+      duration: arrive - depart,
+      rides,
+      transfers: Math.max(0, rides - 1),
+      walkDistance: Math.round(walk * 1.25),
+      fare: { cash, knownGiro: cash, rides: [] },
+      legs: [{ kind: 'walk', start: depart, end: depart + walk }],
+    }) as unknown as Itinerary;
+
+  it('is the much quicker way that leaves a little earlier', () => {
+    // Funchal → Tabua by 20:00 (the owner's phone, 6 October 2026): the 200 and the 336
+    // leave at 18:04 and get there at 19:09; the 350 and the 221 leave at 18:17, take half
+    // an hour longer and end with a 22-minute walk. The later one used to be "the best".
+    const quick = option(at(18, 4), at(19, 9), 2, 4.6, 14 * 60);
+    const slow = option(at(18, 17), at(19, 51), 2, 4.6, 33 * 60);
+    expect(bestOf([slow, quick], DEFAULT_PLAN_OPTIONS, true)).toBe(quick);
+    // Leaving much earlier for it, the later one stays the best.
+    const early = option(at(17, 40), at(18, 45), 2, 4.6, 14 * 60);
+    expect(bestOf([slow, early], DEFAULT_PLAN_OPTIONS, true)).toBe(slow);
+  });
+
+  it('is so in a whole search too', () => {
+    const { net, from, to, line } = linesFromPtoQ([
+      ['Slow', [18 * 60 + 17], 94],
+      ['Quick', [18 * 60 + 4], 65],
+    ]);
+    const results = new Planner(net).plan({
+      from,
+      to,
+      date: WEEKDAY,
+      time: at(20),
+      arriveBy: true,
+    });
+    expect(results.filter((it) => it.rides > 0).map(line)).toEqual([['Quick'], ['Slow']]);
+  });
+
+  it('is never a way another one outdoes in every respect', () => {
+    // Options at random: there no later (or leaving no earlier), no longer, with no more
+    // changes, fare or walking than the best — and better in one — there is none.
+    let seed = 7;
+    const random = (n: number) => (seed = (seed * 16807) % 2147483647) % n;
+    for (let round = 0; round < 400; round++) {
+      const items = Array.from({ length: 2 + random(6) }, () => {
+        const depart = at(8) + random(120) * 60;
+        const arrive = depart + (20 + random(100)) * 60;
+        return option(depart, arrive, 1 + random(3), [2.6, 4.6, 6.6][random(3)]!, random(40) * 60);
+      });
+      for (const arriveBy of [false, true]) {
+        const best = bestOf(items, DEFAULT_PLAN_OPTIONS, arriveBy)!;
+        expect(items.filter((it) => outdoes(it, best, arriveBy))).toEqual([]);
+      }
+    }
+  });
+
+  it('is never outdone in what the planner offers', () => {
+    const ids = Object.keys(STOPS) as (keyof typeof STOPS)[];
+    for (const a of ids) {
+      for (const b of ids) {
+        if (a === b) continue;
+        for (const time of [at(7), at(8), at(9, 30), at(13), at(19)]) {
+          for (const arriveBy of [false, true]) {
+            const results = planner.plan({
+              from: place(a),
+              to: place(b),
+              date: WEEKDAY,
+              time,
+              arriveBy,
+            });
+            const [best, ...others] = results;
+            if (!best) continue;
+            expect(others.filter((it) => outdoes(it, best, arriveBy))).toEqual([]);
+          }
+        }
+      }
+    }
   });
 });
 

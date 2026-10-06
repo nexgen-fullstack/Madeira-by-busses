@@ -79,4 +79,29 @@ describe('what each way is good at', () => {
     const options = [way(3000, 2, 5 * 60), way(3600, 2.6, 25 * 60), way(3500, 0, 30 * 60, 0)];
     expect(optionTags(options, 'cash').size).toBe(0);
   });
+
+  it('arriving by a time, tells the shortest on the way as the fastest', () => {
+    // Funchal → Tabua by 20:00: the best leaves at 18:04 and takes 65 minutes; the 17:24
+    // takes 56 (there first too); the 16:49 by three buses walks least.
+    const at = (h: number, m: number) => h * 3600 + m * 60;
+    const trip = (depart: number, arrive: number, cash: number, walk: number) =>
+      ({
+        ...way(arrive, cash, walk),
+        key: `${depart}`,
+        depart,
+        duration: arrive - depart,
+      }) as Itinerary;
+    const options = [
+      trip(at(18, 4), at(19, 9), 4.6, 14 * 60),
+      trip(at(18, 17), at(19, 51), 4.6, 33 * 60),
+      trip(at(17, 24), at(18, 20), 4.6, 17 * 60),
+      trip(at(16, 49), at(18, 34), 6.6, 6 * 60),
+    ];
+    expect(optionTags(options, 'cash', true)).toEqual(
+      new Map([
+        [2, ['fastest']],
+        [3, ['lessWalking']],
+      ]),
+    );
+  });
 });

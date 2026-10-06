@@ -176,8 +176,8 @@ export function PlanView({ route }: { route: Route }) {
   const selectedIt = selected !== undefined ? results?.[selected] : undefined;
   // The fastest, the cheapest and the one with least walking, told on their cards.
   const tags = useMemo(
-    () => optionTags(results ?? [], settings.payment),
-    [results, settings.payment],
+    () => optionTags(results ?? [], settings.payment, arriveBy),
+    [results, settings.payment, arriveBy],
   );
   // A step of the selected route tapped: the map shows it close up, as a maps app does.
   const [focusLeg, setFocusLeg] = useState<number | undefined>();

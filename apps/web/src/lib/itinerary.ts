@@ -140,13 +140,15 @@ const onFoot = (it: Itinerary) =>
 const LESS_ON_FOOT = 5 * 60;
 
 /**
- * What each way is good at besides the best one (the first): the one there first, the
- * cheapest and the one with the least walking, each told on its card when it is not the
- * best already.
+ * What each way is good at besides the best one (the first): the fastest (there first;
+ * arriving by a time, the shortest on the way, as all are there in time), the cheapest
+ * and the one with the least walking, each told on its card when it is better at it
+ * than the best.
  */
 export function optionTags(
   options: readonly Itinerary[],
   payment: 'giro' | 'cash',
+  arriveBy = false,
 ): Map<number, OptionTag[]> {
   const tags = new Map<number, OptionTag[]>();
   const best = options[0];
@@ -161,9 +163,10 @@ export function optionTags(
     });
     return at;
   };
+  const speed = (it: Itinerary) => (arriveBy ? it.duration : it.arrive);
   const fastest = pick(
-    (it) => it.arrive,
-    (it) => it.arrive < best.arrive,
+    (it) => (it.rides === 0 && arriveBy ? null : speed(it)),
+    (it) => speed(it) < speed(best),
   );
   if (fastest > 0) add(fastest, 'fastest');
   const fare = (it: Itinerary) => (it.rides === 0 ? null : it.fare[payment]);

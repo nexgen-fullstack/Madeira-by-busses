@@ -302,10 +302,11 @@ export class Planner {
       delete best.alternative;
     }
     const seen = new Set<string>();
-    return [...(best ? [best] : []), ...others.sort(byArrival)]
+    const final = [...(best ? [best] : []), ...others]
       .map((it) => this.refine(this.changeAtStation(it, request, ctx), request, ctx.opts))
       .filter((it) => !seen.has(it.key) && Boolean(seen.add(it.key)))
       .map((it) => this.withPaths(it));
+    return finish(final, ctx.opts, byArrival);
   }
 
   /**
@@ -457,7 +458,10 @@ export class Planner {
     const rest = made
       .filter((it) => it !== best)
       .sort((a, b) => b.depart - a.depart || a.arrive - b.arrive || a.rides - b.rides);
-    return (best ? [best, ...rest] : rest).slice(0, ctx.opts.maxResults);
+    // The best is no "other bus": the others are told apart from it.
+    const first = best && { ...best };
+    if (first) delete first.alternative;
+    return (first ? [first, ...rest] : rest).slice(0, ctx.opts.maxResults);
   }
 
   /**
@@ -1588,7 +1592,10 @@ export function itineraryCost(
   );
 }
 
-/** How much later a much quicker way may get there and still be the best (s). */
+/**
+ * How much later a much quicker way may get there and still be the best (s); arriving
+ * by a time, how much earlier it may leave.
+ */
 const ABOUT_AS_SOON = 15 * 60;
 /** How much less time on the way makes a way much quicker (s). */
 const MUCH_QUICKER = 20 * 60;
@@ -1597,14 +1604,16 @@ const LIGHT_WALK = 5 * 60;
 
 /**
  * The option that costs least, preferring one by bus to walking all the way.
- * Leaving now, a much quicker way that gets there about as soon is the best
- * one: the express on the Via Rápida, half an hour later than the bus round
- * the coast and there a few minutes after it, rather than an hour more on
- * board — with no more changes, walking or fare.
+ * A much quicker way that gets there about as soon is the best one: the express
+ * on the Via Rápida, half an hour later than the bus round the coast and there a
+ * few minutes after it, rather than an hour more on board — with no more changes,
+ * walking or fare. Arriving by a time, the same the other way round: the bus and
+ * the change at Ribeira Brava leaving at 18:04, there at 19:09, rather than the
+ * one at 18:17 that takes half an hour longer and ends with a 22-minute walk.
  */
-function bestOf(
+export function bestOf(
   items: readonly Itinerary[],
-  opts: PlanOptions,
+  opts: PlanOptions = DEFAULT_PLAN_OPTIONS,
   arriveBy = false,
 ): Itinerary | undefined {
   const ranked = [...items].sort(
@@ -1614,17 +1623,67 @@ function bestOf(
   // A walk all the way may be the best when it is short and costs least; a long one
   // only when no bus goes.
   const best = ranked.find((it) => it.rides > 0 || it.duration <= SHORT_WALK) ?? ranked[0];
-  if (!best || arriveBy || best.rides === 0) return best;
+  if (!best || best.rides === 0) return best;
   const quicker = ranked.find(
     (it) =>
       it.rides > 0 &&
       it.rides <= best.rides &&
-      it.arrive <= best.arrive + ABOUT_AS_SOON &&
+      (arriveBy
+        ? it.depart >= best.depart - ABOUT_AS_SOON
+        : it.arrive <= best.arrive + ABOUT_AS_SOON) &&
       it.duration <= best.duration - MUCH_QUICKER &&
       walkTime(it) <= walkTime(best) + LIGHT_WALK &&
       fareOf(it) <= fareOf(best),
   );
   return quicker ?? best;
+}
+
+/**
+ * `b` is at least as good as `a` in every way and better in one: there no later
+ * (arriving by a time: leaving no earlier), no longer on the way, with no more
+ * changes, fare or walking. Such an `a` is never the best.
+ */
+export function outdoes(b: Itinerary, a: Itinerary, arriveBy = false): boolean {
+  if (b === a || (a.rides > 0 && b.rides === 0)) return false;
+  const pairs: [number, number][] = [
+    arriveBy ? [a.depart, b.depart] : [b.arrive, a.arrive],
+    [b.duration, a.duration],
+    [b.transfers, a.transfers],
+    [fareOf(b), fareOf(a)],
+    [walkTime(b), walkTime(a)],
+  ];
+  return pairs.every(([x, y]) => x <= y) && pairs.some(([x, y]) => x < y);
+}
+
+/**
+ * The options as they are shown, once the changes made after the best was chosen (a
+ * change at the bus station, the bus taken on further) are in: a best option no other
+ * outdoes — if one does, it comes first instead, and a way on other lines that comes
+ * first makes the old best one — then the others in `order`, without a departure those
+ * changes left no better than another (the 17:54 to the same 336 as the 18:04, waiting
+ * for it at Ribeira Brava). The ways offered for their own sake (other lines, less
+ * walking) stay.
+ */
+function finish(
+  list: readonly Itinerary[],
+  opts: PlanOptions,
+  order: (a: Itinerary, b: Itinerary) => number,
+  arriveBy = false,
+): Itinerary[] {
+  let [best, ...rest] = list;
+  if (!best) return [];
+  const better = rest.filter((it) => outdoes(it, best!, arriveBy));
+  if (better.length > 0) {
+    const winner = bestOf(better, opts, arriveBy)!;
+    const { alternative, ...plain } = winner;
+    rest = [...rest.filter((it) => it !== winner), alternative ? { ...best, alternative } : best];
+    best = plain;
+  }
+  const all = [best, ...rest];
+  const others = rest.filter(
+    (it) => it.alternative || it.lessWalking || !all.some((b) => paretoBeats(b, it)),
+  );
+  return [best, ...others.sort(order)];
 }
 
 /** Walking all the way that may be the best way (s). */
@@ -1633,25 +1692,27 @@ const SHORT_WALK = 30 * 60;
 /** How much farther one option may walk than another and still be as good (m). */
 const WALK_SLACK = 300;
 
+const walks = (it: Itinerary) => it.walkDistance ?? 0;
+
+/**
+ * `b` leaves no earlier, arrives no later and needs no more rides than `a` (and is
+ * better in one), without walking much more: `a` is no option beside it.
+ */
+const paretoBeats = (b: Itinerary, a: Itinerary) =>
+  b !== a &&
+  b.depart >= a.depart &&
+  b.arrive <= a.arrive &&
+  b.rides <= a.rides &&
+  walks(b) <= walks(a) + WALK_SLACK &&
+  (b.depart > a.depart || b.arrive < a.arrive || b.rides < a.rides);
+
 /**
  * Drops options that leave earlier, arrive later and need more rides than
  * another — unless they walk much less: a long walk is not for everyone.
  */
 export function paretoFilter(items: Itinerary[], transferPenalty = 0): Itinerary[] {
   const transfers = (it: Itinerary) => Math.max(0, it.rides - 1);
-  const walks = (it: Itinerary) => it.walkDistance ?? 0;
-  const pareto = items.filter(
-    (a) =>
-      !items.some(
-        (b) =>
-          b !== a &&
-          b.depart >= a.depart &&
-          b.arrive <= a.arrive &&
-          b.rides <= a.rides &&
-          walks(b) <= walks(a) + WALK_SLACK &&
-          (b.depart > a.depart || b.arrive < a.arrive || b.rides < a.rides),
-      ),
-  );
+  const pareto = items.filter((a) => !items.some((b) => paretoBeats(b, a)));
   if (transferPenalty <= 0) return pareto;
   // A change of bus is a real cost: it must save enough time to be offered.
   return pareto.filter(
