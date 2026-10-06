@@ -6,6 +6,7 @@ import { gzipSync, strToU8 } from 'fflate';
 import {
   addDays,
   buildBundle,
+  madeiraHolidays,
   madeiraNow,
   parseGtfs,
   SIGA_FARES_2026,
@@ -14,7 +15,16 @@ import {
   WalkGraph,
   type FeedInput,
   type NetworkBundle,
+  weekday,
 } from '@madeirabus/engine';
+import {
+  addPlaceGoals,
+  anchorsFromOsm,
+  areasFromOsm,
+  encodeAreas,
+  type AreasFile,
+  type OsmShape,
+} from './areas.ts';
 import { generateDemoGtfs } from './demo/generate.ts';
 import { loadFeedFiles, parseFeedArg } from './load.ts';
 import {
@@ -48,6 +58,7 @@ const USAGE = `madeirabus-pipeline <command>
         [--places <osm.json>]        searchable places from an Overpass answer (skipped if absent)
         [--walk <walk.bin>]          the walking network, copied next to the bundle (skipped if absent)
         [--addresses <json>]         streets and house numbers, copied next to the bundle (skipped if absent)
+        [--areas <areas.json>]       the bounds of towns and villages: where a trip to one goes
         [--drive <drive.bin>]        the roads: every line is drawn along them, in its lane
         [--timetables <dir> --siga <dir>]  add CAM and SIGA Rodoeste from their printed
                                      timetables and the SIGA website's routes
@@ -58,6 +69,8 @@ const USAGE = `madeirabus-pipeline <command>
   addresses --osm <overpass.json> --places <osm.json> --out <addresses.json>
                                           streets and house numbers to search for
   drive --osm <overpass.json> --out <drive.bin>  the roads buses drive on, from OpenStreetMap ways
+  areas --bounds <overpass.json> --anchors <overpass.json> --out <areas.json>
+                                          bounds of towns, villages and parishes; churches, town halls, squares
   check-shapes --bundle <bundle.json> --drive <drive.bin> [--report <md>]
                                           every stretch of a line off the roads
 `;
@@ -276,6 +289,20 @@ async function build(args: Args) {
     console.log(`! No places file at ${placesPath}; searching stops only`);
   }
   if (!bundle.places && bundle.demo) bundle.places = DEMO_PLACES;
+  // Where a trip to a town or village goes: within its own bounds, its bus station, its
+  // central stop, its church… (Tabua's own stop, not Ribeira Brava's bus station).
+  const areasPath = flag(args, 'areas');
+  if (areasPath && existsSync(areasPath) && bundle.places) {
+    const file = JSON.parse(await readFile(areasPath, 'utf8')) as AreasFile;
+    const { goals, bounds } = addPlaceGoals(bundle, file, ordinaryWeekday(today));
+    console.log(
+      `Towns and villages: ${goals.station} to their bus station, ${goals.stop} to their central stop, ` +
+        `${goals.church + goals.townhall + goals.square} to their church, town hall or square, ` +
+        `${bounds} shown by their bounds`,
+    );
+  } else if (areasPath) {
+    console.log(`! No bounds at ${areasPath}; towns and villages are reached at their point`);
+  }
   // Every line checked against the roads: where one still crosses grass or houses.
   const offRoad = router ? checkShapes(bundle, roadDistance(router)) : undefined;
   if (offRoad) {
@@ -373,6 +400,38 @@ async function addresses(args: Args) {
   console.log(
     `Addresses: ${book.streets.length} streets, ${houses} house numbers, ` +
       `${book.areas.length} villages and towns, ${Math.round(text.length / 1024)} KiB`,
+  );
+}
+
+/** The first weekday from `date` on that is no public holiday: a day whose buses count. */
+function ordinaryWeekday(date: string): string {
+  const holidays = new Set(
+    [0, 1].flatMap((y) => madeiraHolidays(Number(date.slice(0, 4)) + y).map((h) => h.date)),
+  );
+  let d = date;
+  while (weekday(d) > 4 || holidays.has(d)) d = addDays(d, 1);
+  return d;
+}
+
+async function areasCommand(args: Args) {
+  const boundsPath = flag(args, 'bounds');
+  const anchorsPath = flag(args, 'anchors');
+  const out = flag(args, 'out');
+  if (!boundsPath || !anchorsPath || !out) {
+    throw new Error('areas needs --bounds <overpass.json> --anchors <overpass.json> --out <json>');
+  }
+  const read = async (path: string) =>
+    (JSON.parse(await readFile(path, 'utf8')) as { elements?: OsmShape[] }).elements ?? [];
+  const areas = areasFromOsm(await read(boundsPath));
+  const anchors = anchorsFromOsm(await read(anchorsPath));
+  const text = JSON.stringify(encodeAreas(areas, anchors));
+  await mkdir(dirname(out), { recursive: true });
+  await writeFile(out, text);
+  console.log(
+    `Areas: ${areas.filter((a) => a.level === 8).length} parishes, ` +
+      `${areas.filter((a) => a.level === 7).length} municipalities, ` +
+      `${areas.filter((a) => a.place).length} towns and villages mapped as areas; ` +
+      `${anchors.length} churches, town halls and squares; ${Math.round(text.length / 1024)} KiB`,
   );
 }
 
@@ -476,6 +535,7 @@ async function main() {
     walk,
     addresses,
     drive,
+    areas: areasCommand,
     'check-shapes': checkShapesCommand,
   };
   const run = command ? commands[command] : undefined;

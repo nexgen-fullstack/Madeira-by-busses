@@ -326,4 +326,9 @@ export const en: Dict = {
   'sheet.boarding': 'In yellow: «{stop}», where you get on.',
   'sheet.boardingBus': 'In yellow: «{stop}», where you get on, and your bus at {t}.',
   'detail.sheets': 'Line timetables as pictures',
+  'place.toStop': 'to its central stop',
+  'place.toChurch': 'to its church',
+  'place.toTownhall': 'to its town hall',
+  'place.toSquare': 'to its square',
+  'place.pickIn': 'Put the pin where you are going, within «{name}»',
 };

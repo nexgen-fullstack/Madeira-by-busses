@@ -70,6 +70,18 @@ jobs:
             echo "::warning title=Addresses not refreshed::No addresses from Overpass; keeping the previous addresses.json."
             git checkout HEAD -- data/sources/osm/addresses.json || true
           fi
+      - name: Bounds of towns and villages
+        run: |
+          if [ -f data/sources/osm/areas-bounds.json ] && [ -f data/sources/osm/areas-anchors.json ]; then
+            pnpm --filter @madeirabus/pipeline cli areas \
+              --bounds ../../data/sources/osm/areas-bounds.json \
+              --anchors ../../data/sources/osm/areas-anchors.json \
+              --out ../../data/sources/osm/areas.json
+            rm data/sources/osm/areas-bounds.json data/sources/osm/areas-anchors.json
+          else
+            echo "::warning title=Bounds not refreshed::No bounds from Overpass; keeping the previous areas.json."
+            git checkout HEAD -- data/sources/osm/areas.json || true
+          fi
       - name: Summary
         run: |
           {

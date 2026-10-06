@@ -361,4 +361,9 @@ export const pl: Dict = {
   'sheet.boarding': 'Na żółto: «{stop}», gdzie wsiadasz.',
   'sheet.boardingBus': 'Na żółto: «{stop}», gdzie wsiadasz, i twój autobus o {t}.',
   'detail.sheets': 'Rozkłady linii jako obrazek',
+  'place.toStop': 'na przystanek w centrum',
+  'place.toChurch': 'do kościoła',
+  'place.toTownhall': 'do urzędu',
+  'place.toSquare': 'na plac',
+  'place.pickIn': 'Postaw pinezkę tam, dokąd jedziesz, w granicach «{name}»',
 };

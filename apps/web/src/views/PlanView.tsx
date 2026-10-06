@@ -296,7 +296,7 @@ export function PlanView({ route }: { route: Route }) {
             geo.request();
           }}
           locating={geo.pending}
-          onPickOnMap={() => setPick('from')}
+          onPickOnMap={(area) => setPick('from', area)}
         />
         <button
           type="button"
@@ -318,7 +318,7 @@ export function PlanView({ route }: { route: Route }) {
           label={t.t('to')}
           value={to}
           onChange={(v) => setParams({ to: v ? encode(v) : undefined, i: undefined })}
-          onPickOnMap={() => setPick('to')}
+          onPickOnMap={(area) => setPick('to', area)}
         />
         {geo.error && !autoLocate.current && <p className="error small">{t.t('place.denied')}</p>}
         <div className="plan__time">

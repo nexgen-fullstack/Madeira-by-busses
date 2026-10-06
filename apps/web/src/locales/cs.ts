@@ -358,4 +358,9 @@ export const cs: Dict = {
   'sheet.boarding': 'Žlutě: «{stop}», kde nastupujete.',
   'sheet.boardingBus': 'Žlutě: «{stop}», kde nastupujete, a váš autobus v {t}.',
   'detail.sheets': 'Jízdní řády linek jako obrázek',
+  'place.toStop': 'na zastávku v centru',
+  'place.toChurch': 'ke kostelu',
+  'place.toTownhall': 'k radnici',
+  'place.toSquare': 'na náměstí',
+  'place.pickIn': 'Umístěte špendlík tam, kam jedete, v «{name}»',
 };

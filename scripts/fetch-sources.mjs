@@ -263,6 +263,24 @@ async function osm() {
      out center tags qt;`,
   );
   writeFileSync(join(dir, 'addresses-raw.json'), JSON.stringify(addresses));
+  // The bounds of parishes, municipalities and towns or villages mapped as areas, and the
+  // churches, town halls and squares in them (`madeirabus-pipeline areas` makes areas.json
+  // of them: where a trip to a village goes, within its own bounds; these files are not kept).
+  const bounds = await overpass(
+    `[out:json][timeout:300];
+     (relation["boundary"="administrative"]["admin_level"~"^(7|8)$"](${BBOX});
+      way["place"~"^(city|town|village|suburb|quarter|neighbourhood|hamlet)$"](${BBOX});
+      relation["place"~"^(city|town|village|suburb|quarter|neighbourhood|hamlet)$"](${BBOX}););
+     out geom;`,
+  );
+  writeFileSync(join(dir, 'areas-bounds.json'), JSON.stringify(bounds));
+  const anchors = await overpass(
+    `[out:json][timeout:300];
+     (nwr["place"="square"]["name"](${BBOX});
+      nwr["amenity"~"^(place_of_worship|townhall)$"]["name"](${BBOX}););
+     out center tags;`,
+  );
+  writeFileSync(join(dir, 'areas-anchors.json'), JSON.stringify(anchors));
   const relations = routes.elements.filter((e) => e.type === 'relation');
   return {
     routeRelations: relations.filter((r) => r.tags?.type === 'route').length,

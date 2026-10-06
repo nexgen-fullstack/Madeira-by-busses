@@ -329,4 +329,9 @@ export const pt: Dict = {
   'sheet.boarding': 'A amarelo: «{stop}», onde entra.',
   'sheet.boardingBus': 'A amarelo: «{stop}», onde entra, e o seu autocarro às {t}.',
   'detail.sheets': 'Horários das linhas em imagem',
+  'place.toStop': 'à paragem central',
+  'place.toChurch': 'à igreja',
+  'place.toTownhall': 'à junta',
+  'place.toSquare': 'à praça',
+  'place.pickIn': 'Ponha o marcador onde vai, dentro de «{name}»',
 };

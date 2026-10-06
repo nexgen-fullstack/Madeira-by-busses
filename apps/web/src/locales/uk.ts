@@ -361,6 +361,11 @@ export const uk = {
   'sheet.boarding': 'Жовтим — зупинка «{stop}», де сідати.',
   'sheet.boardingBus': 'Жовтим — зупинка «{stop}», де сідати, і ваш автобус о {t}.',
   'detail.sheets': 'Розклад ліній картинкою',
+  'place.toStop': 'до зупинки в центрі',
+  'place.toChurch': 'до церкви',
+  'place.toTownhall': 'до ради',
+  'place.toSquare': 'до площі',
+  'place.pickIn': 'Поставте шпильку там, куди їдете, у межах «{name}»',
 } satisfies Record<string, Entry>;
 
 export type Key = keyof typeof uk;

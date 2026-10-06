@@ -47,6 +47,9 @@ export interface NetworkBundle {
   places?: BPlace[];
 }
 
+/** What a trip to a town or village goes to: its bus station, central stop, church, town hall or square. */
+export type PlaceGoal = 'station' | 'stop' | 'church' | 'townhall' | 'square';
+
 export interface BPlace {
   name: string;
   lat: number;
@@ -55,6 +58,13 @@ export interface BPlace {
   kind: string;
   /** Names in other languages, keyed by language code. */
   names?: Record<string, string>;
+  /** A town or village: where a trip there goes, within its own bounds. */
+  goal?: [lat: number, lon: number, via: PlaceGoal];
+  /**
+   * A town or village with nothing in it to go to: its bounds (encoded polylines), shown
+   * for the pin to be put down by hand.
+   */
+  bounds?: string[];
 }
 
 export interface BundleSource {

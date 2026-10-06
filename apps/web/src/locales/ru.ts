@@ -357,4 +357,9 @@ export const ru: Dict = {
   'sheet.boarding': 'Жёлтым — остановка «{stop}», где садиться.',
   'sheet.boardingBus': 'Жёлтым — остановка «{stop}», где садиться, и ваш автобус в {t}.',
   'detail.sheets': 'Расписание линий картинкой',
+  'place.toStop': 'к остановке в центре',
+  'place.toChurch': 'к церкви',
+  'place.toTownhall': 'к совету',
+  'place.toSquare': 'к площади',
+  'place.pickIn': 'Поставьте булавку там, куда едете, в пределах «{name}»',
 };

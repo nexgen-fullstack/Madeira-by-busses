@@ -783,7 +783,7 @@ function plannedPlaces(net: Network | undefined, myLocation: string) {
 }
 
 export default function MapView({ className }: { className?: string }) {
-  const { content, pick, setPick } = useContext(MapContentContext);
+  const { content, pick, pickArea, setPick } = useContext(MapContentContext);
   const { settings, setSettings, data } = useApp();
   const t = useI18n();
   const net = data.status === 'ready' ? data.net : undefined;
@@ -1054,14 +1054,47 @@ export default function MapView({ className }: { className?: string }) {
     const places = plannedPlaces(netRef.current, tRef.current.t('place.myLocation'));
     const own = places[pick];
     const other = places[pick === 'from' ? 'to' : 'from'];
-    if (own) map.jumpTo({ center: [own.lon, own.lat], zoom: Math.max(map.getZoom(), 16) });
+    if (pickArea) {
+      // A village with nowhere in it to go to: all of it in view, the pin in its middle.
+      const bounds = new LngLatBounds();
+      for (const ring of pickArea.rings) for (const p of ring) bounds.extend([p.lon, p.lat]);
+      map.fitBounds(bounds, { padding: 40, duration: 0 });
+    } else if (own) map.jumpTo({ center: [own.lon, own.lat], zoom: Math.max(map.getZoom(), 16) });
     else if (other)
       map.jumpTo({ center: [other.lon, other.lat], zoom: Math.max(map.getZoom(), 14) });
     const c = map.getCenter();
     setCenter({ lat: c.lat, lon: c.lng });
     // The map grows to fill the screen while choosing.
     window.setTimeout(() => map.resize(), 50);
-  }, [pick]);
+  }, [pick, pickArea]);
+
+  // Its bounds drawn while the pin is put down in it.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !ready) return;
+    const data = {
+      type: 'FeatureCollection' as const,
+      features: (pick ? (pickArea?.rings ?? []) : []).map((ring) => ({
+        type: 'Feature' as const,
+        properties: {},
+        geometry: {
+          type: 'LineString' as const,
+          coordinates: ring.map((p) => [p.lon, p.lat]),
+        },
+      })),
+    };
+    const source = map.getSource('mb-pick-area') as GeoJSONSource | undefined;
+    if (source) source.setData(data);
+    else if (data.features.length > 0) {
+      map.addSource('mb-pick-area', { type: 'geojson', data });
+      map.addLayer({
+        id: 'mb-pick-area',
+        type: 'line',
+        source: 'mb-pick-area',
+        paint: { 'line-color': '#0066dd', 'line-width': 3, 'line-dasharray': [2, 1.5] },
+      });
+    }
+  }, [pick, pickArea, ready]);
 
   // Escape leaves "choose on the map".
   useEffect(() => {
@@ -1091,7 +1124,11 @@ export default function MapView({ className }: { className?: string }) {
         <>
           <div className="map-pick" role="status">
             <MapPin size={18} aria-hidden />
-            <span>{t.t(pick === 'from' ? 'place.pickFrom' : 'place.pickTo')}</span>
+            <span>
+              {pickArea
+                ? t.t('place.pickIn', { name: pickArea.name })
+                : t.t(pick === 'from' ? 'place.pickFrom' : 'place.pickTo')}
+            </span>
             <button
               type="button"
               className="icon-button"

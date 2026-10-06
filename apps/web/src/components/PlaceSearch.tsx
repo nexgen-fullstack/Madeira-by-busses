@@ -1,19 +1,21 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { Bus, House, LocateFixed, MapPin, MapPinned, Star, X } from 'lucide-react';
 import {
-  isBusStation,
+  decodePolyline,
   municipalityName,
   nameScore,
   searchKey,
   type BPlace,
   type Network,
+  type PlaceGoal,
   type SearchHit,
 } from '@madeirabus/engine';
-import { useI18n } from '../i18n.ts';
+import { useI18n, type Key } from '../i18n.ts';
 import { loadAddresses, type AddressHit, type AddressIndex } from '../lib/addresses.ts';
 import { placeName, poiLabel } from '../lib/mapStyles.ts';
 import { savedGroups } from '../lib/saved.ts';
 import { useApp, useNetwork } from '../state/app.tsx';
+import type { PickArea } from './mapContext.tsx';
 
 export interface PlaceValue {
   name: string;
@@ -27,19 +29,18 @@ export interface PlaceValue {
 /** A stop, a place or an address in the list under the field. */
 type Hit = SearchHit | { kind: 'address'; address: AddressHit };
 
-/** A town or village is reached at its bus station when it has one this close (m). */
-const TOWN_STATION = 1500;
+/** What the list says a town or village is reached at. */
+const GOAL_LABELS: Record<PlaceGoal, Key> = {
+  station: 'place.toStation',
+  stop: 'place.toStop',
+  church: 'place.toChurch',
+  townhall: 'place.toTownhall',
+  square: 'place.toSquare',
+};
 
-/** The bus station of a town or village, if it has one. */
-function stationOf(net: Network, place: BPlace) {
-  if (place.kind !== 'town' && place.kind !== 'village') return undefined;
-  let best: { stop: number; distance: number } | undefined;
-  for (const h of net.nearbyStops(place, TOWN_STATION)) {
-    if (!isBusStation(net.stops[h.stop]!.name)) continue;
-    if (!best || h.distance < best.distance) best = h;
-  }
-  return best && net.stops[best.stop]!;
-}
+/** Where a place is reached: a town or village at its goal (see the pipeline's areas.ts). */
+const goalOf = (place: BPlace) =>
+  place.goal ? { lat: place.goal[0], lon: place.goal[1], via: place.goal[2] } : undefined;
 
 /** "Street," then the number being typed: the list offers the street's houses. */
 const CHOOSING_NUMBER = /,\s*\d*[a-z]?\s*$/i;
@@ -79,8 +80,11 @@ interface Props {
   value?: PlaceValue;
   onChange: (v: PlaceValue | undefined) => void;
   onUseLocation?: () => void;
-  /** Offers "choose on the map" (a café, a hotel, any point). */
-  onPickOnMap?: () => void;
+  /**
+   * Offers "choose on the map" (a café, a hotel, any point); with an area, a village
+   * chosen with nowhere in it to go to, outlined for the pin to be put down in it.
+   */
+  onPickOnMap?: (area?: PickArea) => void;
   locating?: boolean;
   autoFocus?: boolean;
   className?: string;
@@ -152,12 +156,19 @@ export function PlaceSearch({
       }
       choose({ name: a.name, lat: a.lat, lon: a.lon, kind: 'location' });
     } else {
-      // A place is a point: the planner walks to whichever stops serve it best. A town
-      // or village with a bus station is reached there, where its buses call.
+      // A place is a point: the planner walks to whichever stops serve it best. A town or
+      // village is reached within its own bounds: at its bus station, its central stop, its
+      // church…; with nothing in it to go to, its bounds are shown to put the pin in.
       const p = hit.place;
-      const station = stationOf(net, p);
-      const at = station ?? p;
-      choose({ name: placeName(p, settings.lang), lat: at.lat, lon: at.lon, kind: 'location' });
+      const name = placeName(p, settings.lang);
+      if (!p.goal && p.bounds && onPickOnMap) {
+        setOpen(false);
+        inputRef.current?.blur();
+        onPickOnMap({ name, rings: p.bounds.map(decodePolyline) });
+        return;
+      }
+      const at = goalOf(p) ?? p;
+      choose({ name, lat: at.lat, lon: at.lon, kind: 'location' });
     }
   };
 
@@ -215,7 +226,7 @@ export function PlaceSearch({
             className="icon-button"
             aria-label={t.t('place.pickOnMap')}
             title={t.t('place.pickOnMap')}
-            onClick={onPickOnMap}
+            onClick={() => onPickOnMap()}
           >
             <MapPinned size={18} />
           </button>
@@ -290,7 +301,7 @@ export function PlaceSearch({
                   <span className="place-search__muni">
                     {[
                       poiLabel(settings.lang, hit.place.kind),
-                      stationOf(net, hit.place) ? t.t('place.toStation') : undefined,
+                      hit.place.goal ? t.t(GOAL_LABELS[hit.place.goal[2]]) : undefined,
                     ]
                       .filter(Boolean)
                       .join(' · ')}

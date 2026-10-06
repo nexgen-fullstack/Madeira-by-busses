@@ -112,7 +112,7 @@ PDF дають лише час у кількох місцях («Funchal 07:30 �
 Workflow **Collect timetable sources** (`.github/workflows/sources.yml`, скрипт `scripts/fetch-sources.mjs`) збирає на серверах GitHub і комітить у `data/sources/` (крім `siga/`, яку веде свій workflow):
 
 - сторінки сайтів SIGA, Rodoeste, SAM і HF (`pages.jsonl`: текст і посилання) та PDF-розклади як текст зі збереженою розкладкою колонок (`pdf-text/`);
-- з OpenStreetMap (Overpass API): автобусні маршрути з їхніми зупинками (`osm/bus-routes.json`), усі зупинки (`osm/bus-stops.json`), названі місця з перекладами (`osm/places.json`), мережа для пішоходів (`osm/walk.bin`: збирається з усіх доріг і стежок) і мережа доріг для автобусів (`osm/drive.bin`); сирі файли доріг не зберігаються.
+- з OpenStreetMap (Overpass API): автобусні маршрути з їхніми зупинками (`osm/bus-routes.json`), усі зупинки (`osm/bus-stops.json`), названі місця з перекладами (`osm/places.json`), мережа для пішоходів (`osm/walk.bin`: збирається з усіх доріг і стежок), мережа доріг для автобусів (`osm/drive.bin`) і межі парафій, муніципалітетів і селищ з церквами, радами й площами (`osm/areas.json`, `madeirabus-pipeline areas`, ≈110 КБ): збірка за ними вирішує, куди веде вибране місто чи село (`areas.ts`); сирі файли доріг і меж не зберігаються.
 
 `pnpm data:real` додає місця в пакет (`--places`), і пошук у застосунку знаходить їх будь-якою мовою.
 
