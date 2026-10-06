@@ -38,6 +38,13 @@ export interface MapPoint extends LatLon {
   label?: string;
   /** Stop indices this point represents (clicking opens its departures). */
   stops?: number[];
+  /**
+   * A bus left and the next boarded at one place (within a few metres): the two flags
+   * stand a little apart, so both show and that it is one place.
+   */
+  pair?: boolean;
+  /** Its name written to the side of its flag, away from the other's name at the same place. */
+  apart?: boolean;
 }
 
 export interface MapContent {
@@ -150,6 +157,7 @@ export function itineraryContent(
       points.push({ lat: st.lat, lon: st.lon, kind: 'stop', color: INK, stops: [s.stop] });
     }
   });
+  pairFlags(points);
   const first = it.legs[0];
   const last = it.legs[it.legs.length - 1];
   if (first?.kind === 'walk') points.push({ ...first.from, kind: 'origin', color: '#14181F' });
@@ -173,6 +181,31 @@ export function itineraryContent(
     fit: leg ? leg.coords : lines.flatMap((l) => l.coords),
     ...(chosen ? { focus: key } : {}),
   };
+}
+
+/** A bus left this close to where the next is boarded is left and boarded at one place (m). */
+const ONE_PLACE = 6;
+
+/**
+ * Where a bus is left and the next boarded at one place, the two flags stand a little
+ * apart, and the stop's name is written once when it is the same stop.
+ */
+function pairFlags(points: MapPoint[]): void {
+  for (const board of points) {
+    if (board.kind !== 'board') continue;
+    const alight = points.find(
+      (p) => p.kind === 'alight' && p !== board && haversine(p, board) < ONE_PLACE,
+    );
+    if (!alight) continue;
+    alight.pair = true;
+    board.pair = true;
+    if (alight.label === board.label) {
+      board.label = undefined;
+    } else {
+      alight.apart = true;
+      board.apart = true;
+    }
+  }
 }
 
 /** Where the trip starts and where it goes, before there is a route between them. */

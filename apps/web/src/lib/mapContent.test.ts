@@ -162,6 +162,26 @@ describe('a route on the map', () => {
     expect(c.points.some((p) => p.kind === 'destination')).toBe(false);
   });
 
+  it('stands the flags a little apart where one bus is left and the next boarded', () => {
+    // Left at Ribeira Brava and on from the same pole by another bus.
+    const onward = [shapes[0]![1]!, stop('', -17.1)];
+    const sameStop = {
+      ...net,
+      rideLane: (p: number) => (p === 0 ? shapes[0]! : onward),
+    } as unknown as Network;
+    const next = { ...it207.legs[0]!, pattern: 1, from: ride(2), to: ride(4) };
+    const c = itineraryContent(sameStop, { ...it207, legs: [it207.legs[0]!, next] } as Itinerary);
+    const change = c.points.filter((p) => p.stops?.[0] === 2);
+    expect(change.map((p) => [p.kind, p.pair])).toEqual([
+      ['alight', true],
+      ['board', true],
+    ]);
+    // One stop, one name.
+    expect(change.map((p) => p.label)).toEqual(['Ribeira Brava', undefined]);
+    // Where the journey starts, nothing to share.
+    expect(c.points.find((p) => p.stops?.[0] === 0)?.pair).toBeUndefined();
+  });
+
   it('walks to the very spot where the bus is boarded', () => {
     const walk = {
       kind: 'walk',

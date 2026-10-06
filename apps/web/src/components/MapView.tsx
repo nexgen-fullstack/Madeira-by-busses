@@ -165,6 +165,8 @@ function toGeoJson(content: MapContent) {
           fill: p.fill ?? '#ffffff',
           label: p.label ?? '',
           stops: (p.stops ?? []).join(','),
+          pair: Boolean(p.pair),
+          apart: Boolean(p.apart),
         },
         geometry: { type: 'Point' as const, coordinates: [p.lon, p.lat] },
       })),
@@ -542,8 +544,15 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
     layout: {
       'icon-image': ['match', ['get', 'kind'], 'board', 'mb-flag-start', 'mb-flag-finish'],
       'icon-anchor': ['match', ['get', 'kind'], 'board', 'bottom-left', 'bottom-right'],
-      // The pole's foot on the stop, the cloth up and to the side.
-      'icon-offset': ['match', ['get', 'kind'], 'board', ['literal', [-3, 2]], ['literal', [3, 2]]],
+      // The pole's foot on the stop, the cloth up and to the side; where a bus is left and
+      // the next boarded at one place, the two poles a few pixels apart.
+      'icon-offset': [
+        'match',
+        ['get', 'kind'],
+        'board',
+        ['case', ['get', 'pair'], ['literal', [1, 2]], ['literal', [-3, 2]]],
+        ['case', ['get', 'pair'], ['literal', [-1, 2]], ['literal', [3, 2]]],
+      ],
       'icon-size': ['interpolate', ['linear'], ['zoom'], 10, 0.75, 14, 1.1, 17, 1.35],
       'icon-allow-overlap': true,
       'icon-ignore-placement': true,
@@ -596,8 +605,23 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
       layout: {
         'text-field': ['get', 'label'],
         'text-size': 12,
-        'text-offset': [0, 1.1],
-        'text-anchor': 'top',
+        // Two names at one place: one to each side, under its own flag.
+        'text-offset': [
+          'case',
+          ['!', ['get', 'apart']],
+          ['literal', [0, 1.1]],
+          ['==', ['get', 'kind'], 'board'],
+          ['literal', [0.3, 1.1]],
+          ['literal', [-0.3, 1.1]],
+        ],
+        'text-anchor': [
+          'case',
+          ['!', ['get', 'apart']],
+          'top',
+          ['==', ['get', 'kind'], 'board'],
+          'top-left',
+          'top-right',
+        ],
         'text-max-width': 10,
         'text-font': ['Noto Sans Regular'],
       },
