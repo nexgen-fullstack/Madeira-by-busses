@@ -175,13 +175,17 @@ function toGeoJson(content: MapContent) {
 const EMPTY = { type: 'FeatureCollection' as const, features: [] };
 
 /**
- * How far each way of a line keeps to its side of the road (px): apart once the map is
- * close enough for two lines to fit on a road.
+ * Lines are drawn in their lanes, moved over by real metres (see `offsetPolyline`): close
+ * up, each way of a road in the centre of its own lane. Further out, where a lane is less
+ * than a pixel, the two ways of a line on its page are drawn this much further apart (px),
+ * to see both; from z18, where the lanes show, not at all.
  */
-const SIDE: [number, number][] = [
-  [10, 0.5],
-  [12, 2],
-  [16, 4.5],
+const APART: [number, number][] = [
+  [13, 0],
+  [15, 1.5],
+  [16, 2.5],
+  [17, 1.5],
+  [18, 0],
 ];
 
 /** A chevron pointing along a line, for the arrows the way the bus goes. */
@@ -297,7 +301,7 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
     'interpolate',
     ['linear'],
     ['zoom'],
-    ...SIDE.flatMap(([zoom, px]) => [zoom, ['case', ['get', 'side'], px, 0]]),
+    ...APART.flatMap(([zoom, px]) => [zoom, ['case', ['get', 'side'], px, 0]]),
   ] as unknown as number;
   // Every stop and line, under whatever the screen draws.
   map.addSource('mb-net-lines', { type: 'geojson', data: EMPTY });
@@ -335,7 +339,8 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
     layout: { 'line-cap': 'round', 'line-join': 'round' },
     paint: {
       'line-color': ['get', 'casing'],
-      'line-width': ['+', ['get', 'width'], 3],
+      // The edge in proportion to the line: half its width again.
+      'line-width': ['*', ['get', 'width'], 1.5],
       'line-opacity': 0.9,
       'line-offset': sideOffset,
     },
@@ -352,7 +357,7 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
       'line-offset': sideOffset,
     },
   });
-  // A walk: a faint band along the streets with bright dots on it, to see where it goes.
+  // A walk: a faint band along the pavements with small bright dots close together on it.
   map.addLayer({
     id: 'mb-walk',
     type: 'line',
@@ -361,7 +366,7 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
     layout: { 'line-cap': 'round', 'line-join': 'round' },
     paint: {
       'line-color': base === 'satellite' ? '#ffffff' : '#1E6FFF',
-      'line-width': ['interpolate', ['linear'], ['zoom'], 12, 3, 17, 6],
+      'line-width': ['interpolate', ['linear'], ['zoom'], 12, 1.5, 17, 3],
       'line-opacity': 0.45,
     },
   });
@@ -372,15 +377,15 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
     filter: ['get', 'dashed'],
     layout: {
       'symbol-placement': 'line',
-      'symbol-spacing': ['interpolate', ['linear'], ['zoom'], 12, 9, 17, 16],
+      'symbol-spacing': ['interpolate', ['linear'], ['zoom'], 12, 5, 17, 8],
       'icon-image': 'mb-walk-dot',
-      'icon-size': ['interpolate', ['linear'], ['zoom'], 12, 0.7, 17, 1.15],
+      'icon-size': ['interpolate', ['linear'], ['zoom'], 12, 0.35, 17, 0.58],
       'icon-allow-overlap': true,
       'icon-ignore-placement': true,
       'icon-rotation-alignment': 'map',
     },
   });
-  // Arrows the way the bus goes: on the line, or on its side of the road.
+  // Arrows the way the bus goes, on the line (and as far apart as the two ways of a line).
   for (const side of [false, true]) {
     map.addLayer({
       id: side ? 'mb-line-arrow-side' : 'mb-line-arrow',
@@ -400,7 +405,7 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
             'interpolate',
             ['linear'],
             ['zoom'],
-            ...SIDE.flatMap(([zoom, px]) => [zoom, ['literal', [0, px]]]),
+            ...APART.flatMap(([zoom, px]) => [zoom, ['literal', [0, px]]]),
           ] as unknown as [number, number],
         }),
       },
@@ -685,6 +690,8 @@ export default function MapView({ className }: { className?: string }) {
       attributionControl: { compact: true },
     });
     mapRef.current = map;
+    // While developing, the map for the browser console (to put the camera where a screenshot was).
+    if (import.meta.env.DEV) (window as unknown as { mbMap?: MapLibreMap }).mbMap = map;
     map.addControl(new NavigationControl({ visualizePitch: true }), 'top-right');
     map.addControl(
       new GeolocateControl({

@@ -100,6 +100,8 @@ export interface WalkLeg {
   distance: number;
   /** The way along the streets, when the walking network is known. */
   path?: LatLon[];
+  /** For each step of `path`, how far the pavement is from the road's middle (m; 0 off the roads). */
+  kerb?: number[];
 }
 
 export interface RideStop {
@@ -501,7 +503,7 @@ export class Planner {
       const route = walk.route(leg.from, leg.to);
       // A walk that the streets make far longer than planned is better left straight.
       if (!route || route.length > leg.distance * 3 + 300) return leg;
-      return { ...leg, path: route.path, distance: Math.round(route.length) };
+      return { ...leg, path: route.path, kerb: route.kerb, distance: Math.round(route.length) };
     });
     const walkDistance = legs.reduce((d, l) => d + (l.kind === 'walk' ? l.distance : 0), 0);
     return { ...it, legs, walkDistance };
@@ -990,7 +992,7 @@ export class Planner {
           start: request.time,
           end: request.time + seconds,
           distance: Math.round(distance),
-          ...(route ? { path: route.path } : {}),
+          ...(route ? { path: route.path, kerb: route.kerb } : {}),
         },
       ],
       depart: request.time,

@@ -5,7 +5,9 @@ import {
   itineraryContent,
   FLAG_FOOT,
   RIDE_COLORS,
+  RIDE_WIDTH,
   routeContent,
+  RUN_WIDTH,
   WAY_TURQUOISE,
   WAY_YELLOW,
 } from './mapContent.ts';
@@ -30,7 +32,9 @@ const net = {
     { route: 7, stops: [2, 3, 4] },
   ],
   shape: (p: number) => shapes[p]!,
+  lane: (p: number) => shapes[p]!,
   rideShape: (p: number) => shapes[p]!,
+  rideLane: (p: number) => shapes[p]!,
 } as unknown as Network;
 const there: Direction = { label: 'Funchal → Ribeira Brava', patterns: [0] };
 const back: Direction = { label: 'Ribeira Brava → Funchal', patterns: [1] };
@@ -76,6 +80,7 @@ describe('the variants of a line on the map', () => {
       { route: 7, stops: [0, 1], trips: [[1, 27000, 0, 'saturday']] },
     ],
     shape: (p: number) => (p === 0 ? coast : inland),
+    lane: (p: number) => (p === 0 ? coast : inland),
     isServiceActive: (service: number, date: string) => service === (date === '2026-10-10' ? 1 : 0),
   } as unknown as Network;
   const way: Direction = { label: 'Ribeira Brava → Funchal', patterns: [0, 1] };
@@ -92,7 +97,7 @@ describe('the variants of a line on the map', () => {
     expect(saturday.lines.map((l) => l.note)).toEqual([undefined, note]);
     expect(saturday.lines).toHaveLength(2);
     const detour = saturday.lines[1]!;
-    expect(detour).toMatchObject({ arrows: true, side: true, width: 3.5 });
+    expect(detour).toMatchObject({ arrows: true, side: true, width: RUN_WIDTH });
     // From where it leaves the coast road to where it comes back to it.
     expect(Math.max(...detour.coords.map((c) => c.lat))).toBeCloseTo(32.66);
     expect(Math.min(...detour.coords.map((c) => c.lon))).toBeGreaterThan(-16.98);
@@ -122,7 +127,7 @@ describe('a route on the map', () => {
   it('is neon yellow with arrows the way the bus goes', () => {
     const c = itineraryContent(net, it207);
     expect(c.lines).toEqual([
-      { coords: shapes[0], color: WAY_YELLOW, width: 6, label: '207', arrows: true },
+      { coords: shapes[0], color: WAY_YELLOW, width: RIDE_WIDTH, label: '207', arrows: true },
     ]);
   });
 
@@ -166,5 +171,25 @@ describe('a route on the map', () => {
     };
     const c = itineraryContent(net, { ...it207, legs: [walk, it207.legs[0]!] } as Itinerary);
     expect(c.lines[0]!.coords.at(-1)).toEqual(shapes[0]![0]);
+  });
+
+  it('walks along the pavement, not down the middle of the road', () => {
+    // From a door north of the road, 300 m west along it to the stop, its pavement 3 m out.
+    const walk = {
+      kind: 'walk',
+      from: { name: 'Hotel', lat: 32.6502, lon: -16.9068 },
+      to: ride(0),
+      path: [
+        stop('', -16.9068, 32.6502),
+        stop('', -16.9068),
+        stop('', -16.91),
+        stop('Funchal', -16.91, 32.65001),
+      ],
+      kerb: [0, 3, 0],
+    };
+    const c = itineraryContent(net, { ...it207, legs: [walk, it207.legs[0]!] } as Itinerary);
+    const along = c.lines[0]!.coords.slice(1, 3);
+    // On the north pavement, the door's side of the road: about 3 m north of its middle.
+    for (const p of along) expect((p.lat - 32.65) * 110_540).toBeCloseTo(3, 0);
   });
 });

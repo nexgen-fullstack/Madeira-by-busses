@@ -21,6 +21,16 @@ export const WALK_STEPS = 1;
 export const WALK_PATH = 2;
 /** How long a metre takes on each kind of way, relative to a pavement. */
 const KIND_COST = [1, 1.6, 1.15];
+/**
+ * An edge's kind packs how it walks (WALK_STREET, WALK_STEPS, WALK_PATH) and,
+ * along a road, how far the road's pavement is from its middle in decimetres:
+ * kind + kerb × 4. A walk along the road is drawn there, not down its middle.
+ */
+export const walkWay = (kind: number) => kind & 3;
+/** How far a road's pavement is from its middle (m); 0 on footways, steps and paths. */
+export const walkKerb = (kind: number) => (kind >> 2) / 10;
+/** The furthest a pavement is kept from the middle of a road (m): what fits in a kind. */
+export const MAX_KERB = 6.3;
 
 export interface WalkGraphData {
   /** Junctions and dead ends. */
@@ -49,6 +59,11 @@ export interface WalkDistance {
 export interface WalkRoute extends WalkDistance {
   /** From the first point to the second, along the ways. */
   path: LatLon[];
+  /**
+   * For each step of `path` (from a point to the next), how far the pavement
+   * is from the middle of the road there (m); 0 off the roads.
+   */
+  kerb: number[];
 }
 
 // ---------- Encoding ----------
@@ -436,7 +451,7 @@ export class WalkGraph {
   }
 
   private factor(e: number): number {
-    return KIND_COST[this.kind[e]!] ?? 1;
+    return KIND_COST[walkWay(this.kind[e]!)] ?? 1;
   }
 
   private settle(
@@ -559,16 +574,30 @@ export class WalkGraph {
       }
     }
     if (!best) return undefined;
-    return { ...best, path: this.trace(start, end, a, b) };
+    return { ...best, ...this.trace(start, end, a, b) };
   }
 
   private straight(node: number, p: LatLon): number {
     return haversine({ lat: this.lat[node]!, lon: this.lon[node]! }, p);
   }
 
-  /** The points of the best walk found by the last route() call. */
-  private trace(start: WalkHit, end: WalkHit, a: LatLon, b: LatLon): LatLon[] {
+  /** The points of the best walk found by the last route() call, and its pavements. */
+  private trace(
+    start: WalkHit,
+    end: WalkHit,
+    a: LatLon,
+    b: LatLon,
+  ): { path: LatLon[]; kerb: number[] } {
+    // Built from the end back; kerbs[i] is the step between tail[i] and tail[i + 1].
     const tail: LatLon[] = [b, end.point];
+    const kerbs: number[] = [0];
+    const add = (points: readonly LatLon[], kerb: number) => {
+      for (const p of points) {
+        tail.push(p);
+        kerbs.push(kerb);
+      }
+    };
+    const kerbOf = (edge: number) => walkKerb(this.kind[edge]!);
     const e = end.edge;
     const f = this.factor(e);
     // Which end of the last edge did the walk come in by, or did it stay on one edge?
@@ -583,14 +612,15 @@ export class WalkGraph {
     const direct =
       e === start.edge ? Math.abs(end.along - start.along) * f : Number.POSITIVE_INFINITY;
     if (direct <= viaFrom && direct <= viaTo) {
-      return [a, ...this.slice(e, start.along, end.along), b];
+      const along = this.slice(e, start.along, end.along);
+      return dedupe([a, ...along, b], [0, ...along.slice(1).map(() => kerbOf(e)), 0]);
     }
     let node: number;
     if (viaFrom <= viaTo) {
-      tail.push(...this.slice(e, end.along, 0).slice(1));
+      add(this.slice(e, end.along, 0).slice(1), kerbOf(e));
       node = this.from[e]!;
     } else {
-      tail.push(...this.slice(e, end.along, this.len[e]!).slice(1));
+      add(this.slice(e, end.along, this.len[e]!).slice(1), kerbOf(e));
       node = this.to[e]!;
     }
     for (;;) {
@@ -600,14 +630,15 @@ export class WalkGraph {
       const forward = this.to[pe] === node;
       const pts = this.points(pe);
       if (forward) pts.reverse();
-      tail.push(...pts.slice(1));
+      add(pts.slice(1), kerbOf(pe));
       node = forward ? this.from[pe]! : this.to[pe]!;
     }
     // node is an end of the start edge: walk from the start point to it.
     const toEnd = node === this.from[start.edge] ? 0 : this.len[start.edge]!;
-    tail.push(...this.slice(start.edge, start.along, toEnd).reverse().slice(1));
-    tail.push(a);
-    return dedupe(tail.reverse());
+    add(this.slice(start.edge, start.along, toEnd).reverse().slice(1), kerbOf(start.edge));
+    add([a], 0);
+    // The same steps the other way round.
+    return dedupe(tail.reverse(), kerbs.reverse());
   }
 
   /** Points of edge e from `a0` to `a1` metres along it (either direction). */
@@ -636,12 +667,17 @@ export class WalkGraph {
   }
 }
 
-function dedupe(points: LatLon[]): LatLon[] {
-  const out: LatLon[] = [];
-  for (const p of points) {
-    const last = out[out.length - 1];
-    if (!last || Math.abs(last.lat - p.lat) > 1e-7 || Math.abs(last.lon - p.lon) > 1e-7)
-      out.push(p);
-  }
-  return out;
+/** A path without points repeated, and the pavement of each of its steps. */
+function dedupe(points: LatLon[], kerbs: number[]): { path: LatLon[]; kerb: number[] } {
+  const path: LatLon[] = [];
+  const kerb: number[] = [];
+  points.forEach((p, i) => {
+    const last = path[path.length - 1];
+    if (!last) path.push(p);
+    else if (Math.abs(last.lat - p.lat) > 1e-7 || Math.abs(last.lon - p.lon) > 1e-7) {
+      path.push(p);
+      kerb.push(kerbs[i - 1] ?? 0);
+    }
+  });
+  return { path, kerb };
 }

@@ -1,11 +1,13 @@
 import {
   haversine,
+  MAX_KERB,
   WALK_PATH,
   WALK_STEPS,
   WALK_STREET,
   type LatLon,
   type WalkGraphData,
 } from '@madeirabus/engine';
+import { BOTH_WAYS, carriageway, driveKind, highwayClass, roadDirection } from './drive.ts';
 
 /**
  * The walking network for the app (walk.bin), from OpenStreetMap's ways as
@@ -67,6 +69,30 @@ export function walkKind(tags: Record<string, string> = {}, length = 0): number 
   return WALK_STREET;
 }
 
+/** Ways where people walk in the middle: a square, a shared street, a pedestrian street. */
+const SHARED = new Set(['living_street', 'pedestrian']);
+
+/**
+ * How far from a road's middle its pavement is (m): half the carriageway and
+ * the kerb, where a walk along the road goes. None on footways, steps and paths,
+ * which are mapped where they are.
+ */
+export function kerbOffset(tags: Record<string, string> = {}): number {
+  const cls = highwayClass(tags.highway);
+  if (cls === undefined || SHARED.has(tags.highway ?? '')) return 0;
+  const kind = driveKind(tags);
+  const oneWay = kind !== undefined && roadDirection(kind) !== BOTH_WAYS;
+  const { lanes, lane } = carriageway(tags, cls, oneWay);
+  return Math.min(MAX_KERB, Math.round(((lanes * lane) / 2 + 0.5) * 10) / 10);
+}
+
+/** A way's kind in walk.bin: how it walks and, along a road, how far its pavement is. */
+export function walkEdgeKind(tags: Record<string, string> = {}, length = 0): number | undefined {
+  const kind = walkKind(tags, length);
+  if (kind === undefined) return undefined;
+  return kind + Math.round(kerbOffset(tags) * 10) * 4;
+}
+
 export function pathLength(points: readonly LatLon[]): number {
   let d = 0;
   for (let i = 1; i < points.length; i++) d += haversine(points[i - 1]!, points[i]!);
@@ -114,7 +140,7 @@ export interface GraphBuildOptions {
   tolerance?: number;
   /** Pieces of network shorter than this in all are left out (m). */
   minComponent?: number;
-  /** The kind of a way, or undefined to leave it out; by default how it walks. */
+  /** The kind of a way, or undefined to leave it out; by default how it walks and its pavement. */
   kindOf?: (tags: Record<string, string> | undefined, length: number) => number | undefined;
   /** The kind of a way taken the other way round (one-way roads); by default the same. */
   reverse?: (kind: number) => number;
@@ -141,7 +167,7 @@ export function buildWalkGraph(
   {
     tolerance = 1.5,
     minComponent = 400,
-    kindOf = walkKind,
+    kindOf = walkEdgeKind,
     reverse = (kind: number) => kind,
   }: GraphBuildOptions = {},
 ): { graph: WalkGraphData; stats: WalkBuildStats } {

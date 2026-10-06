@@ -16,7 +16,13 @@ import { useI18n } from '../i18n.ts';
 import { isNative } from '../lib/device.ts';
 import { clock } from '../lib/format.ts';
 import { encodePlace } from '../lib/itinerary.ts';
-import { FLAG_FOOT, rideColor, type MapContent, type MapPoint } from '../lib/mapContent.ts';
+import {
+  FLAG_FOOT,
+  RIDE_WIDTH,
+  rideColor,
+  type MapContent,
+  type MapPoint,
+} from '../lib/mapContent.ts';
 import { goBack, navigate } from '../lib/router.ts';
 import { useApp, useNetwork } from '../state/app.tsx';
 import { useTripTracking } from '../state/trip.tsx';
@@ -58,7 +64,9 @@ export function TripView() {
     if (state) points.push({ ...state.position, kind: 'bus', color });
     // The ride in the colour it has on the route, alone on the map.
     return {
-      lines: [{ coords: setup.shape, color: rideColor(rideIndex), width: 6, arrows: true }],
+      lines: [
+        { coords: setup.shape, color: rideColor(rideIndex), width: RIDE_WIDTH, arrows: true },
+      ],
       points,
       fitKey: `trip:${rideIndex}`,
       fit: setup.shape,

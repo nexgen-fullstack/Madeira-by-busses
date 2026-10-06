@@ -124,7 +124,8 @@ function TripEngine({
       const st = net.stops[s.stop]!;
       return { name: st.name, lat: st.lat, lon: st.lon, arr: s.arr, dep: s.dep };
     });
-    const shape = net.rideShape(ride.pattern, ride.boardPos, ride.alightPos);
+    // In the bus's lane, as the map draws it: the bus on the line, not beside it.
+    const shape = net.rideLane(ride.pattern, ride.boardPos, ride.alightPos);
     return {
       stops,
       shape,

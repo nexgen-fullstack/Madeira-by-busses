@@ -1,6 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { haversine, type LatLon } from './geo.ts';
-import { encodeWalkGraph, WalkGraph, WALK_STEPS, WALK_STREET, type WalkGraphData } from './walk.ts';
+import {
+  encodeWalkGraph,
+  WalkGraph,
+  walkKerb,
+  walkWay,
+  WALK_STEPS,
+  WALK_STREET,
+  type WalkGraphData,
+} from './walk.ts';
 
 // Metres east (x) and north (y) of a corner of Funchal.
 const LAT0 = 32.65;
@@ -125,5 +133,26 @@ describe('WalkGraph', () => {
     expect(long.cost).toBeCloseTo(160, 0);
     const short = withDetour(20).route(xy(0, 0), xy(0, 100))!;
     expect(short.length).toBeCloseTo(140, 0); // street: 140 m against 160 m of effort
+  });
+
+  it('tells where the pavements are along the roads, and still weighs the steps', () => {
+    // A road with its pavement 3.5 m from its middle, then steps up to the target.
+    const g = graph({
+      nodes: [xy(0, 0), xy(100, 0), xy(100, 50)],
+      edges: [
+        { from: 0, to: 1, kind: WALK_STREET + 35 * 4, points: [] },
+        { from: 1, to: 2, kind: WALK_STEPS, points: [] },
+      ],
+    });
+    const r = g.route(xy(10, 5), xy(100, 45))!;
+    expect(r.kerb).toHaveLength(r.path.length - 1);
+    // The step onto the road, along it on its pavement, up the steps, off them.
+    expect(r.kerb[0]).toBe(0);
+    expect(r.kerb).toContain(3.5);
+    expect(r.kerb.at(-1)).toBe(0);
+    expect(walkKerb(WALK_STEPS + 35 * 4)).toBe(3.5);
+    expect(walkWay(WALK_STEPS + 35 * 4)).toBe(WALK_STEPS);
+    // The steps still count for more than their length.
+    expect(r.cost).toBeGreaterThan(r.length + 20);
   });
 });

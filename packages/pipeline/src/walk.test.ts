@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { WalkGraph, encodeWalkGraph, WALK_PATH, WALK_STEPS, WALK_STREET } from '@madeirabus/engine';
-import { buildWalkGraph, walkKind, type OsmWay } from './walk.ts';
+import { buildWalkGraph, kerbOffset, walkEdgeKind, walkKind, type OsmWay } from './walk.ts';
 
 const way = (id: number, nodes: number[], tags: Record<string, string>, lon0 = -16.9): OsmWay => ({
   id,
@@ -27,6 +27,23 @@ describe('walkKind', () => {
     // Road tunnels through the mountains, but not a short underpass.
     expect(walkKind({ highway: 'primary', tunnel: 'yes' }, 1800)).toBeUndefined();
     expect(walkKind({ highway: 'primary', tunnel: 'yes' }, 80)).toBe(WALK_STREET);
+  });
+});
+
+describe('pavements', () => {
+  it('puts a walk along a road on its pavement, not down its middle', () => {
+    // Half of two lanes of 3.2 m and the kerb.
+    expect(kerbOffset({ highway: 'secondary', lanes: '2' })).toBeCloseTo(3.7, 1);
+    // A one-way street of one lane.
+    expect(kerbOffset({ highway: 'residential', oneway: 'yes' })).toBeCloseTo(1.9, 1);
+    // Footways, steps, paths and shared streets are where they are drawn.
+    expect(kerbOffset({ highway: 'footway' })).toBe(0);
+    expect(kerbOffset({ highway: 'steps' })).toBe(0);
+    expect(kerbOffset({ highway: 'pedestrian' })).toBe(0);
+    expect(kerbOffset({ highway: 'living_street' })).toBe(0);
+    expect(walkEdgeKind({ highway: 'secondary', lanes: '2' })).toBe(WALK_STREET + 37 * 4);
+    expect(walkEdgeKind({ highway: 'steps' })).toBe(WALK_STEPS);
+    expect(walkEdgeKind({ highway: 'motorway' })).toBeUndefined();
   });
 });
 

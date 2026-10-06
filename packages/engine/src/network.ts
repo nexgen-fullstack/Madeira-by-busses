@@ -8,6 +8,7 @@ import {
   walkSeconds,
   type LatLon,
 } from './geo.ts';
+import { decodeSides, offsetPolyline, sliceSided } from './lanes.ts';
 import { addDays, DAY, weekday } from './time.ts';
 
 export interface Footpath {
@@ -79,6 +80,8 @@ export class Network {
   readonly walkSpeed: number;
   private readonly transferRadius: number;
   private readonly shapeCache = new Map<number, LatLon[]>();
+  private readonly sideCache = new Map<number, number[]>();
+  private readonly laneCache = new Map<number, LatLon[]>();
   private readonly alongCache = new Map<number, { cum: number[]; stops: number[] }>();
   private readonly dayCache = new Map<string, DayTimetable>();
   private footpathCache?: Footpath[][];
@@ -147,6 +150,32 @@ export class Network {
     return pts;
   }
 
+  /**
+   * How far right of the road's middle the bus drives on each step of the
+   * pattern's shape (m): the centre of its lane. None where it is not known.
+   */
+  shapeSides(pattern: number): number[] {
+    const shapeIdx = this.patterns[pattern]!.shape;
+    let sides = this.sideCache.get(shapeIdx);
+    if (!sides) {
+      const steps = Math.max(0, this.shape(pattern).length - 1);
+      sides = decodeSides(this.bundle.shapeSides?.[shapeIdx], steps);
+      this.sideCache.set(shapeIdx, sides);
+    }
+    return sides;
+  }
+
+  /** The pattern's shape in its bus's lane, as the map draws it. */
+  lane(pattern: number): LatLon[] {
+    const shapeIdx = this.patterns[pattern]!.shape;
+    let pts = this.laneCache.get(shapeIdx);
+    if (!pts) {
+      pts = offsetPolyline(this.shape(pattern), this.shapeSides(pattern));
+      this.laneCache.set(shapeIdx, pts);
+    }
+    return pts;
+  }
+
   /** Distance along the pattern's shape of each of its stops (monotonic). */
   stopPositions(pattern: number): { cum: number[]; stops: number[] } {
     let cached = this.alongCache.get(pattern);
@@ -170,6 +199,22 @@ export class Network {
   rideShape(pattern: number, boardPos: number, alightPos: number): LatLon[] {
     const { cum, stops } = this.stopPositions(pattern);
     return slicePolyline(this.shape(pattern), cum, stops[boardPos]!, stops[alightPos]!);
+  }
+
+  /**
+   * A ride in its bus's lane, from where its stop meets the lane to where the
+   * stop it is left at does: where to stand, where to get off.
+   */
+  rideLane(pattern: number, boardPos: number, alightPos: number): LatLon[] {
+    const { cum, stops } = this.stopPositions(pattern);
+    const part = sliceSided(
+      this.shape(pattern),
+      cum,
+      this.shapeSides(pattern),
+      stops[boardPos]!,
+      stops[alightPos]!,
+    );
+    return offsetPolyline(part.points, part.sides);
   }
 
   isServiceActive(service: number, date: string): boolean {

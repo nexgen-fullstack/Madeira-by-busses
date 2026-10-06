@@ -1,4 +1,4 @@
-import { GridIndex, haversine } from '@madeirabus/engine';
+import { GridIndex, haversine, offsetPolyline, pavementSides } from '@madeirabus/engine';
 import type { Itinerary, LatLon, Network, StopGroup } from '@madeirabus/engine';
 import type { Direction } from './lines.ts';
 
@@ -12,7 +12,10 @@ export interface MapLine {
   label?: string;
   /** Arrows along the line, the way the bus goes. */
   arrows?: boolean;
-  /** On its side of the road (traffic keeps right), beside the line running the other way. */
+  /**
+   * Beside the line running the other way on the same road: drawn a little
+   * further apart from it while the map is too far away for the lanes to show.
+   */
   side?: boolean;
   /** Shown when the line is tapped: what it is and when it runs. */
   note?: LineNote;
@@ -66,6 +69,18 @@ export const RIDE_COLORS = [WAY_YELLOW, '#FF3DF0', WAY_TURQUOISE, '#FF8A00', '#7
 export const rideColor = (ride: number) => RIDE_COLORS[ride % RIDE_COLORS.length]!;
 /** The foot of the flags where a bus is boarded and left. */
 export const FLAG_FOOT = INK;
+/** How wide a bus of a route is drawn (px), the line it rides on the map. */
+export const RIDE_WIDTH = 8;
+/** How wide a line's main way is drawn on its page (px), and its other runs. */
+export const WAY_WIDTH = 6.5;
+export const RUN_WIDTH = 4.5;
+
+/** A walk along the streets on their pavements, or as the crow flies without the streets. */
+function walkLine(leg: { from: LatLon; to: LatLon; path?: LatLon[]; kerb?: number[] }): LatLon[] {
+  if (!leg.path) return [leg.from, leg.to];
+  if (!leg.kerb || leg.kerb.length !== leg.path.length - 1) return leg.path;
+  return offsetPolyline(leg.path, pavementSides(leg.path, leg.kerb));
+}
 
 const routeColor = (net: Network, route: number) => `#${net.routes[route]!.color}`;
 
@@ -83,18 +98,18 @@ export function itineraryContent(
 ): MapContent {
   const lines: MapLine[] = [];
   const points: MapPoint[] = [];
-  // Each bus from where its stop meets its road: the lane it runs in, not the pavement
-  // where the stop is mapped.
+  // Each bus in the centre of its lane, from where its stop meets the lane: where it is
+  // boarded and left, not the pavement where the stop is mapped.
   const rides = it.legs.map((leg) =>
-    leg.kind === 'ride' ? net.rideShape(leg.pattern, leg.boardPos, leg.alightPos) : undefined,
+    leg.kind === 'ride' ? net.rideLane(leg.pattern, leg.boardPos, leg.alightPos) : undefined,
   );
   let ride = 0;
   it.legs.forEach((leg, i) => {
     if (leg.kind === 'walk') {
-      // Along the streets when the walking network is loaded, to the very spot of the bus.
+      // Along the pavements when the walking network is loaded, to the very spot of the bus.
       const from = rides[i - 1]?.at(-1);
       const to = rides[i + 1]?.[0];
-      const path = leg.path ?? [leg.from, leg.to];
+      const path = walkLine(leg);
       lines.push({
         coords: [...(from ? [from] : []), ...path, ...(to ? [to] : [])],
         color: '#002F85',
@@ -108,7 +123,7 @@ export function itineraryContent(
     lines.push({
       coords,
       color: rideColor(ride++),
-      width: 6,
+      width: RIDE_WIDTH,
       label: net.routes[leg.route]!.short,
       arrows: true,
     });
@@ -254,7 +269,7 @@ export function routeContent(
     // The main variant always, the line's road; the others on the day they run.
     d.patterns.forEach((p, i) => {
       if (i > 0 && !runsOn(net, p, date)) return;
-      const shape = net.shape(p);
+      const shape = net.lane(p);
       const parts = i === 0 ? [shape] : detours(shape, drawn);
       drawn.push(...parts);
       const about = i > 0 ? note?.(d, p) : undefined;
@@ -262,7 +277,7 @@ export function routeContent(
         lines.push({
           coords,
           color,
-          width: i === 0 ? 5 : 3.5,
+          width: i === 0 ? WAY_WIDTH : RUN_WIDTH,
           arrows: true,
           side: true,
           ...(about ? { note: about } : {}),
@@ -302,7 +317,7 @@ export function networkContent(net: Network): MapContent {
   net.patterns.forEach((p, i) => {
     if (seen.has(p.shape)) return;
     seen.add(p.shape);
-    lines.push({ coords: net.shape(i), color: routeColor(net, p.route), width: 2.5 });
+    lines.push({ coords: net.lane(i), color: routeColor(net, p.route), width: 2.5 });
   });
   return {
     lines,
@@ -344,7 +359,7 @@ export function transitGeoJson(net: Network) {
         properties: { color: routeColor(net, p.route) },
         geometry: {
           type: 'LineString' as const,
-          coordinates: net.shape(i).map((c) => [c.lon, c.lat]),
+          coordinates: net.lane(i).map((c) => [c.lon, c.lat]),
         },
       },
     ];
