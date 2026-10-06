@@ -355,6 +355,7 @@ export const pl: Dict = {
   'day.on': 'w poniedziałek|we wtorek|w środę|w czwartek|w piątek|w sobotę|w niedzielę',
   'ahead.from': '{day} od {t}',
   'ahead.none': 'Dziś nie ma już tam autobusów',
+  'ahead.past': 'Ta godzina dziś już minęła',
   'ahead.day': 'Podróż {day}',
   'lineCard.gone': 'Dziś już nie jedzie',
 };

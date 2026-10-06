@@ -355,6 +355,7 @@ export const uk = {
   'day.on': "у понеділок|у вівторок|у середу|у четвер|у п'ятницю|у суботу|у неділю",
   'ahead.from': '{day} з {t}',
   'ahead.none': 'Сьогодні автобусів туди вже немає',
+  'ahead.past': 'Цей час сьогодні вже минув',
   'ahead.day': 'Поїздка {day}',
   'lineCard.gone': 'Сьогодні вже не їде',
 } satisfies Record<string, Entry>;

@@ -473,6 +473,32 @@ describe('the best of the options, arriving by a time', () => {
   });
 });
 
+describe('buses already gone', () => {
+  // From A to D the 1 leaves every half hour and takes 30 minutes.
+  const byTen = { from: place('A'), to: place('D'), date: WEEKDAY, time: at(10), arriveBy: true };
+  const buses = (its: Itinerary[]) => its.filter((it) => it.rides > 0);
+
+  it('are no option arriving by a time', () => {
+    expect(buses(planner.plan(byTen)).some((it) => it.depart < at(9))).toBe(true);
+    // At 09:15 only the 09:30 is left; at 09:45 nothing gets there by 10:00 any more.
+    const left = buses(planner.plan({ ...byTen, notBefore: at(9, 15) }));
+    expect(left.map((it) => it.depart)).toEqual([at(9, 30)]);
+    expect(buses(planner.plan({ ...byTen, notBefore: at(9, 45) }))).toEqual([]);
+  });
+
+  it('leaving at a time gone, are looked for from now', () => {
+    const results = planner.plan({
+      from: place('A'),
+      to: place('D'),
+      date: WEEKDAY,
+      time: at(7),
+      notBefore: at(9, 10),
+    });
+    expect(results.length).toBeGreaterThan(0);
+    expect(results.every((it) => it.depart >= at(9, 10))).toBe(true);
+  });
+});
+
 describe('the first buses of a later day', () => {
   // Friday 9 October 2026: the 1 runs on weekdays, from 06:00 to 20:00.
   const FRIDAY = '2026-10-09';

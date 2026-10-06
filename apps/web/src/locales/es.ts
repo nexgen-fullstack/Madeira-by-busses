@@ -321,6 +321,7 @@ export const es: Dict = {
   'day.on': 'el lunes|el martes|el miércoles|el jueves|el viernes|el sábado|el domingo',
   'ahead.from': '{day} desde las {t}',
   'ahead.none': 'Hoy ya no hay autobuses hasta allí',
+  'ahead.past': 'Esa hora de hoy ya ha pasado',
   'ahead.day': 'Viaje {day}',
   'lineCard.gone': 'Hoy ya no pasa',
 };

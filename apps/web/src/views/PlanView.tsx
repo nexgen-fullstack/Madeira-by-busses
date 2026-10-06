@@ -8,7 +8,7 @@ import {
   MapPinned,
   Sparkles,
 } from 'lucide-react';
-import { madeiraNow, normalise } from '@madeirabus/engine';
+import { addDays, madeiraNow, normalise } from '@madeirabus/engine';
 import { ItineraryCard } from '../components/ItineraryCard.tsx';
 import { ItineraryDetail } from '../components/ItineraryDetail.tsx';
 import { MapContentContext, useMapContent } from '../components/mapContext.tsx';
@@ -64,8 +64,10 @@ export function PlanView({ route }: { route: Route }) {
   const dateParam = q.get('d');
   const selected = q.get('i') !== null ? Number(q.get('i')) : undefined;
 
-  // The options found, each with its day: today's, and tomorrow's when nothing goes any more.
-  const [found, setFound] = useState<Found | undefined>();
+  // The options found, each with its day: today's, and tomorrow's when nothing goes any more;
+  // with the day they were asked for and whether the time asked was gone today, so a new
+  // search under way does not tell the old options apart wrongly.
+  const [found, setFound] = useState<(Found & { date: string; past: boolean }) | undefined>();
   const results = found?.options;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
@@ -77,8 +79,11 @@ export function PlanView({ route }: { route: Route }) {
   const shownSearch = useRef('');
 
   const now = useNow();
-  const date = dateParam ?? now.date;
   const time = timeParam ? parseTimeInput(timeParam) : now.time;
+  // A time already gone today is no option: the same time tomorrow, told in red.
+  const askedDate = dateParam ?? now.date;
+  const past = askedDate === now.date && timeParam !== null && time < now.time - 60;
+  const date = past ? addDays(now.date, 1) : askedDate;
 
   const setParams = useCallback(
     (patch: Record<string, string | undefined>) => {
@@ -147,14 +152,17 @@ export function PlanView({ route }: { route: Route }) {
         date,
         time: timeParam ? parseTimeInput(timeParam) : madeiraNow().time,
         arriveBy,
+        // Today no bus that has already gone, arriving by a time too.
+        notBefore: date === madeiraNow().date ? madeiraNow().time : undefined,
         options: planOptions(settings),
       },
-      // No bus any more today: the first day one goes. Another day chosen is shown as it is.
-      date === madeiraNow().date,
+      // No bus any more today (or tomorrow, for a time gone today): the first day one goes.
+      // Another day chosen is shown as it is.
+      date === madeiraNow().date || past,
     )
       .then((r) => {
         if (cancelled) return;
-        setFound(r);
+        setFound({ ...r, date, past });
         // Remember named trips ("my location" changes, so it is left out).
         const named = (p: PlaceValue) => p.kind === 'stop' || p.name !== myLocation;
         if (r.options.length > 0 && named(from) && named(to)) {
@@ -245,7 +253,7 @@ export function PlanView({ route }: { route: Route }) {
       <ItineraryDetail
         it={selectedIt}
         date={selectedDay}
-        ahead={selectedDay !== date}
+        ahead={Boolean(found?.past) || selectedDay !== found?.date}
         onFocusLeg={setFocusLeg}
         onBack={() => setParams({ i: undefined })}
         onStart={(simulate) => {
@@ -350,6 +358,9 @@ export function PlanView({ route }: { route: Route }) {
               <input
                 type="time"
                 aria-label={t.t(arriveBy ? 'time.arrive' : 'time.depart')}
+                // Today the hours gone are not offered (where the picker heeds it); a time
+                // gone anyway is tomorrow's.
+                min={date === now.date ? toTimeInput(now.time) : undefined}
                 value={timeParam}
                 onChange={(e) => e.target.value && setParams({ t: e.target.value, i: undefined })}
               />
@@ -370,9 +381,10 @@ export function PlanView({ route }: { route: Route }) {
 
       {results && results.length > 0 && (
         <div className="results" aria-live="polite" aria-busy={loading} ref={resultsRef}>
-          {groups.map((g) => {
-            // Nothing goes there any more on the day asked: the first day one does, in red.
-            const later = g.day !== date;
+          {groups.map((g, n) => {
+            // Nothing goes there any more on the day asked, or the time asked is gone today:
+            // a later day, in red.
+            const later = found!.past || g.day !== found!.date;
             const label = later ? capitalise(t, dayAhead(t, g.day, now.date)) : undefined;
             return (
               <Fragment key={g.day}>
@@ -380,7 +392,7 @@ export function PlanView({ route }: { route: Route }) {
                   <div className="banner banner--ahead" role="status">
                     <CalendarClock size={18} aria-hidden />
                     <div>
-                      <strong>{t.t('ahead.none')}</strong>
+                      <strong>{t.t(found!.past && n === 0 ? 'ahead.past' : 'ahead.none')}</strong>
                       {aheadFrom(t, g.day, now.date, firstDeparture(g.options))}
                     </div>
                   </div>

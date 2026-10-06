@@ -99,6 +99,11 @@ export interface PlanRequest {
   time: number;
   /** `time` is when to be there by, not when to leave. */
   arriveBy?: boolean;
+  /**
+   * No option leaves before this (seconds after midnight of `date`): now, when the
+   * request is for today. Arriving by a time, a bus that has already gone is no option.
+   */
+  notBefore?: number;
   options?: Partial<PlanOptions>;
 }
 
@@ -276,6 +281,9 @@ export class Planner {
    */
   plan(request: PlanRequest): Itinerary[] {
     if (request.arriveBy) return this.planArriveBy(request);
+    if (request.notBefore !== undefined && request.time < request.notBefore) {
+      request = { ...request, time: request.notBefore };
+    }
     const ctx = this.context(request);
     const results = [...this.collect(request, ctx.opts, ctx.searchAt, 12).values()];
     results.push(...this.longWalks(request, ctx, results));
@@ -439,8 +447,9 @@ export class Planner {
   private planArriveBy(request: PlanRequest): Itinerary[] {
     const ctx = this.context(request);
     const by = request.time;
+    const earliest = Math.max(0, request.notBefore ?? 0);
     const inTime = (t: number) => ctx.searchAt(t).some((it) => it.arrive <= by);
-    let lo = Math.max(0, by - ctx.opts.window);
+    let lo = Math.max(earliest, by - ctx.opts.window);
     let hi = by;
     if (inTime(lo)) {
       while (hi - lo > 60) {
@@ -448,11 +457,18 @@ export class Planner {
         if (inTime(mid)) lo = mid;
         else hi = mid;
       }
+    } else if (earliest > 0 && lo === earliest) {
+      // Nothing that leaves from now on is there in time.
+      return [];
     }
-    const options = this.plan({ ...request, arriveBy: false, time: Math.max(0, lo - 90 * 60) });
+    const options = this.plan({
+      ...request,
+      arriveBy: false,
+      time: Math.max(earliest, lo - 90 * 60),
+    });
     const made = options
       .map((it) => (it.rides === 0 ? shiftWalk(it, by - it.arrive) : it))
-      .filter((it) => it.arrive <= by);
+      .filter((it) => it.arrive <= by && it.depart >= earliest);
     // The best first ("when must I go at the latest?", with as few changes and as little
     // fare and walking as may be), then the others leaving last first.
     const best = bestOf(made, ctx.opts, true);
@@ -620,7 +636,9 @@ export class Planner {
         if (first.length === 0) continue;
         time = Math.min(...first.map((it) => it.depart));
       }
-      const itineraries = this.plan({ ...request, date, time }).filter((it) => it.rides > 0);
+      const itineraries = this.plan({ ...request, date, time, notBefore: undefined }).filter(
+        (it) => it.rides > 0,
+      );
       if (itineraries.length > 0) return { date, itineraries };
     }
     return undefined;

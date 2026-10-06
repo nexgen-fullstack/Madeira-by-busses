@@ -323,6 +323,7 @@ export const fr: Dict = {
   'day.on': 'lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche',
   'ahead.from': '{day} à partir de {t}',
   'ahead.none': "Plus de bus pour y aller aujourd'hui",
+  'ahead.past': "Cette heure est déjà passée aujourd'hui",
   'ahead.day': 'Trajet {day}',
   'lineCard.gone': "Plus de passage aujourd'hui",
 };

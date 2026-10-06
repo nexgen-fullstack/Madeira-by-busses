@@ -320,6 +320,7 @@ export const en: Dict = {
   'day.on': 'on Monday|on Tuesday|on Wednesday|on Thursday|on Friday|on Saturday|on Sunday',
   'ahead.from': '{day} from {t}',
   'ahead.none': 'No more buses there today',
+  'ahead.past': 'That time has already passed today',
   'ahead.day': 'Trip {day}',
   'lineCard.gone': 'No more buses today',
 };

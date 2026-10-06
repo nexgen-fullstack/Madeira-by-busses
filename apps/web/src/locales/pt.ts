@@ -323,6 +323,7 @@ export const pt: Dict = {
     'na segunda-feira|na terça-feira|na quarta-feira|na quinta-feira|na sexta-feira|no sábado|no domingo',
   'ahead.from': '{day} a partir das {t}',
   'ahead.none': 'Hoje já não há autocarros para lá',
+  'ahead.past': 'Essa hora de hoje já passou',
   'ahead.day': 'Viagem {day}',
   'lineCard.gone': 'Hoje já não passa',
 };
