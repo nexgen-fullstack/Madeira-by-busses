@@ -3,6 +3,7 @@ import { ChevronRight, Download, Loader2, Share2, X } from 'lucide-react';
 import { fareClassOf, haversine, type LatLon, type Network } from '@madeirabus/engine';
 import { useI18n, type I18n } from '../i18n.ts';
 import type { Key } from '../locales/uk.ts';
+import { isNative } from '../lib/device.ts';
 import { canShareFiles, saveFile, shareFile } from '../lib/files.ts';
 import { clock, price } from '../lib/format.ts';
 import { lineSheet } from '../lib/lineSheet.ts';
@@ -124,7 +125,8 @@ export function LineCard({ pick, onClose }: { pick: LinePick; onClose: () => voi
     try {
       if (action === 'share')
         await shareFile(sheet.bytes, sheet.fileName, sheet.title, 'image/png');
-      else if (await saveFile(sheet.bytes, sheet.fileName, 'image/png')) flash(t.t('sheet.saved'));
+      else if (await saveFile(sheet.bytes, sheet.fileName, 'image/png'))
+        flash(t.t(isNative() ? 'sheet.savedGallery' : 'sheet.saved'));
     } catch {
       flash(t.t('sheet.failed'));
     } finally {

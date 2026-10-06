@@ -1723,6 +1723,26 @@ input[type='time'],
 .line-card__next .strong {
   font-variant-numeric: tabular-nums;
 }
+/* A line's timetable as a picture on its page, above the buttons to save or send it. */
+.sheet-preview {
+  margin: 10px 0 12px;
+  max-height: 70dvh;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+}
+.sheet-preview img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.sheet-preview p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 12px;
+}
 .line-card__sheet {
   flex: 1 1 auto;
   min-height: 0;

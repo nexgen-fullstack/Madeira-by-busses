@@ -18,11 +18,17 @@ interface DocumentsPlugin {
   }): Promise<void>;
 }
 
-let documents: Promise<DocumentsPlugin> | undefined;
+let documents: Promise<{ plugin: DocumentsPlugin }> | undefined;
+/**
+ * The plugin, wrapped: a promise (or async function) resolved with the plugin
+ * itself asks it for `then`, as with any value, which a Capacitor plugin takes
+ * for a call to a native method "then" that does not exist, and the promise never
+ * settles. That left every save, print and share in the app spinning.
+ */
 const native = () =>
-  (documents ??= import('@capacitor/core').then(({ registerPlugin }) =>
-    registerPlugin<DocumentsPlugin>('Documents'),
-  ));
+  (documents ??= import('@capacitor/core').then(({ registerPlugin }) => ({
+    plugin: registerPlugin<DocumentsPlugin>('Documents'),
+  })));
 
 function base64(bytes: Uint8Array): string {
   let s = '';
@@ -42,7 +48,7 @@ export async function saveFile(
   mimeType = 'application/pdf',
 ): Promise<boolean> {
   if (isNative()) {
-    const plugin = await native();
+    const { plugin } = await native();
     return (await plugin.save({ data: base64(bytes), fileName, mimeType })).saved;
   }
   const url = URL.createObjectURL(blobOf(bytes, mimeType));
@@ -71,7 +77,7 @@ export function canPrint(): boolean {
 /** Opens the print dialog for a PDF (which can also save it as a PDF). */
 export async function printPdf(bytes: Uint8Array, fileName: string): Promise<void> {
   if (isNative()) {
-    await (await native()).print({ data: base64(bytes), fileName });
+    await (await native()).plugin.print({ data: base64(bytes), fileName });
     return;
   }
   const url = URL.createObjectURL(blobOf(bytes, 'application/pdf'));
@@ -116,7 +122,7 @@ export async function shareFile(
   mimeType = 'application/pdf',
 ): Promise<boolean> {
   if (isNative()) {
-    await (await native()).share({ data: base64(bytes), fileName, mimeType, title });
+    await (await native()).plugin.share({ data: base64(bytes), fileName, mimeType, title });
     return true;
   }
   try {

@@ -2,10 +2,14 @@ package io.github.nexgenfullstack.madeirabus;
 
 import android.app.Activity;
 import android.content.ClipData;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.CancellationSignal;
 import android.os.ParcelFileDescriptor;
 import android.print.PageRange;
@@ -13,6 +17,7 @@ import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintDocumentInfo;
 import android.print.PrintManager;
+import android.provider.MediaStore;
 import android.util.Base64;
 import androidx.activity.result.ActivityResult;
 import androidx.core.content.FileProvider;
@@ -28,22 +33,67 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * Hands the documents the app makes (printable timetables) to the person:
- * "save as" through the system file picker, the Android print dialog (which
- * can also save a PDF) and the share sheet. None of them needs a storage
- * permission, and a web view can do none of them by itself.
+ * Hands the documents the app makes (timetables as pictures and PDFs) to the
+ * person: saved at once, a picture in the gallery and a PDF in Downloads (in a
+ * "Madeira by busses" folder; before Android 10, "save as" through the system
+ * file picker), the Android print dialog (which can also save a PDF) and the
+ * share sheet. None of them needs a storage permission, and a web view can do
+ * none of them by itself.
  */
 @CapacitorPlugin(name = "Documents")
 public class DocumentsPlugin extends Plugin {
 
     @PluginMethod
     public void save(PluginCall call) {
-        if (decode(call) == null) return;
+        byte[] bytes = decode(call);
+        if (bytes == null) return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            saveToMedia(call, bytes);
+            return;
+        }
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType(call.getString("mimeType", "application/pdf"));
         intent.putExtra(Intent.EXTRA_TITLE, fileName(call));
         startActivityForResult(call, intent, "saveResult");
+    }
+
+    /** A picture into the gallery, anything else into Downloads, with no questions asked. */
+    private void saveToMedia(PluginCall call, byte[] bytes) {
+        String mimeType = call.getString("mimeType", "application/pdf");
+        boolean picture = mimeType.startsWith("image/");
+        ContentResolver resolver = getContext().getContentResolver();
+        Uri collection = picture
+            ? MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
+            : MediaStore.Downloads.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.MediaColumns.DISPLAY_NAME, fileName(call));
+        values.put(MediaStore.MediaColumns.MIME_TYPE, mimeType);
+        values.put(
+            MediaStore.MediaColumns.RELATIVE_PATH,
+            (picture ? Environment.DIRECTORY_PICTURES : Environment.DIRECTORY_DOWNLOADS) +
+            "/Madeira by busses"
+        );
+        values.put(MediaStore.MediaColumns.IS_PENDING, 1);
+        Uri uri = null;
+        try {
+            uri = resolver.insert(collection, values);
+            if (uri == null) throw new IOException("No place for the file");
+            try (OutputStream out = resolver.openOutputStream(uri)) {
+                if (out == null) throw new IOException("No stream for " + uri);
+                out.write(bytes);
+            }
+            values.clear();
+            values.put(MediaStore.MediaColumns.IS_PENDING, 0);
+            resolver.update(uri, values, null, null);
+            JSObject ret = new JSObject();
+            ret.put("saved", true);
+            ret.put("where", picture ? "gallery" : "downloads");
+            call.resolve(ret);
+        } catch (IOException | RuntimeException e) {
+            if (uri != null) resolver.delete(uri, null, null);
+            call.reject("Could not save the file", e);
+        }
     }
 
     @ActivityCallback

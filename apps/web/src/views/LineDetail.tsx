@@ -5,14 +5,16 @@ import { HourTable } from '../components/HourTable.tsx';
 import { useMapContent } from '../components/mapContext.tsx';
 import { RouteBadge } from '../components/RouteBadge.tsx';
 import { useI18n } from '../i18n.ts';
+import { isNative } from '../lib/device.ts';
 import { canPrint, canShareFiles, printPdf, saveFile, shareFile } from '../lib/files.ts';
 import { clock, longDate } from '../lib/format.ts';
-import { lineSheet, variantNote } from '../lib/lineSheet.ts';
+import { variantNote } from '../lib/lineSheet.ts';
 import { lineDirections, lineOf } from '../lib/lines.ts';
 import { routeContent, WAY_TURQUOISE, WAY_YELLOW } from '../lib/mapContent.ts';
 import { boardingStops, returnOf, terminusMarks } from '../lib/printable.ts';
 import { goBack, navigate } from '../lib/router.ts';
 import { lineUrl } from '../lib/site.ts';
+import { useLineSheet } from '../lib/useLineSheet.ts';
 import { useNow } from '../lib/useNow.ts';
 import { useNetwork } from '../state/app.tsx';
 
@@ -31,6 +33,8 @@ export function LineDetail({ routeIndex }: { routeIndex: number }) {
   const [busy, setBusy] = useState<PdfAction | ImageAction | undefined>();
   const [toast, setToast] = useState<string | undefined>();
   const route = net.routes[routeIndex];
+  // The whole line on one picture, both ways, shown here to keep in the gallery or send.
+  const sheet = useLineSheet(net, t, routeIndex, date, today);
   // All variants of the line, as the feed may publish each one as a route.
   const variants = useMemo(() => lineOf(net, routeIndex), [net, routeIndex]);
   const directions = useMemo(() => lineDirections(net, variants), [net, variants]);
@@ -91,22 +95,22 @@ export function LineDetail({ routeIndex }: { routeIndex: number }) {
       );
       if (action === 'print') await printPdf(bytes, tt.fileName);
       else if (action === 'share') await shareFile(bytes, tt.fileName, tt.title);
-      else if (await saveFile(bytes, tt.fileName)) flash(t.t('print.saved'));
+      else if (await saveFile(bytes, tt.fileName))
+        flash(t.t(isNative() ? 'print.savedDownloads' : 'print.saved'));
     } catch {
       flash(t.t('print.failed'));
     } finally {
       setBusy(undefined);
     }
   };
-  // The whole line on one picture, to keep in the phone's gallery.
   const image = async (action: ImageAction) => {
+    if (!sheet || sheet === 'failed') return;
     setBusy(action);
     try {
-      const { lineSheetPng } = await import('../lib/sheetImage.ts');
-      const sheet = lineSheet(net, t, routeIndex, date, today);
-      const bytes = await lineSheetPng(sheet);
-      if (action === 'imageShare') await shareFile(bytes, sheet.fileName, sheet.title, 'image/png');
-      else if (await saveFile(bytes, sheet.fileName, 'image/png')) flash(t.t('sheet.saved'));
+      const { bytes, fileName, title } = sheet;
+      if (action === 'imageShare') await shareFile(bytes, fileName, title, 'image/png');
+      else if (await saveFile(bytes, fileName, 'image/png'))
+        flash(t.t(isNative() ? 'sheet.savedGallery' : 'sheet.saved'));
     } catch {
       flash(t.t('sheet.failed'));
     } finally {
@@ -248,12 +252,25 @@ export function LineDetail({ routeIndex }: { routeIndex: number }) {
           <Image size={16} aria-hidden /> {t.t('sheet.card')}
         </h3>
         <p className="muted small">{t.t('sheet.hint')}</p>
+        <div className="sheet-preview">
+          {sheet === undefined ? (
+            <p className="muted small">
+              <Loader2 size={16} className="spin" aria-hidden /> {t.t('lineCard.making')}
+            </p>
+          ) : sheet === 'failed' ? (
+            <p className="muted small">{t.t('sheet.failed')}</p>
+          ) : (
+            <a href={sheet.url} target="_blank" rel="noopener">
+              <img src={sheet.url} alt={sheet.title} />
+            </a>
+          )}
+        </div>
         <div className="detail__actions">
           <button
             type="button"
             className="button button--primary"
             onClick={() => void image('image')}
-            disabled={busy !== undefined}
+            disabled={busy !== undefined || !sheet || sheet === 'failed'}
             aria-busy={busy === 'image'}
           >
             {busy === 'image' ? (
@@ -268,7 +285,7 @@ export function LineDetail({ routeIndex }: { routeIndex: number }) {
               type="button"
               className="button"
               onClick={() => void image('imageShare')}
-              disabled={busy !== undefined}
+              disabled={busy !== undefined || !sheet || sheet === 'failed'}
               aria-busy={busy === 'imageShare'}
             >
               {busy === 'imageShare' ? (

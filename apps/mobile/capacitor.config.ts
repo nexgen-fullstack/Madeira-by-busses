@@ -15,6 +15,8 @@ const config: CapacitorConfig = {
   android: {
     // Map tiles and the timetable update come over https only.
     allowMixedContent: false,
+    // A build to look inside on a phone (chrome://inspect): MADEIRABUS_DEBUG=1.
+    webContentsDebuggingEnabled: process.env.MADEIRABUS_DEBUG === '1',
   },
   plugins: {
     SplashScreen: {
