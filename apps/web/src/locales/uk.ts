@@ -147,6 +147,7 @@ export const uk = {
   'settings.aboutText':
     'Планувальник поїздок усією автобусною мережею Мадейри. Працює без інтернету; ваша геопозиція не залишає телефон.',
   'settings.slogan': 'Подорожуйте Мадейрою легко',
+  'settings.version': 'Версія {version}',
   'settings.privacy': 'Політика конфіденційності',
   'layers.title': 'Шари карти',
   'layers.map': 'Карта',

@@ -14,7 +14,11 @@ function bundledData(): string {
 export default defineConfig({
   // Relative base: the build works from any sub-path (e.g. GitHub Pages).
   base: './',
-  define: { __BUNDLED_DATA__: JSON.stringify(bundledData()) },
+  define: {
+    __BUNDLED_DATA__: JSON.stringify(bundledData()),
+    // The phone app's version (1.0.<CI run>), shown in Settings; '' on the website.
+    __APP_VERSION__: JSON.stringify(process.env.MADEIRABUS_VERSION_NAME ?? ''),
+  },
   worker: { format: 'es' },
   // The map library is a single ~1 MB chunk that loads lazily after the UI.
   build: { chunkSizeWarningLimit: 1100 },

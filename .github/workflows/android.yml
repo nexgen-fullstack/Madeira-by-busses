@@ -55,6 +55,8 @@ jobs:
           pnpm data:real || echo "::warning title=Real timetable unavailable::The app was built with the demo network only."
 
       - name: Web app for the phone
+        env:
+          MADEIRABUS_VERSION_NAME: ${{ env.VERSION }}
         run: pnpm --filter @madeirabus/mobile build
 
       - name: Signing key

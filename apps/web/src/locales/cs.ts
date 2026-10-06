@@ -144,6 +144,7 @@ export const cs: Dict = {
   'settings.aboutText':
     'Plánovač cest po celé autobusové síti Madeiry. Funguje offline; vaše poloha nikdy neopustí telefon.',
   'settings.slogan': 'Objevujte Madeiru snadno',
+  'settings.version': 'Verze {version}',
   'settings.privacy': 'Zásady ochrany soukromí',
   'layers.title': 'Vrstvy mapy',
   'layers.map': 'Mapa',

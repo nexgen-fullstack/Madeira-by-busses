@@ -144,6 +144,7 @@ export const ru: Dict = {
   'settings.aboutText':
     'Планировщик поездок по всей автобусной сети Мадейры. Работает без интернета; ваша геопозиция не покидает телефон.',
   'settings.slogan': 'Путешествуйте по Мадейре легко',
+  'settings.version': 'Версия {version}',
   'settings.privacy': 'Политика конфиденциальности',
   'layers.title': 'Слои карты',
   'layers.map': 'Карта',

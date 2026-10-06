@@ -13,3 +13,5 @@ interface ImportMetaEnv {
 
 /** generatedAt of the timetable built into this version of the app ('' when none). */
 declare const __BUNDLED_DATA__: string;
+/** The phone app's version, as on its release ('' on the website and in development). */
+declare const __APP_VERSION__: string;

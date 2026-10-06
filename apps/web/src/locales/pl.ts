@@ -145,6 +145,7 @@ export const pl: Dict = {
   'settings.aboutText':
     'Planer podróży po całej sieci autobusowej Madery. Działa offline; Twoja lokalizacja nigdy nie opuszcza telefonu.',
   'settings.slogan': 'Odkrywaj Maderę z łatwością',
+  'settings.version': 'Wersja {version}',
   'settings.privacy': 'Polityka prywatności',
   'layers.title': 'Warstwy mapy',
   'layers.map': 'Mapa',

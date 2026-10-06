@@ -125,6 +125,7 @@ export const fr: Dict = {
   'settings.aboutText':
     'Calculateur d’itinéraires pour tout le réseau de bus de Madère. Fonctionne hors ligne ; votre position ne quitte jamais votre téléphone.',
   'settings.slogan': 'Explorez Madère en toute simplicité',
+  'settings.version': 'Version {version}',
   'settings.privacy': 'Politique de confidentialité',
   'layers.title': 'Calques de la carte',
   'layers.map': 'Plan',

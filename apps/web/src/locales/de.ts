@@ -127,6 +127,7 @@ export const de: Dict = {
   'settings.aboutText':
     'Reiseplaner für das gesamte Busnetz Madeiras. Funktioniert offline; Ihr Standort verlässt nie Ihr Telefon.',
   'settings.slogan': 'Madeira ganz einfach entdecken',
+  'settings.version': 'Version {version}',
   'settings.privacy': 'Datenschutzerklärung',
   'layers.title': 'Kartenebenen',
   'layers.map': 'Karte',

@@ -125,6 +125,7 @@ export const pt: Dict = {
   'settings.aboutText':
     'Planeador de viagens para toda a rede de autocarros da Madeira. Funciona sem internet; a sua localização nunca sai do telemóvel.',
   'settings.slogan': 'Explore a Madeira com facilidade',
+  'settings.version': 'Versão {version}',
   'settings.privacy': 'Política de privacidade',
   'layers.title': 'Camadas do mapa',
   'layers.map': 'Mapa',

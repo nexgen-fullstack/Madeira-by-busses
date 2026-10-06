@@ -124,6 +124,7 @@ export const es: Dict = {
   'settings.aboutText':
     'Planificador de viajes para toda la red de autobuses de Madeira. Funciona sin conexión; su ubicación nunca sale del teléfono.',
   'settings.slogan': 'Explora Madeira con facilidad',
+  'settings.version': 'Versión {version}',
   'settings.privacy': 'Política de privacidad',
   'layers.title': 'Capas del mapa',
   'layers.map': 'Mapa',

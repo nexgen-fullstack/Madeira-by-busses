@@ -199,7 +199,10 @@ def save(rgba: np.ndarray, path: Path, size: int | None = None, keep_alpha: bool
     if not keep_alpha:
         img = img.convert('RGB')
     path.parent.mkdir(parents=True, exist_ok=True)
-    img.save(path, optimize=True)
+    if path.suffix == '.webp':
+        img.save(path, quality=86, method=6)
+    else:
+        img.save(path, optimize=True)
     print(f'  {path.relative_to(ROOT)}  {img.width}×{img.height}')
 
 
@@ -368,6 +371,8 @@ def main() -> None:
     save(words, WEB / 'brand-words.png', round(108 * words.shape[1] / words.shape[0]))
     # Notification badge (Android draws it in one colour): the bus.
     save(bus_glyph(W, W * 0.82), WEB / 'badge-96.png', 96)
+    # The phone app's launch screen (index.html), after Android's own: the tile in its glow, large.
+    save(launch_logo(logo, W), WEB / 'launch-logo.webp', 720)
 
     print('Android launcher')
     # Adaptive icon: 108dp layers, 72dp of them visible, the tile within the 66dp circle.
@@ -391,6 +396,11 @@ def main() -> None:
     print('Google Play')
     save(as_drawn, PLAY / 'icon-512.png', 512, keep_alpha=False)
     feature_graphic(logo)
+
+
+def launch_logo(logo: Logo, canvas: int) -> np.ndarray:
+    """The tile with a little of its glow, filling the picture, for the launch screen."""
+    return logo.cutout(canvas, canvas / 2 * 0.8, halo=0.55)
 
 
 def rim_extent(logo: Logo) -> float:

@@ -199,6 +199,9 @@ export function SettingsView() {
           <div>
             <p className="about__name">{APP_NAME}</p>
             <p className="muted small">{t.t('settings.slogan')}</p>
+            {__APP_VERSION__ && (
+              <p className="muted small">{t.t('settings.version', { version: __APP_VERSION__ })}</p>
+            )}
           </div>
         </div>
         <p>{t.t('settings.aboutText')}</p>

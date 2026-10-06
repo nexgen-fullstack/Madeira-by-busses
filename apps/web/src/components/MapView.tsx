@@ -19,6 +19,7 @@ import { haversine, type LatLon, type Network } from '@madeirabus/engine';
 import { useI18n } from '../i18n.ts';
 import { luminance, readableOn } from '../lib/color.ts';
 import { decodePlace, encodePlace } from '../lib/itinerary.ts';
+import { hideLaunch } from '../lib/launch.ts';
 import {
   transitGeoJson,
   WAY_TURQUOISE,
@@ -848,6 +849,7 @@ export default function MapView({ className }: { className?: string }) {
     transitControl.current = transit;
     map.addControl(transit, 'top-right');
     map.addControl(new ScaleControl({ maxWidth: 90 }), 'bottom-right');
+    map.once('load', hideLaunch);
     map.on('style.load', () => {
       styleLoaded.current = true;
       addOverlay(map, layersRef.current.base);

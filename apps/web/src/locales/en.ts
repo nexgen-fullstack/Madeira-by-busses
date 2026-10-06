@@ -125,6 +125,7 @@ export const en: Dict = {
   'settings.aboutText':
     'Journey planner for the whole Madeira bus network. Works offline; your location never leaves your phone.',
   'settings.slogan': 'Explore Madeira with ease',
+  'settings.version': 'Version {version}',
   'settings.privacy': 'Privacy policy',
   'layers.title': 'Map layers',
   'layers.map': 'Map',

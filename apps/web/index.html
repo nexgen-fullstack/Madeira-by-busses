@@ -25,8 +25,73 @@
     <link rel="icon" href="./favicon-64.png" type="image/png" sizes="64x64" />
     <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
     <title>Madeira by busses</title>
+    <style>
+      /* The phone app's launch screen: the logo, large, on the colour of Android's own
+         splash screen, until the map is ready (src/lib/launch.ts). Not on the website. */
+      #launch {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 10000;
+        align-items: center;
+        justify-content: center;
+        background: #0056c7;
+        transition: opacity 250ms ease-out;
+      }
+      .launching #launch {
+        display: flex;
+      }
+      #launch.launch--gone {
+        opacity: 0;
+        pointer-events: none;
+      }
+      #launch img {
+        width: min(88vw, 480px);
+        height: auto;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #launch {
+          transition: none;
+        }
+      }
+    </style>
+    <script>
+      // Inside the Android app (Capacitor serves it from https://localhost) or the installed web app.
+      (function () {
+        var cap = window.Capacitor;
+        var app =
+          (cap && cap.isNativePlatform && cap.isNativePlatform()) ||
+          (location.hostname === 'localhost' &&
+            location.port === '' &&
+            location.protocol === 'https:');
+        var installed = window.matchMedia && matchMedia('(display-mode: standalone)').matches;
+        if (!app && !installed) return;
+        document.documentElement.classList.add('launching');
+        var start = Date.now();
+        window.__mbHideLaunch = function () {
+          window.__mbHideLaunch = function () {};
+          setTimeout(
+            function () {
+              var el = document.getElementById('launch');
+              if (!el) return;
+              el.classList.add('launch--gone');
+              setTimeout(function () {
+                el.remove();
+                document.documentElement.classList.remove('launching');
+              }, 300);
+            },
+            Math.max(0, 800 - (Date.now() - start)),
+          );
+        };
+        // Never longer than this, even if the map is slow or fails to load.
+        setTimeout(function () {
+          window.__mbHideLaunch();
+        }, 2500);
+      })();
+    </script>
   </head>
   <body>
+    <div id="launch" aria-hidden="true"><img src="./launch-logo.webp" alt="" /></div>
     <div id="root"></div>
     <script type="module" src="./src/main.tsx"></script>
   </body>

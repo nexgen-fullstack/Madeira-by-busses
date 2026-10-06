@@ -10,14 +10,17 @@ const config: CapacitorConfig = {
   appId: 'io.github.nexgenfullstack.madeirabus',
   appName: 'Madeira by busses',
   webDir: '../web/dist',
-  backgroundColor: '#F3F7FC',
+  // The splash screen's colour behind the page while it loads: no white flash before the logo.
+  backgroundColor: '#0056C7',
   android: {
     // Map tiles and the timetable update come over https only.
     allowMixedContent: false,
   },
   plugins: {
     SplashScreen: {
-      launchShowDuration: 600,
+      // Android's splash goes as soon as the page draws; the page's own launch screen
+      // (the large logo, apps/web/index.html) takes over until the map is ready.
+      launchShowDuration: 0,
       launchAutoHide: true,
       backgroundColor: '#0056C7',
       showSpinner: false,
