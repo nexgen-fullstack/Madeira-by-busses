@@ -283,9 +283,9 @@ function flagImage(finish: boolean): ImageData | undefined {
 const plateId = (color: string) => `mb-plate-${color.replace('#', '').toLowerCase()}`;
 
 /** Plate size and corner in image pixels (drawn at twice the size of the screen). */
-const PLATE = 28;
-const PLATE_EDGE = 3;
-const PLATE_CORNER = 8;
+const PLATE = 24;
+const PLATE_EDGE = 2;
+const PLATE_CORNER = 6;
 
 /**
  * A rounded plate in a line's colour with an edge that reads on any map (dark round a
@@ -655,8 +655,9 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
       paint: { 'text-color': '#002F85', 'text-halo-color': '#ffffff', 'text-halo-width': 1.5 },
     });
     // The number of the bus along its line on a plate of its colour, as in the list:
-    // "this line is the 045, that one the 207". Under the flags, which it keeps clear of,
-    // and standing up when the map is tilted.
+    // "this line is the 045, that one the 207". Under the flags, which it keeps clear of;
+    // level whichever way the line runs, standing up when the map is tilted, and smaller
+    // with the whole island in view.
     map.addLayer(
       {
         id: 'mb-line-label',
@@ -665,16 +666,17 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
         filter: ['!=', ['get', 'label'], ''],
         layout: {
           'symbol-placement': 'line',
-          'symbol-spacing': 200,
+          'symbol-spacing': ['interpolate', ['linear'], ['zoom'], 10, 260, 14, 200],
           'text-field': ['get', 'label'],
-          'text-size': 12,
+          'text-size': ['interpolate', ['linear'], ['zoom'], 10, 9, 13, 10.5, 15, 12],
           'text-font': ['Noto Sans Bold'],
-          'text-keep-upright': true,
+          'text-rotation-alignment': 'viewport',
           'text-pitch-alignment': 'viewport',
           'text-padding': 4,
           'icon-image': ['get', 'plate'],
           'icon-text-fit': 'both',
-          'icon-text-fit-padding': [2, 5, 1, 5],
+          'icon-text-fit-padding': [1, 4, 0, 4],
+          'icon-rotation-alignment': 'viewport',
           'icon-pitch-alignment': 'viewport',
         },
         paint: { 'text-color': ['get', 'ink'] },

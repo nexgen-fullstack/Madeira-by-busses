@@ -11,7 +11,7 @@ import {
 import type { Itinerary } from '@madeirabus/engine';
 import { useI18n } from '../i18n.ts';
 import { clock, duration, price } from '../lib/format.ts';
-import { ridesExpress, type OptionTag } from '../lib/itinerary.ts';
+import { endsShort, ridesExpress, type OptionTag } from '../lib/itinerary.ts';
 import { useApp, useNetwork } from '../state/app.tsx';
 import { RouteBadge } from './RouteBadge.tsx';
 
@@ -81,7 +81,12 @@ export function ItineraryCard({ it, best, tags = [], now, onSelect }: Props) {
                 {Math.max(1, Math.round((leg.end - leg.start) / 60))}
               </span>
             ) : (
-              <RouteBadge route={net.routes[leg.route]!} size="sm" />
+              <>
+                <RouteBadge route={net.routes[leg.route]!} size="sm" />
+                {endsShort(net, leg.pattern) && (
+                  <span className="it-card__ends">→ {leg.headsign}</span>
+                )}
+              </>
             )}
           </span>
         ))}

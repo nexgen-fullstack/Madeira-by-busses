@@ -1,4 +1,11 @@
-import type { BRoute, FareRide, Itinerary, Network, RideLeg } from '@madeirabus/engine';
+import {
+  haversine,
+  type BRoute,
+  type FareRide,
+  type Itinerary,
+  type Network,
+  type RideLeg,
+} from '@madeirabus/engine';
 
 export const ridesOf = (it: Itinerary) => it.legs.filter((l): l is RideLeg => l.kind === 'ride');
 
@@ -15,6 +22,43 @@ export function fareRides(net: Network, it: Itinerary): FareRide[] {
     fromMunicipality: net.stops[l.from.stop!]!.muni,
     toMunicipality: net.stops[l.to.stop!]!.muni,
   }));
+}
+
+/** Stops this close (m) are one place where a bus ends: the bays of a station. */
+const SAME_END = 150;
+
+const shortEnds = new WeakMap<Network, Map<number, boolean>>();
+
+/**
+ * Whether a bus ends short of where other buses of its line go on to: the 702 from
+ * Caniçal that ends at Machico while the others go on to Funchal. Its card then says
+ * where it goes, or the change of bus there looks pointless.
+ */
+export function endsShort(net: Network, pattern: number): boolean {
+  let known = shortEnds.get(net);
+  if (!known) {
+    known = new Map();
+    shortEnds.set(net, known);
+  }
+  const cached = known.get(pattern);
+  if (cached !== undefined) return cached;
+  const p = net.patterns[pattern]!;
+  const end = net.stops[p.stops[p.stops.length - 1]!]!;
+  const before = p.stops[p.stops.length - 2];
+  // Another bus of the line that comes the same way, passes where this one ends and goes on.
+  const short =
+    before !== undefined &&
+    net.patterns.some((q, i) => {
+      if (i === pattern || q.route !== p.route) return false;
+      const from = q.stops.indexOf(before);
+      if (from < 0) return false;
+      for (let k = from + 1; k < q.stops.length - 2; k++) {
+        if (haversine(net.stops[q.stops[k]!]!, end) <= SAME_END) return true;
+      }
+      return false;
+    });
+  known.set(pattern, short);
+  return short;
 }
 
 const stopIndexById = new WeakMap<Network, Map<string, number>>();

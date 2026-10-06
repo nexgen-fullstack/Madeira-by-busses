@@ -802,6 +802,14 @@ input[type='time'],
   align-items: center;
   gap: 2px;
 }
+/* Where a bus that ends short of the rest of its line goes: "702 → Machico". */
+.it-card__ends {
+  margin-left: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  white-space: nowrap;
+}
 .it-card__sep {
   color: var(--muted);
 }
