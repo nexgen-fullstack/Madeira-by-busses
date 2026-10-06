@@ -144,8 +144,9 @@ function toGeoJson(content: MapContent) {
           color: l.color,
           // A dark edge round a light line (the neon of a chosen way), a white one round the rest.
           casing: luminance(l.color) > 0.25 ? '#14181F' : '#ffffff',
-          // The number of the bus written on the line.
+          // The number of the bus written on the line, on a plate of its colour.
           ink: readableOn(l.color),
+          plate: plateId(l.color),
           dashed: Boolean(l.dashed),
           width: l.width ?? 4,
           label: l.label ?? '',
@@ -275,6 +276,60 @@ function flagImage(finish: boolean): ImageData | undefined {
     ctx.lineWidth = 2.5;
     ctx.strokeRect(cloth.x, cloth.y, cloth.w, cloth.h);
   });
+}
+
+/** The plate a line's number is written on, one for each colour of line. */
+const plateId = (color: string) => `mb-plate-${color.replace('#', '').toLowerCase()}`;
+
+/** Plate size and corner in image pixels (drawn at twice the size of the screen). */
+const PLATE = 28;
+const PLATE_EDGE = 3;
+const PLATE_CORNER = 8;
+
+/**
+ * A rounded plate in a line's colour with an edge that reads on any map (dark round a
+ * light colour, white round a dark one), as the number of a bus is printed in the list:
+ * stretched round the number (a nine-patch), its corners kept round.
+ */
+function plateImage(color: string): ImageData | undefined {
+  return canvasImage(PLATE, PLATE, (ctx) => {
+    const rounded = (inset: number, radius: number) => {
+      const a = inset;
+      const b = PLATE - inset;
+      ctx.beginPath();
+      ctx.moveTo(a + radius, a);
+      ctx.arcTo(b, a, b, b, radius);
+      ctx.arcTo(b, b, a, b, radius);
+      ctx.arcTo(a, b, a, a, radius);
+      ctx.arcTo(a, a, b, a, radius);
+      ctx.closePath();
+    };
+    rounded(0, PLATE_CORNER);
+    ctx.fillStyle = luminance(color) > 0.25 ? '#14181F' : '#ffffff';
+    ctx.fill();
+    rounded(PLATE_EDGE, PLATE_CORNER - PLATE_EDGE);
+    ctx.fillStyle = color;
+    ctx.fill();
+  });
+}
+
+/** Puts on the map the plates of the colours its lines are in. */
+function addPlates(map: MapLibreMap, content: MapContent) {
+  for (const line of content.lines) {
+    if (!line.label) continue;
+    const id = plateId(line.color);
+    if (map.hasImage(id)) continue;
+    const image = plateImage(line.color);
+    if (!image) continue;
+    const mid = PLATE / 2;
+    map.addImage(id, image, {
+      pixelRatio: 2,
+      // Only the straight middle of each side stretches; the text goes inside the edge.
+      stretchX: [[PLATE_CORNER, PLATE - PLATE_CORNER]],
+      stretchY: [[PLATE_CORNER, PLATE - PLATE_CORNER]],
+      content: [mid - 4, mid - 4, mid + 4, mid + 4],
+    });
+  }
 }
 
 /** A step of a walk: a white dot in a bright blue ring, on any map. */
@@ -575,7 +630,8 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
       ],
       'icon-size': ['interpolate', ['linear'], ['zoom'], 10, 0.75, 14, 1.1, 17, 1.35],
       'icon-allow-overlap': true,
-      'icon-ignore-placement': true,
+      // Shown whatever is there, and the numbers along the lines keep clear of them.
+      'icon-ignore-placement': false,
       'symbol-sort-key': ['match', ['get', 'kind'], 'board', 2, 1],
     },
   });
@@ -597,26 +653,33 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
       },
       paint: { 'text-color': '#002F85', 'text-halo-color': '#ffffff', 'text-halo-width': 1.5 },
     });
-    // The number of the bus along its line, as a maps app writes it.
-    map.addLayer({
-      id: 'mb-line-label',
-      type: 'symbol',
-      source: 'mb-lines',
-      filter: ['!=', ['get', 'label'], ''],
-      layout: {
-        'symbol-placement': 'line',
-        'symbol-spacing': 220,
-        'text-field': ['get', 'label'],
-        'text-size': 12,
-        'text-font': ['Noto Sans Bold'],
-        'text-keep-upright': true,
+    // The number of the bus along its line on a plate of its colour, as in the list:
+    // "this line is the 045, that one the 207". Under the flags, which it keeps clear of,
+    // and standing up when the map is tilted.
+    map.addLayer(
+      {
+        id: 'mb-line-label',
+        type: 'symbol',
+        source: 'mb-lines',
+        filter: ['!=', ['get', 'label'], ''],
+        layout: {
+          'symbol-placement': 'line',
+          'symbol-spacing': 200,
+          'text-field': ['get', 'label'],
+          'text-size': 12,
+          'text-font': ['Noto Sans Bold'],
+          'text-keep-upright': true,
+          'text-pitch-alignment': 'viewport',
+          'text-padding': 4,
+          'icon-image': ['get', 'plate'],
+          'icon-text-fit': 'both',
+          'icon-text-fit-padding': [2, 5, 1, 5],
+          'icon-pitch-alignment': 'viewport',
+        },
+        paint: { 'text-color': ['get', 'ink'] },
       },
-      paint: {
-        'text-color': ['get', 'ink'],
-        'text-halo-color': ['get', 'color'],
-        'text-halo-width': 3,
-      },
-    });
+      'mb-flag',
+    );
     map.addLayer({
       id: 'mb-label',
       type: 'symbol',
@@ -1203,6 +1266,7 @@ function fitTo(map: MapLibreMap, bounds: LngLatBounds, duration: number) {
 }
 
 function apply(map: MapLibreMap, content: MapContent, fit: { current: Fit }) {
+  addPlates(map, content);
   const data = toGeoJson(content);
   (map.getSource('mb-lines') as GeoJSONSource | undefined)?.setData(data.lines);
   (map.getSource('mb-points') as GeoJSONSource | undefined)?.setData(data.points);
