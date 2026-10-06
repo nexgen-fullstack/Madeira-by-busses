@@ -310,7 +310,7 @@ export class Planner {
       // Next iteration: leave a minute after the earliest option found.
       t = Math.min(...batch.map((it) => it.depart)) + 60;
     }
-    this.leaveLater(found, opts, searchAt);
+    this.leaveLater(found, searchAt);
     return found;
   }
 
@@ -320,11 +320,7 @@ export class Planner {
    * hours at the change, leave later. Leaving earlier never hurts, so the
    * latest departure is found by halving the wait (a few RAPTOR runs).
    */
-  private leaveLater(
-    found: Map<string, Itinerary>,
-    opts: PlanOptions,
-    searchAt: (t: number) => Itinerary[],
-  ): void {
+  private leaveLater(found: Map<string, Itinerary>, searchAt: (t: number) => Itinerary[]): void {
     const waiting = [...found.values()]
       .filter((it) => it.rides > 1 && it.waitTime > LONG_WAIT)
       // By the usual ranking, so the same ways are found whatever the route preference.
