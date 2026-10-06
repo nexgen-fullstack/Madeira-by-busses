@@ -217,7 +217,26 @@ const HUB_RATIO = 1.5;
 const HUB_MARGIN = 10;
 /** A bus station or terminal counts as this many lines more than its bays' own. */
 const STATION_LINES = 30;
-const STATION = /\b(esta[cç][aã]o|terminal|central|rodovi[aá]ria)\b/i;
+/** A change at a bus station may get there this much later than one on the way to it (s)… */
+const STATION_LATER = 10 * 60;
+/** …and the last bus left at its bus station may ask for this much more walking (m). */
+const STATION_WALK = 200;
+/** A bus station this far (m) from where one changes is in the same place, not a detour. */
+const STATION_NEAR = 2000;
+
+/**
+ * A bus station as people call it: "Estação Machico", "Estacao Ribeira Brava",
+ * "São Vicente - Central", a terminal; not a radio station, a petrol station
+ * ("Estação de Serviço") or the power station of "Central Barreiros".
+ */
+export function isBusStation(name: string): boolean {
+  const n = name.trim();
+  return (
+    /^(esta[cç][aã]o|terminal)\b(?!\s+(r[aá]dio|de\s+servi[cç]o))/i.test(n) ||
+    /\s-\s*central$/i.test(n) ||
+    /\brodovi[aá]ria\b/i.test(n)
+  );
+}
 
 export class Planner {
   private walk?: WalkGraph;
@@ -284,7 +303,7 @@ export class Planner {
     }
     const seen = new Set<string>();
     return [...(best ? [best] : []), ...others.sort(byArrival)]
-      .map((it) => this.refine(it, request, ctx.opts))
+      .map((it) => this.refine(this.changeAtStation(it, request, ctx), request, ctx.opts))
       .filter((it) => !seen.has(it.key) && Boolean(seen.add(it.key)))
       .map((it) => this.withPaths(it));
   }
@@ -1106,14 +1125,14 @@ export class Planner {
     let changed = false;
     const rideAt = (i: number) => (legs[i]?.kind === 'ride' ? (legs[i] as RideLeg) : undefined);
     // Each change is made on its own, and kept only if the way is then no dearer and no later.
-    const tryChange = (start: number, remove: number, ...add: Leg[]) => {
+    const tryChange = (start: number, remove: number, later: number, ...add: Leg[]) => {
       const tried = legs.slice();
       tried.splice(start, remove, ...add);
       const s = this.summary(tried, tried[0]!.start, tried[tried.length - 1]!.end);
       const dearer =
         (s.fare.cash ?? 0) > (it.fare.cash ?? 0) ||
         (s.fare.knownGiro ?? 0) > (it.fare.knownGiro ?? 0);
-      if (dearer || s.arrive > it.arrive) return;
+      if (dearer || s.arrive > it.arrive + later) return;
       legs.splice(0, legs.length, ...tried);
       changed = true;
     };
@@ -1155,7 +1174,7 @@ export class Planner {
           b: next.boardPos,
           walk: walked,
           hub: this.hub(np.stops[next.boardPos]!),
-          station: STATION.test(net.stops[np.stops[next.boardPos]!]!.name),
+          station: isBusStation(net.stops[np.stops[next.boardPos]!]!.name),
           buffer: next.wait,
         };
         let best = current;
@@ -1185,7 +1204,7 @@ export class Planner {
             if (b === current.b && a === current.a) return;
             const buffer =
               net.departureAt(next.pattern, ndp, next.dayTrip, b) - arrAt(a) - w.seconds;
-            const station = STATION.test(net.stops[np.stops[b]!]!.name);
+            const station = isBusStation(net.stops[np.stops[b]!]!.name);
             const change = { a, b, walk: w, hub: this.hub(np.stops[b]!), station, buffer };
             if (betterChange(change, best)) best = change;
           });
@@ -1223,42 +1242,61 @@ export class Planner {
                 ];
           onward.wait = Math.max(0, onward.start - (ride.end + best.walk.seconds));
           onward.risky = isRisky(onward, ride.end + best.walk.seconds, opts);
-          tryChange(i, nextIndex - i + 1, ride, ...between, onward);
+          tryChange(i, nextIndex - i + 1, 0, ride, ...between, onward);
         }
         continue;
       }
       if (!next && walkAfter && i + 2 === legs.length && !walkAfter.to.stop) {
-        // The last bus: left where the walk to the destination is shortest, there no later.
+        // The last bus: left where the walk to the destination is shortest, there no later;
+        // or at the bus station it goes on to, at hardly more walking and not much later.
         const options = [leg.alightPos, ...later(leg.alightPos)];
         const walks = this.placeWalk(
           walkAfter.to,
           options.map((a) => p.stops[a]!),
           opts,
-          opts.maxAccessWalk * STREET_ALLOWANCE,
+          Math.max(opts.maxAccessWalk * STREET_ALLOWANCE, walkAfter.distance + STATION_WALK),
         );
-        let best: { a: number; walk: { distance: number; seconds: number } } | undefined;
+        type Stay = { a: number; walk: { distance: number; seconds: number } };
+        let best: Stay | undefined;
         options.forEach((a, k) => {
           const w = walks[k];
           if (!w || arrAt(a) + w.seconds > it.arrive) return;
           if (!best || w.distance < best.walk.distance) best = { a, walk: w };
         });
-        if (best && best.walk.distance < walkAfter.distance) {
+        const shorter = best && best.walk.distance < walkAfter.distance ? best : undefined;
+        const chosen: Stay = shorter ?? {
+          a: leg.alightPos,
+          walk: { distance: walkAfter.distance, seconds: walkAfter.end - walkAfter.start },
+        };
+        let station: Stay | undefined;
+        if (!isBusStation(net.stops[p.stops[chosen.a]!]!.name)) {
+          options.forEach((a, k) => {
+            const w = walks[k];
+            if (station || !w || a <= chosen.a) return;
+            if (!isBusStation(net.stops[p.stops[a]!]!.name)) return;
+            if (w.distance > chosen.walk.distance + STATION_WALK) return;
+            if (arrAt(a) + w.seconds > it.arrive + STATION_LATER) return;
+            station = { a, walk: w };
+          });
+        }
+        const stay = station ?? shorter;
+        if (stay) {
           const ride = this.ride(
             day,
             leg.pattern,
             leg.dayTrip,
             leg.boardPos,
-            best.a,
+            stay.a,
             leg.start - leg.wait,
           );
           if (leg.risky !== undefined) ride.risky = leg.risky;
-          tryChange(i, 2, ride, {
+          tryChange(i, 2, station ? STATION_LATER : 0, ride, {
             kind: 'walk',
             from: ride.to,
             to: walkAfter.to,
             start: ride.end,
-            end: ride.end + best.walk.seconds,
-            distance: best.walk.distance,
+            end: ride.end + stay.walk.seconds,
+            distance: stay.walk.distance,
           });
         }
       }
@@ -1291,6 +1329,7 @@ export class Planner {
         tryChange(
           0,
           2,
+          0,
           {
             kind: 'walk',
             from: access.from,
@@ -1313,6 +1352,91 @@ export class Planner {
   }
 
   /**
+   * A change of bus at the bus station a bus calls at, rather than off on the way
+   * to it, onto whichever bus goes on from there, when that gets there no more than
+   * STATION_LATER later, with no more buses and no dearer: at a bus station a late
+   * or missed bus is easily replaced. The 207 to Ribeira Brava's bus station and on
+   * from there, rather than off on the hill above it for a bus that passes by.
+   */
+  private changeAtStation(
+    it: Itinerary,
+    request: PlanRequest,
+    ctx: ReturnType<Planner['context']>,
+  ): Itinerary {
+    if (it.rides < 2) return it;
+    const net = this.net;
+    const { opts } = ctx;
+    const day = net.timetable(request.date);
+    const station = (stop: number) => isBusStation(net.stops[stop]!.name);
+    for (let i = 0; i < it.legs.length; i++) {
+      const leg = it.legs[i]!;
+      if (leg.kind !== 'ride') continue;
+      const next = it.legs.slice(i + 1).find((l): l is RideLeg => l.kind === 'ride');
+      if (!next) break;
+      if (station(next.from.stop!)) continue;
+      const p = net.patterns[leg.pattern]!;
+      let pos = -1;
+      for (let k = leg.boardPos + 1; k < p.stops.length; k++) {
+        const s = p.stops[k]!;
+        if (station(s) && haversine(net.stops[s]!, next.from) <= STATION_NEAR) {
+          pos = k;
+          break;
+        }
+      }
+      if (pos < 0) continue;
+      const cut = this.ride(day, leg.pattern, leg.dayTrip, leg.boardPos, pos, leg.start - leg.wait);
+      if (leg.risky !== undefined) cut.risky = leg.risky;
+      // From the station and its bays, as soon as one can change there.
+      const stop = p.stops[pos]!;
+      const bays: Access[] = [
+        { stop, seconds: 0, distance: 0 },
+        ...net
+          .nearbyStops(net.stops[stop]!, HUB_RADIUS)
+          .filter((h) => h.stop !== stop)
+          .map((h) => ({
+            stop: h.stop,
+            distance: Math.round(h.distance),
+            seconds: walkSeconds(h.distance, opts.walkSpeed),
+          })),
+      ];
+      const onward = this.search(
+        day,
+        request,
+        bays,
+        ctx.egress,
+        cut.end + opts.minTransferTime,
+        opts,
+      );
+      const before = it.legs.slice(0, i);
+      let best: Itinerary | undefined;
+      for (const o of onward) {
+        const legs = o.legs.map((l) => ({ ...l }));
+        const first = legs[0];
+        if (first?.kind === 'walk') first.from = cut.to;
+        const ride = legs.find((l): l is RideLeg => l.kind === 'ride');
+        if (!ride) continue;
+        const ready = first?.kind === 'walk' ? first.end : cut.end;
+        ride.wait = Math.max(0, ride.start - ready);
+        ride.risky = isRisky(ride, ready, opts);
+        const all = [...before, cut, ...legs];
+        const s = this.summary(all, all[0]!.start, o.arrive);
+        const dearer =
+          (s.fare.cash ?? 0) > (it.fare.cash ?? 0) ||
+          (s.fare.knownGiro ?? 0) > (it.fare.knownGiro ?? 0);
+        if (dearer || s.rides > it.rides || s.arrive > it.arrive + STATION_LATER) continue;
+        if (!best || s.arrive < best.arrive) best = s;
+      }
+      if (!best) continue;
+      return {
+        ...best,
+        ...(it.alternative ? { alternative: true } : {}),
+        ...(it.lessWalking ? { lessWalking: true } : {}),
+      };
+    }
+    return it;
+  }
+
+  /**
    * How good a stop is to change buses at: the lines leaving it and the stops
    * within HUB_RADIUS (one station's bays), and STATION_LINES more for a bus
    * station or terminal itself.
@@ -1330,7 +1454,7 @@ export class Planner {
         lines.add(route.short || route.id);
       }
     }
-    const score = lines.size + (STATION.test(net.stops[stop]!.name) ? STATION_LINES : 0);
+    const score = lines.size + (isBusStation(net.stops[stop]!.name) ? STATION_LINES : 0);
     hubs[stop] = score;
     return score;
   }

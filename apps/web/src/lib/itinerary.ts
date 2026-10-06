@@ -32,7 +32,9 @@ const shortEnds = new WeakMap<Network, Map<number, boolean>>();
 /**
  * Whether a bus ends short of where other buses of its line go on to: the 702 from
  * Caniçal that ends at Machico while the others go on to Funchal. Its card then says
- * where it goes, or the change of bus there looks pointless.
+ * where it goes, or the change of bus there looks pointless. Not a bus that only ends
+ * elsewhere, on a way of its own past places the others reach too: the 207 up to Boa
+ * Morte after Ribeira Brava's bus station, where the others end.
  */
 export function endsShort(net: Network, pattern: number): boolean {
   let known = shortEnds.get(net);
@@ -45,13 +47,16 @@ export function endsShort(net: Network, pattern: number): boolean {
   const p = net.patterns[pattern]!;
   const end = net.stops[p.stops[p.stops.length - 1]!]!;
   const before = p.stops[p.stops.length - 2];
-  // Another bus of the line that comes the same way, passes where this one ends and goes on.
+  const passes = (stop: number) =>
+    p.stops.some((s) => haversine(net.stops[s]!, net.stops[stop]!) <= SAME_END);
+  // Another bus of the line that comes the same way, passes where this one ends and goes
+  // on to a place this one never reaches.
   const short =
     before !== undefined &&
     net.patterns.some((q, i) => {
       if (i === pattern || q.route !== p.route) return false;
       const from = q.stops.indexOf(before);
-      if (from < 0) return false;
+      if (from < 0 || passes(q.stops[q.stops.length - 1]!)) return false;
       for (let k = from + 1; k < q.stops.length - 2; k++) {
         if (haversine(net.stops[q.stops[k]!]!, end) <= SAME_END) return true;
       }

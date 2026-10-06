@@ -5,6 +5,7 @@ import { SIGA_FARES_2026 } from './fares.ts';
 import { parseGtfs } from './gtfs.ts';
 import { Network } from './network.ts';
 import {
+  isBusStation,
   itineraryCost,
   paretoFilter,
   Planner,
@@ -756,5 +757,26 @@ describe('changing buses at a big station', () => {
     const best = plan('T', 'F');
     expect(changeAt(best).off).toBe('Estacao Ribeira Brava');
     expect(changeAt(best).on).toBe('Estacao Ribeira Brava');
+  });
+});
+
+describe('isBusStation', () => {
+  it('knows the bus stations by the names people use', () => {
+    for (const name of ['Estacao Ribeira Brava', 'Estação Machico', 'São Vicente - Central']) {
+      expect(isBusStation(name), name).toBe(true);
+    }
+  });
+
+  it('is not fooled by other stations and centres', () => {
+    for (const name of [
+      'Estação Rádio Madeira',
+      'Antes Estação de Serviço, Camacha',
+      'Central Barreiros',
+      'Central, Loreto',
+      'Avenida Calouste Gulbenkian-Estação',
+      'Ribeira Brava - Debaixo Rocha',
+    ]) {
+      expect(isBusStation(name), name).toBe(false);
+    }
   });
 });
