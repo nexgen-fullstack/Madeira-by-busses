@@ -176,7 +176,10 @@ async function schedule(route, direction) {
   const serviceIds = new Set();
   let date;
   for (const service of services) {
-    date ??= service.operation_date;
+    // A day ("2026-10-05"); since 7.10.2026 the site may give the timetable's period
+    // instead ("2026-09-10 - 2027-06-30"): then the day is today's, as the collector's.
+    const day = String(service.operation_date ?? '');
+    if (/^\d{4}-\d{2}-\d{2}$/.test(day)) date ??= day;
     for (const trip of service.trips ?? []) {
       const stops = (trip.stops ?? []).slice().sort((a, b) => a.stop_sequence - b.stop_sequence);
       if (stops.length < 2) continue;
