@@ -37,8 +37,6 @@
 
 ## Повний опис
 
-Коли додамо розклади CAM і Rodoeste, приберіть останній абзац про них.
-
 ### English
 
 Madeira by busses — explore Madeira with ease.
@@ -46,8 +44,9 @@ Madeira by busses — explore Madeira with ease.
 Plan door-to-door bus trips around Madeira on your phone, even without internet.
 
 • Journeys with transfers: the best options by arrival time, number of changes and departure time, with the walk to and between stops.
-• Real Horários do Funchal timetables with the line numbers shown on the bus since 2026; the old number is there too (110, formerly 10A).
-• Scenic trips: Curral das Freiras, Eira do Serrado, Monte, the Botanical Garden, Pico dos Barcelos and more — photos, the route from the centre or from where you are, and every bus of the day there and back.
+• Every bus on the island: Horários do Funchal, CAM, SIGA Rodoeste and Aerobus, with the line numbers shown on the bus since 2026; the old number is there too (110, formerly 10A).
+• Scenic trips: 38 of the island's finest places — Curral das Freiras, Cabo Girão, Porto Moniz, Santana, Ponta de São Lourenço, the lighthouse of Ponta do Pargo and more — with the route from the centre or from where you are, and every bus of the day there and back.
+• Scenic walks: up to 35 minutes along the sea, free and often quicker than a bus with a change; the app offers them as a way of their own and warns of a tiring climb on foot.
 • Fares: SIGA 2026 tariffs, GIRO card or cash, and whether a day or tourist ticket pays off.
 • The last bus back today, so you are never stuck in the mountains.
 • GPS "when to get off": the app follows your bus, warns you before your stop and keeps going with the screen off and through tunnels.
@@ -56,8 +55,6 @@ Plan door-to-door bus trips around Madeira on your phone, even without internet.
 • Map, satellite and terrain layers with 3D mountains.
 • 10 languages: English, Português, Українська, Español, Français, Italiano, Deutsch, Čeština, Polski, Русский.
 • Private by design: your location never leaves your phone. No account, no ads, no tracking.
-
-Timetables of CAM, SIGA Rodoeste and Aerobus are coming next; until then the app says so plainly.
 
 Madeira by busses is an independent app, not affiliated with SIGA, Horários do Funchal, CAM, Rodoeste or the Regional Government of Madeira. Timetables come from the operators' public data.
 
@@ -68,8 +65,9 @@ Madeira by busses — explore a Madeira com facilidade.
 Planeie viagens de autocarro porta a porta na Madeira, no telemóvel, mesmo sem internet.
 
 • Percursos com transbordos: as melhores opções por hora de chegada, número de transbordos e hora de partida, com o caminho a pé até às paragens.
-• Horários reais dos Horários do Funchal, com os números de linha usados nos autocarros desde 2026; o número antigo também aparece (110, antiga 10A).
-• Passeios com vista: Curral das Freiras, Eira do Serrado, Monte, Jardim Botânico, Pico dos Barcelos e mais — fotos, percurso a partir do centro ou de onde está, e todos os autocarros do dia, ida e volta.
+• Todos os autocarros da ilha: Horários do Funchal, CAM, SIGA Rodoeste e Aerobus, com os números de linha usados nos autocarros desde 2026; o número antigo também aparece (110, antiga 10A).
+• Passeios com vista: 38 dos lugares mais bonitos da ilha — Curral das Freiras, Cabo Girão, Porto Moniz, Santana, Ponta de São Lourenço, o farol da Ponta do Pargo e mais — com o percurso a partir do centro ou de onde está, e todos os autocarros do dia, ida e volta.
+• Passeios a pé com vista: até 35 minutos junto ao mar, grátis e muitas vezes mais rápidos do que um autocarro com transbordo; a app propõe-nos como opção própria e avisa de uma subida cansativa.
 • Tarifas SIGA 2026, cartão GIRO ou dinheiro, e se compensa o bilhete diário ou turístico.
 • O último autocarro de regresso hoje.
 • GPS «quando sair»: a app acompanha o autocarro, avisa antes da sua paragem e continua com o ecrã desligado e nos túneis.
@@ -78,8 +76,6 @@ Planeie viagens de autocarro porta a porta na Madeira, no telemóvel, mesmo sem 
 • Mapa, satélite e relevo com montanhas em 3D.
 • 10 idiomas.
 • Privacidade: a sua localização nunca sai do telemóvel. Sem conta, sem publicidade, sem rastreio.
-
-Os horários da CAM, SIGA Rodoeste e Aerobus serão os próximos; até lá a app di-lo claramente.
 
 O Madeira by busses é uma app independente, sem ligação à SIGA, Horários do Funchal, CAM, Rodoeste ou ao Governo Regional da Madeira. Os horários vêm dos dados públicos dos operadores.
 
@@ -90,8 +86,9 @@ Madeira by busses — подорожуйте Мадейрою легко.
 Плануйте поїздки автобусом Мадейрою «від дверей до дверей» на телефоні, навіть без інтернету.
 
 • Маршрути з пересадками: найкращі варіанти за часом прибуття, кількістю пересадок і часом виходу, з пішим шляхом до зупинок.
-• Справжній розклад Horários do Funchal з номерами ліній, що на автобусах із 2026 року; старий номер теж видно (110, раніше 10A).
-• Краєвиди: Curral das Freiras, Eira do Serrado, Monte, Ботанічний сад, Pico dos Barcelos та інші — фото, маршрут від центру чи від вас і всі автобуси дня туди й назад.
+• Усі автобуси острова: Horários do Funchal, CAM, SIGA Rodoeste й Aerobus, з номерами ліній, що на автобусах із 2026 року; старий номер теж видно (110, раніше 10A).
+• Краєвиди: 38 найгарніших місць острова — Curral das Freiras, Cabo Girão, Porto Moniz, Santana, Ponta de São Lourenço, маяк Ponta do Pargo та інші — з маршрутом від центру чи від вас і всіма автобусами дня туди й назад.
+• Прогулянки з краєвидами: до 35 хвилин уздовж моря, безкоштовно й часто швидше за автобус із пересадкою; застосунок пропонує їх окремим варіантом і попереджає про виснажливий підйом пішки.
 • Ціни за тарифами SIGA 2026: картка GIRO чи готівка, і чи вигідний денний або туристичний квиток.
 • Останній автобус назад сьогодні.
 • GPS «коли виходити»: застосунок стежить за автобусом, попереджає перед вашою зупинкою і працює з вимкненим екраном і в тунелях.
@@ -100,7 +97,5 @@ Madeira by busses — подорожуйте Мадейрою легко.
 • Карта, супутник і рельєф із 3D-горами.
 • 10 мов.
 • Приватність: геопозиція не залишає телефон. Без облікового запису, реклами й стеження.
-
-Розклади CAM, SIGA Rodoeste і Aerobus — наступні; доти застосунок прямо про це каже.
 
 Madeira by busses — незалежний застосунок, не пов'язаний із SIGA, Horários do Funchal, CAM, Rodoeste чи урядом Мадейри. Розклади — з відкритих даних перевізників.

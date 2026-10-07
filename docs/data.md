@@ -5,7 +5,7 @@
 | [Horários do Funchal — GTFS](https://www.horariosdofunchal.pt/googletransit.zip) | маршрути, зупинки, розклади, траси HF  | **підключено**: `pnpm data:real`, сайт публікується з цими даними щоночі |
 | [SIGA / Tiim](https://sigadev.imt.madeira.gov.pt/horarios)                       | розклади CAM і SIGA Rodoeste, тарифи   | **підключено:** увесь розклад із планувальника SIGA щодня, див. нижче    |
 | [OpenStreetMap](https://wiki.openstreetmap.org/wiki/SIGA)                        | дороги, вулиці, місця, підкладка карти | **підключено:** лінії дорогами, піші шляхи вулицями, пошук місць         |
-| Карта висот (напр. Copernicus DEM)                                               | висота зупинок для пішого часу         | рушій уже вміє (`stop_elevation`); заповнення висот — далі               |
+| [AWS Terrain Tiles](https://registry.opendata.aws/terrain-tiles/) (SRTM 30 м)    | підйоми й спуски пішки                 | **підключено:** `walk.bin` знає набір і втрату висоти кожної ділянки     |
 | Реальний час                                                                     | GPS автобусів                          | публічного API немає; потрібне партнерство з HF / Tiim                   |
 
 ## Horários do Funchal (реальні дані)
@@ -109,10 +109,10 @@ PDF дають лише час у кількох місцях («Funchal 07:30 �
 
 ## Інші джерела без GTFS: сторінки, PDF, OpenStreetMap
 
-Workflow **Collect timetable sources** (`.github/workflows/sources.yml`, скрипт `scripts/fetch-sources.mjs`) збирає на серверах GitHub і комітить у `data/sources/` (крім `siga/`, яку веде свій workflow):
+Workflow **Collect timetable sources** (`.github/workflows/sources.yml`, скрипт `scripts/fetch-sources.mjs`) щопонеділка (і вручну) збирає на серверах GitHub і комітить у `data/sources/` (крім `siga/`, яку веде свій workflow):
 
 - сторінки сайтів SIGA, Rodoeste, SAM і HF (`pages.jsonl`: текст і посилання) та PDF-розклади як текст зі збереженою розкладкою колонок (`pdf-text/`);
-- з OpenStreetMap (Overpass API): автобусні маршрути з їхніми зупинками (`osm/bus-routes.json`), усі зупинки (`osm/bus-stops.json`), названі місця з перекладами (`osm/places.json`), мережа для пішоходів (`osm/walk.bin`: збирається з усіх доріг і стежок), мережа доріг для автобусів (`osm/drive.bin`) і межі парафій, муніципалітетів і селищ з церквами, радами й площами (`osm/areas.json`, `madeirabus-pipeline areas`, ≈110 КБ): збірка за ними вирішує, куди веде вибране місто чи село (`areas.ts`); сирі файли доріг і меж не зберігаються.
+- з OpenStreetMap (Overpass API): автобусні маршрути з їхніми зупинками (`osm/bus-routes.json`), усі зупинки (`osm/bus-stops.json`), названі місця з перекладами (`osm/places.json`), мережа для пішоходів (`osm/walk.bin`: збирається з усіх доріг і стежок; потім команда `madeirabus-pipeline scenery` дописує, на скільки метрів кожна ділянка піднімається й спускається — за безкоштовними тайлами висот AWS Terrain Tiles, ~6 МБ, кешуються між запусками й у застосунок не потрапляють, — і які ділянки з краєвидом: уздовж берегової лінії, набережною чи повз оглядовий майданчик; мости й тунелі з `bridges.json` — рівні; +133 КБ до `walk.bin`), мережа доріг для автобусів (`osm/drive.bin`) і межі парафій, муніципалітетів і селищ з церквами, радами й площами (`osm/areas.json`, `madeirabus-pipeline areas`, ≈110 КБ): збірка за ними вирішує, куди веде вибране місто чи село (`areas.ts`); сирі файли доріг і меж не зберігаються.
 
 `pnpm data:real` додає місця в пакет (`--places`), і пошук у застосунку знаходить їх будь-якою мовою.
 
@@ -153,3 +153,4 @@ Workflow **Collect timetable sources** (`.github/workflows/sources.yml`, скр�
 ## Фото краєвидів
 
 `apps/web/public/photos/` — 14 фото для вкладки «Краєвиди» з Wikimedia Commons за ліцензіями CC BY 2.0 / CC BY-SA 3.0 / CC BY-SA 4.0, обрізані до 3:2 і стиснуті у WebP (960 і 480 пікселів завширшки). Автор, ліцензія й сторінка кожного фото — у `apps/web/src/lib/scenic.ts`; застосунок показує їх під фото й у налаштуваннях.
+Ще 24 місця (Ribeira Brava, Ponta do Sol, Calheta, Jardim do Mar, Paul do Mar, маяк Ponta do Pargo, канатна дорога Achadas da Cruz, Ilhéus da Ribeira da Janela, Seixal, Véu da Noiva, São Vicente, Ponta Delgada, Arco de São Jorge, маяк São Jorge, Guindaste, Porto da Cruz, Portela, Machico, Prainha, Cristo Rei, Caniço de Baixo, Camacha, Pináculo, Encumeada) поки без фото: картка показує назву на кольорах району. Щоб додати фото: `<id>.webp` (960×640) і `<id>-sm.webp` (480×320) у `apps/web/public/photos/`, а в `scenic.ts` у місця — `credit` (автор, ліцензія, сторінка).
