@@ -87,7 +87,8 @@ test('a dropped pin becomes the destination', async ({ page }) => {
   await page.goto('./#/plan');
   await page.waitForSelector('.map-canvas canvas');
   await page.waitForTimeout(1000);
-  await page.locator('.map-canvas canvas').click({ button: 'right', position: { x: 160, y: 140 } });
+  // Out at sea, clear of the places with a view shown by their photos.
+  await page.locator('.map-canvas canvas').click({ button: 'right', position: { x: 40, y: 110 } });
   const card = page.getByRole('dialog', { name: 'Точка на карті' });
   await expect(card).toBeVisible();
   await card.getByRole('button', { name: 'Маршрут сюди' }).click();
@@ -99,7 +100,8 @@ test('the pin is the yellow of the logo, and turquoise once tapped', async ({ pa
   await page.goto('./#/plan');
   await page.waitForSelector('.map-canvas canvas');
   await page.waitForTimeout(1000);
-  await page.locator('.map-canvas canvas').click({ button: 'right', position: { x: 160, y: 140 } });
+  // Out at sea, clear of the places with a view shown by their photos.
+  await page.locator('.map-canvas canvas').click({ button: 'right', position: { x: 40, y: 110 } });
   const pin = page.locator('.maplibregl-marker.map-pin');
   const face = () => pin.locator('.map-pin__body').evaluate((el) => getComputedStyle(el).fill);
   await expect.poll(face).toBe('rgb(255, 212, 0)');

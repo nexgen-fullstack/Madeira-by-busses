@@ -27,6 +27,7 @@ import {
   WAY_TURQUOISE,
   type LineNote,
   type MapContent,
+  type ScenicSpot,
 } from '../lib/mapContent.ts';
 import {
   buildingLayers,
@@ -1042,6 +1043,8 @@ export default function MapView({ className }: { className?: string }) {
   useMarker(mapRef, ready, destination);
   // And on a place tapped or a pin dropped.
   useMarker(mapRef, ready, pick ? undefined : picked);
+  // The places with a view by their photos, where they are (not while a place is picked).
+  useScenicMarkers(mapRef, ready, pick ? undefined : content.scenic);
   // A run or a line tapped belongs to the map shown; another one, forget it.
   useEffect(() => {
     setNote(undefined);
@@ -1281,6 +1284,71 @@ function useMarker(
     },
     [],
   );
+}
+
+/** How big a place's photo is drawn at a zoom (px): small far out, larger close in. */
+const scenicSize = (zoom: number) => (zoom < 9.5 ? 34 : zoom < 11 ? 46 : zoom < 12.5 ? 60 : 76);
+
+/**
+ * Keeps the places with a view on the map as round photos with their names under them,
+ * where they are. Those that would crowd one another give way to the ones before them in
+ * the list (with a photo first), so zooming in brings out more; a tap opens the place.
+ */
+function useScenicMarkers(
+  mapRef: { current: MapLibreMap | null },
+  ready: boolean,
+  spots: readonly ScenicSpot[] | undefined,
+): void {
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !ready || !spots || spots.length === 0) return;
+    const markers = spots.map((spot) => {
+      const el = document.createElement('button');
+      el.type = 'button';
+      el.className = 'scenic-pin';
+      el.setAttribute('aria-label', spot.name);
+      const face = document.createElement('span');
+      face.className = `scenic-pin__face scenic-art--${spot.region}`;
+      if (spot.photo) face.style.backgroundImage = `url("${spot.photo}")`;
+      else
+        face.textContent =
+          spot.name.replace(/^(Miradouro|Farol|Teleférico) (d[aoe]s? )?/, '')[0] ?? '';
+      const name = document.createElement('span');
+      name.className = 'scenic-pin__name';
+      name.textContent = spot.name;
+      el.append(face, name);
+      el.addEventListener('click', (e) => {
+        e.stopPropagation();
+        navigate(`explore/${spot.id}`);
+      });
+      return new Marker({ element: el, anchor: 'bottom' })
+        .setLngLat([spot.lon, spot.lat])
+        .addTo(map);
+    });
+    // Far out only those that do not crowd the ones before them; the rest as one zooms in.
+    const layout = () => {
+      const zoom = map.getZoom();
+      const size = scenicSize(zoom);
+      const shown: { x: number; y: number }[] = [];
+      markers.forEach((m) => {
+        const el = m.getElement();
+        el.style.setProperty('--pin-size', `${size}px`);
+        el.classList.toggle('scenic-pin--named', zoom >= 10.5);
+        const p = map.project(m.getLngLat());
+        const free = shown.every((q) => Math.hypot(q.x - p.x, q.y - p.y) > size * 1.15);
+        el.style.visibility = free ? 'visible' : 'hidden';
+        if (free) shown.push(p);
+      });
+    };
+    layout();
+    map.on('zoomend', layout);
+    map.on('moveend', layout);
+    return () => {
+      map.off('zoomend', layout);
+      map.off('moveend', layout);
+      for (const m of markers) m.remove();
+    };
+  }, [mapRef, ready, spots]);
 }
 
 /** Opens the planner keeping whatever origin/destination is already set. */

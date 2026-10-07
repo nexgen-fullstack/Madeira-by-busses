@@ -26,7 +26,7 @@ import {
   type MapContent,
 } from '../lib/mapContent.ts';
 import { navigate, type Route } from '../lib/router.ts';
-import { DESTINATIONS, reachable } from '../lib/scenic.ts';
+import { DESTINATIONS, reachable, scenicSpots } from '../lib/scenic.ts';
 import { APP_NAME } from '../lib/site.ts';
 import { useNow } from '../lib/useNow.ts';
 import { planOptions, useApp, useNetwork } from '../state/app.tsx';
@@ -215,15 +215,26 @@ export function PlanView({ route }: { route: Route }) {
   const [focusLeg, setFocusLeg] = useState<number | undefined>();
   useEffect(() => setFocusLeg(undefined), [selectedIt]);
 
+  // Places with a view that this timetable's buses reach, for the start screen: those with a
+  // photo first.
+  const scenic = useMemo(
+    () =>
+      DESTINATIONS.filter((d) => reachable(net, d)).sort(
+        (a, b) => Number(!a.credit) - Number(!b.credit),
+      ),
+    [net],
+  );
+
   const mapContent = useMemo<MapContent>(() => {
     if (selectedIt) return itineraryContent(net, selectedIt, focusLeg, true);
     if (results?.[0]) return itineraryContent(net, results[0]);
-    // Nothing chosen yet: the plain island, as a maps app opens.
-    if (!from && !to) return EMPTY_CONTENT;
+    // Nothing chosen yet: the island as the app opens, its places with a view on it by their
+    // photos, as many as fit at each zoom.
+    if (!from && !to) return { ...EMPTY_CONTENT, scenic: scenicSpots(scenic) };
     const point = (p: PlaceValue | undefined) =>
       p && { lat: p.lat, lon: p.lon, label: p.name, kind: 'stop' as const };
     return placesContent(point(from), point(to));
-  }, [selectedIt, results, from, to, net, focusLeg]);
+  }, [selectedIt, results, from, to, net, focusLeg, scenic]);
   useMapContent(mapContent);
 
   const suggestions = useMemo(() => {
@@ -235,16 +246,6 @@ export function PlanView({ route }: { route: Route }) {
       .filter((pair) => pair[0] && pair[1])
       .slice(0, 4);
   }, [net]);
-
-  // Places with a view that this timetable's buses reach, for the start screen: those with a
-  // photo first.
-  const scenic = useMemo(
-    () =>
-      DESTINATIONS.filter((d) => reachable(net, d)).sort(
-        (a, b) => Number(!a.credit) - Number(!b.credit),
-      ),
-    [net],
-  );
 
   // Recent trips whose places still exist in this timetable.
   const recentTrips = useMemo(

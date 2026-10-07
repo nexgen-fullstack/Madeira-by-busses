@@ -58,6 +58,21 @@ test('walks along the sea: listed by the places with a view, then the walk first
   await expect(page.locator('.walk-note--view')).toHaveText('Гарні краєвиди по дорозі');
 });
 
+test('the island opens with its places with a view by their photos; a tap opens one', async ({
+  page,
+}) => {
+  await page.goto('./#/plan');
+  await page.waitForSelector('.map-canvas canvas');
+  // Each where it is; far out those that would crowd the others wait for a closer look.
+  await expect(page.locator('.scenic-pin').first()).toBeVisible();
+  const monte = page.locator('.scenic-pin[aria-label="Monte"]');
+  await expect(monte.locator('.scenic-pin__face')).toHaveCSS('background-image', /monte-sm\.webp/);
+  await monte.click({ force: true });
+  await expect(page.getByRole('heading', { name: 'Monte' })).toBeVisible();
+  // A place page shows its trip on the map, not the photos.
+  await expect(page.locator('.scenic-pin')).toHaveCount(0);
+});
+
 test('the planner’s start screen suggests places with a view', async ({ page }) => {
   await page.goto('./');
   await expect(page.getByRole('heading', { name: 'Гарні краєвиди' })).toBeVisible();

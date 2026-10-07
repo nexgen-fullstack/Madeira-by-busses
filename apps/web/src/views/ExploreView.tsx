@@ -13,6 +13,7 @@ import {
   reachable,
   regionKey,
   SCENIC_WALKS,
+  scenicSpots,
   type ScenicWalk,
 } from '../lib/scenic.ts';
 import { useNow } from '../lib/useNow.ts';
@@ -105,13 +106,9 @@ export function ExploreView() {
     useMemo<MapContent>(
       () => ({
         lines: walkLines,
-        points: served.map((d) => ({
-          lat: d.lat,
-          lon: d.lon,
-          kind: 'destination',
-          color: '#14181F',
-          label: d.name,
-        })),
+        points: [],
+        // Every place by its photo where it is; zooming in brings out those that crowd.
+        scenic: scenicSpots([...served].sort((a, b) => Number(!a.credit) - Number(!b.credit))),
         fitKey: `explore:${served.map((d) => d.id).join(',')}`,
         fit: served,
       }),

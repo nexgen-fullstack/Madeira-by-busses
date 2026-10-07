@@ -64,6 +64,20 @@ export interface MapContent {
    * aside. Different for each route.
    */
   focus?: string;
+  /**
+   * Places with a view shown on the map by their photos, where they are: the island as
+   * the app opens. The first ones stay when they crowd each other far out.
+   */
+  scenic?: ScenicSpot[];
+}
+
+/** A place with a view on the map: its photo (or its region's colours) and its name. */
+export interface ScenicSpot extends LatLon {
+  id: string;
+  name: string;
+  /** The small photo's address; none yet: the colours of `region`. */
+  photo?: string;
+  region: string;
 }
 
 export const EMPTY_CONTENT: MapContent = { lines: [], points: [] };

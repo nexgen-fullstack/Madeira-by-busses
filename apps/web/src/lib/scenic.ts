@@ -450,6 +450,17 @@ export const photo = (d: Destination, size: 'sm' | 'lg') =>
     ? `${import.meta.env.BASE_URL}photos/${d.id}${size === 'sm' ? '-sm' : ''}.webp`
     : undefined;
 
+/** Places on the map by their photos (see `MapContent.scenic`), in the order given. */
+export const scenicSpots = (places: readonly Destination[]) =>
+  places.map((d) => ({
+    id: d.id,
+    name: d.name,
+    lat: d.lat,
+    lon: d.lon,
+    region: d.region,
+    photo: photo(d, 'sm'),
+  }));
+
 /** The places of each region, in the order of REGIONS (regions with none left out). */
 export function byRegion<T extends { region: Region }>(places: readonly T[]): [Region, T[]][] {
   return REGIONS.map((r) => [r, places.filter((d) => d.region === r)] as [Region, T[]]).filter(

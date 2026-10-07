@@ -2733,3 +2733,62 @@ input[type='time'],
 .maplibregl-user-location-dot {
   box-shadow: 0 0 12px 4px rgb(0 232 213 / 70%);
 }
+
+/* The places with a view on the map, by their photos: round, white-edged, with a little
+   point down to where they are; their names once the map is close enough. */
+.scenic-pin {
+  --pin-size: 46px;
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.scenic-pin__face {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--pin-size);
+  height: var(--pin-size);
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 35%);
+  color: #fff;
+  font-weight: 900;
+  font-size: calc(var(--pin-size) * 0.42);
+  transition:
+    width 0.2s ease,
+    height 0.2s ease;
+}
+.scenic-pin__face::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -9px;
+  translate: -50% 0;
+  border: 6px solid transparent;
+  border-top: 6px solid #fff;
+}
+.scenic-pin__name {
+  display: none;
+  max-width: 120px;
+  margin-top: 4px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 92%);
+  color: #14181f;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 25%);
+}
+.scenic-pin--named .scenic-pin__name {
+  display: block;
+}
