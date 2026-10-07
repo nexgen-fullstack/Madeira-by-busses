@@ -375,13 +375,15 @@ def main() -> None:
     save(launch_logo(logo, W), WEB / 'launch-logo.webp', 720)
 
     print('Android launcher')
-    # Adaptive icon: 108dp layers, 72dp of them visible, the tile within the 66dp circle.
-    fg = logo.cutout(W, W * 33 / 108 * 0.97)
-    bg = logo.scene(W, W * 33 / 108 * 0.97, tile=False)
+    # Adaptive icon: 108dp layers, 72dp of them visible: the picture on all of them.
+    fg, bg = full_bleed(logo, W)
     mono = bus_glyph(W, W * 40 / 108)
-    # Older launchers: the tile as it is; round ones: the tile in a circle of glow.
+    # Older launchers: the tile as it is; round ones: the same picture as the adaptive
+    # icon's, in a circle.
     legacy = logo.cutout(W, half * 0.94 * logo.reach / rim_extent(logo))
-    round_icon = logo.scene(W, half * 0.96) * circle_mask(W)[..., None]
+    visible = slice(round(W * 18 / 108), round(W * 90 / 108))
+    shown = over(fg, bg)[visible, visible]
+    round_icon = shown * circle_mask(shown.shape[0])[..., None]
     # Splash screen: Android 12+ draws the icon inside a circle 2/3 its size.
     splash = logo.cutout(W, W / 3 * 0.88, halo=0.55)
     for dens, k in DENSITIES.items():
@@ -394,8 +396,27 @@ def main() -> None:
         save(splash, RES / f'drawable-{dens}' / 'splash_logo.png', round(288 * k))
 
     print('Google Play')
-    save(as_drawn, PLAY / 'icon-512.png', 512, keep_alpha=False)
+    # Play rounds the corners itself: the picture on the whole icon, as on the phone.
+    save(shown, PLAY / 'icon-512.png', 512, keep_alpha=False)
     feature_graphic(logo)
+
+
+def full_bleed(logo: Logo, canvas: int, scale: float = 1.0) -> tuple[np.ndarray, np.ndarray]:
+    """The Android adaptive icon's layers (108 dp on `canvas` px): the picture on the whole icon.
+
+    The launcher shows the middle 72 dp in its own shape (a squircle on Samsung, a
+    circle on Pixel). The tile fills those 72 dp, its rim along their edge as a thin
+    frame, so no frame of glow is left round a small tile: the bus and "Madeira by
+    busses" from edge to edge (the lettering still inside a circle). Behind it, the
+    same picture larger and blurred, for the tile's rounded corners where a
+    launcher's shape is squarer than they are. `scale`: the tile's size against the
+    72 dp.
+    """
+    reach = canvas / 3 * scale * logo.reach / rim_extent(logo)
+    fg = logo.cutout(canvas, reach)
+    big = over(logo.cutout(canvas, reach * 1.3), opaque(np.full((canvas, canvas, 3), NAVY, float)))
+    bg = np.dstack([blur(big[..., c], canvas * 0.02) for c in range(3)] + [np.full((canvas, canvas), 255.0)])
+    return fg, bg
 
 
 def launch_logo(logo: Logo, canvas: int) -> np.ndarray:
