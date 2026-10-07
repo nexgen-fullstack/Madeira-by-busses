@@ -1,7 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { haversine, type LatLon } from './geo.ts';
 import {
+  decodeWalkGraphData,
+  DOWN_COST,
   encodeWalkGraph,
+  UP_COST,
   WalkGraph,
   walkKerb,
   walkWay,
@@ -154,5 +157,45 @@ describe('WalkGraph', () => {
     expect(walkWay(WALK_STEPS + 35 * 4)).toBe(WALK_STEPS);
     // The steps still count for more than their length.
     expect(r.cost).toBeGreaterThan(r.length + 20);
+  });
+
+  it('knows how much a walk climbs, and that uphill takes longer than down', () => {
+    // A street 400 m long that climbs 40 m from west to east.
+    const data: WalkGraphData = {
+      nodes: [xy(0, 0), xy(400, 0)],
+      edges: [{ from: 0, to: 1, kind: WALK_STREET, points: [], up: 40, down: 0 }],
+    };
+    expect(decodeWalkGraphData(encodeWalkGraph(data)).edges[0]).toMatchObject({ up: 40, down: 0 });
+    const g = graph(data);
+    const up = g.route(xy(0, 0), xy(400, 0))!;
+    const down = g.route(xy(400, 0), xy(0, 0))!;
+    expect(up.up).toBeCloseTo(40, 0);
+    expect(down.down).toBeCloseTo(40, 0);
+    expect(up.cost - up.length).toBeCloseTo(40 * UP_COST, 0);
+    expect(down.cost - down.length).toBeCloseTo(40 * DOWN_COST, 0);
+    // Half way up, half the climb; and the same from the stops, either way round.
+    const [half] = g.distances(g.snap(xy(0, 0))!, [g.snap(xy(200, 0))!], 2000);
+    expect(half!.up).toBeCloseTo(20, 0);
+    const [back] = g.distances(g.snap(xy(0, 0))!, [g.snap(xy(200, 0))!], 2000, true);
+    expect(back!.down).toBeCloseTo(20, 0);
+  });
+
+  it('goes along the promenade when asked for a view, if it is not much longer', () => {
+    // A road straight from A to B, and a promenade with a view along the sea, 10 % longer.
+    const g = graph({
+      nodes: [xy(0, 0), xy(1000, 0)],
+      edges: [
+        { from: 0, to: 1, kind: WALK_STREET, points: [] },
+        { from: 0, to: 1, kind: WALK_STREET, points: [xy(500, -230)], scenic: true },
+      ],
+    });
+    const quickest = g.route(xy(0, 0), xy(1000, 0))!;
+    expect(quickest.scenic).toBe(0);
+    const view = g.route(xy(0, 0), xy(1000, 0), 300, 1.6)!;
+    expect(view.scenic).toBeGreaterThan(1000);
+    expect(view.length).toBeGreaterThan(quickest.length * 1.05);
+    // The real cost, not the weighed one; and the next search is a plain one again.
+    expect(view.cost).toBeCloseTo(view.length, 0);
+    expect(g.route(xy(0, 0), xy(1000, 0))!.scenic).toBe(0);
   });
 });

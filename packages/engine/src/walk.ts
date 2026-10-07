@@ -362,6 +362,8 @@ export class WalkGraph {
   private readonly adjEdge: Uint32Array;
   private readonly cells = new Map<number, number[]>();
   // Search state, reused between searches: a node's values count when stamp === run.
+  /** What the search ranks by: the cost, or with `offView` the cost off the ways with a view raised. */
+  private readonly key: Float64Array;
   private readonly cost: Float64Array;
   private readonly length: Float64Array;
   private readonly climbed: Float64Array;
@@ -370,6 +372,8 @@ export class WalkGraph {
   private readonly stamp: Uint32Array;
   private readonly done: Uint32Array;
   private run = 0;
+  /** How much more a metre off the ways with a view counts in the current search. */
+  private offView = 1;
 
   private constructor(bytes: Uint8Array) {
     const r = new Reader(bytes);
@@ -465,6 +469,7 @@ export class WalkGraph {
       }
     }
 
+    this.key = new Float64Array(n);
     this.cost = new Float64Array(n);
     this.length = new Float64Array(n);
     this.climbed = new Float64Array(n);
@@ -546,31 +551,38 @@ export class WalkGraph {
   /**
    * Walking `d` metres of edge e towards its last node (`forward`) or its first: the
    * cost, and the metres climbed and gone down (a share of the edge's own, as its
-   * slope is not known within it).
+   * slope is not known within it); `key`, what the search ranks it by.
    */
-  private part(e: number, d: number, forward: boolean) {
+  private part(e: number, d: number, forward: boolean): Step {
     const len = this.len[e]!;
     const share = len > 0 ? Math.min(1, d / len) : 0;
     const up = (forward ? this.up[e]! : this.down[e]!) * share;
     const down = (forward ? this.down[e]! : this.up[e]!) * share;
-    return { cost: d * this.factor(e) + UP_COST * up + DOWN_COST * down, length: d, up, down };
+    const cost = d * this.factor(e) + UP_COST * up + DOWN_COST * down;
+    return { key: this.scenic[e] ? cost : cost * this.offView, cost, length: d, up, down };
   }
 
-  private settle(
-    node: number,
-    step: { cost: number; length: number; up: number; down: number },
-    prev: number,
-    heap: Heap,
-    estimate = 0,
-  ) {
-    if (this.stamp[node] === this.run && this.cost[node]! <= step.cost) return;
+  /** The walk to a reached node, and on from it by `p`. */
+  private onFrom(node: number, p: Step): Step {
+    return {
+      key: this.key[node]! + p.key,
+      cost: this.cost[node]! + p.cost,
+      length: this.length[node]! + p.length,
+      up: this.climbed[node]! + p.up,
+      down: this.descended[node]! + p.down,
+    };
+  }
+
+  private settle(node: number, step: Step, prev: number, heap: Heap, estimate = 0) {
+    if (this.stamp[node] === this.run && this.key[node]! <= step.key) return;
     this.stamp[node] = this.run;
+    this.key[node] = step.key;
     this.cost[node] = step.cost;
     this.length[node] = step.length;
     this.climbed[node] = step.up;
     this.descended[node] = step.down;
     this.prev[node] = prev;
-    heap.push(node, step.cost + estimate);
+    heap.push(node, step.key + estimate);
   }
 
   /**
@@ -603,31 +615,17 @@ export class WalkGraph {
   }
 
   /** The walk to a reached node, on along all of edge e. */
-  private extend(node: number, e: number, forward: boolean) {
-    const p = this.part(e, this.len[e]!, forward);
-    return {
-      cost: this.cost[node]! + p.cost,
-      length: this.length[node]! + p.length,
-      up: this.climbed[node]! + p.up,
-      down: this.descended[node]! + p.down,
-    };
+  private extend(node: number, e: number, forward: boolean): Step {
+    return this.onFrom(node, this.part(e, this.len[e]!, forward));
   }
 
   /** The way from a reached edge end to a point on that edge (with `back`, from it). */
-  private finish(target: WalkHit, start: WalkHit, back = false): WalkDistance | undefined {
+  private finish(target: WalkHit, start: WalkHit, back = false): Step | undefined {
     const e = target.edge;
-    let best: WalkDistance | undefined;
-    const consider = (node: number, p: WalkDistance) => {
-      const d =
-        node < 0
-          ? p
-          : {
-              cost: this.cost[node]! + p.cost,
-              length: this.length[node]! + p.length,
-              up: this.climbed[node]! + p.up,
-              down: this.descended[node]! + p.down,
-            };
-      if (!best || d.cost < best.cost) best = d;
+    let best: Step | undefined;
+    const consider = (node: number, p: Step) => {
+      const d = node < 0 ? p : this.onFrom(node, p);
+      if (!best || d.key < best.key) best = d;
     };
     const a = this.from[e]!;
     const b = this.to[e]!;
@@ -638,9 +636,14 @@ export class WalkGraph {
       consider(-1, this.part(e, d, target.along >= start.along !== back));
     }
     if (!best) return undefined;
-    const found: WalkDistance = best;
+    const found: Step = best;
     const off = start.offset + target.offset;
-    return { ...found, cost: found.cost + off, length: found.length + off };
+    return {
+      ...found,
+      key: found.key + off * this.offView,
+      cost: found.cost + off,
+      length: found.length + off,
+    };
   }
 
   /**
@@ -655,45 +658,56 @@ export class WalkGraph {
     max: number,
     back = false,
   ): (WalkDistance | undefined)[] {
+    this.offView = 1;
     const heap = new Heap();
     this.seed(start, heap, undefined, back);
     while (heap.size > 0 && heap.peekKey() <= max) this.step(heap, back);
     return targets.map((t) => {
       const d = this.finish(t, start, back);
-      return d && d.cost <= max ? d : undefined;
+      return d && d.cost <= max ? distanceOf(d) : undefined;
     });
   }
 
-  /** The best walk between two points, along the ways (undefined off the network). */
-  route(a: LatLon, b: LatLon, maxSnap = 300): WalkRoute | undefined {
+  /**
+   * The best walk between two points, along the ways (undefined off the network). With
+   * `offView` above 1, each metre off the ways with a view counts that much more in
+   * choosing the way: the promenade along the sea rather than the road behind it, when
+   * it is not much longer.
+   */
+  route(a: LatLon, b: LatLon, maxSnap = 300, offView = 1): WalkRoute | undefined {
     const start = this.snap(a, maxSnap);
     const end = this.snap(b, maxSnap);
     if (!start || !end) return undefined;
-    // A*: a straight line never overestimates a walk, so the first way found is the best.
-    const goal = end.point;
-    const astar = new Heap();
-    this.seed(start, astar, goal);
-    let best: WalkDistance | undefined =
-      start.edge === end.edge ? this.finish(end, start) : undefined;
-    while (astar.size > 0) {
-      if (best && astar.peekKey() >= best.cost - start.offset - end.offset) break;
-      const node = astar.pop();
-      if (this.done[node] === this.run) continue;
-      this.done[node] = this.run;
-      if (node === this.from[end.edge] || node === this.to[end.edge]) {
-        const d = this.finish(end, start);
-        if (d && (!best || d.cost < best.cost)) best = d;
+    this.offView = offView;
+    try {
+      // A*: a straight line never overestimates a walk, so the first way found is the best.
+      const goal = end.point;
+      const astar = new Heap();
+      this.seed(start, astar, goal);
+      let best: Step | undefined = start.edge === end.edge ? this.finish(end, start) : undefined;
+      const off = (start.offset + end.offset) * offView;
+      while (astar.size > 0) {
+        if (best && astar.peekKey() >= best.key - off) break;
+        const node = astar.pop();
+        if (this.done[node] === this.run) continue;
+        this.done[node] = this.run;
+        if (node === this.from[end.edge] || node === this.to[end.edge]) {
+          const d = this.finish(end, start);
+          if (d && (!best || d.key < best.key)) best = d;
+        }
+        for (let i = this.adjStart[node]!; i < this.adjStart[node + 1]!; i++) {
+          const e = this.adjEdge[i]!;
+          const forward = this.from[e] === node;
+          const other = forward ? this.to[e]! : this.from[e]!;
+          if (this.done[other] === this.run) continue;
+          this.settle(other, this.extend(node, e, forward), e, astar, this.straight(other, goal));
+        }
       }
-      for (let i = this.adjStart[node]!; i < this.adjStart[node + 1]!; i++) {
-        const e = this.adjEdge[i]!;
-        const forward = this.from[e] === node;
-        const other = forward ? this.to[e]! : this.from[e]!;
-        if (this.done[other] === this.run) continue;
-        this.settle(other, this.extend(node, e, forward), e, astar, this.straight(other, goal));
-      }
+      if (!best) return undefined;
+      return { ...distanceOf(best), ...this.trace(start, end, a, b) };
+    } finally {
+      this.offView = 1;
     }
-    if (!best) return undefined;
-    return { ...best, ...this.trace(start, end, a, b) };
   }
 
   private straight(node: number, p: LatLon): number {
@@ -725,15 +739,15 @@ export class WalkGraph {
     // Which end of the last edge did the walk come in by, or did it stay on one edge?
     const viaFrom =
       this.done[this.from[e]!] === this.run
-        ? this.cost[this.from[e]!]! + this.part(e, end.along, true).cost
+        ? this.key[this.from[e]!]! + this.part(e, end.along, true).key
         : Number.POSITIVE_INFINITY;
     const viaTo =
       this.done[this.to[e]!] === this.run
-        ? this.cost[this.to[e]!]! + this.part(e, this.len[e]! - end.along, false).cost
+        ? this.key[this.to[e]!]! + this.part(e, this.len[e]! - end.along, false).key
         : Number.POSITIVE_INFINITY;
     const direct =
       e === start.edge
-        ? this.part(e, Math.abs(end.along - start.along), end.along >= start.along).cost
+        ? this.part(e, Math.abs(end.along - start.along), end.along >= start.along).key
         : Number.POSITIVE_INFINITY;
     if (direct <= viaFrom && direct <= viaTo) {
       const along = this.slice(e, start.along, end.along);
@@ -799,6 +813,13 @@ export class WalkGraph {
     return a0 <= a1 ? out : out.reverse();
   }
 }
+
+/** A step of a search: the walk, and what the search ranks it by. */
+interface Step extends WalkDistance {
+  key: number;
+}
+
+const distanceOf = ({ cost, length, up, down }: Step): WalkDistance => ({ cost, length, up, down });
 
 /** A path without points repeated, and the pavement of each of its steps. */
 function dedupe(points: LatLon[], kerbs: number[]): { path: LatLon[]; kerb: number[] } {

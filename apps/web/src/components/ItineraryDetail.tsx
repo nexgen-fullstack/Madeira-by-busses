@@ -13,13 +13,16 @@ import {
   RotateCcw,
   Share2,
   Ticket,
+  TrendingDown,
+  TrendingUp,
+  Waves,
   Zap,
 } from 'lucide-react';
 import { adviseTicket, type Itinerary } from '@madeirabus/engine';
 import { useI18n, type Key } from '../i18n.ts';
 import { isNative, remind } from '../lib/device.ts';
 import { clock, dayAhead, dayMonth, duration, longDate, price } from '../lib/format.ts';
-import { fareRides, isExpress, ridesOf } from '../lib/itinerary.ts';
+import { fareRides, isExpress, ridesOf, walkNotes } from '../lib/itinerary.ts';
 import { lineOf } from '../lib/lines.ts';
 import { rideColor } from '../lib/mapContent.ts';
 import { canSimulate } from '../lib/simulator.ts';
@@ -167,6 +170,7 @@ export function ItineraryDetail({ it, date, ahead, onFocusLeg, onBack, onStart, 
         {it.legs.map((leg, i) => {
           if (leg.kind === 'walk') {
             const minutes = Math.max(1, Math.round((leg.end - leg.start) / 60));
+            const notes = walkNotes(leg);
             return (
               <li key={i} className="timeline__walk" onClick={() => onFocusLeg?.(i)}>
                 <span className="timeline__time">{clock(leg.start)}</span>
@@ -178,6 +182,22 @@ export function ItineraryDetail({ it, date, ahead, onFocusLeg, onBack, onStart, 
                   <div className="muted">
                     {t.t('walk.dist', { d: leg.distance })} · {leg.to.name}
                   </div>
+                  {notes.view && (
+                    <div className="walk-note walk-note--view">
+                      <Waves size={14} aria-hidden /> {t.t('walk.view')}
+                    </div>
+                  )}
+                  {notes.climb !== undefined && (
+                    <div className="walk-note walk-note--tiring" role="note">
+                      <TrendingUp size={14} aria-hidden /> {t.t('walk.climb', { m: notes.climb })}
+                    </div>
+                  )}
+                  {notes.descent !== undefined && (
+                    <div className="walk-note walk-note--tiring" role="note">
+                      <TrendingDown size={14} aria-hidden />{' '}
+                      {t.t('walk.descent', { m: notes.descent })}
+                    </div>
+                  )}
                 </div>
               </li>
             );

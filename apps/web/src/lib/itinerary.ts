@@ -1,13 +1,41 @@
 import {
+  hasView,
   haversine,
+  TIRING_CLIMB,
+  TIRING_DESCENT,
   type BRoute,
   type FareRide,
   type Itinerary,
   type Network,
   type RideLeg,
+  type WalkLeg,
 } from '@madeirabus/engine';
 
 export const ridesOf = (it: Itinerary) => it.legs.filter((l): l is RideLeg => l.kind === 'ride');
+
+/** Metres in round tens, as a climb is told ("~120 m up"). */
+const tens = (m: number) => Math.round(m / 10) * 10;
+
+/**
+ * What to tell about a walk: a climb (or, with none, a steep way down) that may be tiring,
+ * in round tens of metres, and whether it has a view for much of the way.
+ */
+export function walkNotes(leg: WalkLeg): { climb?: number; descent?: number; view: boolean } {
+  const up = leg.up ?? 0;
+  const down = leg.down ?? 0;
+  return {
+    climb: up >= TIRING_CLIMB ? tens(up) : undefined,
+    descent: up < TIRING_CLIMB && down >= TIRING_DESCENT ? tens(down) : undefined,
+    view: hasView(leg),
+  };
+}
+
+/** The steepest climb on foot of a way that may be tiring (m, in round tens), for its card. */
+export function tiringClimb(it: Itinerary): number | undefined {
+  const climbs = it.legs.flatMap((l) => (l.kind === 'walk' ? [walkNotes(l).climb ?? 0] : []));
+  const most = Math.max(0, ...climbs);
+  return most > 0 ? most : undefined;
+}
 
 /** An express on the Via Rápida, as Rodoeste names its lines ("Funchal - Ribeira Brava (Via Rápida)"). */
 export const isExpress = (route: BRoute) => /\bvia\s+r[aá]pida\b/i.test(route.long);

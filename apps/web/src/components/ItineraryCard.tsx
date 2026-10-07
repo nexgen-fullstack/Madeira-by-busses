@@ -7,12 +7,14 @@ import {
   Repeat,
   Star,
   Timer,
+  TrendingUp,
+  Waves,
   Zap,
 } from 'lucide-react';
-import type { Itinerary } from '@madeirabus/engine';
+import { isScenicWalk, type Itinerary } from '@madeirabus/engine';
 import { useI18n } from '../i18n.ts';
 import { clock, duration, price } from '../lib/format.ts';
-import { endsShort, ridesExpress, type OptionTag } from '../lib/itinerary.ts';
+import { endsShort, ridesExpress, tiringClimb, type OptionTag } from '../lib/itinerary.ts';
 import { useApp, useNetwork } from '../state/app.tsx';
 import { RouteBadge } from './RouteBadge.tsx';
 
@@ -38,14 +40,16 @@ export function ItineraryCard({ it, best, tags = [], now, day, onSelect }: Props
   const fare = settings.payment === 'cash' ? it.fare.cash : it.fare.giro;
   const leaveIn = now !== undefined ? Math.round((it.depart - now) / 60) : undefined;
   const express = ridesExpress(net, it);
+  const scenic = isScenicWalk(it);
+  const climb = tiringClimb(it);
 
   return (
     <button
       type="button"
-      className={`it-card${best ? ' it-card--best' : ''}${day ? ' it-card--ahead' : ''}`}
+      className={`it-card${best ? ' it-card--best' : ''}${day ? ' it-card--ahead' : ''}${scenic ? ' it-card--scenic' : ''}`}
       onClick={onSelect}
     >
-      {(best || day || it.alternative || express || tags.length > 0) && (
+      {(best || day || it.alternative || express || scenic || tags.length > 0) && (
         <div className="it-card__tags">
           {day && (
             <span className="it-card__tag it-card__tag--ahead">
@@ -55,6 +59,11 @@ export function ItineraryCard({ it, best, tags = [], now, day, onSelect }: Props
           {best && (
             <span className="it-card__tag it-card__tag--best">
               <Star size={12} aria-hidden /> {t.t('it.best')}
+            </span>
+          )}
+          {scenic && (
+            <span className="it-card__tag it-card__tag--scenic" title={t.t('it.scenicWalkHint')}>
+              <Waves size={12} aria-hidden /> {t.t('it.scenicWalk')}
             </span>
           )}
           {tags.map((tag) => {
@@ -119,6 +128,11 @@ export function ItineraryCard({ it, best, tags = [], now, day, onSelect }: Props
         {it.rides > 0 && (
           <span className="it-card__price">
             {fare !== null ? price(t, fare) : t.t('price.unknown')}
+          </span>
+        )}
+        {climb !== undefined && (
+          <span className="it-card__climb">
+            <TrendingUp size={14} aria-hidden /> {t.t('it.climb', { m: climb })}
           </span>
         )}
         {it.risky && (

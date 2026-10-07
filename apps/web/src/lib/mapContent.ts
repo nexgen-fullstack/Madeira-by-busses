@@ -1,4 +1,4 @@
-import { GridIndex, haversine, offsetPolyline, pavementSides } from '@madeirabus/engine';
+import { GridIndex, hasView, haversine, offsetPolyline, pavementSides } from '@madeirabus/engine';
 import type { Itinerary, LatLon, Network, StopGroup } from '@madeirabus/engine';
 import type { Direction } from './lines.ts';
 import { routeColor as colorOf } from './color.ts';
@@ -88,8 +88,17 @@ export const RIDE_WIDTH = 8;
 export const WAY_WIDTH = 6.5;
 export const RUN_WIDTH = 4.5;
 
+/** A walk on the map, in navy; one with a view (along the sea), in the deep cyan of the logo's wave. */
+export const WALK_INK = '#002F85';
+export const VIEW_WALK = '#00838F';
+
 /** A walk along the streets on their pavements, or as the crow flies without the streets. */
-function walkLine(leg: { from: LatLon; to: LatLon; path?: LatLon[]; kerb?: number[] }): LatLon[] {
+export function walkPath(leg: {
+  from: LatLon;
+  to: LatLon;
+  path?: LatLon[];
+  kerb?: number[];
+}): LatLon[] {
   if (!leg.path) return [leg.from, leg.to];
   if (!leg.kerb || leg.kerb.length !== leg.path.length - 1) return leg.path;
   return offsetPolyline(leg.path, pavementSides(leg.path, leg.kerb));
@@ -122,10 +131,10 @@ export function itineraryContent(
       // Along the pavements when the walking network is loaded, to the very spot of the bus.
       const from = rides[i - 1]?.at(-1);
       const to = rides[i + 1]?.[0];
-      const path = walkLine(leg);
+      const path = walkPath(leg);
       lines.push({
         coords: [...(from ? [from] : []), ...path, ...(to ? [to] : [])],
-        color: '#002F85',
+        color: hasView(leg) ? VIEW_WALK : WALK_INK,
         dashed: true,
       });
       return;

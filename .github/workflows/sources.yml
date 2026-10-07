@@ -2,11 +2,13 @@ name: Collect timetable sources
 
 # Downloads the public sources for operators without a GTFS feed (CAM and
 # SIGA Rodoeste timetables from the SIGA and operator websites; bus routes,
-# stops, the walkable ways, built into walk.bin, and the roads buses drive on,
-# built into drive.bin, from OpenStreetMap) and commits them to data/sources/
-# on the same branch, for the pipeline to parse. Runs when the collector
-# changes, or by hand.
+# stops, the walkable ways, built into walk.bin with how much each climbs and
+# which have a view, and the roads buses drive on, built into drive.bin, from
+# OpenStreetMap) and commits them to data/sources/ on the same branch, for the
+# pipeline to parse. Runs every Monday, when the collector changes, or by hand.
 on:
+  schedule:
+    - cron: '41 2 * * 1'
   push:
     paths:
       - scripts/fetch-sources.mjs
@@ -48,6 +50,26 @@ jobs:
             echo "::warning title=Walking network not refreshed::No ways from Overpass; keeping the previous walk.bin."
             git checkout HEAD -- data/sources/osm/walk.bin || true
           fi
+      # The elevation tiles (free AWS Terrain Tiles, ~6 MB) change rarely: kept between runs.
+      - uses: actions/cache@v4
+        with:
+          path: data/cache/terrain
+          key: terrain-tiles-z13-v1
+      - name: Climbs and views on the walks
+        run: |
+          # How much each walkable way climbs (elevation tiles) and which have a view (the
+          # coast, promenades, viewpoints); without them the previous walk.bin, which has both.
+          if [ -f data/sources/osm/coast.json ] && [ -f data/sources/osm/bridges.json ] && \
+            pnpm --filter @madeirabus/pipeline cli scenery \
+              --walk ../../data/sources/osm/walk.bin --tiles ../../data/cache/terrain \
+              --coast ../../data/sources/osm/coast.json --bridges ../../data/sources/osm/bridges.json \
+              --places ../../data/sources/osm/places.json --out ../../data/sources/osm/walk.bin; then
+            echo "Climbs and views added to walk.bin"
+          else
+            echo "::warning title=Climbs and views not refreshed::No coastline or elevation tiles; keeping the previous walk.bin."
+            git checkout HEAD -- data/sources/osm/walk.bin || true
+          fi
+          rm -f data/sources/osm/coast.json data/sources/osm/bridges.json
       - name: Road network
         run: |
           if [ -f data/sources/osm/drive-ways.json ]; then

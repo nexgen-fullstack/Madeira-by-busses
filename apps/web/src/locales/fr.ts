@@ -61,6 +61,13 @@ export const fr: Dict = {
   'dur.m': '{m} min',
   'walk.min': '{m} min à pied',
   'walk.dist': '{d} m',
+  'it.scenicWalk': 'Balade avec vue',
+  'it.scenicWalkHint':
+    'Gratuit et sans correspondance : à pied le long de la mer, avec de belles vues',
+  'it.climb': 'Montée de ~{m} m',
+  'walk.view': 'Belles vues en chemin',
+  'walk.climb': 'La marche peut être fatigante : montée de ~{m} m',
+  'walk.descent': 'La marche peut être fatigante : descente raide de ~{m} m',
   wait: 'Attente {d}',
   'price.unknown': 'prix à confirmer',
   'price.partial': 'dès {p}',

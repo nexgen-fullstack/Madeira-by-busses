@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import type { BRoute, Itinerary, Network } from '@madeirabus/engine';
-import { decodePlace, encodePlace, isExpress, optionTags } from './itinerary.ts';
+import type { BRoute, Itinerary, Network, WalkLeg } from '@madeirabus/engine';
+import {
+  decodePlace,
+  encodePlace,
+  isExpress,
+  optionTags,
+  tiringClimb,
+  walkNotes,
+} from './itinerary.ts';
 
 const net = {
   stops: [
@@ -103,5 +110,27 @@ describe('what each way is good at', () => {
         [3, ['lessWalking']],
       ]),
     );
+  });
+});
+
+describe('what a walk is told to be like', () => {
+  const walk = (distance: number, up = 0, down = 0, scenic = 0) =>
+    ({ kind: 'walk', distance, up, down, scenic, start: 0, end: 600 }) as unknown as WalkLeg;
+
+  it('tells a climb that may be tiring, in round tens of metres, and the views', () => {
+    // Bairro do Hospital up to the owner: ~120 m up.
+    expect(walkNotes(walk(900, 117))).toEqual({ climb: 120, descent: undefined, view: false });
+    expect(walkNotes(walk(900, 40, 30)).climb).toBeUndefined();
+    // Steeply down, with no climb to tell.
+    expect(walkNotes(walk(900, 10, 150)).descent).toBe(150);
+    // Along the promenade from Ribeira Brava.
+    expect(walkNotes(walk(2000, 0, 0, 1400)).view).toBe(true);
+    expect(walkNotes(walk(2000, 0, 0, 400)).view).toBe(false);
+  });
+
+  it('puts the steepest climb of a way on its card', () => {
+    const it = { legs: [walk(300, 20), { kind: 'ride' }, walk(900, 96)] } as unknown as Itinerary;
+    expect(tiringClimb(it)).toBe(100);
+    expect(tiringClimb({ legs: [walk(300, 20)] } as unknown as Itinerary)).toBeUndefined();
   });
 });

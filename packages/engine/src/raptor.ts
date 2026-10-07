@@ -2,7 +2,7 @@ import { quoteFare, type FareQuote, type FareRide } from './fares.ts';
 import { haversine, walkSeconds, type LatLon } from './geo.ts';
 import type { DayTimetable, Network } from './network.ts';
 import { addDays } from './time.ts';
-import type { WalkDistance, WalkGraph, WalkHit } from './walk.ts';
+import type { WalkDistance, WalkGraph, WalkHit, WalkRoute } from './walk.ts';
 
 /**
  * Journey planner based on RAPTOR (Delling, Pajor, Werneck — "Round-Based
@@ -66,6 +66,11 @@ export interface PlanOptions {
   endWalkReluctance: number;
   /** What each metre climbed on foot adds when ranking (s): a climb is worse than the level. */
   climbReluctance: number;
+  /**
+   * What walking all the way with a view takes off an option's cost when ranking (s):
+   * along the sea from Ribeira Brava to Tabua rather than two buses (see `isScenicWalk`).
+   */
+  scenicBonus: number;
 }
 
 export const DEFAULT_PLAN_OPTIONS: PlanOptions = {
@@ -85,6 +90,7 @@ export const DEFAULT_PLAN_OPTIONS: PlanOptions = {
   walkReluctance: 0.5,
   endWalkReluctance: 1.5,
   climbReluctance: 6,
+  scenicBonus: 10 * 60,
 };
 
 /** What the best option should be best at, as in a maps app's route options. */
@@ -95,8 +101,15 @@ export const ROUTE_PREFERENCES: Record<RoutePreference, Partial<PlanOptions>> = 
   best: {},
   // Half an hour for each change of bus, and a long walk is no way round one.
   fewerTransfers: { transferCost: 30 * 60, walkReluctance: 1 },
-  // Each minute on foot counts four, no long walks to buses farther off, climbs count double.
-  lessWalking: { walkReluctance: 3, longWalk: 0, endWalkReluctance: 3, climbReluctance: 12 },
+  // Each minute on foot counts four, no long walks to buses farther off, climbs count double,
+  // and a walk with a view is no better than another.
+  lessWalking: {
+    walkReluctance: 3,
+    longWalk: 0,
+    endWalkReluctance: 3,
+    climbReluctance: 12,
+    scenicBonus: 0,
+  },
 };
 
 export interface PlanRequest {
@@ -309,10 +322,12 @@ export class Planner {
     const ctx = this.context(request);
     const results = [...this.collect(request, ctx.opts, ctx.searchAt, 12).values()];
     results.push(...this.longWalks(request, ctx, results));
-    // Walking all the way: when it is short, when no bus gets there sooner, or when none goes.
+    // Walking all the way: when it is short, when no bus gets there sooner, when none goes,
+    // or along the sea with a view (always on offer, see `isScenicWalk`).
     const direct = this.directWalk(request, ctx.opts, WALK_FAR);
     const firstBus = Math.min(...results.map((it) => it.arrive));
-    if (direct && (direct.walkDistance <= WALK_ALWAYS || direct.arrive <= firstBus)) {
+    const scenic = direct && isScenicWalk(direct) ? direct : undefined;
+    if (direct && (scenic || direct.walkDistance <= WALK_ALWAYS || direct.arrive <= firstBus)) {
       results.push(direct);
     }
     const pareto = paretoFilter(results, ctx.opts.transferPenalty);
@@ -320,6 +335,7 @@ export class Planner {
     const main = top
       ? [top, ...pareto.filter((it) => it !== top).sort(byArrival)].slice(0, ctx.opts.maxResults)
       : [];
+    if (scenic && !main.includes(scenic)) main.push(scenic);
     main.push(...this.lessWalking(request, ctx, main));
     const alternatives = this.alternatives(request, ctx, main);
     let best = main[0];
@@ -1590,12 +1606,35 @@ export class Planner {
     return score;
   }
 
-  /** Walking all the way, when it is no more than `max` metres along the streets. */
+  /**
+   * Walking all the way, along the sea when that makes a walk with a view (as `plan`
+   * offers it), or undefined when it is more than `max` metres along the streets.
+   */
+  walkOnly(request: PlanRequest, max = WALK_FAR): Itinerary | undefined {
+    return this.directWalk(request, { ...DEFAULT_PLAN_OPTIONS, ...request.options }, max);
+  }
+
+  /**
+   * Walking all the way, when it is no more than `max` metres along the streets; along
+   * the sea instead of the road behind it when that makes a walk with a view and is not
+   * much longer (the promenade from the Lido to Praia Formosa).
+   */
   private directWalk(request: PlanRequest, opts: PlanOptions, max: number): Itinerary | undefined {
     const straight = haversine(request.from, request.to);
     if (straight * 1.25 > max) return undefined;
-    const route = this.walk?.route(request.from, request.to);
-    if ((route ? route.length : straight * 1.25) > max) return undefined;
+    const fastest = this.walk?.route(request.from, request.to);
+    if ((fastest ? fastest.length : straight * 1.25) > max) return undefined;
+    const plain = this.walkAll(request, opts, fastest);
+    if (!fastest || straight > SCENIC_WALK * opts.walkSpeed) return plain;
+    const view = this.walk!.route(request.from, request.to, undefined, VIEW_PULL);
+    if (!view || view.cost > fastest.cost * VIEW_DETOUR) return plain;
+    const scenic = this.walkAll(request, opts, view);
+    return isScenicWalk(scenic) ? scenic : plain;
+  }
+
+  /** Walking all the way along a route (or, without one, about a quarter longer than the crow flies). */
+  private walkAll(request: PlanRequest, opts: PlanOptions, route?: WalkRoute): Itinerary {
+    const straight = haversine(request.from, request.to);
     const distance = route ? route.length : straight * 1.25;
     const seconds = route
       ? Math.round(route.cost / opts.walkSpeed)
@@ -1730,6 +1769,53 @@ const walkTime = (it: Itinerary) =>
 export const climbOnFoot = (it: Itinerary) =>
   it.legs?.reduce((m, l) => m + (l.kind === 'walk' ? (l.up ?? 0) : 0), 0) ?? 0;
 
+/** A walk has a view when at least this share of it is along the sea, a promenade or a viewpoint… */
+const VIEW_SHARE = 0.5;
+/** …and at least this much of it (m). */
+const VIEW_LEAST = 300;
+/** Walking all the way with a view, worth taking instead of the bus: up to this long (s)… */
+export const SCENIC_WALK = 35 * 60;
+/** …climbing no more than this (m)… */
+const SCENIC_CLIMB = 120;
+/**
+ * …and no more than this much longer than the straight line, or than this many metres
+ * longer (a short walk bends more): along the coast, not round a ravine.
+ */
+const SCENIC_DETOUR = 1.6;
+const SCENIC_BEND = 300;
+/**
+ * Looking for a walk with a view, each metre off the ways with one counts this much more…
+ */
+const VIEW_PULL = 1.6;
+/** …and the walk found may take this much longer than the quickest (as a share). */
+const VIEW_DETOUR = 1.3;
+/** A walk that climbs this much (m) may be tiring, and the passenger is told; or goes down this much. */
+export const TIRING_CLIMB = 60;
+export const TIRING_DESCENT = 120;
+
+/** Whether a walk is along the sea, on a promenade or past a viewpoint for much of the way. */
+export const hasView = (leg: WalkLeg) =>
+  (leg.scenic ?? 0) >= Math.max(VIEW_LEAST, leg.distance * VIEW_SHARE);
+
+/**
+ * Walking all the way that is a pleasure rather than a chore: up to 35 minutes, mostly
+ * with a view, neither a steep climb nor a roundabout way — the promenade from Ribeira
+ * Brava to Tabua, from the Lido to Praia Formosa. It is always offered, and it may be
+ * the best way (see `scenicBonus`), as it costs nothing and needs no change of bus.
+ */
+export function isScenicWalk(it: Itinerary): boolean {
+  const legs = it.legs ?? [];
+  const leg = legs[0];
+  if (it.rides !== 0 || legs.length !== 1 || leg?.kind !== 'walk') return false;
+  return (
+    it.duration <= SCENIC_WALK &&
+    hasView(leg) &&
+    (leg.up ?? 0) <= SCENIC_CLIMB &&
+    (leg.distance <= haversine(leg.from, leg.to) * SCENIC_DETOUR ||
+      leg.distance <= haversine(leg.from, leg.to) + SCENIC_BEND)
+  );
+}
+
 /**
  * Seconds of the walk to the first bus and from the last one beyond SHORT_END_WALK
  * (none for walking all the way, which is no walk to a bus).
@@ -1748,7 +1834,8 @@ export function longEndWalks(it: Itinerary): number {
  * time on the way, ten minutes for each change of bus, four minutes for each
  * euro, half again the time on foot, one and a half again each second of the
  * walk to the first bus or from the last one beyond five minutes (a bus nearer
- * the door is worth a change), and six seconds for each metre climbed on foot.
+ * the door is worth a change), and six seconds for each metre climbed on foot;
+ * less ten minutes for a walk all the way with a view (`isScenicWalk`).
  * Of two options arriving at the same time, the one with fewer changes, a lower
  * fare and less walking wins; waiting at home costs nothing.
  */
@@ -1756,7 +1843,12 @@ export function itineraryCost(
   it: Itinerary,
   opts: Pick<
     PlanOptions,
-    'transferCost' | 'fareWeight' | 'walkReluctance' | 'endWalkReluctance' | 'climbReluctance'
+    | 'transferCost'
+    | 'fareWeight'
+    | 'walkReluctance'
+    | 'endWalkReluctance'
+    | 'climbReluctance'
+    | 'scenicBonus'
   > = DEFAULT_PLAN_OPTIONS,
   arriveBy = false,
 ): number {
@@ -1767,7 +1859,8 @@ export function itineraryCost(
     opts.fareWeight * fareOf(it) +
     opts.walkReluctance * walkTime(it) +
     opts.endWalkReluctance * longEndWalks(it) +
-    opts.climbReluctance * climbOnFoot(it)
+    opts.climbReluctance * climbOnFoot(it) -
+    (isScenicWalk(it) ? opts.scenicBonus : 0)
   );
 }
 
@@ -1799,9 +1892,10 @@ export function bestOf(
     (a, b) =>
       itineraryCost(a, opts, arriveBy) - itineraryCost(b, opts, arriveBy) || a.arrive - b.arrive,
   );
-  // A walk all the way may be the best when it is short and costs least; a long one
-  // only when no bus goes.
-  const best = ranked.find((it) => it.rides > 0 || it.duration <= SHORT_WALK) ?? ranked[0];
+  // A walk all the way may be the best when it is short or has a view and costs least; a
+  // long one only when no bus goes.
+  const best =
+    ranked.find((it) => it.rides > 0 || it.duration <= SHORT_WALK || isScenicWalk(it)) ?? ranked[0];
   if (!best || best.rides === 0) return best;
   const quicker = ranked.find(
     (it) =>
@@ -1860,9 +1954,13 @@ function finish(
   }
   const all = [best, ...rest];
   const others = rest.filter(
-    (it) => it.alternative || it.lessWalking || !all.some((b) => paretoBeats(b, it)),
+    (it) =>
+      it.alternative || it.lessWalking || isScenicWalk(it) || !all.some((b) => paretoBeats(b, it)),
   );
-  return [best, ...others.sort(order)];
+  // A walk with a view comes right after the best, whenever it would go: it is a choice of
+  // its own, not one more departure.
+  const scenic = others.filter(isScenicWalk);
+  return [best, ...scenic, ...others.filter((it) => !scenic.includes(it)).sort(order)];
 }
 
 /** Walking all the way that may be the best way (s). */

@@ -281,6 +281,23 @@ async function osm() {
      out center tags;`,
   );
   writeFileSync(join(dir, 'areas-anchors.json'), JSON.stringify(anchors));
+  // The coastline and the promenades along it, and the bridges and tunnels walked through
+  // (`madeirabus-pipeline scenery` tells from them which walks have a view, and keeps a
+  // walk over a bridge level rather than down in the ravine; these files are not kept).
+  const coast = await overpass(
+    `[out:json][timeout:300];
+     (way["natural"="coastline"](${BBOX});
+      way["highway"]["name"~"^(Promenade|Passeio (P[uú]blico )?Mar[ií]timo|Passeio Pedonal|Avenida do Mar)",i](${BBOX}););
+     out geom qt;`,
+  );
+  writeFileSync(join(dir, 'coast.json'), JSON.stringify(coast));
+  const bridges = await overpass(
+    `[out:json][timeout:300];
+     (way["highway"]["bridge"]["bridge"!="no"](${BBOX});
+      way["highway"]["tunnel"]["tunnel"!="no"](${BBOX}););
+     out geom qt;`,
+  );
+  writeFileSync(join(dir, 'bridges.json'), JSON.stringify(bridges));
   const relations = routes.elements.filter((e) => e.type === 'relation');
   return {
     routeRelations: relations.filter((r) => r.tags?.type === 'route').length,

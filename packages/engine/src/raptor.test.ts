@@ -6,7 +6,9 @@ import { parseGtfs } from './gtfs.ts';
 import { Network } from './network.ts';
 import {
   bestOf,
+  hasView,
   isBusStation,
+  isScenicWalk,
   itineraryCost,
   longEndWalks,
   outdoes,
@@ -255,10 +257,13 @@ describe('Planner', () => {
 });
 
 /**
- * Lines from P to Q, 3 km apart: each with its name, the minutes after midnight its
- * buses leave and how many minutes they take.
+ * Lines from P to Q, 3 km apart (or Q as far east as `qLon`): each with its name, the
+ * minutes after midnight its buses leave and how many minutes they take.
  */
-function linesFromPtoQ(lines: readonly [name: string, starts: number[], minutes: number][]) {
+function linesFromPtoQ(
+  lines: readonly [name: string, starts: number[], minutes: number][],
+  qLon = -16.918,
+) {
   const stopTimes: (string | number)[][] = [];
   const trips: string[][] = [];
   const time = (m: number) =>
@@ -282,7 +287,7 @@ function linesFromPtoQ(lines: readonly [name: string, starts: number[], minutes:
       ['stop_id', 'stop_name', 'stop_lat', 'stop_lon', 'zone_id'],
       [
         ['P', 'P', 32.65, -16.95, 'FNC'],
-        ['Q', 'Q', 32.65, -16.918, 'FNC'],
+        ['Q', 'Q', 32.65, qLon, 'FNC'],
       ],
     ),
     'routes.txt': toCsv(
@@ -351,6 +356,100 @@ describe('walking', () => {
     expect(onFoot(walk!)).toBeGreaterThan(10 * 60);
     expect(onFoot(best)).toBeLessThan(onFoot(walk!) - 5 * 60);
     expect(best.arrive).toBe(walk!.arrive);
+  });
+});
+
+describe('a walk with a view', () => {
+  // P and Q 2 km apart: a promenade along the sea between them, and a road behind it a
+  // little shorter.
+  const Q_LON = -16.9286;
+  const shore = (lon: number): LatLon => ({ lat: 32.6494, lon });
+  const promenade = () =>
+    WalkGraph.decode(
+      encodeWalkGraph({
+        nodes: [
+          { lat: 32.65, lon: -16.95 },
+          { lat: 32.65, lon: Q_LON },
+        ],
+        edges: [
+          { from: 0, to: 1, kind: WALK_STREET, points: [] },
+          {
+            from: 0,
+            to: 1,
+            kind: WALK_STREET,
+            points: [shore(-16.945), shore(-16.94), shore(-16.935)],
+            scenic: true,
+          },
+        ],
+      }),
+    );
+  const plan = (starts: number[], options = {}) => {
+    const { net, from, to, line } = linesFromPtoQ([['X', starts, 10]], Q_LON);
+    const results = new Planner(net, promenade()).plan({
+      from: { lat: from.lat, lon: from.lon, name: 'P' },
+      to: { lat: to.lat, lon: to.lon, name: 'Q' },
+      date: WEEKDAY,
+      time: at(9),
+      options,
+    });
+    return { results, line };
+  };
+
+  it('goes along the sea, not the road behind it, and is always on offer', () => {
+    // The bus at 09:05 is there at 09:15, long before the walk: the best, the walk next.
+    const { results, line } = plan([9 * 60 + 5]);
+    expect(line(results[0]!)).toEqual(['X']);
+    const walk = results[1]!;
+    expect(isScenicWalk(walk)).toBe(true);
+    const leg = walk.legs[0] as WalkLeg;
+    expect(leg.scenic).toBeGreaterThan(leg.distance * 0.9);
+    expect(leg.path!.some((p) => p.lat < 32.6496)).toBe(true);
+    expect(walk.duration).toBeLessThanOrEqual(35 * 60);
+  });
+
+  it('is the best way when the bus is no sooner, and not for those who would rather ride', () => {
+    // The bus at 09:20 is there at 09:30, a few minutes after the walk.
+    expect(isScenicWalk(plan([9 * 60 + 20]).results[0]!)).toBe(true);
+    const lessWalking = { ...ROUTE_PREFERENCES.lessWalking };
+    const { results, line } = plan([9 * 60 + 20], lessWalking);
+    expect(line(results[0]!)).toEqual(['X']);
+    expect(results.some(isScenicWalk)).toBe(true);
+  });
+
+  /** Walking all the way: `distance` m in `minutes`, `view` m of it with a view. */
+  const walking = (distance: number, minutes: number, view: number, up = 0, straight = distance) =>
+    ({
+      key: 'walk',
+      rides: 0,
+      transfers: 0,
+      depart: at(9),
+      arrive: at(9) + minutes * 60,
+      duration: minutes * 60,
+      walkDistance: distance,
+      legs: [
+        {
+          kind: 'walk',
+          from: { name: 'A', lat: 32.65, lon: -16.95 },
+          to: { name: 'B', lat: 32.65, lon: -16.95 + straight / 93_800 },
+          start: at(9),
+          end: at(9) + minutes * 60,
+          distance,
+          scenic: view,
+          up,
+        },
+      ],
+    }) as unknown as Itinerary;
+
+  it('is short, mostly with a view, not steep and not roundabout', () => {
+    expect(isScenicWalk(walking(2000, 30, 1300, 90))).toBe(true);
+    expect(isScenicWalk(walking(2600, 40, 2000))).toBe(false); // too long
+    expect(isScenicWalk(walking(2000, 30, 800))).toBe(false); // too little with a view
+    expect(isScenicWalk(walking(2000, 30, 1300, 200))).toBe(false); // too steep
+    expect(isScenicWalk(walking(2000, 30, 1300, 0, 1000))).toBe(false); // round a ravine
+    // A short walk may bend.
+    expect(isScenicWalk(walking(700, 10, 500, 20, 420))).toBe(true);
+    expect(hasView(walking(700, 10, 500).legs[0] as WalkLeg)).toBe(true);
+    expect(hasView(walking(700, 10, 200).legs[0] as WalkLeg)).toBe(false);
   });
 });
 

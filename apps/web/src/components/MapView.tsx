@@ -8,6 +8,7 @@ import {
   NavigationControl,
   ScaleControl,
   setWorkerUrl,
+  type ExpressionSpecification,
   type GeoJSONSource,
   type IControl,
   type MapMouseEvent,
@@ -22,6 +23,7 @@ import { decodePlace, encodePlace } from '../lib/itinerary.ts';
 import { hideLaunch } from '../lib/launch.ts';
 import {
   transitGeoJson,
+  VIEW_WALK,
   WAY_TURQUOISE,
   type LineNote,
   type MapContent,
@@ -436,7 +438,9 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
     layout: { 'line-cap': 'round' },
     paint: { 'line-color': '#000000', 'line-width': HIT_WIDTH, 'line-opacity': 0 },
   });
-  // A walk: a faint band along the pavements with small bright dots close together on it.
+  // A walk: a faint band along the pavements with small bright dots close together on it;
+  // a walk with a view, along the sea, on a band of the logo's cyan wave.
+  const view: ExpressionSpecification = ['==', ['get', 'color'], VIEW_WALK];
   map.addLayer({
     id: 'mb-walk',
     type: 'line',
@@ -444,9 +448,9 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
     filter: ['get', 'dashed'],
     layout: { 'line-cap': 'round', 'line-join': 'round' },
     paint: {
-      'line-color': base === 'satellite' ? '#ffffff' : '#1E6FFF',
-      'line-width': ['interpolate', ['linear'], ['zoom'], 12, 1.5, 17, 3],
-      'line-opacity': 0.45,
+      'line-color': ['case', view, '#00D2DC', base === 'satellite' ? '#ffffff' : '#1E6FFF'],
+      'line-width': ['interpolate', ['linear'], ['zoom'], 12, ['case', view, 3, 1.5], 17, 4],
+      'line-opacity': ['case', view, 0.7, 0.45],
     },
   });
   map.addLayer({

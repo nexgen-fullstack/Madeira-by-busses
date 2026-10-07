@@ -13,6 +13,9 @@
   /* An express on the Via Rápida. */
   --express-bg: #fff3b8;
   --express: #6b4f00;
+  /* A walk with a view along the sea: the cyan wave of the logo, dark enough to read. */
+  --view: #00707a;
+  --view-bg: #dcf6f8;
   --bg: #f3f7fc;
   --surface: #ffffff;
   --surface-2: #eef3f9;
@@ -49,6 +52,8 @@
     --danger-bg: #3a1716;
     --express-bg: #3a3006;
     --express: #ffdc4d;
+    --view: #6ee3ec;
+    --view-bg: #0b3337;
     --shadow: 0 1px 2px rgb(0 0 0 / 40%);
     color-scheme: dark;
   }
@@ -883,6 +888,45 @@ input[type='time'],
 .timeline__express {
   background: var(--express-bg);
   color: var(--express);
+}
+/* Walking all the way along the sea: a way of its own, told apart from the buses. */
+.it-card__tag--scenic {
+  background: var(--view-bg);
+  color: var(--view);
+}
+.it-card--scenic {
+  border-color: color-mix(in srgb, var(--view) 45%, var(--border));
+}
+.it-card__climb {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--warn);
+  font-weight: 600;
+}
+/* Under a walk of the route: a view on the way, a climb that may be tiring. */
+.walk-note {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 5px;
+  margin-top: 5px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+.walk-note svg {
+  flex: none;
+}
+.walk-note--view {
+  background: var(--view-bg);
+  color: var(--view);
+}
+.walk-note--tiring {
+  background: var(--warn-bg);
+  color: var(--warn);
 }
 /* A way on a later day than asked ("Tomorrow from 07:30"): told in red, the card tinted. */
 .it-card--ahead {
