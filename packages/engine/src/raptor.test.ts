@@ -1128,6 +1128,115 @@ describe('changing buses at a big station', () => {
   });
 });
 
+describe('changing buses in the city', () => {
+  const time = (t: number) =>
+    `${String(Math.floor(t / 3600)).padStart(2, '0')}:${String((t / 60) % 60).padStart(2, '0')}:00`;
+  /**
+   * Funchal: the 200 from the hospital (H) down to the Marina (M) and up to its terminal
+   * at Campo da Barca (C); the 380 from C back down past the Palácio (P), 150 m from M,
+   * and west (W). Twenty more lines pass C and P, both busy stops of the city.
+   */
+  function funchal(busy = true) {
+    const stops: (string | number)[][] = [
+      ['H', 'Bairro do Hospital', 32.6484, -16.9223, 'FNC'],
+      ['M', 'Marina', 32.6457, -16.9095, 'FNC'],
+      ['P', 'Palácio São Lourenço', 32.64686, -16.91017, 'FNC'],
+      ['C', 'Auto Silo Campo da Barca', 32.65306, -16.90192, 'FNC'],
+      ['W', 'Hotel Miramar', 32.6372, -16.9375, 'FNC'],
+    ];
+    const routes: (string | number)[][] = [
+      ['200', 'T', '200', 'Funchal - Ribeira Brava', 3],
+      ['380', 'T', '380', 'Funchal - Calheta', 3],
+    ];
+    const trips: string[][] = [
+      ['200', 'WK', 'a'],
+      ['380', 'WK', 'b'],
+    ];
+    const run = (trip: string, calls: [string, number][]) =>
+      calls.map(([s, t], k) => [trip, time(t), time(t), s, k + 1]);
+    const times: (string | number)[][] = [
+      ...run('a', [
+        ['H', at(9, 0)],
+        ['M', at(9, 5)],
+        ['C', at(9, 12)],
+      ]),
+      ...run('b', [
+        ['C', at(9, 20)],
+        ['P', at(9, 27)],
+        ['W', at(9, 40)],
+      ]),
+    ];
+    for (let k = 1; k <= (busy ? 20 : 0); k++) {
+      routes.push([`L${k}`, 'T', `${100 + k}`, `Line ${k}`, 3]);
+      trips.push([`L${k}`, 'WK', `l${k}`]);
+      times.push(
+        ...run(`l${k}`, [
+          ['C', at(7, k)],
+          ['P', at(7, 30 + k)],
+        ]),
+      );
+    }
+    const feed = parseGtfs({
+      'agency.txt': toCsv(
+        ['agency_id', 'agency_name', 'agency_url', 'agency_timezone'],
+        [['T', 'Test', 'https://example.com', 'Atlantic/Madeira']],
+      ),
+      'stops.txt': toCsv(['stop_id', 'stop_name', 'stop_lat', 'stop_lon', 'zone_id'], stops),
+      'routes.txt': toCsv(
+        ['route_id', 'agency_id', 'route_short_name', 'route_long_name', 'route_type'],
+        routes,
+      ),
+      'trips.txt': toCsv(['route_id', 'service_id', 'trip_id'], trips),
+      'stop_times.txt': toCsv(
+        ['trip_id', 'arrival_time', 'departure_time', 'stop_id', 'stop_sequence'],
+        times,
+      ),
+      'calendar.txt': toCsv(
+        [
+          'service_id',
+          'monday',
+          'tuesday',
+          'wednesday',
+          'thursday',
+          'friday',
+          'saturday',
+          'sunday',
+          'start_date',
+          'end_date',
+        ],
+        [['WK', 1, 1, 1, 1, 1, 0, 0, '20260101', '20271231']],
+      ),
+    });
+    const city = new Network(
+      buildBundle([{ feed, source: { name: 'test' } }], { demo: true, fares: SIGA_FARES_2026 })
+        .bundle,
+    );
+    const stop = (id: string) => {
+      const i = city.stops.findIndex((s) => s.id === id);
+      return { ...city.stops[i]!, name: city.stops[i]!.name, stops: [i] };
+    };
+    const best = new Planner(city).plan({
+      from: stop('H'),
+      to: stop('W'),
+      date: WEEKDAY,
+      time: at(8, 55),
+      options: { stopWalk: 0, longWalk: 0 },
+    })[0]!;
+    const [first, second] = best.legs.filter((l): l is RideLeg => l.kind === 'ride');
+    return { best, off: first!.to.name, on: second!.from.name };
+  }
+
+  it('is made on the way, not at the terminal the next bus comes back from', () => {
+    // Off the 200 at the Marina and a short walk to the 380 at the Palácio, rather than up
+    // to Campo da Barca and back down the same streets on the 380.
+    const { best, off, on } = funchal();
+    expect(off).toBe('Marina');
+    expect(on).toBe('Palácio São Lourenço');
+    expect(best.arrive).toBe(at(9, 40));
+    expect(best.walkDistance).toBeLessThan(250);
+  });
+});
+
 describe('isBusStation', () => {
   it('knows the bus stations by the names people use', () => {
     for (const name of ['Estacao Ribeira Brava', 'Estação Machico', 'São Vicente - Central']) {

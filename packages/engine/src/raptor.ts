@@ -264,6 +264,14 @@ const STATION_LINES = 30;
 const STATION_LATER = 10 * 60;
 /** …and the last bus left at its bus station may ask for this much more walking (m). */
 const STATION_WALK = 200;
+/** A change of bus that saves going there and back may ask for this much more walking (m)… */
+const DETOUR_WALK = 250;
+/** …when the two buses would ride this long (s) there and back. */
+const DETOUR_RIDE = 4 * 60;
+/** The municipality of Funchal (stops' `muni`): the city, where many lines pass… */
+const CITY = 'FNC';
+/** …at its stops with this many lines (see `hub`), not on the hills above it. */
+const DETOUR_HUB = 20;
 /** A bus station this far (m) from where one changes is in the same place, not a detour. */
 const STATION_NEAR = 2000;
 
@@ -1354,6 +1362,9 @@ export class Planner {
           hub: this.hub(np.stops[next.boardPos]!),
           station: isBusStation(net.stops[np.stops[next.boardPos]!]!.name),
           buffer: next.wait,
+          off: arrAt(leg.alightPos),
+          on: next.start,
+          city: net.stops[np.stops[next.boardPos]!]!.muni === CITY,
         };
         let best = current;
         for (const a of [leg.alightPos, ...later(leg.alightPos)]) {
@@ -1383,7 +1394,17 @@ export class Planner {
             const buffer =
               net.departureAt(next.pattern, ndp, next.dayTrip, b) - arrAt(a) - w.seconds;
             const station = isBusStation(net.stops[np.stops[b]!]!.name);
-            const change = { a, b, walk: w, hub: this.hub(np.stops[b]!), station, buffer };
+            const change = {
+              a,
+              b,
+              walk: w,
+              hub: this.hub(np.stops[b]!),
+              station,
+              buffer,
+              off: arrAt(a),
+              on: net.departureAt(next.pattern, ndp, next.dayTrip, b),
+              city: net.stops[np.stops[b]!]!.muni === CITY,
+            };
             if (betterChange(change, best)) best = change;
           });
         }
@@ -1736,19 +1757,46 @@ interface Change {
   /** b is a bus station or terminal itself. */
   station: boolean;
   buffer: number;
+  /** When the first bus gets to a, and the next one leaves b. */
+  off: number;
+  on: number;
+  /** b is in the city of Funchal. */
+  city: boolean;
 }
 
 /**
- * x is the better place to change: much the bigger stop at no cost, otherwise
- * the shorter walk, and with the same walk the bus station itself rather than
- * the stop beside it.
+ * x is the better place to change: never there and back (on along the first bus,
+ * back along the second, both over the same streets), and away from it at a short
+ * walk; otherwise much the bigger stop at no cost, then the shorter walk, and with
+ * the same walk the bus station itself rather than the stop beside it.
  */
 function betterChange(x: Change, y: Change): boolean {
+  if (thereAndBack(x, y) && busyCity(y)) return false;
+  if (thereAndBack(y, x) && busyCity(x)) {
+    return (
+      x.walk.distance <= y.walk.distance + DETOUR_WALK && x.buffer >= Math.min(y.buffer, HUB_BUFFER)
+    );
+  }
   if (biggerAtNoCost(x, y)) return true;
   if (biggerAtNoCost(y, x)) return false;
   if (x.walk.distance !== y.walk.distance) return x.walk.distance < y.walk.distance;
   return x.station && !y.station && x.buffer >= Math.min(y.buffer, HUB_BUFFER);
 }
+
+/**
+ * Changing at x rather than y rides the first bus on past y's stop and boards the
+ * next one before it, which then comes back the same way, for DETOUR_RIDE or more
+ * on the two buses: 200 up to its terminal at Campo da Barca and the 380 back down
+ * past Avenida do Mar, rather than a minute's walk between the two there. At the
+ * city's busy stops, where many lines pass, a change is made on the way
+ * (betterChange); out of it a bus station is still worth the detour
+ * (`changeAtStation`).
+ */
+const thereAndBack = (x: Change, y: Change) =>
+  x.a > y.a && x.b < y.b && x.off - y.off + (y.on - x.on) >= DETOUR_RIDE;
+
+/** A stop in the city with many lines: a bus that breaks down is easily replaced there. */
+const busyCity = (c: Change) => c.city && c.hub >= DETOUR_HUB;
 
 /** x is much the bigger stop, with hardly more walking and no less time to change. */
 const biggerAtNoCost = (x: Change, y: Change) =>
