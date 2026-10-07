@@ -1,6 +1,6 @@
 import { quoteFare, type FareQuote, type FareRide } from './fares.ts';
 import { haversine, walkSeconds, type LatLon } from './geo.ts';
-import type { DayTimetable, Network } from './network.ts';
+import type { DayTimetable, Footpath, Network } from './network.ts';
 import { addDays } from './time.ts';
 import type { WalkDistance, WalkGraph, WalkHit, WalkRoute } from './walk.ts';
 
@@ -236,6 +236,8 @@ const LONG_ACCESS = SHORT_END_WALK;
 const SHORT_ACCESS = SHORT_END_WALK;
 /** How much less on foot a way with another bus must ask for to be offered (s). */
 const LESS_WALK = 5 * 60;
+/** A change of bus on foot is at most this long along the streets (m). */
+const TRANSFER_STREET = 1000;
 /** Stops this far apart (m, as the crow flies) may be a change of bus on foot. */
 const TRANSFER_LOOK = 600;
 /**
@@ -283,6 +285,8 @@ export class Planner {
   private walk?: WalkGraph;
   private stopHits?: (WalkHit | undefined)[];
   private hubs?: (number | undefined)[];
+  /** Each stop's walks to the stops around it along the streets, worked out when first needed. */
+  private streetFootpaths?: (Footpath[] | undefined)[];
 
   constructor(
     private readonly net: Network,
@@ -298,7 +302,47 @@ export class Planner {
   setWalk(walk: WalkGraph): void {
     this.walk = walk;
     this.stopHits = undefined;
+    this.streetFootpaths = undefined;
     this.hits();
+  }
+
+  /**
+   * The walks from a stop to the stops around it (at the network's reference pace): along
+   * the streets once they are known, not as the crow flies — across a ravine 340 m apart is
+   * 22 minutes round by the road, not 6, and no change of bus that relies on 6 is made.
+   * Stops a long way round by the streets are no change on foot.
+   */
+  private footpaths(s: number): readonly Footpath[] {
+    const plain = this.net.footpaths[s]!;
+    const walk = this.walk;
+    if (!walk || plain.length === 0) return plain;
+    this.streetFootpaths ??= new Array<Footpath[] | undefined>(this.net.stops.length);
+    const known = this.streetFootpaths[s];
+    if (known) return known;
+    const hits = this.hits();
+    const from = hits[s];
+    let out: Footpath[] = plain;
+    if (from) {
+      const found = walk.distances(
+        from,
+        plain.map((f) => hits[f.to] ?? from),
+        TRANSFER_STREET * 2,
+      );
+      out = [];
+      plain.forEach((f, i) => {
+        // A stop off the walkable ways keeps the walk as the crow flies.
+        if (!hits[f.to]) return void out.push(f);
+        const d = found[i];
+        if (!d || d.length > TRANSFER_STREET) return;
+        out.push({
+          to: f.to,
+          seconds: Math.max(f.seconds, 30, Math.round(d.cost / this.net.walkSpeed)),
+          distance: Math.round(d.length),
+        });
+      });
+    }
+    this.streetFootpaths[s] = out;
+    return out;
   }
 
   /** Where each stop meets the walking network. */
@@ -900,7 +944,7 @@ export class Planner {
       const rideStops = newMarked.slice();
       const rideTimes = rideStops.map((s) => curTau[s]!);
       rideStops.forEach((s, idx) => {
-        for (const fp of net.footpaths[s]!) {
+        for (const fp of this.footpaths(s)) {
           const seconds = Math.round(fp.seconds * scale);
           const t = rideTimes[idx]! + seconds;
           if (t < best[fp.to]! && t < targetBest) {
@@ -1047,7 +1091,9 @@ export class Planner {
     let prevRideEnd: number | undefined;
     for (const step of steps) {
       if (step.type === 'walk') {
-        const distance = Math.round(haversine(net.stops[step.from]!, net.stops[step.to]!));
+        const distance =
+          this.footpaths(step.from).find((f) => f.to === step.to)?.distance ??
+          Math.round(haversine(net.stops[step.from]!, net.stops[step.to]!));
         const last = legs[legs.length - 1];
         if (last?.kind === 'walk') {
           last.to = stopRef(step.to);

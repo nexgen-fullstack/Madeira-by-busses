@@ -180,9 +180,18 @@ const OVERPASS = [
   'https://maps.mail.ru/osm/tools/overpass/api/interpreter',
 ];
 
-/** Runs a query on the first Overpass server that answers. */
+/** A server whose copy of OpenStreetMap is older than this (ms) is passed over if another is newer. */
+const STALE = 10 * 24 * 3600 * 1000;
+
+/**
+ * Runs a query on the first Overpass server that answers with a fresh copy of the map
+ * (a mirror may lag months behind: kumi.systems once served May's map in October); with
+ * none fresh, the freshest answer.
+ */
 async function overpass(query) {
   const errors = [];
+  let freshest;
+  const age = (json) => Date.now() - Date.parse(json?.osm3s?.timestamp_osm_base ?? '');
   for (const endpoint of OVERPASS) {
     try {
       const res = await get(endpoint, {
@@ -190,12 +199,24 @@ async function overpass(query) {
         headers: { 'content-type': 'application/x-www-form-urlencoded' },
         body: `data=${encodeURIComponent(query)}`,
       });
-      if (res.ok) return await res.json();
-      errors.push(`${endpoint}: HTTP ${res.status}`);
+      const text = res.ok ? await res.text() : '';
+      // Busy servers answer 200 with an HTML or XML page saying so.
+      if (res.ok && text.trimStart().startsWith('{')) {
+        const json = JSON.parse(text);
+        if (!(age(json) > STALE)) return json;
+        errors.push(`${endpoint}: map of ${json.osm3s?.timestamp_osm_base}`);
+        if (!freshest || age(json) < age(freshest)) freshest = json;
+      } else {
+        errors.push(`${endpoint}: HTTP ${res.status}`);
+      }
     } catch (err) {
       errors.push(`${endpoint}: ${err}`);
     }
     await sleep(5000);
+  }
+  if (freshest) {
+    console.warn(`Overpass: no fresh map (${errors.join('; ')}); using the freshest.`);
+    return freshest;
   }
   throw new Error(errors.join('; '));
 }

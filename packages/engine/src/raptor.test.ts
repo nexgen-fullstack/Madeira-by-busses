@@ -359,6 +359,110 @@ describe('walking', () => {
   });
 });
 
+describe('a change of bus on foot', () => {
+  it('walks round by the streets, not across the ravine', () => {
+    // Line 1 from A down to B, line 2 from C on to D. B and C are 300 m apart as the crow
+    // flies, but the only way between them goes round a ravine: 900 m, 12 minutes.
+    const x = (east: number) => -16.95 + east / 93_800;
+    const at0 = (h: number, m: number) =>
+      `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:00`;
+    const feed = parseGtfs({
+      'agency.txt': toCsv(
+        ['agency_id', 'agency_name', 'agency_url', 'agency_timezone'],
+        [['T', 'Test', 'https://example.com', 'Atlantic/Madeira']],
+      ),
+      'stops.txt': toCsv(
+        ['stop_id', 'stop_name', 'stop_lat', 'stop_lon', 'zone_id'],
+        [
+          ['A', 'A', 32.65, x(-3000), 'FNC'],
+          ['B', 'B', 32.65, x(0), 'FNC'],
+          ['C', 'C', 32.65, x(300), 'FNC'],
+          ['D', 'D', 32.65, x(3300), 'FNC'],
+        ],
+      ),
+      'routes.txt': toCsv(
+        ['route_id', 'agency_id', 'route_short_name', 'route_long_name', 'route_type'],
+        [
+          ['1', 'T', '1', 'A - B', 3],
+          ['2', 'T', '2', 'C - D', 3],
+        ],
+      ),
+      'trips.txt': toCsv(
+        ['route_id', 'service_id', 'trip_id'],
+        [
+          ['1', 'WK', 'one'],
+          ['2', 'WK', 'two20'],
+          ['2', 'WK', 'two40'],
+        ],
+      ),
+      'stop_times.txt': toCsv(
+        ['trip_id', 'arrival_time', 'departure_time', 'stop_id', 'stop_sequence'],
+        [
+          ['one', at0(9, 0), at0(9, 0), 'A', 1],
+          ['one', at0(9, 10), at0(9, 10), 'B', 2],
+          ['two20', at0(9, 20), at0(9, 20), 'C', 1],
+          ['two20', at0(9, 30), at0(9, 30), 'D', 2],
+          ['two40', at0(9, 40), at0(9, 40), 'C', 1],
+          ['two40', at0(9, 50), at0(9, 50), 'D', 2],
+        ],
+      ),
+      'calendar.txt': toCsv(
+        [
+          'service_id',
+          'monday',
+          'tuesday',
+          'wednesday',
+          'thursday',
+          'friday',
+          'saturday',
+          'sunday',
+          'start_date',
+          'end_date',
+        ],
+        [['WK', 1, 1, 1, 1, 1, 0, 0, '20260101', '20271231']],
+      ),
+    });
+    const ravine = new Network(
+      buildBundle([{ feed, source: { name: 'test' } }], { demo: true, fares: SIGA_FARES_2026 })
+        .bundle,
+    );
+    const stop = (id: string) => ravine.stops.findIndex((st) => st.id === id);
+    const pt = (east: number, north = 0): LatLon => ({
+      lat: 32.65 + north / 110_574,
+      lon: x(east),
+    });
+    const streets = WalkGraph.decode(
+      encodeWalkGraph({
+        nodes: [pt(-3000), pt(0), pt(0, 300), pt(300, 300), pt(300), pt(3300)],
+        edges: [
+          { from: 0, to: 1, kind: WALK_STREET, points: [] },
+          { from: 1, to: 2, kind: WALK_STREET, points: [] },
+          { from: 2, to: 3, kind: WALK_STREET, points: [] },
+          { from: 3, to: 4, kind: WALK_STREET, points: [] },
+          { from: 4, to: 5, kind: WALK_STREET, points: [] },
+        ],
+      }),
+    );
+    const request = {
+      from: { ...ravine.stops[stop('A')]!, name: 'A', stops: [stop('A')] },
+      to: { ...ravine.stops[stop('D')]!, name: 'D', stops: [stop('D')] },
+      date: WEEKDAY,
+      time: at(8, 55),
+      options: { stopWalk: 0, longWalk: 0 },
+    };
+    // As the crow flies, the 09:20 would be made; round the ravine only the 09:40.
+    const crow = new Planner(ravine).plan(request).find((it) => it.rides === 2)!;
+    expect(rides(crow)[1]!.start).toBe(at(9, 20));
+    const best = new Planner(ravine, streets).plan(request).find((it) => it.rides === 2)!;
+    expect(rides(best)[1]!.start).toBe(at(9, 40));
+    const change = best.legs.find(
+      (l): l is WalkLeg => l.kind === 'walk' && l.from.stop !== undefined,
+    )!;
+    expect(change.distance).toBeGreaterThan(880);
+    expect(change.end - change.start).toBeGreaterThan(11 * 60);
+  });
+});
+
 describe('a walk with a view', () => {
   // P and Q 2 km apart: a promenade along the sea between them, and a road behind it a
   // little shorter.
