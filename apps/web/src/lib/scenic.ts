@@ -1,6 +1,7 @@
 import {
   directConnections,
   haversine,
+  isBusStation,
   type Connection,
   type LatLon,
   type Network,
@@ -500,21 +501,37 @@ export function byRegion<T extends { region: Region }>(places: readonly T[]): [R
 /** Avenida do Mar, where most lines of Funchal start. */
 export const CENTRE: LatLon = { lat: 32.6478, lon: -16.9075 };
 
-/** Stops of central Funchal, between the market, the cathedral and the marina. */
+/**
+ * Auto Silo Campo da Barca, the terminal up from the centre where buses to the west start
+ * (200 by the Via Rápida to Ribeira Brava): a few minutes' walk from the market.
+ */
+const CAMPO_DA_BARCA: LatLon = { lat: 32.65306, lon: -16.90192 };
+
+/**
+ * Stops of central Funchal, between the market, the cathedral and the marina, and those of
+ * the terminal at Campo da Barca; nearest Avenida do Mar first.
+ */
 export function centreStops(net: Network): number[] {
-  return net
-    .nearbyStops(CENTRE, 550)
+  const hits = [...net.nearbyStops(CENTRE, 550), ...net.nearbyStops(CAMPO_DA_BARCA, 120)];
+  const seen = new Set<number>();
+  return hits
+    .map((h) => ({ stop: h.stop, distance: haversine(CENTRE, net.stops[h.stop]!) }))
     .sort((a, b) => a.distance - b.distance)
+    .filter((h) => !seen.has(h.stop) && Boolean(seen.add(h.stop)))
     .map((h) => h.stop);
 }
 
 /** How far from a place its bus stops may be (m). */
 const REACH = 600;
+/** How far round a bus station its platforms and the stops by it are (m). */
+const STATION = 150;
 
 /**
  * The stops of a destination: the nearest one and those barely further (the
  * other side of the road, the next bay), at most a short walk away (or as far
- * as the place says). Central stops belong to the centre.
+ * as the place says), and its bus station within that walk with the stops by it,
+ * where most buses there end (Ribeira Brava's is below the stops on the hill
+ * that only buses going on pass). Central stops belong to the centre.
  */
 export function destinationStops(net: Network, d: LatLon & { reach?: number }): number[] {
   const centre = new Set(centreStops(net));
@@ -523,7 +540,10 @@ export function destinationStops(net: Network, d: LatLon & { reach?: number }): 
     .filter((h) => !centre.has(h.stop))
     .sort((a, b) => a.distance - b.distance);
   const limit = (hits[0]?.distance ?? 0) + 200;
-  return hits.filter((h) => h.distance <= limit).map((h) => h.stop);
+  const stations = hits.filter((h) => isBusStation(net.stops[h.stop]!.name));
+  const byStation = (s: number) =>
+    stations.some((h) => haversine(net.stops[h.stop]!, net.stops[s]!) <= STATION);
+  return hits.filter((h) => h.distance <= limit || byStation(h.stop)).map((h) => h.stop);
 }
 
 /** One end of a walk: a place people know, where the walk starts or ends. */
@@ -691,7 +711,7 @@ export function outlook(net: Network, d: Destination, date: string): Outlook {
   if (walk !== undefined) return { walk, routes: [] };
   const centre = centreStops(net);
   const stops = destinationStops(net, d);
-  const there = tripsByLine(net, centre, stops, date);
+  const there = tripsByLine(net, centre, stops, date, 'listed');
   const back = tripsByLine(net, stops, centre, date, 'listed');
   const trips = there.flatMap((l) => l.trips).sort((a, b) => a.depart - b.depart);
   const rides = trips.map((c) => c.arrive - c.depart).sort((a, b) => a - b);

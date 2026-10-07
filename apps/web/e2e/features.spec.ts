@@ -1,4 +1,4 @@
-import { pinDemoData } from './demo.ts';
+import { pinDemoData, raiseSheet } from './demo.ts';
 import { expect, test } from '@playwright/test';
 
 // Wednesday 7 Oct 2026, 09:00 in Madeira. Demo data only.
@@ -21,9 +21,11 @@ test('speaks French', async ({ page }) => {
 
 test('remembers recent trips', async ({ page }) => {
   await page.goto('./');
+  await raiseSheet(page);
   await page.getByRole('button', { name: /Mercado dos Lavradores → Monte/ }).click();
   await expect(page.locator('.it-card').first()).toBeVisible();
   await page.goto('./#/plan');
+  await raiseSheet(page);
   await expect(page.getByText('Нещодавні поїздки')).toBeVisible();
   const chips = page.getByRole('button', { name: /Mercado dos Lavradores → Monte/ });
   await expect(chips).toHaveCount(2); // the recent one and the suggestion
@@ -51,15 +53,21 @@ test('saved stops show their departures nearby and in the search', async ({ page
 
 test('a ride survives closing the app', async ({ page }) => {
   await page.goto('./');
+  await raiseSheet(page);
   await page.getByRole('button', { name: /Mercado dos Lavradores → Monte/ }).click();
   await page.locator('.it-card').first().click();
+  await raiseSheet(page);
   await page.getByRole('button', { name: 'Почати поїздку' }).click();
+  // The ride on the whole map, its stops in the sheet.
+  await raiseSheet(page);
   await expect(page.locator('.trip__header')).toBeVisible();
   await page.reload();
+  await raiseSheet(page);
   await expect(page.locator('.trip__header')).toBeVisible();
   await page.getByRole('link', { name: 'Лінії' }).click();
   await expect(page.locator('.chip--live')).toBeVisible();
   await page.locator('.chip--live').click();
+  await raiseSheet(page);
   await page.getByRole('button', { name: 'Завершити' }).click();
   await expect(page.locator('.chip--live')).toHaveCount(0);
   await page.reload();
@@ -78,8 +86,10 @@ test("under a chosen route, each line's timetable as a picture with its buttons"
   page,
 }) => {
   await page.goto('./');
+  await raiseSheet(page);
   await page.getByRole('button', { name: /Mercado dos Lavradores → Monte/ }).click();
   await page.locator('.it-card').first().click();
+  await raiseSheet(page);
   const sheets = page.locator('.detail__sheet');
   await expect(sheets.first()).toBeVisible();
   await sheets.first().scrollIntoViewIfNeeded();

@@ -1416,12 +1416,15 @@ function fitTo(map: MapLibreMap, bounds: LngLatBounds, duration: number) {
   const sheet = parseFloat(
     getComputedStyle(map.getContainer()).getPropertyValue('--map-bottom-inset'),
   );
-  const bottom = 40 + (Number.isFinite(sheet) ? sheet : 0);
   const room = map.getContainer().clientHeight;
+  // A phone on its side has little height: smaller margins, for a larger island.
+  const low = room < 420;
+  const top = low ? 36 : 56;
+  const bottom = (low ? 16 : 40) + (Number.isFinite(sheet) ? sheet : 0);
   map.fitBounds(bounds, {
     padding: {
-      top: 56,
-      bottom: Math.min(bottom, Math.max(40, room - 56 - 80)),
+      top,
+      bottom: Math.min(bottom, Math.max(40, room - top - 80)),
       left: 40,
       right: 64,
     },

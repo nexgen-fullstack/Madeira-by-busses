@@ -21,21 +21,34 @@ import { routeColor } from '../lib/color.ts';
 
 type PdfAction = 'save' | 'print' | 'share';
 
-export function LineDetail({ routeIndex }: { routeIndex: number }) {
+interface Props {
+  routeIndex: number;
+  /** The stop it is boarded at, when opened from a timetable: its way and its buses from there. */
+  at?: number;
+  /** The day of that timetable. */
+  day?: string;
+}
+
+export function LineDetail({ routeIndex, at, day }: Props) {
   const t = useI18n();
   const { net } = useNetwork();
   const now = useNow();
   const today = now.date;
-  const [date, setDate] = useState(today);
-  const [dirIndex, setDirIndex] = useState(0);
-  const [chosenStop, setChosenStop] = useState<number | undefined>();
-  const [back, setBack] = useState(true);
-  const [busy, setBusy] = useState<PdfAction | undefined>();
-  const [toast, setToast] = useState<string | undefined>();
   const route = net.routes[routeIndex];
   // All variants of the line, as the feed may publish each one as a route.
   const variants = useMemo(() => lineOf(net, routeIndex), [net, routeIndex]);
   const directions = useMemo(() => lineDirections(net, variants), [net, variants]);
+  const [date, setDate] = useState(day ?? today);
+  const [dirIndex, setDirIndex] = useState(() =>
+    Math.max(
+      0,
+      at === undefined ? 0 : directions.findIndex((d) => boardingStops(net, d).includes(at)),
+    ),
+  );
+  const [chosenStop, setChosenStop] = useState<number | undefined>(at);
+  const [back, setBack] = useState(true);
+  const [busy, setBusy] = useState<PdfAction | undefined>();
+  const [toast, setToast] = useState<string | undefined>();
   const chosen = Math.min(dirIndex, directions.length - 1);
   const dir = directions[chosen];
   const main = dir?.patterns[0];

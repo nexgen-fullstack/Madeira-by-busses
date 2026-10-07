@@ -1,4 +1,4 @@
-import { allowSimulation, pinDemoData } from './demo.ts';
+import { allowSimulation, pinDemoData, raiseSheet } from './demo.ts';
 import { expect, test } from '@playwright/test';
 
 // Wednesday 7 Oct 2026, 09:00 in Madeira (WEST = UTC+1). Demo data only.
@@ -11,6 +11,8 @@ test('plans a trip with transfers, fares and the last bus back', async ({ page }
   await page.goto('./');
   await expect(page).toHaveTitle('Madeira by busses');
   await expect(page.getByRole('link', { name: 'Madeira by busses' })).toBeVisible();
+  // The island on the whole screen, the planner in the sheet below it.
+  await raiseSheet(page);
   await expect(page.getByText(/Демо-дані/)).toBeVisible();
   await page.getByRole('button', { name: /Aeroporto da Madeira → Porto Moniz/ }).click();
 
@@ -18,6 +20,8 @@ test('plans a trip with transfers, fares and the last bus back', async ({ page }
   await expect(best).toContainText('09:00 – 12:50');
   await expect(best).toContainText('2 пересадки');
   await best.click();
+  // The way chosen takes the whole map; its steps are in the sheet.
+  await raiseSheet(page);
 
   await expect(page.locator('.timeline')).toContainText('Ribeira Brava');
   await expect(page.locator('.timeline')).toContainText('Очікування 30 хв');
@@ -28,9 +32,12 @@ test('plans a trip with transfers, fares and the last bus back', async ({ page }
 test('the simulated ride warns before the stop and arrives', async ({ page }) => {
   await allowSimulation(page);
   await page.goto('./');
+  await raiseSheet(page);
   await page.getByRole('button', { name: /Mercado dos Lavradores → Monte/ }).click();
   await page.locator('.it-card').first().click();
+  await raiseSheet(page);
   await page.getByRole('button', { name: 'Simulate' }).click();
+  await raiseSheet(page);
 
   await expect(page.locator('.trip__status--next')).toBeVisible({ timeout: 90_000 });
   await expect(page.getByText('Виходьте на наступній!')).toBeVisible();
@@ -51,6 +58,7 @@ test('shows a line timetable and switches language', async ({ page }) => {
 
 test('finds places by their name in the reader’s language', async ({ page }) => {
   await page.goto('./');
+  await raiseSheet(page);
   await page.getByRole('combobox', { name: 'Куди' }).fill('аеропорт');
   const option = page.getByRole('option', { name: /Аеропорт Мадейри/ });
   await expect(option).toContainText('Аеропорт');

@@ -5,6 +5,7 @@ import {
   Footprints,
   Loader2,
   Navigation,
+  Play,
   Route as RouteIcon,
 } from 'lucide-react';
 import { haversine, madeiraNow } from '@madeirabus/engine';
@@ -13,7 +14,7 @@ import { ItineraryDetail } from '../components/ItineraryDetail.tsx';
 import { ScenicArt } from '../components/ScenicCard.tsx';
 import { MapContentContext, useMapContent } from '../components/mapContext.tsx';
 import { PlaceSearch, type PlaceValue } from '../components/PlaceSearch.tsx';
-import { TripsBlock } from '../components/TripsBlock.tsx';
+import { DayTrips } from '../components/DayTrips.tsx';
 import { useI18n, type Key } from '../i18n.ts';
 import { findOptions, firstDeparture, type Found } from '../lib/ahead.ts';
 import { aheadFrom, capitalise, dayAhead, longDate } from '../lib/format.ts';
@@ -142,9 +143,10 @@ export function DestinationView({ d, route }: { d: Destination; route: Route }) 
     const centre = centreStops(net);
     const stops = destinationStops(net, d);
     return {
-      there: tripsByLine(net, centre, stops, date).slice(0, 3),
+      // Boarded where the bus passes nearest Avenida do Mar, left nearest the place.
+      there: tripsByLine(net, centre, stops, date, 'listed'),
       // Back: from the stop nearest the place to the one nearest the centre.
-      back: tripsByLine(net, stops, centre, date, 'listed').slice(0, 3),
+      back: tripsByLine(net, stops, centre, date, 'listed'),
     };
   }, [net, d, date, served, walk]);
 
@@ -195,6 +197,10 @@ export function DestinationView({ d, route }: { d: Destination; route: Route }) 
     );
   }
 
+  // A line of the timetable: its way on the map and its timetable from where it is boarded;
+  // back returns here.
+  const openLine = (route: number, stop: number) =>
+    navigate(`lines/${route}`, { s: String(stop), d: q.get('d') ?? undefined });
   const missing = (net.bundle.missingOperators ?? net.bundle.partialOperators)?.join(', ');
   const shownResults = results?.slice(0, SHOWN) ?? [];
   const plannerLink =
@@ -241,15 +247,17 @@ export function DestinationView({ d, route }: { d: Destination; route: Route }) 
           <span className="destination__tag">{t.t(`scenic.${d.id}.tag` as Key)}</span>
           <h2>{d.name}</h2>
         </div>
-        {d.credit && (
-          <a
-            className="destination__credit"
-            href={d.credit.source}
-            target="_blank"
-            rel="noopener noreferrer"
+        {served && (
+          <button
+            type="button"
+            className="destination__start"
+            title={t.t('scenic.startHint')}
+            // The best way there from where the trip starts (where you are), on the whole map;
+            // the sheet with the steps and the timetables comes up from its handle.
+            onClick={() => setParams({ i: '0' })}
           >
-            {t.t('scenic.photo', { author: d.credit.author, license: d.credit.license })}
-          </a>
+            <Play size={14} aria-hidden /> {t.t('scenic.start')}
+          </button>
         )}
       </div>
       <p className="destination__text">{t.t(`scenic.${d.id}.text` as Key)}</p>
@@ -356,28 +364,37 @@ export function DestinationView({ d, route }: { d: Destination; route: Route }) 
               </p>
             ) : timetable && timetable.there.length > 0 ? (
               <>
-                {timetable.there.map((l) => (
-                  <TripsBlock
-                    key={`there-${l.route}`}
-                    {...l}
-                    date={date}
-                    tag={t.t('scenic.there')}
-                  />
-                ))}
-                {timetable.back.map((l) => (
-                  <TripsBlock
-                    key={`back-${l.route}`}
-                    {...l}
-                    date={date}
-                    tag={t.t('detail.wayBack')}
-                  />
-                ))}
+                <p className="muted small">{t.t('scenic.linesHint')}</p>
+                <DayTrips
+                  lines={timetable.there}
+                  date={date}
+                  tag={t.t('scenic.there')}
+                  from={centreName}
+                  to={d.name}
+                  onLine={openLine}
+                />
+                <DayTrips
+                  lines={timetable.back}
+                  date={date}
+                  tag={t.t('detail.wayBack')}
+                  from={d.name}
+                  to={centreName}
+                  back
+                  onLine={openLine}
+                />
               </>
             ) : (
               <p className="muted">{t.t('scenic.noDirect')}</p>
             )}
           </section>
         </>
+      )}
+      {d.credit && (
+        <p className="destination__credit muted small">
+          <a href={d.credit.source} target="_blank" rel="noopener noreferrer">
+            {t.t('scenic.photo', { author: d.credit.author, license: d.credit.license })}
+          </a>
+        </p>
       )}
     </div>
   );

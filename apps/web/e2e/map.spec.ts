@@ -1,4 +1,4 @@
-import { pinDemoData } from './demo.ts';
+import { pinDemoData, raiseSheet } from './demo.ts';
 import { expect, test, type Page } from '@playwright/test';
 
 // A 1×1 PNG used for imagery tiles.
@@ -116,6 +116,7 @@ test('the start of a trip can be chosen on the map', async ({ page }) => {
   await page.goto('./#/plan');
   await page.waitForSelector('.map-canvas canvas');
   await page.waitForTimeout(1000);
+  await raiseSheet(page);
   // The empty planner says that any place will do.
   await expect(page.locator('.plan__tip')).toContainText('кафе, готель чи точка на карті');
   await page.getByRole('button', { name: 'Вибрати на карті' }).first().click();
@@ -154,6 +155,7 @@ test('a chosen route is shown alone; the stops and lines come back with the list
   const button = page.getByRole('button', { name: 'Зупинки й лінії автобусів' });
   await button.click();
   await expect(button).toHaveAttribute('aria-pressed', 'true');
+  await raiseSheet(page);
   await page.getByRole('button', { name: /Mercado dos Lavradores → Monte/ }).click();
   await page.locator('.it-card').first().click();
   await expect(page).toHaveURL(/i=0/);

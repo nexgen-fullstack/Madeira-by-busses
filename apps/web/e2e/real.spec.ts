@@ -1,5 +1,6 @@
 import { existsSync } from 'node:fs';
 import { expect, test } from '@playwright/test';
+import { raiseSheet } from './demo.ts';
 
 // Runs only when the build includes the real Horários do Funchal timetable
 // (`pnpm data:real` before `pnpm build`), which changes with every release.
@@ -12,7 +13,8 @@ test.beforeEach(async ({ page }) => {
 test('real timetable: every line, journey, grouped lines and the demo switch', async ({ page }) => {
   await page.goto('./');
   // The whole island's timetable takes a while to read on a slow machine.
-  await expect(page.locator('.plan__form')).toBeVisible({ timeout: 20_000 });
+  await raiseSheet(page, 20_000);
+  await expect(page.locator('.plan__form')).toBeVisible();
   // Every line of CAM and SIGA Rodoeste is in the app: no notice of missing ones.
   await expect(page.getByText(/ще немає/)).toHaveCount(0);
 

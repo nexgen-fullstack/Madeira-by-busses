@@ -82,6 +82,12 @@ export interface ScenicSpot extends LatLon {
 
 export const EMPTY_CONTENT: MapContent = { lines: [], points: [] };
 
+/** Madeira from Ponta do Pargo to Ponta de São Lourenço, Funchal to Porto Moniz: the whole island in view. */
+export const ISLAND: LatLon[] = [
+  { lat: 32.63, lon: -17.27 },
+  { lat: 32.88, lon: -16.65 },
+];
+
 /** The way chosen, in the neon yellow of the logo's pin: it stands out on any map. */
 export const WAY_YELLOW = '#FFE600';
 /** The way back, in neon turquoise. */

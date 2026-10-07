@@ -11,6 +11,19 @@ function parse(): Route {
   return { path: path.split('/').filter(Boolean), query: new URLSearchParams(query) };
 }
 
+/** Called as the address changes, before the next screen is drawn: the one leaving is still there. */
+const leaving = new Set<() => void>();
+// Registered as the module loads, so before any screen listens for the change.
+if (typeof window !== 'undefined') {
+  window.addEventListener('hashchange', () => leaving.forEach((f) => f()));
+}
+
+/** Runs `f` each time a screen is about to be left; returns how to stop. */
+export function onLeave(f: () => void): () => void {
+  leaving.add(f);
+  return () => leaving.delete(f);
+}
+
 /** Minimal hash router: works from any base path and offline. */
 export function useRoute(): Route {
   const [route, setRoute] = useState(parse);

@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { expect, test } from '@playwright/test';
-import { pinDemoData } from './demo.ts';
+import { pinDemoData, raiseSheet } from './demo.ts';
 
 // Wednesday 7 Oct 2026, 09:00 in Madeira. Demo data: its timetable never changes.
 test.beforeEach(async ({ page }) => {
@@ -39,6 +39,8 @@ test('a scenic place plans the trip and shows every bus of the day', async ({ pa
   const first = page.locator('.it-card').first();
   await expect(first).toContainText('D81');
   await first.click();
+  // The way chosen on the whole map, its steps and timetable in the sheet.
+  await raiseSheet(page);
   await expect(page.locator('.day-timetable .is-chosen')).toHaveText('30');
   await expect(page.locator('.day-timetable').getByText('Назад')).toBeVisible();
 });
@@ -101,6 +103,7 @@ test('the island opens with its places with a view by their photos; a tap opens 
 
 test('the planner’s start screen suggests places with a view', async ({ page }) => {
   await page.goto('./');
+  await raiseSheet(page);
   await expect(page.getByRole('heading', { name: 'Гарні краєвиди' })).toBeVisible();
   await page.locator('.scenic-strip').getByRole('link', { name: /Monte/ }).click();
   await expect(page.getByRole('heading', { name: 'Monte' })).toBeVisible();
@@ -122,4 +125,33 @@ test('finds a line by its number and downloads its timetable as a PDF', async ({
   const file = readFileSync((await download.path())!);
   expect(file.subarray(0, 8).toString('latin1')).toBe('%PDF-1.7');
   await expect(page.getByRole('status')).toHaveText('PDF збережено');
+});
+
+test('a place: Start on its photo, its lines by their numbers, back to the same spot in the list', async ({
+  page,
+}) => {
+  await page.goto('./#/explore');
+  const panel = page.locator('.panel');
+  await panel.evaluate((el) => el.scrollTo({ top: 600 }));
+  await page.getByRole('link', { name: /Curral das Freiras/ }).click();
+  await expect(page.getByRole('heading', { name: 'Curral das Freiras' })).toBeVisible();
+  // The photo's credit is at the end of the page, not on it; on it, a small "Start".
+  await expect(page.locator('.destination__hero .destination__credit')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Почати' }).click();
+  // The best way there on the whole map, the sheet down to its handle.
+  await expect(page).toHaveURL(/explore\/curral\?i=0/);
+  await expect(page.locator('.panel--min')).toHaveCount(1);
+  await page.goBack();
+
+  // A line's number in the day's timetable opens the line from where it is boarded.
+  await page.locator('.day-trips__line').first().click();
+  await expect(page).toHaveURL(/#\/lines\/\d+\?s=\d+/);
+  await expect(page.locator('.line-detail')).toBeVisible();
+  await page.getByRole('button', { name: 'Назад' }).first().click();
+  await expect(page).toHaveURL(/#\/explore\/curral/);
+
+  // Back to the list where it was left.
+  await page.locator('.destination__back').click();
+  await expect(page).toHaveURL(/#\/explore$/);
+  await expect.poll(() => panel.evaluate((el) => el.scrollTop)).toBeGreaterThan(400);
 });

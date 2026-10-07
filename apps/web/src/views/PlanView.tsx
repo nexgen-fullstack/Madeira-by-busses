@@ -21,6 +21,7 @@ import { useGeolocation } from '../lib/geolocation.ts';
 import { decodePlace, encodePlace, optionTags, type OptionTag } from '../lib/itinerary.ts';
 import {
   EMPTY_CONTENT,
+  ISLAND,
   itineraryContent,
   placesContent,
   type MapContent,
@@ -228,9 +229,11 @@ export function PlanView({ route }: { route: Route }) {
   const mapContent = useMemo<MapContent>(() => {
     if (selectedIt) return itineraryContent(net, selectedIt, focusLeg, true);
     if (results?.[0]) return itineraryContent(net, results[0]);
-    // Nothing chosen yet: the island as the app opens, its places with a view on it by their
-    // photos, as many as fit at each zoom.
-    if (!from && !to) return { ...EMPTY_CONTENT, scenic: scenicSpots(scenic) };
+    // Nothing chosen yet: the whole island as the app opens, fitted to the screen whichever
+    // way the phone is held, its places with a view on it by their photos, as many as fit at
+    // each zoom.
+    if (!from && !to)
+      return { ...EMPTY_CONTENT, scenic: scenicSpots(scenic), fitKey: 'island', fit: ISLAND };
     const point = (p: PlaceValue | undefined) =>
       p && { lat: p.lat, lon: p.lon, label: p.name, kind: 'stop' as const };
     return placesContent(point(from), point(to));

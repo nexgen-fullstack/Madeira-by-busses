@@ -4,6 +4,8 @@ export interface HourEntry {
   time: number;
   /** Footnote letter, e.g. for a bus that turns back early. */
   mark?: string;
+  /** The bus's line number, for a table of several lines. */
+  line?: string;
 }
 
 interface Props {
@@ -41,6 +43,7 @@ export function HourTable({ entries, chosen, now }: Props) {
                   >
                     {clock(e.time).slice(3)}
                     {e.mark && <sup className="timetable__mark">{e.mark}</sup>}
+                    {e.line && <small className="timetable__line">{e.line}</small>}
                   </span>
                 );
               })}

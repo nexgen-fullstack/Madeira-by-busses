@@ -159,7 +159,7 @@ h3 {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
-@media (min-width: 900px) {
+@media (min-width: 900px) and (min-height: 501px) {
   .app,
   .app--trip {
     grid-template-columns: 440px 1fr;
@@ -1452,7 +1452,7 @@ input[type='time'],
   color: var(--text);
   box-shadow: 0 12px 32px rgb(0 0 0 / 25%);
 }
-@media (min-width: 900px) {
+@media (min-width: 900px) and (min-height: 501px) {
   .layers__panel {
     position: absolute;
     left: 0;
@@ -1534,7 +1534,7 @@ input[type='time'],
 }
 
 /* Phones: while a place is chosen on the map, the map takes the screen. */
-@media (max-width: 899px) {
+@media (max-width: 899px), (max-height: 500px) {
   .app.app--picking {
     grid-template-rows: auto 1fr 0 auto;
   }
@@ -1545,7 +1545,7 @@ input[type='time'],
 
 /* Phones, a route on the map: the map takes the screen between the bars and the options
    and steps lie in a sheet over it, pulled up and down by its handle. */
-@media (max-width: 899px) {
+@media (max-width: 899px), (max-height: 500px) {
   .app.app--sheet {
     grid-template-rows: auto 1fr auto;
     grid-template-areas: 'top' 'map' 'tabs';
@@ -1556,7 +1556,6 @@ input[type='time'],
     position: relative;
     z-index: 6;
     height: var(--sheet-h, 50%);
-    min-height: 120px;
     padding-top: 0;
     border-radius: 18px 18px 0 0;
     background: var(--bg);
@@ -1566,6 +1565,17 @@ input[type='time'],
   }
   .app--sheet .panel--dragging {
     transition: none;
+  }
+  /* Down to its handle: the map takes the screen, nothing of the screen peeks out. */
+  .app--sheet .panel--min {
+    overflow: hidden;
+  }
+  .app--sheet .panel--min > :not(.sheet-handle) {
+    visibility: hidden;
+  }
+  /* The layers button and its sheet of choices above the screen's sheet. */
+  .app--sheet .layers {
+    z-index: 7;
   }
   /* The map's own buttons along its bottom stay above the sheet while it is low. */
   .app--sheet .layers,
@@ -1599,6 +1609,28 @@ input[type='time'],
 }
 .sheet-handle:focus-visible span {
   background: var(--brand);
+}
+/* A phone on its side: low bars, the tabs' labels beside their icons, the most of the map. */
+@media (max-height: 500px) {
+  .topbar {
+    padding-top: max(4px, env(safe-area-inset-top));
+    padding-bottom: 4px;
+  }
+  .topbar .brand__mark {
+    width: auto;
+    height: 30px;
+  }
+  .topbar .brand__words {
+    width: auto;
+    height: 28px;
+  }
+  .tabbar__item {
+    flex-direction: row;
+    justify-content: center;
+    gap: 6px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .app--sheet .panel,
@@ -1717,7 +1749,7 @@ input[type='time'],
 .pick-card .button {
   flex: none;
 }
-@media (min-width: 900px) {
+@media (min-width: 900px) and (min-height: 501px) {
   .pick-card {
     left: 50%;
     right: auto;
@@ -1833,7 +1865,7 @@ input[type='time'],
   box-shadow: 0 8px 24px rgb(0 0 0 / 22%);
 }
 /* On a phone the map is a strip above the route: the card takes the screen. */
-@media (max-width: 899px) {
+@media (max-width: 899px), (max-height: 500px) {
   .line-card {
     position: fixed;
     top: calc(64px + env(safe-area-inset-top, 0px));
@@ -1842,7 +1874,7 @@ input[type='time'],
     max-height: none;
   }
 }
-@media (min-width: 900px) {
+@media (min-width: 900px) and (min-height: 501px) {
   .line-card {
     left: 64px;
     right: auto;
@@ -2285,6 +2317,16 @@ input[type='time'],
   font-weight: 800;
   color: var(--brand);
 }
+/* The line of each bus in a table of several: its number, small, after the minutes. */
+.timetable__line {
+  margin-left: 3px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.is-chosen .timetable__line {
+  color: inherit;
+}
 .legend {
   list-style: none;
   margin: 8px 0 0;
@@ -2563,7 +2605,12 @@ input[type='time'],
   position: absolute;
   left: 16px;
   right: 16px;
-  bottom: 30px;
+  bottom: 16px;
+}
+/* Clear of "Start" in the photo's corner. */
+.destination__start ~ .destination__title,
+.destination__title:has(~ .destination__start) {
+  right: 118px;
 }
 .destination__title h2 {
   font-size: 30px;
@@ -2579,17 +2626,69 @@ input[type='time'],
   text-transform: uppercase;
   opacity: 0.9;
 }
-.destination__credit {
+/* A small "Start" on the photo: the way there from where you are. */
+.destination__start {
   position: absolute;
-  right: 10px;
-  bottom: 8px;
-  max-width: calc(100% - 20px);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 10px;
-  color: rgb(255 255 255 / 80%);
-  text-decoration: none;
+  right: 12px;
+  bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 32px;
+  padding: 4px 12px 4px 10px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--brand);
+  color: #fff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 30%);
+  cursor: pointer;
+}
+.destination__start:active {
+  transform: scale(0.96);
+}
+/* The photo's author and licence, at the end of the page rather than on it. */
+.destination__credit {
+  margin: 14px 0 0;
+  font-size: 11px;
+}
+.destination__credit a {
+  color: inherit;
+}
+/* A place's buses of the day, every line in one timetable. */
+.day-trips__lines {
+  display: grid;
+  gap: 4px;
+  margin: 8px 0;
+}
+.day-trips__stop {
+  font-size: 13px;
+  color: var(--muted);
+}
+.day-trips__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.day-trips__line {
+  display: inline-grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 36px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.day-trips__last {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 2px 0 6px;
+  font-weight: 800;
+  color: var(--brand);
 }
 .destination__text {
   margin: 0 0 14px;

@@ -9,12 +9,17 @@ import {
   type CSSProperties,
 } from 'react';
 import { List, Map as MapIcon, Mountain, Navigation, Settings } from 'lucide-react';
-import { SheetHandle, snapInset, useBottomSheet } from './components/BottomSheet.tsx';
+import {
+  SheetHandle,
+  snapInset,
+  useBottomSheet,
+  type SheetSnap,
+} from './components/BottomSheet.tsx';
 import { StatusBanners } from './components/DemoBanner.tsx';
 import { MapContentContext, MapProvider } from './components/mapContext.tsx';
 import { useI18n, type Key } from './i18n.ts';
 import { listenBackButton, useBack } from './lib/back.ts';
-import { goBack, navigate, useRoute } from './lib/router.ts';
+import { goBack, navigate, onLeave, useRoute, type Route } from './lib/router.ts';
 import { APP_NAME } from './lib/site.ts';
 import { destination } from './lib/scenic.ts';
 import { AppProvider, useApp } from './state/app.tsx';
@@ -69,7 +74,12 @@ function Screen() {
       return <NearbyView />;
     case 'lines':
       return sub !== undefined ? (
-        <LineDetail key={sub} routeIndex={Number(sub)} />
+        <LineDetail
+          key={sub}
+          routeIndex={Number(sub)}
+          at={route.query.has('s') ? Number(route.query.get('s')) : undefined}
+          day={route.query.get('d') ?? undefined}
+        />
       ) : (
         <LinesView key={route.query.get('q') ?? ''} route={route} />
       );
@@ -88,9 +98,24 @@ function Screen() {
   }
 }
 
-/** Whether the screen is a phone's: the map above the panel, not beside it. */
+/**
+ * Where the sheet rests on a phone when a screen opens: a chosen way or a trip under way
+ * leave the whole map to the route, the settings take most of the screen.
+ */
+function sheetRest(route: Route): SheetSnap {
+  const [head = 'plan'] = route.path;
+  if (head === 'trip' || route.query.has('i')) return 'min';
+  if (head === 'plan') return route.query.has('to') ? 'half' : 'peek';
+  if (head === 'settings') return 'full';
+  return 'half';
+}
+
+/**
+ * Whether the screen is a phone's, upright or on its side: the map takes the screen and
+ * the panel is a sheet over it, not beside it.
+ */
 function usePhone(): boolean {
-  const query = '(max-width: 899px)';
+  const query = '(max-width: 899px), (max-height: 500px)';
   const [phone, setPhone] = useState(() => matchMedia(query).matches);
   useEffect(() => {
     const m = matchMedia(query);
@@ -110,15 +135,28 @@ function Shell() {
   const head = route.path[0] ?? 'plan';
   const demo = data.status === 'ready' && data.net.bundle.demo;
   const panel = useRef<HTMLElement>(null);
+  // A screen opens at its top; back on one seen before (the list of places after one of
+  // them), where it was left.
   const screenKey = `${route.path.join('/')}|${route.query.get('i') ?? ''}`;
+  const scrolled = useRef(new Map<string, number>());
+  const shownKey = useRef(screenKey);
+  useEffect(
+    () =>
+      onLeave(() => {
+        if (panel.current) scrolled.current.set(shownKey.current, panel.current.scrollTop);
+      }),
+    [],
+  );
   useEffect(() => {
-    panel.current?.scrollTo({ top: 0 });
+    shownKey.current = screenKey;
+    panel.current?.scrollTo({ top: scrolled.current.get(screenKey) ?? 0 });
   }, [screenKey]);
 
-  // On a phone, once there is somewhere to go, the route takes the whole map and the
-  // options and steps a sheet over it, pulled up and down as in a maps app.
+  // On a phone the map takes the screen between the bars, as in a maps app, and the screen
+  // itself is a sheet over it, pulled up and down by its handle; when the app opens, just
+  // the handle above the tabs, the island on the whole screen.
   const phone = usePhone();
-  const sheetMode = phone && head === 'plan' && route.query.has('to') && !pick;
+  const sheetMode = phone && !pick && data.status === 'ready';
   const frame = useRef<HTMLDivElement>(null);
   const top = useRef<HTMLElement>(null);
   const tabs = useRef<HTMLElement>(null);
@@ -129,8 +167,18 @@ function Shell() {
       (tabs.current?.offsetHeight ?? 0),
     [],
   );
-  const searchKey = ['from', 'to', 'i'].map((k) => route.query.get(k) ?? '').join('|');
-  const sheet = useBottomSheet(sheetMode, frame, measureArea, searchKey);
+  const searchKey = [route.path.join('/'), ...['from', 'to', 'i'].map((k) => route.query.get(k))]
+    .map((k) => k ?? '')
+    .join('|');
+  const rest = sheetRest(route);
+  const sheet = useBottomSheet(
+    sheetMode,
+    frame,
+    measureArea,
+    searchKey,
+    rest,
+    head === 'plan' && [...route.query.keys()].length === 0 ? 'min' : rest,
+  );
   // The map keeps the route clear of the sheet once it rests.
   const inset = sheetMode ? snapInset(sheet.snap, sheet.areaHeight) : 0;
   useEffect(() => {
@@ -158,7 +206,8 @@ function Shell() {
       }
       return false;
     }
-    if ((where === 'lines' || where === 'explore') && sub !== undefined) navigate(where);
+    // A line or a place: back where it was opened from (a place's timetable, the list).
+    if ((where === 'lines' || where === 'explore') && sub !== undefined) goBack(where);
     else if (where === 'stop') goBack('plan');
     else navigate('plan');
     return true;
@@ -218,7 +267,9 @@ function Shell() {
           <MapView className="map" />
         </Suspense>
         <main
-          className={`panel${sheetMode ? ' panel--sheet' : ''}${sheet.dragging ? ' panel--dragging' : ''}`}
+          className={`panel${sheetMode ? ' panel--sheet' : ''}${sheet.dragging ? ' panel--dragging' : ''}${
+            sheetMode && sheet.snap === 'min' && !sheet.dragging ? ' panel--min' : ''
+          }`}
           ref={panel}
           onFocus={(e) => {
             // Typing a place: the sheet makes room for the list of places.

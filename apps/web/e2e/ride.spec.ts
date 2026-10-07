@@ -1,4 +1,4 @@
-import { allowSimulation, pinDemoData } from './demo.ts';
+import { allowSimulation, pinDemoData, raiseSheet } from './demo.ts';
 import { expect, test } from '@playwright/test';
 
 // A clock that only moves when told to: Wednesday 7 Oct 2026, 08:59:30 in
@@ -12,9 +12,12 @@ test.beforeEach(async ({ page }) => {
 test('the ride keeps being followed on other screens', async ({ page }) => {
   await allowSimulation(page);
   await page.goto('./');
+  await raiseSheet(page);
   await page.getByRole('button', { name: /Funchal \(Avenida.* → Santana/ }).click();
   await page.locator('.it-card').first().click();
+  await raiseSheet(page);
   await page.getByRole('button', { name: 'Simulate' }).click();
+  await raiseSheet(page);
   await expect(page.locator('.trip__header')).toBeVisible();
 
   // Look at the lines for 100 s: 33 minutes of the 20× simulation.
@@ -22,6 +25,7 @@ test('the ride keeps being followed on other screens', async ({ page }) => {
   await expect(page.locator('.chip--live')).toBeVisible();
   await page.clock.runFor(100_000);
   await page.locator('.chip--live').click();
+  await raiseSheet(page);
 
   // Past Funchal, Garajau and Caniço: the ride went on, it did not restart.
   await expect(page.locator('.trip__stops li.is-passed')).toHaveCount(3);
