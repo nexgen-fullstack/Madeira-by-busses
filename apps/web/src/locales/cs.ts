@@ -354,8 +354,8 @@ export const cs: Dict = {
     'Sem jezdí autobusy {operators}, jejichž jízdní řády v aplikaci zatím nejsou. Trasy se objeví, jakmile budou.',
   'scenic.soon': 'Brzy',
   'scenic.centre': 'Centrum Funchalu',
-  'scenic.fromCentre': 'Z centra',
-  'scenic.fromHere': 'Odsud',
+  'scenic.fromCentreNote':
+    'Nevíme, kde jste, takže cesta začíná v centru Funchalu. Změňte „Odkud“: adresa s číslem domu, zastávka nebo špendlík na mapě.',
   'scenic.getThere': 'Jak se tam dostat',
   'scenic.minutes': '≈{m} min z centra',
   'scenic.lastBack': 'poslední zpět v {t}',

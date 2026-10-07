@@ -2734,49 +2734,77 @@ input[type='time'],
   box-shadow: 0 0 12px 4px rgb(0 232 213 / 70%);
 }
 
-/* The places with a view on the map, by their photos: round, white-edged, with a little
-   point down to where they are; their names once the map is close enough. */
+/* The places with a view on the map, by their photos: pins with a round photo in a white
+   head and a point down to where they are; their names under the point once the map is
+   close enough. Those that would crowd the others are little dots until one zooms in. */
 .scenic-pin {
   --pin-size: 46px;
-  display: grid;
-  justify-items: center;
-  gap: 2px;
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: var(--pin-size);
+  /* The head and its point, which the turned head puts below its box. */
+  height: calc(var(--pin-size) * 1.21);
   padding: 0;
   border: 0;
   background: none;
   cursor: pointer;
-}
-.scenic-pin__face {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: var(--pin-size);
-  height: var(--pin-size);
-  border: 3px solid #fff;
-  border-radius: 50%;
-  background-size: cover;
-  background-position: center;
-  box-shadow: 0 3px 10px rgb(0 0 0 / 35%);
-  color: #fff;
-  font-weight: 900;
-  font-size: calc(var(--pin-size) * 0.42);
   transition:
     width 0.2s ease,
     height 0.2s ease;
 }
-.scenic-pin__face::after {
-  content: '';
+.scenic-pin__face {
   position: absolute;
-  left: 50%;
-  bottom: -9px;
-  translate: -50% 0;
-  border: 6px solid transparent;
-  border-top: 6px solid #fff;
+  top: 0;
+  left: 0;
+  width: var(--pin-size);
+  height: var(--pin-size);
+  border-radius: 50% 50% 50% 0;
+  background: #fff;
+  rotate: -45deg;
+  box-shadow: -2px 3px 9px rgb(0 0 0 / 35%);
+}
+.scenic-pin__photo {
+  position: absolute;
+  inset: calc(var(--pin-size) * 0.07);
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  rotate: 45deg;
+  color: #fff;
+  font-weight: 900;
+  font-size: calc(var(--pin-size) * 0.4);
+}
+.scenic-pin__dot {
+  display: none;
+}
+.scenic-pin--dot {
+  z-index: 0;
+  width: 14px;
+  height: 7px;
+}
+.scenic-pin--dot .scenic-pin__face,
+.scenic-pin--dot .scenic-pin__name {
+  display: none;
+}
+.scenic-pin--dot .scenic-pin__dot {
+  display: block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 40%);
 }
 .scenic-pin__name {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  translate: -50% 0;
   display: none;
   max-width: 120px;
-  margin-top: 4px;
+  margin-top: 3px;
   padding: 1px 7px;
   border-radius: 999px;
   background: rgb(255 255 255 / 92%);

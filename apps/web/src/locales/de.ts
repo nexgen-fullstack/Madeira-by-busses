@@ -333,8 +333,8 @@ export const de: Dict = {
     'Hierher fahren Busse von {operators}, deren Fahrpläne noch nicht in der App sind. Die Verbindungen erscheinen, sobald sie da sind.',
   'scenic.soon': 'Bald',
   'scenic.centre': 'Funchal Zentrum',
-  'scenic.fromCentre': 'Ab Zentrum',
-  'scenic.fromHere': 'Von hier',
+  'scenic.fromCentreNote':
+    'Ihr Standort ist unbekannt, daher startet die Fahrt im Zentrum von Funchal. Ändern Sie „Von“: eine Adresse mit Hausnummer, eine Haltestelle oder eine Stecknadel auf der Karte.',
   'scenic.getThere': 'Anreise',
   'scenic.minutes': '≈{m} Min. ab Zentrum',
   'scenic.lastBack': 'letzter zurück {t}',

@@ -331,8 +331,8 @@ export const fr: Dict = {
     'Ces lieux sont desservis par {operators}, dont les horaires ne sont pas encore dans l’application. Les trajets apparaîtront dès qu’ils y seront.',
   'scenic.soon': 'Bientôt',
   'scenic.centre': 'Centre de Funchal',
-  'scenic.fromCentre': 'Du centre',
-  'scenic.fromHere': 'D’ici',
+  'scenic.fromCentreNote':
+    'Votre position est inconnue : le trajet part du centre de Funchal. Changez « Départ » : une adresse avec numéro, un arrêt ou un repère sur la carte.',
   'scenic.getThere': 'Y aller',
   'scenic.minutes': '≈{m} min du centre',
   'scenic.lastBack': 'dernier retour à {t}',

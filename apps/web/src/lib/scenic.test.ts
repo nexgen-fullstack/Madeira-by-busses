@@ -7,14 +7,16 @@ import {
   WalkGraph,
   type Network,
 } from '@madeirabus/engine';
-import { byRegion, DESTINATIONS, photo, REGIONS, SCENIC_WALKS } from './scenic.ts';
+import { byRegion, DESTINATIONS, hasPhoto, photo, REGIONS, SCENIC_WALKS } from './scenic.ts';
 
 describe('places with a view', () => {
   it('each have a region, and a photo only with its author and licence', () => {
     expect(new Set(DESTINATIONS.map((d) => d.id)).size).toBe(DESTINATIONS.length);
     for (const d of DESTINATIONS) {
       expect(REGIONS).toContain(d.region);
-      expect(photo(d, 'sm') === undefined).toBe(d.credit === undefined);
+      expect(photo(d, 'sm') === undefined).toBe(!hasPhoto(d));
+      // A photo is either credited or not, never both.
+      expect(d.credit !== undefined && d.uncredited === true).toBe(false);
     }
     // Region by region, none left out.
     const listed = byRegion(DESTINATIONS).flatMap(([, list]) => list);

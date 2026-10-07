@@ -46,7 +46,7 @@ import { navigate } from '../lib/router.ts';
 import { useApp } from '../state/app.tsx';
 import { LayerSwitcher } from './LayerSwitcher.tsx';
 import { LineCard, LineChooser, type LinePick } from './LineCard.tsx';
-import { MapContentContext } from './mapContext.tsx';
+import { MapContentContext, type PickField } from './mapContext.tsx';
 
 // MapLibre computes its worker URL at runtime, which bundlers cannot see; point it at the bundled worker.
 setWorkerUrl(maplibreWorkerUrl);
@@ -788,7 +788,7 @@ function plannedPlaces(net: Network | undefined, myLocation: string) {
 }
 
 export default function MapView({ className }: { className?: string }) {
-  const { content, pick, pickArea, setPick } = useContext(MapContentContext);
+  const { content, pick, pickArea, pickStart, setPick } = useContext(MapContentContext);
   const { settings, setSettings, data } = useApp();
   const t = useI18n();
   const net = data.status === 'ready' ? data.net : undefined;
@@ -1059,7 +1059,7 @@ export default function MapView({ className }: { className?: string }) {
     pickedStop.current = undefined;
     setPicked(undefined);
     const places = plannedPlaces(netRef.current, tRef.current.t('place.myLocation'));
-    const own = places[pick];
+    const own = pickStart ?? places[pick];
     const other = places[pick === 'from' ? 'to' : 'from'];
     if (pickArea) {
       // A village with nowhere in it to go to: all of it in view, the pin in its middle.
@@ -1073,7 +1073,7 @@ export default function MapView({ className }: { className?: string }) {
     setCenter({ lat: c.lat, lon: c.lng });
     // The map grows to fill the screen while choosing.
     window.setTimeout(() => map.resize(), 50);
-  }, [pick, pickArea]);
+  }, [pick, pickArea, pickStart]);
 
   // Its bounds drawn while the pin is put down in it.
   useEffect(() => {
@@ -1120,7 +1120,7 @@ export default function MapView({ className }: { className?: string }) {
         ? encodePlace(pickedStop.current, net)
         : encodePlace({ ...center, name: centerName });
     setPick(undefined);
-    planWith({ [pick]: value });
+    pickInto(pick, value);
   };
 
   const pickedLabel = picked?.name || t.t('place.pin');
@@ -1307,16 +1307,22 @@ function useScenicMarkers(
       el.type = 'button';
       el.className = 'scenic-pin';
       el.setAttribute('aria-label', spot.name);
+      // The pin's head, turned so its corner points down, and the photo in it upright.
       const face = document.createElement('span');
-      face.className = `scenic-pin__face scenic-art--${spot.region}`;
-      if (spot.photo) face.style.backgroundImage = `url("${spot.photo}")`;
+      face.className = 'scenic-pin__face';
+      const pic = document.createElement('span');
+      pic.className = `scenic-pin__photo scenic-art--${spot.region}`;
+      if (spot.photo) pic.style.backgroundImage = `url("${spot.photo}")`;
       else
-        face.textContent =
+        pic.textContent =
           spot.name.replace(/^(Miradouro|Farol|Teleférico) (d[aoe]s? )?/, '')[0] ?? '';
+      face.append(pic);
       const name = document.createElement('span');
       name.className = 'scenic-pin__name';
       name.textContent = spot.name;
-      el.append(face, name);
+      const dot = document.createElement('span');
+      dot.className = `scenic-pin__dot scenic-art--${spot.region}`;
+      el.append(face, name, dot);
       el.addEventListener('click', (e) => {
         e.stopPropagation();
         navigate(`explore/${spot.id}`);
@@ -1325,7 +1331,8 @@ function useScenicMarkers(
         .setLngLat([spot.lon, spot.lat])
         .addTo(map);
     });
-    // Far out only those that do not crowd the ones before them; the rest as one zooms in.
+    // Far out only those that do not crowd the ones before them, the rest as little dots
+    // until one zooms in.
     const layout = () => {
       const zoom = map.getZoom();
       const size = scenicSize(zoom);
@@ -1336,7 +1343,7 @@ function useScenicMarkers(
         el.classList.toggle('scenic-pin--named', zoom >= 10.5);
         const p = map.project(m.getLngLat());
         const free = shown.every((q) => Math.hypot(q.x - p.x, q.y - p.y) > size * 1.15);
-        el.style.visibility = free ? 'visible' : 'hidden';
+        el.classList.toggle('scenic-pin--dot', !free);
         if (free) shown.push(p);
       });
     };
@@ -1356,6 +1363,17 @@ function planWith(patch: Record<string, string>) {
   const [path = '', query = ''] = location.hash.replace(/^#\/?/, '').split('?');
   const current = path.startsWith('plan') ? Object.fromEntries(new URLSearchParams(query)) : {};
   navigate('plan', { ...current, ...patch, i: undefined });
+}
+
+/** A point chosen on the map goes to the screen that asked: a place's page, or the planner. */
+function pickInto(field: PickField, value: string) {
+  const [path = '', query = ''] = location.hash.replace(/^#\/?/, '').split('?');
+  if (!path.startsWith('explore/')) return planWith({ [field]: value });
+  navigate(path, {
+    ...Object.fromEntries(new URLSearchParams(query)),
+    [field]: value,
+    i: undefined,
+  });
 }
 
 /** Shows or hides places, 3D buildings and 3D terrain on the current style. */

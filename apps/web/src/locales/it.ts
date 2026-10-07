@@ -329,8 +329,8 @@ export const it: Dict = {
     'Qui arrivano gli autobus di {operators}, i cui orari non sono ancora nell’app. I percorsi compariranno non appena ci saranno.',
   'scenic.soon': 'Presto',
   'scenic.centre': 'Centro di Funchal',
-  'scenic.fromCentre': 'Dal centro',
-  'scenic.fromHere': 'Da qui',
+  'scenic.fromCentreNote':
+    'Non sappiamo dove sei, quindi il viaggio parte dal centro di Funchal. Cambia «Da»: un indirizzo con numero civico, una fermata o un segnaposto sulla mappa.',
   'scenic.getThere': 'Come arrivare',
   'scenic.minutes': '≈{m} min dal centro',
   'scenic.lastBack': 'ultimo ritorno alle {t}',

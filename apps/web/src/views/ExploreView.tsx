@@ -9,6 +9,7 @@ import { VIEW_WALK, walkPath, type MapContent, type MapLine } from '../lib/mapCo
 import {
   byRegion,
   DESTINATIONS,
+  hasPhoto,
   outlook,
   reachable,
   regionKey,
@@ -108,7 +109,9 @@ export function ExploreView() {
         lines: walkLines,
         points: [],
         // Every place by its photo where it is; zooming in brings out those that crowd.
-        scenic: scenicSpots([...served].sort((a, b) => Number(!a.credit) - Number(!b.credit))),
+        scenic: scenicSpots(
+          [...served].sort((a, b) => Number(!hasPhoto(a)) - Number(!hasPhoto(b))),
+        ),
         fitKey: `explore:${served.map((d) => d.id).join(',')}`,
         fit: served,
       }),

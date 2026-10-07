@@ -330,8 +330,8 @@ export const pt: Dict = {
     'Aqui chegam autocarros de {operators}, cujos horários ainda não estão na aplicação. Os percursos aparecem assim que estiverem.',
   'scenic.soon': 'Em breve',
   'scenic.centre': 'Centro do Funchal',
-  'scenic.fromCentre': 'Do centro',
-  'scenic.fromHere': 'De onde estou',
+  'scenic.fromCentreNote':
+    'Não sabemos onde está, por isso a viagem parte do centro do Funchal. Mude «De»: uma morada com número de porta, uma paragem ou um ponto no mapa.',
   'scenic.getThere': 'Como chegar',
   'scenic.minutes': '≈{m} min do centro',
   'scenic.lastBack': 'último de volta às {t}',

@@ -32,6 +32,9 @@ test('a scenic place plans the trip and shows every bus of the day', async ({ pa
   );
   await expect(page.locator('.ride-timetable').filter({ hasText: 'Назад' })).toHaveCount(1);
 
+  // Where you are is not known here: the trip starts in the centre, and says so.
+  await expect(page.locator('.destination__from input')).toHaveValue('Центр Фуншала');
+  await expect(page.getByText(/Не знаю, де ви/)).toBeVisible();
   // The next bus from the centre is the 09:30; its day timetable marks it.
   const first = page.locator('.it-card').first();
   await expect(first).toContainText('D81');
@@ -40,12 +43,35 @@ test('a scenic place plans the trip and shows every bus of the day', async ({ pa
   await expect(page.locator('.day-timetable').getByText('Назад')).toBeVisible();
 });
 
+test('a place’s trip starts where you are, or at an address or a point chosen', async ({
+  page,
+  context,
+}) => {
+  await context.grantPermissions(['geolocation']);
+  await context.setGeolocation({ latitude: 32.6487, longitude: -16.9036 });
+  await page.goto('./#/explore/curral');
+  const from = page.locator('.destination__from input');
+  await expect(from).toHaveValue('Моє місцезнаходження');
+  await expect(page.locator('.it-card').first()).toContainText('D81');
+  // A house on a street instead.
+  await from.fill('Rua da Carreira, 1');
+  await page.locator('.destination__from [role=option]').first().click();
+  await expect(from).toHaveValue(/^Rua da Carreira \d+/);
+  await expect(page).toHaveURL(/#\/explore\/curral\?from=p/);
+  await expect(page.locator('.it-card').first()).toContainText('D81');
+  // Or a point on the map: the pin starts at the start, and the place's page takes it.
+  await page.getByRole('button', { name: 'Вибрати на карті' }).click();
+  await page.getByRole('button', { name: /Вибрати цю точку/ }).click();
+  await expect(page).toHaveURL(/#\/explore\/curral\?from=p/);
+  await expect(page.getByRole('heading', { name: 'Curral das Freiras' })).toBeVisible();
+});
+
 test('walks along the sea: listed by the places with a view, then the walk first', async ({
   page,
 }) => {
   await page.goto('./#/explore');
   await expect(page.getByRole('heading', { name: 'Прогулянки з краєвидами' })).toBeVisible();
-  // The places by region, a place without a photo yet among them.
+  // The places by region.
   await expect(page.getByRole('heading', { name: 'Північне узбережжя' })).toBeVisible();
   // Measured along the streets, with the climb: Marina do Funchal to the Old Town's fort.
   const walk = page.locator('.walk-card').filter({ hasText: 'Forte de São Tiago' });
@@ -66,7 +92,7 @@ test('the island opens with its places with a view by their photos; a tap opens 
   // Each where it is; far out those that would crowd the others wait for a closer look.
   await expect(page.locator('.scenic-pin').first()).toBeVisible();
   const monte = page.locator('.scenic-pin[aria-label="Monte"]');
-  await expect(monte.locator('.scenic-pin__face')).toHaveCSS('background-image', /monte-sm\.webp/);
+  await expect(monte.locator('.scenic-pin__photo')).toHaveCSS('background-image', /monte-sm\.webp/);
   await monte.click({ force: true });
   await expect(page.getByRole('heading', { name: 'Monte' })).toBeVisible();
   // A place page shows its trip on the map, not the photos.

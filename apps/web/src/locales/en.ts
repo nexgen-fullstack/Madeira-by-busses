@@ -328,8 +328,8 @@ export const en: Dict = {
     'Buses here are run by {operators}, whose timetables are not in the app yet. Routes will appear as soon as they are.',
   'scenic.soon': 'Soon',
   'scenic.centre': 'Central Funchal',
-  'scenic.fromCentre': 'From the centre',
-  'scenic.fromHere': 'From me',
+  'scenic.fromCentreNote':
+    'Your location is unknown, so the trip starts in central Funchal. Change “From”: an address with a house number, a stop or a pin on the map.',
   'scenic.getThere': 'Getting there',
   'scenic.minutes': '≈{m} min from the centre',
   'scenic.lastBack': 'last back {t}',

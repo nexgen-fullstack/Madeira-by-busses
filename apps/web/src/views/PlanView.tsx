@@ -26,7 +26,7 @@ import {
   type MapContent,
 } from '../lib/mapContent.ts';
 import { navigate, type Route } from '../lib/router.ts';
-import { DESTINATIONS, reachable, scenicSpots } from '../lib/scenic.ts';
+import { DESTINATIONS, hasPhoto, reachable, scenicSpots } from '../lib/scenic.ts';
 import { APP_NAME } from '../lib/site.ts';
 import { useNow } from '../lib/useNow.ts';
 import { planOptions, useApp, useNetwork } from '../state/app.tsx';
@@ -220,7 +220,7 @@ export function PlanView({ route }: { route: Route }) {
   const scenic = useMemo(
     () =>
       DESTINATIONS.filter((d) => reachable(net, d)).sort(
-        (a, b) => Number(!a.credit) - Number(!b.credit),
+        (a, b) => Number(!hasPhoto(a)) - Number(!hasPhoto(b)),
       ),
     [net],
   );

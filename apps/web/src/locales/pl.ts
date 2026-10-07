@@ -356,8 +356,8 @@ export const pl: Dict = {
     'Tu kursują autobusy {operators}, których rozkładów nie ma jeszcze w aplikacji. Trasy pojawią się, gdy tylko będą.',
   'scenic.soon': 'Wkrótce',
   'scenic.centre': 'Centrum Funchal',
-  'scenic.fromCentre': 'Z centrum',
-  'scenic.fromHere': 'Stąd',
+  'scenic.fromCentreNote':
+    'Nie wiemy, gdzie jesteś, więc trasa zaczyna się w centrum Funchal. Zmień „Skąd”: adres z numerem domu, przystanek albo pinezka na mapie.',
   'scenic.getThere': 'Jak dojechać',
   'scenic.minutes': '≈{m} min z centrum',
   'scenic.lastBack': 'ostatni z powrotem o {t}',

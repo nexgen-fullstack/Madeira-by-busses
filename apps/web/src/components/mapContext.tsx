@@ -18,7 +18,9 @@ interface MapCtx {
   pick?: PickField;
   /** Outlined on the map while the pin is put down, when a village asks for it. */
   pickArea?: PickArea;
-  setPick: (field: PickField | undefined, area?: PickArea) => void;
+  /** Where the pin starts, when the screen asking knows better than the planner's fields. */
+  pickStart?: LatLon;
+  setPick: (field: PickField | undefined, area?: PickArea, start?: LatLon) => void;
 }
 export const MapContentContext = createContext<MapCtx>({
   content: EMPTY_CONTENT,
@@ -30,12 +32,14 @@ export function MapProvider({ children }: { children: ReactNode }) {
   const [content, setContent] = useState<MapContent>(EMPTY_CONTENT);
   const [pick, setPickField] = useState<PickField | undefined>();
   const [pickArea, setPickArea] = useState<PickArea | undefined>();
-  const setPick = useCallback((field: PickField | undefined, area?: PickArea) => {
+  const [pickStart, setPickStart] = useState<LatLon | undefined>();
+  const setPick = useCallback((field: PickField | undefined, area?: PickArea, start?: LatLon) => {
     setPickField(field);
     setPickArea(field ? area : undefined);
+    setPickStart(field && start ? { lat: start.lat, lon: start.lon } : undefined);
   }, []);
   return (
-    <MapContentContext.Provider value={{ content, setContent, pick, pickArea, setPick }}>
+    <MapContentContext.Provider value={{ content, setContent, pick, pickArea, pickStart, setPick }}>
       {children}
     </MapContentContext.Provider>
   );

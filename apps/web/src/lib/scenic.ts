@@ -15,8 +15,8 @@ import {
  * timetables arrive (and already do in the demo network).
  *
  * A photo is added by putting `<id>.webp` (960 px wide, 3:2) and `<id>-sm.webp`
- * (480 px) in public/photos/ and its `credit` here; a place without one shows its
- * name on the colours of its region.
+ * (480 px) in public/photos/ and its `credit` here (or `uncredited` for one shown
+ * without a credit); a place without one shows its name on the colours of its region.
  */
 
 export interface PhotoCredit {
@@ -48,8 +48,10 @@ export interface Destination {
    * do Pargo is a walk of half an hour from the village's buses.
    */
   reach?: number;
-  /** Its photo's author and licence; none yet: no photo. */
+  /** Its photo's author and licence, shown under it. */
   credit?: PhotoCredit;
+  /** Its photo is shown without a credit. */
+  uncredited?: true;
 }
 
 export type DestinationId =
@@ -268,13 +270,14 @@ export const DESTINATIONS: readonly Destination[] = [
       source: commons('Floresta_Laurissilva,_Miradouro_dos_Balc%C3%B5es,_Ribeiro_Frio.jpg'),
     },
   },
-  // No photos of these yet.
+  // Photos shown without a credit.
   {
     id: 'pinaculo',
     name: 'Miradouro do Pináculo',
     region: 'funchal',
     lat: 32.6453,
     lon: -16.8706,
+    uncredited: true,
   },
   {
     id: 'encumeada',
@@ -282,6 +285,7 @@ export const DESTINATIONS: readonly Destination[] = [
     region: 'mountains',
     lat: 32.75456,
     lon: -17.01952,
+    uncredited: true,
   },
   {
     id: 'ribeira-brava',
@@ -289,6 +293,7 @@ export const DESTINATIONS: readonly Destination[] = [
     region: 'west',
     lat: 32.67148,
     lon: -17.06744,
+    uncredited: true,
   },
   {
     id: 'ponta-do-sol',
@@ -296,6 +301,7 @@ export const DESTINATIONS: readonly Destination[] = [
     region: 'west',
     lat: 32.6795,
     lon: -17.10528,
+    uncredited: true,
   },
   {
     id: 'calheta',
@@ -303,6 +309,7 @@ export const DESTINATIONS: readonly Destination[] = [
     region: 'west',
     lat: 32.71868,
     lon: -17.17428,
+    uncredited: true,
   },
   {
     id: 'jardim-do-mar',
@@ -310,6 +317,7 @@ export const DESTINATIONS: readonly Destination[] = [
     region: 'west',
     lat: 32.7369,
     lon: -17.209,
+    uncredited: true,
   },
   {
     id: 'paul-do-mar',
@@ -317,6 +325,7 @@ export const DESTINATIONS: readonly Destination[] = [
     region: 'west',
     lat: 32.7569,
     lon: -17.2272,
+    uncredited: true,
   },
   {
     id: 'ponta-do-pargo',
@@ -325,6 +334,7 @@ export const DESTINATIONS: readonly Destination[] = [
     lat: 32.81393,
     lon: -17.26307,
     reach: 2000,
+    uncredited: true,
   },
   {
     id: 'achadas-da-cruz',
@@ -333,6 +343,7 @@ export const DESTINATIONS: readonly Destination[] = [
     lat: 32.85284,
     lon: -17.2098,
     reach: 1600,
+    uncredited: true,
   },
   {
     id: 'ribeira-da-janela',
@@ -340,6 +351,7 @@ export const DESTINATIONS: readonly Destination[] = [
     region: 'north',
     lat: 32.85529,
     lon: -17.1531,
+    uncredited: true,
   },
   {
     id: 'seixal',
@@ -347,6 +359,7 @@ export const DESTINATIONS: readonly Destination[] = [
     region: 'north',
     lat: 32.8237,
     lon: -17.1043,
+    uncredited: true,
   },
   {
     id: 'veu-da-noiva',
@@ -355,6 +368,7 @@ export const DESTINATIONS: readonly Destination[] = [
     lat: 32.81608,
     lon: -17.09514,
     reach: 1600,
+    uncredited: true,
   },
   {
     id: 'sao-vicente',
@@ -362,6 +376,7 @@ export const DESTINATIONS: readonly Destination[] = [
     region: 'north',
     lat: 32.80228,
     lon: -17.04724,
+    uncredited: true,
   },
   {
     id: 'ponta-delgada',
@@ -369,6 +384,7 @@ export const DESTINATIONS: readonly Destination[] = [
     region: 'north',
     lat: 32.827,
     lon: -16.9862,
+    uncredited: true,
   },
   {
     id: 'arco-sao-jorge',
@@ -376,6 +392,7 @@ export const DESTINATIONS: readonly Destination[] = [
     region: 'north',
     lat: 32.82888,
     lon: -16.95457,
+    uncredited: true,
   },
   {
     id: 'sao-jorge',
@@ -383,6 +400,7 @@ export const DESTINATIONS: readonly Destination[] = [
     region: 'north',
     lat: 32.83455,
     lon: -16.9062,
+    uncredited: true,
   },
   {
     id: 'guindaste',
@@ -390,6 +408,7 @@ export const DESTINATIONS: readonly Destination[] = [
     region: 'north',
     lat: 32.79425,
     lon: -16.84936,
+    uncredited: true,
   },
   {
     id: 'porto-da-cruz',
@@ -397,6 +416,7 @@ export const DESTINATIONS: readonly Destination[] = [
     region: 'north',
     lat: 32.7734,
     lon: -16.8276,
+    uncredited: true,
   },
   {
     id: 'portela',
@@ -404,6 +424,7 @@ export const DESTINATIONS: readonly Destination[] = [
     region: 'east',
     lat: 32.74675,
     lon: -16.82657,
+    uncredited: true,
   },
   {
     id: 'machico',
@@ -411,6 +432,7 @@ export const DESTINATIONS: readonly Destination[] = [
     region: 'east',
     lat: 32.718,
     lon: -16.7662,
+    uncredited: true,
   },
   {
     id: 'prainha',
@@ -418,6 +440,7 @@ export const DESTINATIONS: readonly Destination[] = [
     region: 'east',
     lat: 32.74282,
     lon: -16.71572,
+    uncredited: true,
   },
   {
     id: 'cristo-rei',
@@ -425,6 +448,7 @@ export const DESTINATIONS: readonly Destination[] = [
     region: 'east',
     lat: 32.63872,
     lon: -16.85086,
+    uncredited: true,
   },
   {
     id: 'canico-de-baixo',
@@ -432,6 +456,7 @@ export const DESTINATIONS: readonly Destination[] = [
     region: 'east',
     lat: 32.64605,
     lon: -16.82439,
+    uncredited: true,
   },
   {
     id: 'camacha',
@@ -439,14 +464,18 @@ export const DESTINATIONS: readonly Destination[] = [
     region: 'east',
     lat: 32.6795,
     lon: -16.8453,
+    uncredited: true,
   },
 ];
 
 export const destination = (id: string | undefined) => DESTINATIONS.find((d) => d.id === id);
 
+/** Whether a place has a photo yet. */
+export const hasPhoto = (d: Destination) => d.credit !== undefined || d.uncredited === true;
+
 /** A place's photo, small or large; none for a place without one yet. */
 export const photo = (d: Destination, size: 'sm' | 'lg') =>
-  d.credit
+  hasPhoto(d)
     ? `${import.meta.env.BASE_URL}photos/${d.id}${size === 'sm' ? '-sm' : ''}.webp`
     : undefined;
 
