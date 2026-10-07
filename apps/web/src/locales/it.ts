@@ -247,6 +247,78 @@ export const it: Dict = {
   'scenic.balcoes.tag': 'Balcone sulla laurisilva',
   'scenic.balcoes.text':
     'Una passeggiata facile e pianeggiante lungo una levada nella foresta di laurisilva, patrimonio UNESCO, fino a un balcone sulle montagne.',
+  'scenic.pinaculo.tag': 'Tutta la baia di Funchal',
+  'scenic.pinaculo.text':
+    'Un belvedere sulle colline a est, a São Gonçalo: sotto, l’anfiteatro di Funchal, il porto e le navi da crociera. Il momento migliore è il tramonto.',
+  'scenic.encumeada.tag': 'Le due coste da un passo',
+  'scenic.encumeada.text':
+    'Un passo di montagna a 1000 m tra Serra de Água e São Vicente: nelle giornate limpide si vedono insieme la costa nord e la costa sud. Da qui partono le passeggiate lungo le levadas.',
+  'scenic.ribeira-brava.tag': 'Lungomare e passeggiata fino a Tabua',
+  'scenic.ribeira-brava.text':
+    'Una cittadina alla foce di una valle profonda, con spiaggia di ciottoli, il piccolo forte di São Bento e un lungomare da seguire lungo il mare fino a Tabua.',
+  'scenic.ponta-do-sol.tag': 'Il paese più soleggiato',
+  'scenic.ponta-do-sol.text':
+    'Un paese su una baia soleggiata con spiaggia di ciottoli, un vecchio molo e viuzze ripide di case bianche: uno dei posti migliori dell’isola per il tramonto.',
+  'scenic.calheta.tag': 'Spiaggia di sabbia dorata e porticciolo',
+  'scenic.calheta.text':
+    'Una spiaggia riparata di sabbia dorata portata da lontano, un porticciolo e il museo d’arte contemporanea MUDAS sulla scogliera sopra.',
+  'scenic.jardim-do-mar.tag': 'Paese dei surfisti sulle onde',
+  'scenic.jardim-do-mar.text':
+    'Un paese di viuzze acciottolate e giardini su una terrazza sul mare, amato dai surfisti; sotto corre un lungomare lungo la costa.',
+  'scenic.paul-do-mar.tag': 'Paese di pescatori sotto le scogliere',
+  'scenic.paul-do-mar.text':
+    'Un paese di pescatori stretto tra altissime scogliere e l’oceano, con un piccolo porto, barche colorate e lunghi tramonti sul mare.',
+  'scenic.ponta-do-pargo.tag': 'Faro all’estremità ovest dell’isola',
+  'scenic.ponta-do-pargo.text':
+    'Il punto più occidentale di Madeira: un faro su una scogliera a quasi 300 m sull’Atlantico, a mezz’ora a piedi dall’autobus del paese. I suoi tramonti sono leggendari.',
+  'scenic.achadas-da-cruz.tag': 'La funivia più ripida fino al mare',
+  'scenic.achadas-da-cruz.text':
+    'Una delle funivie più ripide d’Europa scende lungo una scogliera di 450 m fino ai campi di Quebrada Nova, in riva al mare.',
+  'scenic.ribeira-da-janela.tag': 'Scogli con la finestra',
+  'scenic.ribeira-da-janela.text':
+    'Faraglioni alla foce della Ribeira da Janela, uno con un foro come una finestra che ha dato il nome alla valle; sotto, una spiaggia di ciottoli neri.',
+  'scenic.seixal.tag': 'Sabbia nera sotto scogliere verdi',
+  'scenic.seixal.text':
+    'Un piccolo paese della costa nord con una spiaggia di sabbia nera sotto scogliere verdi e cascate, e piscine naturali vicino al porto.',
+  'scenic.veu-da-noiva.tag': 'La cascata del Velo della sposa',
+  'scenic.veu-da-noiva.text':
+    'Un belvedere sulla vecchia strada costiera a est di Seixal, su una cascata che scende dalle scogliere dritta verso il mare. Circa 20 minuti a piedi dall’autobus a Seixal.',
+  'scenic.sao-vicente.tag': 'Grotte vulcaniche e cappella nella roccia',
+  'scenic.sao-vicente.text':
+    'Un paese ordinato di case bianche in una valle verde, con grotte di lava, un centro del vulcanismo e una cappella scavata in una roccia sul mare.',
+  'scenic.ponta-delgada.tag': 'Piscina di acqua di mare sulla costa nord',
+  'scenic.ponta-delgada.text':
+    'Un paese della costa nord con una piscina di acqua di mare sugli scogli e una chiesa bianca proprio accanto alle onde.',
+  'scenic.arco-sao-jorge.tag': 'Scogliere della costa nord',
+  'scenic.arco-sao-jorge.text':
+    'Un belvedere alto sopra la baia di Arco de São Jorge, con vista lungo la verde costa nord; il paese ha anche un roseto con oltre mille varietà.',
+  'scenic.sao-jorge.tag': 'Faro sul mare del nord',
+  'scenic.sao-jorge.text':
+    'Un faro su un promontorio della costa nord, con le scogliere di Arco de São Jorge a ovest e Santana a est.',
+  'scenic.guindaste.tag': 'La Roccia dell’Aquila oltre la baia',
+  'scenic.guindaste.text':
+    'Un belvedere su un promontorio di Faial dove un tempo le navi si caricavano con una gru: di fronte si alza la Penha de Águia, la Roccia dell’Aquila.',
+  'scenic.porto-da-cruz.tag': 'Zuccherificio e Roccia dell’Aquila',
+  'scenic.porto-da-cruz.text':
+    'Un paese ai piedi della Roccia dell’Aquila, con un vecchio zuccherificio che distilla ancora rum a vapore, spiagge nere e una piscina di acqua di mare.',
+  'scenic.portela.tag': 'Passo sul nord-est',
+  'scenic.portela.text':
+    'Un passo a 670 m con vista su Porto da Cruz, la Roccia dell’Aquila e il mare; da qui partono le passeggiate lungo le levadas.',
+  'scenic.machico.tag': 'La spiaggia dorata dei primi coloni',
+  'scenic.machico.text':
+    'La baia dove sbarcarono i primi coloni nel 1419: spiaggia di sabbia dorata, piccoli forti e un lungomare sotto colline verdi.',
+  'scenic.prainha.tag': 'L’unica spiaggia di sabbia naturale',
+  'scenic.prainha.text':
+    'Una piccola baia di sabbia vulcanica scura vicino alla punta est, l’unica spiaggia di sabbia naturale di Madeira, con una cappella sulla collina.',
+  'scenic.cristo-rei.tag': 'Il Cristo sul mare',
+  'scenic.cristo-rei.text':
+    'Una statua di Cristo a braccia aperte su una scogliera sull’oceano, più antica di quella di Rio; un sentiero e una funivia scendono a una spiaggia in una riserva marina.',
+  'scenic.canico-de-baixo.tag': 'Lungomare e acqua limpida',
+  'scenic.canico-de-baixo.text':
+    'Un paese sul mare con un lungomare lungo le scogliere fino a Reis Magos, piscine tra gli scogli e alcune delle acque più limpide dell’isola per lo snorkeling.',
+  'scenic.camacha.tag': 'Il paese del vimini con vista',
+  'scenic.camacha.text':
+    'Un paese in collina famoso per i lavori in vimini; dalla piazza, il Largo da Achada, si vedono la costa sud-est e il mare.',
   'tab.explore': 'Panorami',
   'detail.wayBack': 'Ritorno',
   'scenic.title': 'Viaggi popolari con bei panorami',
@@ -274,6 +346,15 @@ export const it: Dict = {
     'Foto da Wikimedia Commons con licenze libere; ritagliate e ridimensionate.',
   'plan.scenic': 'Bei panorami',
   'scenic.all': 'Tutti',
+  'scenic.region.funchal': 'Funchal e le sue colline',
+  'scenic.region.mountains': 'Montagne',
+  'scenic.region.west': 'Ovest',
+  'scenic.region.north': 'Costa nord',
+  'scenic.region.east': 'Est',
+  'scenic.walks': 'Passeggiate panoramiche',
+  'scenic.walksHint':
+    'A piedi lungo il mare, fino a 35 minuti: gratis e spesso più veloce e piacevole di un autobus con cambio. Tocca per pianificare.',
+  'scenic.km': '{km} km',
   'lines.formerly': 'ex {n}',
   'lines.search': 'Numero o nome della linea',
   'lines.none': 'Nessuna linea corrisponde a «{q}»',

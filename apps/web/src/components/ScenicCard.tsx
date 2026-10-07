@@ -1,4 +1,13 @@
-import { Clock, Footprints, RotateCcw } from 'lucide-react';
+import {
+  Building2,
+  Clock,
+  Footprints,
+  Mountain,
+  RotateCcw,
+  Sun,
+  Sunset,
+  Waves,
+} from 'lucide-react';
 import { useI18n, type Key } from '../i18n.ts';
 import { clock } from '../lib/format.ts';
 import { photo, type Destination, type Outlook } from '../lib/scenic.ts';
@@ -14,6 +23,25 @@ interface Props {
   soon?: boolean;
 }
 
+/** What a place without a photo yet shows on the colours of its region. */
+const REGION_ICONS = {
+  funchal: Building2,
+  mountains: Mountain,
+  west: Sunset,
+  north: Waves,
+  east: Sun,
+} as const;
+
+/** A place's photo or, with none yet, its region's colours and sign. */
+export function ScenicArt({ d, className }: { d: Destination; className: string }) {
+  const Icon = REGION_ICONS[d.region];
+  return (
+    <span className={`${className} scenic-art scenic-art--${d.region}`} aria-hidden>
+      <Icon className="scenic-art__icon" strokeWidth={1.25} />
+    </span>
+  );
+}
+
 /** A photo of a place, its name and how today's buses get there. */
 export function ScenicCard({ d, outlook, size = 'large', soon = false }: Props) {
   const t = useI18n();
@@ -24,17 +52,21 @@ export function ScenicCard({ d, outlook, size = 'large', soon = false }: Props) 
       className={`scenic-card scenic-card--${size}${soon ? ' scenic-card--soon' : ''}`}
       href={`#/explore/${d.id}`}
     >
-      <img
-        className="scenic-card__photo"
-        src={small}
-        srcSet={size === 'large' ? `${small} 480w, ${photo(d, 'lg')} 960w` : undefined}
-        sizes={size === 'large' ? '(min-width: 900px) 410px, 100vw' : undefined}
-        width={480}
-        height={320}
-        alt=""
-        loading="lazy"
-        decoding="async"
-      />
+      {small ? (
+        <img
+          className="scenic-card__photo"
+          src={small}
+          srcSet={size === 'large' ? `${small} 480w, ${photo(d, 'lg')} 960w` : undefined}
+          sizes={size === 'large' ? '(min-width: 900px) 410px, 100vw' : undefined}
+          width={480}
+          height={320}
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+      ) : (
+        <ScenicArt d={d} className="scenic-card__photo" />
+      )}
       <span className="scenic-card__shade" aria-hidden />
       {soon && <span className="scenic-card__soon">{t.t('scenic.soon')}</span>}
       <span className="scenic-card__body">

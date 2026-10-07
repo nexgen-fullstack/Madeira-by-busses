@@ -251,6 +251,78 @@ export const de: Dict = {
   'scenic.balcoes.tag': 'Balkon über dem Lorbeerwald',
   'scenic.balcoes.text':
     'Ein leichter, ebener Weg entlang einer Levada durch den Lorbeerwald (UNESCO-Welterbe) zu einem Balkon über den Bergen.',
+  'scenic.pinaculo.tag': 'Die ganze Bucht von Funchal',
+  'scenic.pinaculo.text':
+    'Ein Aussichtspunkt auf den östlichen Hügeln von São Gonçalo: unten das Amphitheater von Funchal, der Hafen und die Kreuzfahrtschiffe. Am schönsten bei Sonnenuntergang.',
+  'scenic.encumeada.tag': 'Beide Küsten von einem Pass',
+  'scenic.encumeada.text':
+    'Ein Bergpass auf 1000 m zwischen Serra de Água und São Vicente: An klaren Tagen sieht man Nord- und Südküste zugleich. Hier beginnen Levada-Wanderungen.',
+  'scenic.ribeira-brava.tag': 'Promenade und Spaziergang nach Tabua',
+  'scenic.ribeira-brava.text':
+    'Ein Städtchen an der Mündung eines tiefen Tals, mit Kieselstrand, dem kleinen Fort São Bento und einer Promenade, der man am Meer entlang bis Tabua folgen kann.',
+  'scenic.ponta-do-sol.tag': 'Das sonnigste Dorf',
+  'scenic.ponta-do-sol.text':
+    'Ein Dorf an einer sonnigen Bucht mit Kieselstrand, altem Anleger und steilen Gassen weißer Häuser — einer der besten Orte der Insel für den Sonnenuntergang.',
+  'scenic.calheta.tag': 'Goldener Sandstrand und Jachthafen',
+  'scenic.calheta.text':
+    'Ein geschützter Strand mit von weit her gebrachtem goldenem Sand, ein Jachthafen und das Museum für zeitgenössische Kunst MUDAS auf der Klippe darüber.',
+  'scenic.jardim-do-mar.tag': 'Surferdorf über den Wellen',
+  'scenic.jardim-do-mar.text':
+    'Ein Dorf aus gepflasterten Gassen und Gärten auf einer Terrasse am Meer, bei Surfern beliebt; darunter führt eine Promenade am Ufer entlang.',
+  'scenic.paul-do-mar.tag': 'Fischerdorf unter den Klippen',
+  'scenic.paul-do-mar.text':
+    'Ein Fischerdorf zwischen hohen Klippen und dem Ozean, mit kleinem Hafen, bunten Booten und langen Sonnenuntergängen über dem Meer.',
+  'scenic.ponta-do-pargo.tag': 'Leuchtturm am Westende der Insel',
+  'scenic.ponta-do-pargo.text':
+    'Der westlichste Punkt Madeiras: ein Leuchtturm auf einer Klippe fast 300 m über dem Atlantik, eine halbe Stunde zu Fuß vom Bus im Dorf. Seine Sonnenuntergänge sind legendär.',
+  'scenic.achadas-da-cruz.tag': 'Die steilste Seilbahn zum Meer',
+  'scenic.achadas-da-cruz.text':
+    'Eine der steilsten Seilbahnen Europas führt eine 450 m hohe Klippe hinab zu den Feldern von Quebrada Nova direkt am Meer.',
+  'scenic.ribeira-da-janela.tag': 'Felsen mit Fenster',
+  'scenic.ribeira-da-janela.text':
+    'Felsen vor der Mündung der Ribeira da Janela, einer mit einem Loch wie ein Fenster, das dem Tal seinen Namen gab; unten ein Strand aus schwarzen Kieseln.',
+  'scenic.seixal.tag': 'Schwarzer Sand unter grünen Klippen',
+  'scenic.seixal.text':
+    'Ein kleines Dorf an der Nordküste mit schwarzem Sandstrand unter steilen grünen Klippen und Wasserfällen und Naturbecken am Hafen.',
+  'scenic.veu-da-noiva.tag': 'Der Wasserfall Brautschleier',
+  'scenic.veu-da-noiva.text':
+    'Ein Aussichtspunkt an der alten Küstenstraße östlich von Seixal über einem Wasserfall, der von den Klippen direkt zum Meer fällt. Etwa 20 Minuten zu Fuß vom Bus in Seixal.',
+  'scenic.sao-vicente.tag': 'Vulkanhöhlen und Kapelle im Fels',
+  'scenic.sao-vicente.text':
+    'Ein gepflegtes Dorf weißer Häuser in einem grünen Tal, mit Lavahöhlen, einem Vulkanismus-Zentrum und einer in einen Felsen am Meer gehauenen Kapelle.',
+  'scenic.ponta-delgada.tag': 'Meerwasserbecken an der Nordküste',
+  'scenic.ponta-delgada.text':
+    'Ein Dorf an der Nordküste mit einem Meerwasserbecken auf den Felsen und einer weißen Kirche direkt an den Wellen.',
+  'scenic.arco-sao-jorge.tag': 'Klippen der Nordküste',
+  'scenic.arco-sao-jorge.text':
+    'Ein Aussichtspunkt hoch über der Bucht von Arco de São Jorge mit Blick entlang der grünen Nordküste; im Dorf gibt es auch einen Rosengarten mit über tausend Sorten.',
+  'scenic.sao-jorge.tag': 'Leuchtturm über dem Nordmeer',
+  'scenic.sao-jorge.text':
+    'Ein Leuchtturm auf einer Landspitze der Nordküste, mit den Klippen von Arco de São Jorge im Westen und Santana im Osten.',
+  'scenic.guindaste.tag': 'Der Adlerfelsen jenseits der Bucht',
+  'scenic.guindaste.text':
+    'Ein Aussichtspunkt auf einer Landspitze bei Faial, wo einst Schiffe per Kran beladen wurden: direkt gegenüber erhebt sich die Penha de Águia, der Adlerfelsen.',
+  'scenic.porto-da-cruz.tag': 'Zuckermühle und Adlerfelsen',
+  'scenic.porto-da-cruz.text':
+    'Ein Dorf unter dem Adlerfelsen, mit einer alten Zuckermühle, die noch mit Dampf Rum brennt, schwarzen Stränden und einem Meerwasserbecken.',
+  'scenic.portela.tag': 'Pass über dem Nordosten',
+  'scenic.portela.text':
+    'Ein Pass auf 670 m mit Blick auf Porto da Cruz, den Adlerfelsen und das Meer; hier beginnen Levada-Wanderungen.',
+  'scenic.machico.tag': 'Goldener Strand der ersten Siedler',
+  'scenic.machico.text':
+    'Die Bucht, in der 1419 die ersten Siedler an Land gingen: ein goldener Sandstrand, kleine Festungen und eine Promenade unter grünen Hügeln.',
+  'scenic.prainha.tag': 'Der einzige natürliche Sandstrand',
+  'scenic.prainha.text':
+    'Eine kleine Bucht mit dunklem Vulkansand nahe der Ostspitze — der einzige natürliche Sandstrand Madeiras — mit einer Kapelle auf dem Hügel darüber.',
+  'scenic.cristo-rei.tag': 'Christus über dem Meer',
+  'scenic.cristo-rei.text':
+    'Eine Christusstatue mit offenen Armen auf einer Klippe über dem Ozean, älter als die in Rio; ein Pfad und eine Seilbahn führen hinab zu einem Strand in einem Meeresschutzgebiet.',
+  'scenic.canico-de-baixo.tag': 'Promenade und klares Wasser',
+  'scenic.canico-de-baixo.text':
+    'Ein Dorf am Meer mit einer Promenade entlang der Klippen bis Reis Magos, Felsbecken und einem der klarsten Gewässer der Insel zum Schnorcheln.',
+  'scenic.camacha.tag': 'Korbflechterdorf mit Aussicht',
+  'scenic.camacha.text':
+    'Ein Dorf in den Hügeln, berühmt für seine Korbflechterei; von seinem Platz, dem Largo da Achada, blickt man über die Südostküste und das Meer.',
   'tab.explore': 'Ausblicke',
   'detail.wayBack': 'Zurück',
   'scenic.title': 'Beliebte Fahrten mit schönen Ausblicken',
@@ -278,6 +350,15 @@ export const de: Dict = {
     'Fotos von Wikimedia Commons unter freien Lizenzen; zugeschnitten und verkleinert.',
   'plan.scenic': 'Schöne Ausblicke',
   'scenic.all': 'Alle',
+  'scenic.region.funchal': 'Funchal und seine Hügel',
+  'scenic.region.mountains': 'Berge',
+  'scenic.region.west': 'Westen',
+  'scenic.region.north': 'Nordküste',
+  'scenic.region.east': 'Osten',
+  'scenic.walks': 'Spaziergänge mit Aussicht',
+  'scenic.walksHint':
+    'Zu Fuß am Meer entlang, bis zu 35 Minuten: kostenlos und oft schneller und schöner als ein Bus mit Umsteigen. Zum Planen antippen.',
+  'scenic.km': '{km} km',
   'lines.formerly': 'früher {n}',
   'lines.search': 'Liniennummer oder Name',
   'lines.none': 'Keine Linie passt zu „{q}“',

@@ -236,8 +236,15 @@ export function PlanView({ route }: { route: Route }) {
       .slice(0, 4);
   }, [net]);
 
-  // Places with a view that this timetable's buses reach, for the start screen.
-  const scenic = useMemo(() => DESTINATIONS.filter((d) => reachable(net, d)), [net]);
+  // Places with a view that this timetable's buses reach, for the start screen: those with a
+  // photo first.
+  const scenic = useMemo(
+    () =>
+      DESTINATIONS.filter((d) => reachable(net, d)).sort(
+        (a, b) => Number(!a.credit) - Number(!b.credit),
+      ),
+    [net],
+  );
 
   // Recent trips whose places still exist in this timetable.
   const recentTrips = useMemo(

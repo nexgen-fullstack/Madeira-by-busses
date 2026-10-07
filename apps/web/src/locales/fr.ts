@@ -249,6 +249,78 @@ export const fr: Dict = {
   'scenic.balcoes.tag': 'Balcon sur la laurisylve',
   'scenic.balcoes.text':
     'Une promenade facile et plate le long d’une levada dans la forêt de laurisylve, classée à l’UNESCO, jusqu’à un balcon sur les montagnes.',
+  'scenic.pinaculo.tag': 'Toute la baie de Funchal',
+  'scenic.pinaculo.text':
+    'Un belvédère sur les collines à l’est, à São Gonçalo : en contrebas l’amphithéâtre de Funchal, le port et les paquebots. Idéal au coucher du soleil.',
+  'scenic.encumeada.tag': 'Les deux côtes depuis un col',
+  'scenic.encumeada.text':
+    'Un col à 1000 m entre Serra de Água et São Vicente : par temps clair, on voit à la fois la côte nord et la côte sud. Des randonnées le long des levadas partent d’ici.',
+  'scenic.ribeira-brava.tag': 'Promenade et balade jusqu’à Tabua',
+  'scenic.ribeira-brava.text':
+    'Une petite ville à l’embouchure d’une vallée profonde, avec une plage de galets, le petit fort de São Bento et une promenade à suivre le long de la mer jusqu’à Tabua.',
+  'scenic.ponta-do-sol.tag': 'Le village le plus ensoleillé',
+  'scenic.ponta-do-sol.text':
+    'Un village sur une baie ensoleillée, avec une plage de galets, une vieille jetée et des ruelles raides de maisons blanches — l’un des meilleurs endroits de l’île pour le coucher du soleil.',
+  'scenic.calheta.tag': 'Plage de sable doré et marina',
+  'scenic.calheta.text':
+    'Une plage abritée de sable doré venu de loin, une marina et le musée d’art contemporain MUDAS sur la falaise au-dessus.',
+  'scenic.jardim-do-mar.tag': 'Village de surf au-dessus des vagues',
+  'scenic.jardim-do-mar.text':
+    'Un village de ruelles pavées et de jardins sur une terrasse au bord de la mer, apprécié des surfeurs ; une promenade longe le rivage en contrebas.',
+  'scenic.paul-do-mar.tag': 'Village de pêcheurs sous les falaises',
+  'scenic.paul-do-mar.text':
+    'Un village de pêcheurs coincé entre de hautes falaises et l’océan, avec un petit port, des barques colorées et de longs couchers de soleil sur la mer.',
+  'scenic.ponta-do-pargo.tag': 'Phare à l’extrémité ouest de l’île',
+  'scenic.ponta-do-pargo.text':
+    'Le point le plus à l’ouest de Madère : un phare sur une falaise à près de 300 m au-dessus de l’Atlantique, à une demi-heure à pied du bus du village. Ses couchers de soleil sont légendaires.',
+  'scenic.achadas-da-cruz.tag': 'Le téléphérique le plus raide vers la mer',
+  'scenic.achadas-da-cruz.text':
+    'L’un des téléphériques les plus raides d’Europe descend une falaise de 450 m jusqu’aux champs de Quebrada Nova, au bord de la mer.',
+  'scenic.ribeira-da-janela.tag': 'Rochers à fenêtre',
+  'scenic.ribeira-da-janela.text':
+    'Des îlots à l’embouchure de la Ribeira da Janela, dont l’un percé d’un trou comme une fenêtre qui a donné son nom à la vallée ; en bas, une plage de galets noirs.',
+  'scenic.seixal.tag': 'Sable noir sous des falaises vertes',
+  'scenic.seixal.text':
+    'Un petit village de la côte nord avec une plage de sable noir sous des falaises vertes et des cascades, et des piscines naturelles près du port.',
+  'scenic.veu-da-noiva.tag': 'La cascade du Voile de la mariée',
+  'scenic.veu-da-noiva.text':
+    'Un belvédère sur l’ancienne route côtière à l’est de Seixal, face à une cascade qui tombe des falaises droit vers la mer. Environ 20 minutes à pied depuis le bus à Seixal.',
+  'scenic.sao-vicente.tag': 'Grottes volcaniques et chapelle dans le roc',
+  'scenic.sao-vicente.text':
+    'Un village soigné de maisons blanches dans une vallée verte, avec des grottes de lave, un centre du volcanisme et une chapelle taillée dans un rocher au bord de la mer.',
+  'scenic.ponta-delgada.tag': 'Piscine d’eau de mer sur la côte nord',
+  'scenic.ponta-delgada.text':
+    'Un village de la côte nord avec une piscine d’eau de mer sur les rochers et une église blanche juste au bord des vagues.',
+  'scenic.arco-sao-jorge.tag': 'Falaises de la côte nord',
+  'scenic.arco-sao-jorge.text':
+    'Un belvédère très haut au-dessus de la baie d’Arco de São Jorge, avec la côte nord verdoyante à perte de vue ; le village a aussi une roseraie de plus de mille variétés.',
+  'scenic.sao-jorge.tag': 'Phare sur la mer du nord',
+  'scenic.sao-jorge.text':
+    'Un phare sur un cap de la côte nord, avec les falaises d’Arco de São Jorge à l’ouest et Santana à l’est.',
+  'scenic.guindaste.tag': 'Le Rocher de l’Aigle de l’autre côté de la baie',
+  'scenic.guindaste.text':
+    'Un belvédère sur un cap de Faial où l’on chargeait autrefois les navires à la grue : la Penha de Águia, le Rocher de l’Aigle, se dresse juste en face.',
+  'scenic.porto-da-cruz.tag': 'Moulin à sucre et Rocher de l’Aigle',
+  'scenic.porto-da-cruz.text':
+    'Un village au pied du Rocher de l’Aigle, avec une vieille sucrerie qui distille encore du rhum à la vapeur, des plages noires et une piscine d’eau de mer.',
+  'scenic.portela.tag': 'Col sur le nord-est',
+  'scenic.portela.text':
+    'Un col à 670 m avec vue sur Porto da Cruz, le Rocher de l’Aigle et la mer ; des balades le long des levadas partent d’ici.',
+  'scenic.machico.tag': 'La plage dorée des premiers colons',
+  'scenic.machico.text':
+    'La baie où les premiers colons ont débarqué en 1419 : une plage de sable doré, de petits forts et une promenade au pied de collines vertes.',
+  'scenic.prainha.tag': 'La seule plage de sable naturel',
+  'scenic.prainha.text':
+    'Une petite baie de sable volcanique sombre près de la pointe est — la seule plage de sable naturel de Madère — avec une chapelle sur la colline au-dessus.',
+  'scenic.cristo-rei.tag': 'Le Christ au-dessus de la mer',
+  'scenic.cristo-rei.text':
+    'Une statue du Christ aux bras ouverts sur une falaise face à l’océan, plus ancienne que celle de Rio ; un sentier et un téléphérique descendent vers une plage dans une réserve marine.',
+  'scenic.canico-de-baixo.tag': 'Promenade et eau limpide',
+  'scenic.canico-de-baixo.text':
+    'Un village au bord de la mer avec une promenade le long des falaises jusqu’à Reis Magos, des piscines dans les rochers et l’une des eaux les plus claires de l’île pour le snorkeling.',
+  'scenic.camacha.tag': 'Village de l’osier avec vue',
+  'scenic.camacha.text':
+    'Un village des collines célèbre pour sa vannerie en osier ; depuis sa place, le Largo da Achada, on voit la côte sud-est et la mer.',
   'tab.explore': 'Paysages',
   'detail.wayBack': 'Retour',
   'scenic.title': 'Trajets populaires aux beaux paysages',
@@ -276,6 +348,15 @@ export const fr: Dict = {
   'scenic.creditsHint': 'Photos de Wikimedia Commons sous licences libres ; recadrées et réduites.',
   'plan.scenic': 'Beaux paysages',
   'scenic.all': 'Tout voir',
+  'scenic.region.funchal': 'Funchal et ses hauteurs',
+  'scenic.region.mountains': 'Montagnes',
+  'scenic.region.west': 'Ouest',
+  'scenic.region.north': 'Côte nord',
+  'scenic.region.east': 'Est',
+  'scenic.walks': 'Balades avec vue',
+  'scenic.walksHint':
+    'À pied le long de la mer, jusqu’à 35 minutes : gratuit, et souvent plus rapide et plus agréable qu’un bus avec correspondance. Touchez pour planifier.',
+  'scenic.km': '{km} km',
   'lines.formerly': 'ex-{n}',
   'lines.search': 'Numéro ou nom de ligne',
   'lines.none': 'Aucune ligne ne correspond à « {q} »',

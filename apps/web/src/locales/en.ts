@@ -248,6 +248,78 @@ export const en: Dict = {
   'scenic.balcoes.tag': 'Above the laurel forest',
   'scenic.balcoes.text':
     'An easy, level walk along a levada through the UNESCO laurel forest to a balcony over the central mountains.',
+  'scenic.pinaculo.tag': 'The whole bay of Funchal',
+  'scenic.pinaculo.text':
+    'A viewpoint on the eastern hills of São Gonçalo: the amphitheatre of Funchal, the harbour and the cruise ships below. Best at sunset.',
+  'scenic.encumeada.tag': 'Both coasts from one pass',
+  'scenic.encumeada.text':
+    'A mountain pass at 1,000 m between Serra de Água and São Vicente: on a clear day you see the north and the south coast at once. Levada walks start here.',
+  'scenic.ribeira-brava.tag': 'Promenade and a walk to Tabua',
+  'scenic.ribeira-brava.text':
+    'A town at the mouth of a deep valley, with a pebble beach, the little São Bento fort and a promenade you can follow along the sea to Tabua.',
+  'scenic.ponta-do-sol.tag': 'The sunniest village',
+  'scenic.ponta-do-sol.text':
+    'A village on a sunny bay with a pebble beach, an old pier and steep lanes of white houses — one of the best places on the island for the sunset.',
+  'scenic.calheta.tag': 'Golden sand beach and marina',
+  'scenic.calheta.text':
+    'A sheltered beach of golden sand brought in from afar, a marina and the MUDAS contemporary art museum on the cliff above.',
+  'scenic.jardim-do-mar.tag': 'Surf village above the waves',
+  'scenic.jardim-do-mar.text':
+    'A village of cobbled lanes and gardens on a terrace by the sea, loved by surfers; a promenade runs below it along the shore.',
+  'scenic.paul-do-mar.tag': 'Fishing village under the cliffs',
+  'scenic.paul-do-mar.text':
+    'A fishing village squeezed between towering cliffs and the ocean, with a small harbour, colourful boats and long sunsets over the sea.',
+  'scenic.ponta-do-pargo.tag': "Lighthouse at the island's west end",
+  'scenic.ponta-do-pargo.text':
+    'The westernmost point of Madeira: a lighthouse on a cliff almost 300 m above the Atlantic, half an hour on foot from the village bus. Its sunsets are legendary.',
+  'scenic.achadas-da-cruz.tag': 'Steepest cable car to the sea',
+  'scenic.achadas-da-cruz.text':
+    'One of the steepest cable cars in Europe drops down a 450 m cliff to the fields of Quebrada Nova right by the sea.',
+  'scenic.ribeira-da-janela.tag': 'Rocks with a window',
+  'scenic.ribeira-da-janela.text':
+    'Sea stacks off the mouth of the Ribeira da Janela, one with a hole like a window that gave the valley its name; a black pebble beach below.',
+  'scenic.seixal.tag': 'Black sand under green cliffs',
+  'scenic.seixal.text':
+    'A small north-coast village with a black sand beach below steep green cliffs and waterfalls, and natural rock pools by the harbour.',
+  'scenic.veu-da-noiva.tag': 'The Bridal Veil waterfall',
+  'scenic.veu-da-noiva.text':
+    'A viewpoint on the old coast road east of Seixal over a waterfall dropping from the cliffs straight towards the sea. About 20 minutes on foot from the bus in Seixal.',
+  'scenic.sao-vicente.tag': 'Volcanic caves and a chapel in the rock',
+  'scenic.sao-vicente.text':
+    'A tidy village of white houses in a green valley, with lava caves and a volcanism centre, and a chapel carved into a rock by the sea.',
+  'scenic.ponta-delgada.tag': 'Seawater pool on the north coast',
+  'scenic.ponta-delgada.text':
+    'A north-coast village with a seawater pool on the rocks and a white church right by the waves.',
+  'scenic.arco-sao-jorge.tag': 'Cliffs of the north coast',
+  'scenic.arco-sao-jorge.text':
+    'A viewpoint high above the bay of Arco de São Jorge, looking along the green north coast; the village also has a garden with over a thousand kinds of roses.',
+  'scenic.sao-jorge.tag': 'Lighthouse over the north sea',
+  'scenic.sao-jorge.text':
+    'A lighthouse on a headland of the north coast, with the cliffs of Arco de São Jorge to the west and Santana to the east.',
+  'scenic.guindaste.tag': 'Eagle Rock across the bay',
+  'scenic.guindaste.text':
+    'A viewpoint on a headland of Faial where ships were once loaded by crane: Penha de Águia, the Eagle Rock, rises straight ahead.',
+  'scenic.porto-da-cruz.tag': 'Sugar mill and Eagle Rock',
+  'scenic.porto-da-cruz.text':
+    'A village under the Eagle Rock, with an old sugar mill that still makes rum with a steam engine, black beaches and a seawater pool.',
+  'scenic.portela.tag': 'Pass over the north-east',
+  'scenic.portela.text':
+    'A pass at 670 m looking down on Porto da Cruz, the Eagle Rock and the sea; levada walks start here.',
+  'scenic.machico.tag': 'Golden beach of the first settlers',
+  'scenic.machico.text':
+    'The bay where the first settlers landed in 1419: a golden sand beach, little forts and a promenade below green hills.',
+  'scenic.prainha.tag': 'The only natural sand beach',
+  'scenic.prainha.text':
+    "A small bay of dark volcanic sand near the island's eastern tip — Madeira's only natural sand beach — with a chapel on the hill above.",
+  'scenic.cristo-rei.tag': 'Christ above the sea',
+  'scenic.cristo-rei.text':
+    'A statue of Christ with open arms on a cliff over the ocean, older than the one in Rio; a path and a cable car lead down to a beach in a marine reserve.',
+  'scenic.canico-de-baixo.tag': 'Promenade and clear water',
+  'scenic.canico-de-baixo.text':
+    'A seaside village with a promenade along the cliffs to Reis Magos, rock pools and some of the clearest water on the island for snorkelling.',
+  'scenic.camacha.tag': 'Wicker village with a view',
+  'scenic.camacha.text':
+    'A hill village famous for its wicker work; from its square, Largo da Achada, you look out over the south-east coast and the sea.',
   'tab.explore': 'Scenic',
   'scenic.title': 'Popular trips with beautiful views',
   'scenic.hint': 'Tap a place: I will plan the trip and show every bus of the day, first to last.',
@@ -272,6 +344,15 @@ export const en: Dict = {
   'scenic.creditsHint': 'Photos from Wikimedia Commons under free licences; cropped and resized.',
   'plan.scenic': 'Beautiful views',
   'scenic.all': 'All',
+  'scenic.region.funchal': 'Funchal and its hills',
+  'scenic.region.mountains': 'Mountains',
+  'scenic.region.west': 'West',
+  'scenic.region.north': 'North coast',
+  'scenic.region.east': 'East',
+  'scenic.walks': 'Scenic walks',
+  'scenic.walksHint':
+    'On foot along the sea, up to 35 minutes: free, and often quicker and nicer than a bus with a change. Tap one to plan it.',
+  'scenic.km': '{km} km',
   'lines.formerly': 'formerly {n}',
   'lines.search': 'Line number or name',
   'lines.none': 'No lines match “{q}”',

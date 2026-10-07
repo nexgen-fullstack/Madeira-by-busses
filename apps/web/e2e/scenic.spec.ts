@@ -40,6 +40,24 @@ test('a scenic place plans the trip and shows every bus of the day', async ({ pa
   await expect(page.locator('.day-timetable').getByText('Назад')).toBeVisible();
 });
 
+test('walks along the sea: listed by the places with a view, then the walk first', async ({
+  page,
+}) => {
+  await page.goto('./#/explore');
+  await expect(page.getByRole('heading', { name: 'Прогулянки з краєвидами' })).toBeVisible();
+  // The places by region, a place without a photo yet among them.
+  await expect(page.getByRole('heading', { name: 'Північне узбережжя' })).toBeVisible();
+  // Measured along the streets, with the climb: Marina do Funchal to the Old Town's fort.
+  const walk = page.locator('.walk-card').filter({ hasText: 'Forte de São Tiago' });
+  await expect(walk).toContainText(/\d+ хв пішки · 1,2 км/);
+  await walk.click();
+  // In the planner the walk along Avenida do Mar is a way of its own, the best one here.
+  const first = page.locator('.it-card').first();
+  await expect(first).toContainText('Пішки з краєвидами');
+  await first.click();
+  await expect(page.locator('.walk-note--view')).toHaveText('Гарні краєвиди по дорозі');
+});
+
 test('the planner’s start screen suggests places with a view', async ({ page }) => {
   await page.goto('./');
   await expect(page.getByRole('heading', { name: 'Гарні краєвиди' })).toBeVisible();

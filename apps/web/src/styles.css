@@ -2426,6 +2426,38 @@ input[type='time'],
 .scenic-card--soon .scenic-card__photo {
   filter: saturate(0.7);
 }
+/* A place without a photo yet: the colours of its region, its sign drawn large. */
+.scenic-art {
+  display: block;
+  overflow: hidden;
+}
+.scenic-art--funchal {
+  background: linear-gradient(150deg, #0a4f9c 0%, #0b86c4 55%, #34c3dd 100%);
+}
+.scenic-art--mountains {
+  background: linear-gradient(150deg, #173d2c 0%, #2f6f45 55%, #8fb35a 100%);
+}
+.scenic-art--west {
+  background: linear-gradient(150deg, #5b2a63 0%, #c4512a 55%, #f4b347 100%);
+}
+.scenic-art--north {
+  background: linear-gradient(150deg, #083a45 0%, #0f6f6a 55%, #3fb38e 100%);
+}
+.scenic-art--east {
+  background: linear-gradient(150deg, #4a1c12 0%, #a4472a 55%, #e19a54 100%);
+}
+.scenic-art__icon {
+  position: absolute;
+  right: -6%;
+  top: -10%;
+  width: 62%;
+  height: auto;
+  aspect-ratio: 1;
+  color: rgb(255 255 255 / 20%);
+}
+.destination__hero--art {
+  aspect-ratio: 5 / 2;
+}
 .scenic-card__body {
   position: absolute;
   left: 0;
@@ -2604,6 +2636,87 @@ input[type='time'],
 }
 .scenic-strip li {
   scroll-snap-align: start;
+}
+.explore__region,
+.explore__walks {
+  margin-bottom: 18px;
+}
+.explore__region .plan__subtitle,
+.explore__walks .plan__subtitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.explore__walks .muted {
+  margin: -2px 0 10px;
+}
+/* The walks with a view along the sea: a strip to scroll sideways, as the places on the start screen. */
+.walk-strip {
+  list-style: none;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(220px, 72%);
+  gap: 10px;
+  margin: 0 -16px;
+  padding: 0 16px 6px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.walk-strip::-webkit-scrollbar {
+  display: none;
+}
+.walk-strip li {
+  scroll-snap-align: start;
+  display: flex;
+}
+.walk-card {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  background: var(--view-bg);
+  border: 1px solid color-mix(in srgb, var(--view) 30%, transparent);
+  color: var(--text);
+  text-decoration: none;
+}
+.walk-card:active {
+  transform: scale(0.985);
+}
+.walk-card__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--view);
+  color: var(--surface);
+}
+.walk-card__body {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.walk-card__region {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--view);
+}
+.walk-card__name {
+  font-weight: 800;
+  line-height: 1.25;
+}
+.walk-card__facts {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--muted);
 }
 .credits {
   margin: 8px 0;

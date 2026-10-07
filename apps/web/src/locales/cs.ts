@@ -272,6 +272,78 @@ export const cs: Dict = {
   'scenic.balcoes.tag': 'Balkon nad vavřínovým lesem',
   'scenic.balcoes.text':
     'Snadná rovná procházka podél levády vavřínovým lesem z dědictví UNESCO na balkon s výhledem na hory.',
+  'scenic.pinaculo.tag': 'Celá zátoka Funchalu',
+  'scenic.pinaculo.text':
+    'Vyhlídka na východních kopcích v São Gonçalo: dole amfiteátr Funchalu, přístav a výletní lodě. Nejkrásnější při západu slunce.',
+  'scenic.encumeada.tag': 'Obě pobřeží z jednoho sedla',
+  'scenic.encumeada.text':
+    'Horské sedlo ve výšce 1000 m mezi Serra de Água a São Vicente: za jasného dne je vidět severní i jižní pobřeží najednou. Začínají tu vycházky podél levád.',
+  'scenic.ribeira-brava.tag': 'Promenáda a procházka do Tabua',
+  'scenic.ribeira-brava.text':
+    'Městečko v ústí hlubokého údolí s oblázkovou pláží, malou pevností São Bento a promenádou, po které dojdete podél moře až do Tabua.',
+  'scenic.ponta-do-sol.tag': 'Nejslunnější vesnice',
+  'scenic.ponta-do-sol.text':
+    'Vesnice ve slunné zátoce s oblázkovou pláží, starým molem a strmými uličkami bílých domů — jedno z nejlepších míst na ostrově pro západ slunce.',
+  'scenic.calheta.tag': 'Pláž se zlatým pískem a přístav',
+  'scenic.calheta.text':
+    'Chráněná pláž se zlatým pískem přivezeným z dálky, přístav pro jachty a muzeum současného umění MUDAS na útesu nad nimi.',
+  'scenic.jardim-do-mar.tag': 'Vesnice surfařů nad vlnami',
+  'scenic.jardim-do-mar.text':
+    'Vesnice dlážděných uliček a zahrad na terase u moře, oblíbená surfaři; pod ní vede podél břehu promenáda.',
+  'scenic.paul-do-mar.tag': 'Rybářská vesnice pod útesy',
+  'scenic.paul-do-mar.text':
+    'Rybářská vesnice sevřená mezi vysokými útesy a oceánem, s malým přístavem, barevnými loďkami a dlouhými západy slunce nad mořem.',
+  'scenic.ponta-do-pargo.tag': 'Maják na západním cípu ostrova',
+  'scenic.ponta-do-pargo.text':
+    'Nejzápadnější bod Madeiry: maják na útesu téměř 300 m nad Atlantikem, půl hodiny pěšky od autobusu ve vesnici. Západy slunce jsou tu legendární.',
+  'scenic.achadas-da-cruz.tag': 'Nejstrmější lanovka k moři',
+  'scenic.achadas-da-cruz.text':
+    'Jedna z nejstrmějších lanovek Evropy sjíždí po 450 m vysokém útesu k políčkům Quebrada Nova přímo u moře.',
+  'scenic.ribeira-da-janela.tag': 'Skály s oknem',
+  'scenic.ribeira-da-janela.text':
+    'Skalní ostrůvky u ústí Ribeira da Janela; jeden má otvor jako okno, který dal údolí jméno. Dole pláž z černých oblázků.',
+  'scenic.seixal.tag': 'Černý písek pod zelenými útesy',
+  'scenic.seixal.text':
+    'Malá vesnice na severním pobřeží s pláží z černého písku pod strmými zelenými útesy s vodopády a s přírodními bazény u přístavu.',
+  'scenic.veu-da-noiva.tag': 'Vodopád Nevěstin závoj',
+  'scenic.veu-da-noiva.text':
+    'Vyhlídka na staré pobřežní silnici východně od Seixalu na vodopád, který padá z útesů přímo k moři. Asi 20 minut pěšky od autobusu v Seixalu.',
+  'scenic.sao-vicente.tag': 'Sopečné jeskyně a kaple ve skále',
+  'scenic.sao-vicente.text':
+    'Upravená vesnice bílých domů v zeleném údolí, s lávovými jeskyněmi, centrem vulkanismu a kaplí vytesanou do skály u moře.',
+  'scenic.ponta-delgada.tag': 'Mořský bazén na severu',
+  'scenic.ponta-delgada.text':
+    'Vesnice na severním pobřeží s bazénem mořské vody na skalách a bílým kostelem hned u vln.',
+  'scenic.arco-sao-jorge.tag': 'Útesy severního pobřeží',
+  'scenic.arco-sao-jorge.text':
+    'Vyhlídka vysoko nad zátokou Arco de São Jorge s pohledem podél zeleného severního pobřeží; ve vesnici je také rosárium s více než tisícem odrůd.',
+  'scenic.sao-jorge.tag': 'Maják nad severním mořem',
+  'scenic.sao-jorge.text':
+    'Maják na mysu severního pobřeží, na západě útesy Arco de São Jorge, na východě Santana.',
+  'scenic.guindaste.tag': 'Orlí skála za zátokou',
+  'scenic.guindaste.text':
+    'Vyhlídka na mysu ve Faial, kde se kdysi nakládaly lodě jeřábem: přímo naproti se zvedá Penha de Águia, Orlí skála.',
+  'scenic.porto-da-cruz.tag': 'Cukrovar a Orlí skála',
+  'scenic.porto-da-cruz.text':
+    'Vesnice pod Orlí skálou se starým cukrovarem, který dodnes pálí rum na parní stroj, černými plážemi a mořským bazénem.',
+  'scenic.portela.tag': 'Sedlo nad severovýchodem',
+  'scenic.portela.text':
+    'Sedlo ve výšce 670 m s výhledem na Porto da Cruz, Orlí skálu a moře; začínají tu vycházky podél levád.',
+  'scenic.machico.tag': 'Zlatá pláž prvních osadníků',
+  'scenic.machico.text':
+    'Zátoka, kde roku 1419 přistáli první osadníci: pláž se zlatým pískem, malé pevnosti a promenáda pod zelenými kopci.',
+  'scenic.prainha.tag': 'Jediná přírodní písečná pláž',
+  'scenic.prainha.text':
+    'Malá zátoka s tmavým sopečným pískem u východního cípu — jediná přírodní písečná pláž na Madeiře — s kaplí na kopci nad ní.',
+  'scenic.cristo-rei.tag': 'Kristus nad mořem',
+  'scenic.cristo-rei.text':
+    'Socha Krista s rozpřaženýma rukama na útesu nad oceánem, starší než ta v Riu; stezka a lanovka vedou dolů na pláž v mořské rezervaci.',
+  'scenic.canico-de-baixo.tag': 'Promenáda a průzračná voda',
+  'scenic.canico-de-baixo.text':
+    'Přímořská vesnice s promenádou podél útesů do Reis Magos, bazénky mezi skalami a jednou z nejčistších vod ostrova pro šnorchlování.',
+  'scenic.camacha.tag': 'Vesnice proutí s výhledem',
+  'scenic.camacha.text':
+    'Vesnice v kopcích proslulá proutěnými výrobky; z jejího náměstí Largo da Achada je vidět jihovýchodní pobřeží a moře.',
   'tab.explore': 'Výhledy',
   'detail.wayBack': 'Zpět',
   'scenic.title': 'Oblíbené cesty s krásnými výhledy',
@@ -299,6 +371,15 @@ export const cs: Dict = {
     'Fotografie z Wikimedia Commons pod svobodnými licencemi; oříznuté a zmenšené.',
   'plan.scenic': 'Krásné výhledy',
   'scenic.all': 'Vše',
+  'scenic.region.funchal': 'Funchal a okolní kopce',
+  'scenic.region.mountains': 'Hory',
+  'scenic.region.west': 'Západ',
+  'scenic.region.north': 'Severní pobřeží',
+  'scenic.region.east': 'Východ',
+  'scenic.walks': 'Procházky s výhledy',
+  'scenic.walksHint':
+    'Pěšky podél moře, do 35 minut: zdarma a často rychleji i příjemněji než autobusem s přestupem. Klepnutím naplánujete trasu.',
+  'scenic.km': '{km} km',
   'lines.formerly': 'dříve {n}',
   'lines.search': 'Číslo nebo název linky',
   'lines.none': 'Žádná linka neodpovídá „{q}“',

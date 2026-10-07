@@ -200,17 +200,21 @@ export function SettingsView() {
         </h3>
         <p className="muted small">{t.t('scenic.creditsHint')}</p>
         <ul className="credits">
-          {DESTINATIONS.map((d) => (
-            <li key={d.id}>
-              <a href={d.credit.source} target="_blank" rel="noopener noreferrer">
-                {d.name}
-              </a>{' '}
-              — {d.credit.author},{' '}
-              <a href={d.credit.licenseUrl} target="_blank" rel="noopener noreferrer">
-                {d.credit.license}
-              </a>
-            </li>
-          ))}
+          {DESTINATIONS.flatMap(({ id, name, credit }) =>
+            credit
+              ? [
+                  <li key={id}>
+                    <a href={credit.source} target="_blank" rel="noopener noreferrer">
+                      {name}
+                    </a>{' '}
+                    — {credit.author},{' '}
+                    <a href={credit.licenseUrl} target="_blank" rel="noopener noreferrer">
+                      {credit.license}
+                    </a>
+                  </li>,
+                ]
+              : [],
+          )}
         </ul>
         <p className="muted small">Inter · SIL Open Font License 1.1</p>
       </section>

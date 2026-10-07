@@ -10,6 +10,7 @@ import {
 import { madeiraNow } from '@madeirabus/engine';
 import { ItineraryCard } from '../components/ItineraryCard.tsx';
 import { ItineraryDetail } from '../components/ItineraryDetail.tsx';
+import { ScenicArt } from '../components/ScenicCard.tsx';
 import { useMapContent } from '../components/mapContext.tsx';
 import { TripsBlock } from '../components/TripsBlock.tsx';
 import { useI18n, type Key } from '../i18n.ts';
@@ -183,15 +184,19 @@ export function DestinationView({ d, route }: { d: Destination; route: Route }) 
 
   return (
     <div className="destination">
-      <div className="destination__hero">
-        <img
-          className="destination__photo"
-          src={photo(d, 'lg')}
-          width={960}
-          height={640}
-          alt=""
-          style={{ backgroundImage: `url("${photo(d, 'sm')}")` }}
-        />
+      <div className={`destination__hero${d.credit ? '' : ' destination__hero--art'}`}>
+        {d.credit ? (
+          <img
+            className="destination__photo"
+            src={photo(d, 'lg')}
+            width={960}
+            height={640}
+            alt=""
+            style={{ backgroundImage: `url("${photo(d, 'sm')}")` }}
+          />
+        ) : (
+          <ScenicArt d={d} className="destination__photo" />
+        )}
         <span className="destination__shade" aria-hidden />
         <button
           type="button"
@@ -205,14 +210,16 @@ export function DestinationView({ d, route }: { d: Destination; route: Route }) 
           <span className="destination__tag">{t.t(`scenic.${d.id}.tag` as Key)}</span>
           <h2>{d.name}</h2>
         </div>
-        <a
-          className="destination__credit"
-          href={d.credit.source}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {t.t('scenic.photo', { author: d.credit.author, license: d.credit.license })}
-        </a>
+        {d.credit && (
+          <a
+            className="destination__credit"
+            href={d.credit.source}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t.t('scenic.photo', { author: d.credit.author, license: d.credit.license })}
+          </a>
+        )}
       </div>
       <p className="destination__text">{t.t(`scenic.${d.id}.text` as Key)}</p>
 

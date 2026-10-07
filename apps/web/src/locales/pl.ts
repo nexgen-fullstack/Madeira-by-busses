@@ -274,6 +274,78 @@ export const pl: Dict = {
   'scenic.balcoes.tag': 'Balkon nad lasem wawrzynowym',
   'scenic.balcoes.text':
     'Łatwy, płaski spacer wzdłuż lewady przez las wawrzynowy z listy UNESCO do balkonu z widokiem na góry.',
+  'scenic.pinaculo.tag': 'Cała zatoka Funchal',
+  'scenic.pinaculo.text':
+    'Punkt widokowy na wschodnich wzgórzach São Gonçalo: w dole amfiteatr Funchal, port i statki wycieczkowe. Najpiękniej o zachodzie słońca.',
+  'scenic.encumeada.tag': 'Oba wybrzeża z jednej przełęczy',
+  'scenic.encumeada.text':
+    'Przełęcz na wysokości 1000 m między Serra de Água a São Vicente: w pogodny dzień widać jednocześnie północne i południowe wybrzeże. Zaczynają się tu spacery wzdłuż lewad.',
+  'scenic.ribeira-brava.tag': 'Promenada i spacer do Tabua',
+  'scenic.ribeira-brava.text':
+    'Miasteczko u wylotu głębokiej doliny, z kamienistą plażą, małym fortem São Bento i promenadą, którą można dojść wzdłuż morza aż do Tabua.',
+  'scenic.ponta-do-sol.tag': 'Najbardziej słoneczna wioska',
+  'scenic.ponta-do-sol.text':
+    'Wioska nad słoneczną zatoką z kamienistą plażą, starym pomostem i stromymi uliczkami białych domów — jedno z najlepszych miejsc na wyspie na zachód słońca.',
+  'scenic.calheta.tag': 'Plaża ze złotym piaskiem i marina',
+  'scenic.calheta.text':
+    'Osłonięta plaża ze złotym piaskiem przywiezionym z daleka, marina i muzeum sztuki współczesnej MUDAS na klifie nad nimi.',
+  'scenic.jardim-do-mar.tag': 'Wioska surferów nad falami',
+  'scenic.jardim-do-mar.text':
+    'Wioska brukowanych uliczek i ogrodów na tarasie nad morzem, ulubiona przez surferów; poniżej wzdłuż brzegu biegnie promenada.',
+  'scenic.paul-do-mar.tag': 'Wioska rybacka pod klifami',
+  'scenic.paul-do-mar.text':
+    'Wioska rybacka wciśnięta między wysokie klify a ocean, z małym portem, kolorowymi łodziami i długimi zachodami słońca nad morzem.',
+  'scenic.ponta-do-pargo.tag': 'Latarnia na zachodnim krańcu wyspy',
+  'scenic.ponta-do-pargo.text':
+    'Najdalej na zachód wysunięty punkt Madery: latarnia na klifie prawie 300 m nad Atlantykiem, pół godziny pieszo od autobusu we wsi. Zachody słońca są tu legendarne.',
+  'scenic.achadas-da-cruz.tag': 'Najbardziej stroma kolejka do morza',
+  'scenic.achadas-da-cruz.text':
+    'Jedna z najbardziej stromych kolejek linowych w Europie zjeżdża po 450-metrowym klifie do pól Quebrada Nova tuż nad morzem.',
+  'scenic.ribeira-da-janela.tag': 'Skały z oknem',
+  'scenic.ribeira-da-janela.text':
+    'Skaliste wysepki u ujścia Ribeira da Janela; w jednej jest otwór jak okno, od którego dolina wzięła nazwę. Poniżej plaża z czarnych otoczaków.',
+  'scenic.seixal.tag': 'Czarny piasek pod zielonymi klifami',
+  'scenic.seixal.text':
+    'Mała wioska na północnym wybrzeżu z plażą z czarnego piasku pod stromymi zielonymi klifami z wodospadami i naturalnymi basenami przy porcie.',
+  'scenic.veu-da-noiva.tag': 'Wodospad Welon Panny Młodej',
+  'scenic.veu-da-noiva.text':
+    'Punkt widokowy na starej drodze nadbrzeżnej na wschód od Seixal, na wodospad spadający z klifów prosto ku morzu. Około 20 minut pieszo od autobusu w Seixal.',
+  'scenic.sao-vicente.tag': 'Jaskinie wulkaniczne i kaplica w skale',
+  'scenic.sao-vicente.text':
+    'Zadbana wioska białych domów w zielonej dolinie, z jaskiniami lawowymi, centrum wulkanizmu i kaplicą wykutą w skale nad morzem.',
+  'scenic.ponta-delgada.tag': 'Basen z wodą morską na północy',
+  'scenic.ponta-delgada.text':
+    'Wioska na północnym wybrzeżu z basenem z wodą morską na skałach i białym kościołem tuż przy falach.',
+  'scenic.arco-sao-jorge.tag': 'Klify północnego wybrzeża',
+  'scenic.arco-sao-jorge.text':
+    'Punkt widokowy wysoko nad zatoką Arco de São Jorge z widokiem wzdłuż zielonego północnego wybrzeża; we wsi jest też ogród z ponad tysiącem odmian róż.',
+  'scenic.sao-jorge.tag': 'Latarnia nad północnym morzem',
+  'scenic.sao-jorge.text':
+    'Latarnia na przylądku północnego wybrzeża, z klifami Arco de São Jorge na zachodzie i Santaną na wschodzie.',
+  'scenic.guindaste.tag': 'Orla Skała po drugiej stronie zatoki',
+  'scenic.guindaste.text':
+    'Punkt widokowy na cyplu w Faial, gdzie kiedyś ładowano statki dźwigiem: na wprost wznosi się Penha de Águia, Orla Skała.',
+  'scenic.porto-da-cruz.tag': 'Cukrownia i Orla Skała',
+  'scenic.porto-da-cruz.text':
+    'Wioska pod Orlą Skałą, ze starą cukrownią, która wciąż pędzi rum na maszynie parowej, czarnymi plażami i basenem z wodą morską.',
+  'scenic.portela.tag': 'Przełęcz nad północnym wschodem',
+  'scenic.portela.text':
+    'Przełęcz na wysokości 670 m z widokiem na Porto da Cruz, Orlą Skałę i morze; zaczynają się tu spacery wzdłuż lewad.',
+  'scenic.machico.tag': 'Złota plaża pierwszych osadników',
+  'scenic.machico.text':
+    'Zatoka, w której w 1419 roku wylądowali pierwsi osadnicy: plaża ze złotym piaskiem, małe forty i promenada pod zielonymi wzgórzami.',
+  'scenic.prainha.tag': 'Jedyna naturalna piaszczysta plaża',
+  'scenic.prainha.text':
+    'Mała zatoka z ciemnym wulkanicznym piaskiem przy wschodnim krańcu — jedyna naturalna piaszczysta plaża Madery — z kaplicą na wzgórzu.',
+  'scenic.cristo-rei.tag': 'Chrystus nad morzem',
+  'scenic.cristo-rei.text':
+    'Posąg Chrystusa z rozłożonymi ramionami na klifie nad oceanem, starszy niż ten w Rio; ścieżka i kolejka linowa prowadzą w dół na plażę w rezerwacie morskim.',
+  'scenic.canico-de-baixo.tag': 'Promenada i przejrzysta woda',
+  'scenic.canico-de-baixo.text':
+    'Nadmorska wioska z promenadą wzdłuż klifów do Reis Magos, basenami wśród skał i jedną z najczystszych wód na wyspie do snorkelingu.',
+  'scenic.camacha.tag': 'Wioska wikliny z widokiem',
+  'scenic.camacha.text':
+    'Wioska na wzgórzach słynąca z wyrobów z wikliny; z jej placu, Largo da Achada, widać południowo-wschodnie wybrzeże i morze.',
   'tab.explore': 'Widoki',
   'detail.wayBack': 'Powrót',
   'scenic.title': 'Popularne trasy z pięknymi widokami',
@@ -302,6 +374,15 @@ export const pl: Dict = {
     'Zdjęcia z Wikimedia Commons na wolnych licencjach; przycięte i pomniejszone.',
   'plan.scenic': 'Piękne widoki',
   'scenic.all': 'Wszystkie',
+  'scenic.region.funchal': 'Funchal i okoliczne wzgórza',
+  'scenic.region.mountains': 'Góry',
+  'scenic.region.west': 'Zachód',
+  'scenic.region.north': 'Wybrzeże północne',
+  'scenic.region.east': 'Wschód',
+  'scenic.walks': 'Spacery z widokami',
+  'scenic.walksHint':
+    'Pieszo wzdłuż morza, do 35 minut: za darmo, a często szybciej i przyjemniej niż autobusem z przesiadką. Stuknij, aby zaplanować.',
+  'scenic.km': '{km} km',
   'lines.formerly': 'dawniej {n}',
   'lines.search': 'Numer lub nazwa linii',
   'lines.none': 'Żadna linia nie pasuje do „{q}”',

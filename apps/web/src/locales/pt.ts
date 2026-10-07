@@ -248,6 +248,78 @@ export const pt: Dict = {
   'scenic.balcoes.tag': 'Varanda sobre a Laurissilva',
   'scenic.balcoes.text':
     'Um passeio fácil e plano ao longo de uma levada pela floresta Laurissilva, património da UNESCO, até uma varanda sobre as serras.',
+  'scenic.pinaculo.tag': 'Toda a baía do Funchal',
+  'scenic.pinaculo.text':
+    'Miradouro nas colinas a leste, em São Gonçalo: lá em baixo o anfiteatro do Funchal, o porto e os navios de cruzeiro. Melhor ao pôr do sol.',
+  'scenic.encumeada.tag': 'As duas costas num só passo',
+  'scenic.encumeada.text':
+    'Passo de montanha a 1000 m entre a Serra de Água e São Vicente: num dia limpo vê-se a costa norte e a costa sul ao mesmo tempo. Aqui começam percursos de levada.',
+  'scenic.ribeira-brava.tag': 'Promenade e passeio até à Tabua',
+  'scenic.ribeira-brava.text':
+    'Vila na foz de um vale profundo, com praia de calhau, o pequeno Forte de São Bento e uma promenade que se segue junto ao mar até à Tabua.',
+  'scenic.ponta-do-sol.tag': 'A vila mais soalheira',
+  'scenic.ponta-do-sol.text':
+    'Vila numa baía soalheira com praia de calhau, um velho cais e ruelas íngremes de casas brancas — um dos melhores sítios da ilha para o pôr do sol.',
+  'scenic.calheta.tag': 'Praia de areia dourada e marina',
+  'scenic.calheta.text':
+    'Uma praia abrigada de areia dourada trazida de longe, uma marina e o museu de arte contemporânea MUDAS na falésia por cima.',
+  'scenic.jardim-do-mar.tag': 'Vila do surf sobre as ondas',
+  'scenic.jardim-do-mar.text':
+    'Vila de calçadas e jardins numa fajã junto ao mar, querida dos surfistas; por baixo corre uma promenade ao longo da costa.',
+  'scenic.paul-do-mar.tag': 'Vila piscatória sob as falésias',
+  'scenic.paul-do-mar.text':
+    'Vila piscatória apertada entre falésias altíssimas e o oceano, com um pequeno porto, barcos coloridos e longos pores do sol sobre o mar.',
+  'scenic.ponta-do-pargo.tag': 'Farol no extremo oeste da ilha',
+  'scenic.ponta-do-pargo.text':
+    'O ponto mais ocidental da Madeira: um farol numa falésia a quase 300 m sobre o Atlântico, a meia hora a pé do autocarro na vila. Os pores do sol são lendários.',
+  'scenic.achadas-da-cruz.tag': 'O teleférico mais íngreme até ao mar',
+  'scenic.achadas-da-cruz.text':
+    'Um dos teleféricos mais íngremes da Europa desce uma falésia de 450 m até aos campos da Quebrada Nova, junto ao mar.',
+  'scenic.ribeira-da-janela.tag': 'Rochedos com janela',
+  'scenic.ribeira-da-janela.text':
+    'Ilhéus na foz da Ribeira da Janela, um deles com um buraco como uma janela que deu nome ao vale; em baixo, uma praia de calhau negro.',
+  'scenic.seixal.tag': 'Areia negra sob falésias verdes',
+  'scenic.seixal.text':
+    'Pequena vila da costa norte com uma praia de areia negra sob falésias verdes e cascatas, e piscinas naturais junto ao porto.',
+  'scenic.veu-da-noiva.tag': 'A cascata do Véu da Noiva',
+  'scenic.veu-da-noiva.text':
+    'Miradouro na antiga estrada da costa a leste do Seixal, sobre uma cascata que cai das falésias direita ao mar. Cerca de 20 minutos a pé do autocarro no Seixal.',
+  'scenic.sao-vicente.tag': 'Grutas vulcânicas e capela na rocha',
+  'scenic.sao-vicente.text':
+    'Vila cuidada de casas brancas num vale verde, com grutas de lava e um centro do vulcanismo, e uma capela escavada numa rocha junto ao mar.',
+  'scenic.ponta-delgada.tag': 'Piscina de água do mar na costa norte',
+  'scenic.ponta-delgada.text':
+    'Vila da costa norte com uma piscina de água do mar sobre as rochas e uma igreja branca mesmo junto às ondas.',
+  'scenic.arco-sao-jorge.tag': 'Falésias da costa norte',
+  'scenic.arco-sao-jorge.text':
+    'Miradouro bem alto sobre a baía do Arco de São Jorge, com vista ao longo da costa norte verde; a vila tem também um roseiral com mais de mil variedades.',
+  'scenic.sao-jorge.tag': 'Farol sobre o mar do norte',
+  'scenic.sao-jorge.text':
+    'Um farol num promontório da costa norte, com as falésias do Arco de São Jorge a oeste e Santana a leste.',
+  'scenic.guindaste.tag': "A Penha d'Águia do outro lado da baía",
+  'scenic.guindaste.text':
+    "Miradouro num promontório do Faial onde os navios eram carregados por um guindaste: a Penha d'Águia ergue-se mesmo em frente.",
+  'scenic.porto-da-cruz.tag': "Engenho de açúcar e Penha d'Águia",
+  'scenic.porto-da-cruz.text':
+    "Vila sob a Penha d'Águia, com um velho engenho que ainda faz aguardente a vapor, praias negras e uma piscina de água do mar.",
+  'scenic.portela.tag': 'Passo sobre o nordeste',
+  'scenic.portela.text':
+    "Passo a 670 m com vista sobre o Porto da Cruz, a Penha d'Águia e o mar; aqui começam percursos de levada.",
+  'scenic.machico.tag': 'A praia dourada dos primeiros povoadores',
+  'scenic.machico.text':
+    'A baía onde desembarcaram os primeiros povoadores em 1419: praia de areia dourada, pequenos fortes e uma promenade sob colinas verdes.',
+  'scenic.prainha.tag': 'A única praia de areia natural',
+  'scenic.prainha.text':
+    'Pequena baía de areia vulcânica escura perto da ponta leste — a única praia de areia natural da Madeira — com uma capela na colina por cima.',
+  'scenic.cristo-rei.tag': 'Cristo sobre o mar',
+  'scenic.cristo-rei.text':
+    'Estátua de Cristo de braços abertos numa falésia sobre o oceano, mais antiga do que a do Rio; um caminho e um teleférico descem até uma praia numa reserva marinha.',
+  'scenic.canico-de-baixo.tag': 'Promenade e água cristalina',
+  'scenic.canico-de-baixo.text':
+    'Vila à beira-mar com uma promenade ao longo das falésias até aos Reis Magos, piscinas entre as rochas e das águas mais límpidas da ilha para snorkeling.',
+  'scenic.camacha.tag': 'Vila do vime com vista',
+  'scenic.camacha.text':
+    'Vila nas colinas famosa pelo trabalho em vime; do Largo da Achada avista-se a costa sudeste e o mar.',
   'tab.explore': 'Paisagens',
   'detail.wayBack': 'Volta',
   'scenic.title': 'Viagens populares com belas paisagens',
@@ -275,6 +347,15 @@ export const pt: Dict = {
     'Fotografias do Wikimedia Commons com licenças livres; recortadas e reduzidas.',
   'plan.scenic': 'Belas paisagens',
   'scenic.all': 'Todas',
+  'scenic.region.funchal': 'Funchal e arredores',
+  'scenic.region.mountains': 'Serras',
+  'scenic.region.west': 'Oeste',
+  'scenic.region.north': 'Costa norte',
+  'scenic.region.east': 'Leste',
+  'scenic.walks': 'Passeios com vista',
+  'scenic.walksHint':
+    'A pé junto ao mar, até 35 minutos: grátis e muitas vezes mais rápido e agradável do que um autocarro com transbordo. Toque para planear.',
+  'scenic.km': '{km} km',
   'lines.formerly': 'antiga {n}',
   'lines.search': 'Número ou nome da linha',
   'lines.none': 'Nenhuma linha corresponde a «{q}»',

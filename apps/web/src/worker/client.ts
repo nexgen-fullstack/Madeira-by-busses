@@ -51,6 +51,11 @@ export class PlannerClient {
     return this.call({ method: 'last', request });
   }
 
+  /** Walking all the way for each request (along the sea when that has a view), or null. */
+  walks(requests: PlanRequest[]): Promise<(Itinerary | null)[]> {
+    return this.call({ method: 'walks', requests });
+  }
+
   /** Stops the worker; pending calls are rejected. */
   dispose(): void {
     this.worker.terminate();
