@@ -27,6 +27,11 @@ export function LinesView({ route }: { route: Route }) {
   }, [net, today]);
 
   const lines = useMemo(() => lineGroups(net), [net]);
+  // The lines that take the Via Rápida somewhere, marked so.
+  const onExpressway = useMemo(() => {
+    const runs = net.bundle.shapeExpressways ?? [];
+    return new Set(net.patterns.filter((p) => runs[p.shape]?.length).map((p) => p.route));
+  }, [net]);
   const byAgency = useMemo(
     () =>
       net.bundle.agencies.map((agency, a) => ({
@@ -93,6 +98,14 @@ export function LinesView({ route }: { route: Route }) {
                         </span>
                       )}
                       <span className="line-tile__name">{r.long}</span>
+                      {line.routes.some((i) => onExpressway.has(i)) && (
+                        <span className="line-tile__vr" title={t.t('vr.hint')}>
+                          <span className="vr-mark" aria-hidden>
+                            VR
+                          </span>
+                          Via Rápida
+                        </span>
+                      )}
                       <span className="line-tile__meta">{t.tn('lines.trips', trips)}</span>
                     </button>
                   </li>

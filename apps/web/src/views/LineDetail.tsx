@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from 'react';
+import { Fragment, useMemo, useState, type ReactNode } from 'react';
 import { ArrowLeft, Download, Image, Loader2, Printer, Share2 } from 'lucide-react';
 import { stopDepartures } from '@madeirabus/engine';
 import { WaysTable, type WayColumn, type WayEntry } from '../components/HourTable.tsx';
@@ -10,7 +10,13 @@ import { isNative } from '../lib/device.ts';
 import { canPrint, canShareFiles, printPdf, saveFile, shareFile } from '../lib/files.ts';
 import { clock, longDate } from '../lib/format.ts';
 import { variantNote } from '../lib/lineSheet.ts';
-import { lineDirections, lineOf, type Direction } from '../lib/lines.ts';
+import {
+  expresswayStretches,
+  kilometres,
+  lineDirections,
+  lineOf,
+  type Direction,
+} from '../lib/lines.ts';
 import { routeContent, WAY_TURQUOISE, WAY_YELLOW } from '../lib/mapContent.ts';
 import { boardingStops, returnOf, terminusMarks } from '../lib/printable.ts';
 import { goBack, navigate } from '../lib/router.ts';
@@ -54,6 +60,11 @@ export function LineDetail({ routeIndex, at, day }: Props) {
   const main = dir?.patterns[0];
   const stops = useMemo(() => (dir ? boardingStops(net, dir) : []), [net, dir]);
   const stop = chosenStop !== undefined && stops.includes(chosenStop) ? chosenStop : stops[0];
+  // Where this way runs on the Via Rápida, between which of its stops.
+  const expressways = useMemo(
+    () => (main === undefined ? [] : expresswayStretches(net, main)),
+    [net, main],
+  );
 
   // The chosen way in yellow, the way back in turquoise, as the buttons show; the
   // variants that run on the day of the timetable, telling when they run when tapped.
@@ -113,6 +124,7 @@ export function LineDetail({ routeIndex, at, day }: Props) {
     navigate(`ride/${e.pattern}/${e.dayTrip}`, { d: date, s: String(ways[way]!.stop) });
   };
   const mainStops = net.patterns[main]!.stops;
+  const stopName = (pos: number) => net.stops[mainStops[pos]!]!.name;
 
   const switchDirection = (i: number) => {
     // Stay at the same stop across the road when the other direction has one.
@@ -222,6 +234,27 @@ export function LineDetail({ routeIndex, at, day }: Props) {
         )
       )}
 
+      {expressways.length > 0 && (
+        <div className="vr-note">
+          <span className="vr-mark" aria-hidden>
+            VR
+          </span>
+          <div>
+            <div className="vr-note__title">{t.t('vr.title')}</div>
+            {expressways.map((x) => (
+              <div key={x.from}>
+                {t.t('vr.stretch', {
+                  from: stopName(x.from),
+                  to: stopName(x.to),
+                  km: kilometres(x.metres, t.locale),
+                })}
+              </div>
+            ))}
+            <div className="vr-note__hint">{t.t('vr.hint')}</div>
+          </div>
+        </div>
+      )}
+
       <section className="card">
         <div className="card__row card__row--wrap">
           <h3 className="card__title">{t.t('lines.timetable', { date: longDate(t, date) })}</h3>
@@ -320,13 +353,31 @@ export function LineDetail({ routeIndex, at, day }: Props) {
       <section className="card">
         <h3 className="card__title">{t.t('lines.stops')}</h3>
         <ol className="stop-line" style={{ ['--route' as string]: routeColor(line) }}>
-          {mainStops.map((s, i) => (
-            <li key={`${s}-${i}`} className={s === stop ? 'is-chosen' : undefined}>
-              <button type="button" onClick={() => navigate('stop', { ids: String(s) })}>
-                {net.stops[s]!.name}
-              </button>
-            </li>
-          ))}
+          {mainStops.map((s, i) => {
+            const vr = expressways.find((x) => x.from === i);
+            const onVr = expressways.some((x) => i > x.from && i < x.to);
+            const className = [s === stop && 'is-chosen', onVr && 'stop-line__on-vr']
+              .filter(Boolean)
+              .join(' ');
+            return (
+              <Fragment key={`${s}-${i}`}>
+                <li className={className || undefined}>
+                  <button type="button" onClick={() => navigate('stop', { ids: String(s) })}>
+                    {net.stops[s]!.name}
+                  </button>
+                </li>
+                {/* Where it takes the Via Rápida, between the stops it leaves and reaches it at. */}
+                {vr && (
+                  <li className="stop-line__vr" title={t.t('vr.hint')}>
+                    <span className="vr-mark" aria-hidden>
+                      VR
+                    </span>
+                    {t.t('vr.ride', { km: kilometres(vr.metres, t.locale) })}
+                  </li>
+                )}
+              </Fragment>
+            );
+          })}
         </ol>
       </section>
       {toast && (

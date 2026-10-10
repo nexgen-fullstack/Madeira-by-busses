@@ -38,6 +38,9 @@ const net = {
   lane: (p: number) => shapes[p]!,
   rideShape: (p: number) => shapes[p]!,
   rideLane: (p: number) => shapes[p]!,
+  stopPositions: () => ({ cum: [0, 15_000], stops: [0, 5600, 14_000] }),
+  // Not on the Via Rápida (see below for one that is).
+  expressways: () => [],
 } as unknown as Network;
 const there: Direction = { label: 'Funchal → Ribeira Brava', patterns: [0] };
 const back: Direction = { label: 'Ribeira Brava → Funchal', patterns: [1] };
@@ -134,6 +137,7 @@ describe('the variants of a line on the map', () => {
     shape: (p: number) => (p === 0 ? coast : inland),
     lane: (p: number) => (p === 0 ? coast : inland),
     isServiceActive: (service: number, date: string) => service === (date === '2026-10-10' ? 1 : 0),
+    expressways: () => [],
   } as unknown as Network;
   const way: Direction = { label: 'Ribeira Brava → Funchal', patterns: [0, 1] };
 
@@ -290,5 +294,51 @@ describe('a way by car, on foot or by bike', () => {
     expect(walk.fitKey).not.toBe(car.fitKey);
     const bike = travelContent({ mode: 'bike', path, length: 6000, seconds: 1500 });
     expect(bike.lines[0]!.color).toBe(BIKE_GREEN);
+  });
+});
+
+describe('the Via Rápida on the map', () => {
+  // The 207 on the Via Rápida from Câmara de Lobos on, both ways.
+  const vr = {
+    ...net,
+    expressways: (_: number, from = 0, to = Infinity) =>
+      [{ from: Math.max(from, 5600), to: Math.min(to, 14_000) }].filter((x) => x.to > x.from),
+    laneBetween: (p: number, from: number, to: number) => [
+      { ...shapes[p]![0]!, lon: -16.91 - from / 1e5 },
+      { ...shapes[p]![0]!, lon: -16.91 - to / 1e5 },
+    ],
+  } as unknown as Network;
+
+  it('is a band under each way of a line that takes it', () => {
+    const c = routeContent(vr, [there, back], 0);
+    expect(c.expressways).toHaveLength(2);
+    expect(routeContent(net, [there, back], 0).expressways).toBeUndefined();
+  });
+
+  it('is a band under the part of a ride on it', () => {
+    const it = {
+      key: 'T1:0-1',
+      depart: 36000,
+      legs: [
+        {
+          kind: 'ride',
+          route: 7,
+          pattern: 0,
+          boardPos: 0,
+          alightPos: 1,
+          from: { ...net.stops[0]!, stop: 0 },
+          to: { ...net.stops[1]!, stop: 1 },
+          stops: [],
+        },
+      ],
+    } as unknown as Itinerary;
+    expect(itineraryContent(vr, it).expressways).toBeUndefined();
+    const all = { ...it, legs: [{ ...it.legs[0]!, alightPos: 2 }] } as Itinerary;
+    expect(itineraryContent(vr, all).expressways).toMatchObject([
+      [
+        { lat: 32.65, lon: expect.closeTo(-16.966) },
+        { lat: 32.65, lon: expect.closeTo(-17.05) },
+      ],
+    ]);
   });
 });

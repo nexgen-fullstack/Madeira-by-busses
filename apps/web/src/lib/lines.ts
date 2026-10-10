@@ -163,3 +163,39 @@ export function lineMatches(net: Network, line: LineGroup, query: string): boole
     );
   });
 }
+
+/** A stretch of a line on the Via Rápida: between which of its stops, how long. */
+export interface ExpresswayStretch {
+  /** Positions in the pattern's stops: the last one before it, the first one after it. */
+  from: number;
+  to: number;
+  metres: number;
+}
+
+/** A stop this close to where a stretch on the Via Rápida begins or ends is at it (m). */
+const AT_STRETCH = 60;
+
+/**
+ * Where a pattern runs on the Via Rápida, each stretch between the stops it leaves and
+ * reaches it at; only a ride's part of it when `boardPos` and `alightPos` are given.
+ */
+export function expresswayStretches(
+  net: Network,
+  pattern: number,
+  boardPos = 0,
+  alightPos?: number,
+): ExpresswayStretch[] {
+  const { stops } = net.stopPositions(pattern);
+  const last = alightPos ?? stops.length - 1;
+  return net.expressways(pattern, stops[boardPos], stops[last]).map((x) => {
+    let from = boardPos;
+    while (from + 1 < last && stops[from + 1]! <= x.from + AT_STRETCH) from++;
+    let to = last;
+    while (to - 1 > from && stops[to - 1]! >= x.to - AT_STRETCH) to--;
+    return { from, to, metres: x.to - x.from };
+  });
+}
+
+/** Kilometres, to a tenth under ten. */
+export const kilometres = (m: number, locale: string) =>
+  (m / 1000).toLocaleString(locale, { maximumFractionDigits: m < 10_000 ? 1 : 0 });

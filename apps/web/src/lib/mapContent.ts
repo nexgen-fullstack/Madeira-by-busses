@@ -76,6 +76,8 @@ export interface MapContent {
   scenic?: ScenicSpot[];
   /** The hiking trails shown whatever the layers say: the trails tab. */
   trails?: boolean;
+  /** Where the buses shown run on the Via Rápida: a violet band under them, named. */
+  expressways?: LatLon[][];
 }
 
 /** A place with a view on the map: its photo (or its region's colours) and its name. */
@@ -105,6 +107,14 @@ const INK = '#14181F';
  * Each bus of a route in a neon of its own, the first in the yellow of a chosen way:
  * where one bus ends and the next begins shows on the map.
  */
+/** The Via Rápida, under a bus that takes it (as in styles.css). */
+export const VR_VIOLET = '#7E57C2';
+
+/** Where a pattern runs on the Via Rápida (within `from`…`to` m along it), in its lane. */
+export function expresswayLanes(net: Network, pattern: number, from?: number, to?: number) {
+  return net.expressways(pattern, from, to).map((x) => net.laneBetween(pattern, x.from, x.to));
+}
+
 export const RIDE_COLORS = [WAY_YELLOW, '#FF3DF0', WAY_TURQUOISE, '#FF8A00', '#7CFF3A'];
 export const rideColor = (ride: number) => RIDE_COLORS[ride % RIDE_COLORS.length]!;
 /** The foot of the flags where a bus is boarded and left. */
@@ -152,6 +162,11 @@ export function itineraryContent(
   const rides = it.legs.map((leg) =>
     leg.kind === 'ride' ? net.rideLane(leg.pattern, leg.boardPos, leg.alightPos) : undefined,
   );
+  const expressways = it.legs.flatMap((leg) => {
+    if (leg.kind !== 'ride') return [];
+    const { stops } = net.stopPositions(leg.pattern);
+    return expresswayLanes(net, leg.pattern, stops[leg.boardPos], stops[leg.alightPos]);
+  });
   let ride = 0;
   it.legs.forEach((leg, i) => {
     if (leg.kind === 'walk') {
@@ -225,6 +240,7 @@ export function itineraryContent(
     fitKey: `${key}${leg ? `:${focus}` : ''}`,
     fit: leg ? leg.coords : lines.flatMap((l) => l.coords),
     ...(chosen ? { focus: key } : {}),
+    ...(expressways.length > 0 ? { expressways } : {}),
   };
 }
 
@@ -479,6 +495,10 @@ export function routeContent(
   });
   const lines: MapLine[] = [];
   const points = new Map<number, MapPoint>();
+  // Where its buses run on the Via Rápida, each pattern drawn once.
+  const expressways = [...new Set(drawnBy.flat().map((x) => x.pattern))].flatMap((p) =>
+    expresswayLanes(net, p),
+  );
   ways.forEach((d, w) => {
     const color = d === way ? WAY_YELLOW : WAY_TURQUOISE;
     const mine = drawnBy[w]!;
@@ -539,6 +559,7 @@ export function routeContent(
     fitKey: key,
     fit: lines.flatMap((l) => l.coords),
     focus: key,
+    ...(expressways.length > 0 ? { expressways } : {}),
   };
 }
 

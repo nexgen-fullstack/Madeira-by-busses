@@ -40,6 +40,11 @@ export interface NetworkBundle {
    * (see `encodeSides`); empty or missing where it is not known.
    */
   shapeSides?: string[];
+  /**
+   * For each shape, where it runs on the Via Rápida: the first and last point of each
+   * stretch, flat ([a0, b0, a1, b1…]); empty or missing where it does not, or is not known.
+   */
+  shapeExpressways?: number[][];
   patterns: BPattern[];
   fares: FareTable;
   stats: { stops: number; routes: number; patterns: number; trips: number };

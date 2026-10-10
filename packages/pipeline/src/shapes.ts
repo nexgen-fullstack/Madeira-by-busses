@@ -106,6 +106,17 @@ const OFFSET_WEIGHT = 0.3;
 const VMAX = ROAD_SPEED_KMH[0]! / 3.6;
 const CELL = 0.0015;
 const DEG = Math.PI / 180;
+
+/** A step of a line is looked at every this many metres for the Via Rápida… */
+const EXPRESSWAY_SAMPLE = 40;
+/** …on it within this many metres of its middle… */
+const EXPRESSWAY_NEAR = 12;
+/** …and running along it: the cosine of the most a road may turn from the step (30°). */
+const EXPRESSWAY_ALONG = Math.cos(30 * DEG);
+/** A junction between two stretches on the Via Rápida shorter than this is on it (m). */
+const EXPRESSWAY_GAP = 250;
+/** The shortest stretch on the Via Rápida that counts (m). */
+const EXPRESSWAY_MIN = 600;
 const cellKey = (iy: number, ix: number) => iy * 1_000_000 + ix;
 
 /** A binary min-heap of node indices keyed by cost. */
@@ -262,6 +273,7 @@ export class RoadRouter {
   private run = 0;
   private readonly candidateCache = new Map<string, Candidate[]>();
   private readonly pathCache = new Map<string, RoadShape | undefined>();
+  private expresswayCells?: Set<number>;
 
   constructor(data: WalkGraphData) {
     const n = data.nodes.length;
@@ -762,5 +774,81 @@ export class RoadRouter {
     }
     this.stats.matched++;
     return simplifySided(made.line, 1.5);
+  }
+
+  /**
+   * Where a line runs on the Via Rápida (the island's trunk roads, VR1 and VR2, with their
+   * slip roads: class 0 of drive.bin), as [first point, last point] of each stretch, flat.
+   * A step is on it when most of it runs along it, no other road nearer and running the
+   * same way; a short gap (a junction) joins two stretches, and a short stretch (crossing
+   * it at a roundabout, a slip road taken past it) is not one.
+   */
+  expresswayRuns(points: readonly LatLon[]): number[] {
+    // The cells by the Via Rápida: elsewhere no point is looked at more closely.
+    if (!this.expresswayCells) {
+      const cells = new Set<number>();
+      for (const [key, edges] of this.cells) {
+        if (!edges.some((e) => this.cls[e] === 0)) continue;
+        for (let dy = -1; dy <= 1; dy++)
+          for (let dx = -1; dx <= 1; dx++) cells.add(key + dy * 1_000_000 + dx);
+      }
+      this.expresswayCells = cells;
+    }
+    const byIt = this.expresswayCells;
+    const on: boolean[] = [];
+    for (let i = 1; i < points.length; i++) {
+      const a = points[i - 1]!;
+      const b = points[i]!;
+      const d = haversine(a, b);
+      const bearing = Math.atan2((b.lon - a.lon) * Math.cos(a.lat * DEG), b.lat - a.lat);
+      const n = Math.max(1, Math.ceil(d / EXPRESSWAY_SAMPLE));
+      let hits = 0;
+      for (let k = 0; k < n; k++) {
+        const t = (k + 0.5) / n;
+        const p = { lat: a.lat + t * (b.lat - a.lat), lon: a.lon + t * (b.lon - a.lon) };
+        const cell = cellKey(Math.floor((p.lat + 90) / CELL), Math.floor((p.lon + 180) / CELL));
+        if (!byIt.has(cell)) continue;
+        let best: RoadHit | undefined;
+        for (const hit of this.near(p, EXPRESSWAY_NEAR).values()) {
+          // Along it either way (a road's first node may be at either end), not across it.
+          if (Math.abs(Math.cos(hit.bearing - bearing)) < EXPRESSWAY_ALONG) continue;
+          if (!best || hit.offset < best.offset) best = hit;
+        }
+        if (best && this.cls[best.edge] === 0) hits++;
+      }
+      on.push(d > 0 && hits * 2 >= n);
+    }
+    // Runs of steps, as [first step, last step, on it, metres].
+    const runs: [number, number, boolean, number][] = [];
+    on.forEach((f, i) => {
+      const m = haversine(points[i]!, points[i + 1]!);
+      const last = runs.at(-1);
+      if (last && last[2] === f) {
+        last[1] = i;
+        last[3] += m;
+      } else runs.push([i, i, f, m]);
+    });
+    // A short gap between two stretches on it is on it too.
+    runs.forEach((r, i) => {
+      if (!r[2] && i > 0 && i < runs.length - 1 && r[3] < EXPRESSWAY_GAP) r[2] = true;
+    });
+    const out: number[] = [];
+    let start = -1;
+    let metres = 0;
+    runs.forEach((r, i) => {
+      if (r[2]) {
+        if (start < 0) {
+          start = r[0];
+          metres = 0;
+        }
+        metres += r[3];
+      }
+      if (start >= 0 && (!r[2] || i === runs.length - 1)) {
+        const end = r[2] ? r[1] : r[0] - 1;
+        if (metres >= EXPRESSWAY_MIN) out.push(start, end + 1);
+        start = -1;
+      }
+    });
+    return out;
   }
 }

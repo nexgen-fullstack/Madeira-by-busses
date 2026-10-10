@@ -64,6 +64,9 @@ export interface NetworkOptions {
 
 export const DEFAULT_WALK_SPEED = 1.25;
 
+/** The shortest part of a ride on the Via Rápida that is told (m). */
+const MIN_EXPRESSWAY = 500;
+
 /**
  * Runtime view of a bundle with the indexes the planner needs. Indexes that
  * only some callers use (walking transfers for the planner, name search for
@@ -214,6 +217,31 @@ export class Network {
       stops[boardPos]!,
       stops[alightPos]!,
     );
+    return offsetPolyline(part.points, part.sides);
+  }
+
+  /**
+   * Where the pattern runs on the Via Rápida, each stretch from and to (m along its shape),
+   * within `from`…`to` when given (a ride's part of it).
+   */
+  expressways(pattern: number, from = 0, to = Infinity): { from: number; to: number }[] {
+    const runs = this.bundle.shapeExpressways?.[this.patterns[pattern]!.shape] ?? [];
+    if (runs.length === 0) return [];
+    const { cum } = this.stopPositions(pattern);
+    const out: { from: number; to: number }[] = [];
+    for (let i = 0; i + 1 < runs.length; i += 2) {
+      const a = Math.max(from, cum[runs[i]!] ?? 0);
+      const b = Math.min(to, cum[runs[i + 1]!] ?? cum[cum.length - 1]!);
+      // What is left of a stretch past the end of a ride is not one.
+      if (b - a >= MIN_EXPRESSWAY) out.push({ from: a, to: b });
+    }
+    return out;
+  }
+
+  /** A stretch of the pattern along its shape (m), in its bus's lane, as the map draws it. */
+  laneBetween(pattern: number, from: number, to: number): LatLon[] {
+    const { cum } = this.stopPositions(pattern);
+    const part = sliceSided(this.shape(pattern), cum, this.shapeSides(pattern), from, to);
     return offsetPolyline(part.points, part.sides);
   }
 

@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { Fragment, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, Flag, Loader2 } from 'lucide-react';
 import { haversine, madeiraNow, type Itinerary } from '@madeirabus/engine';
 import { ItineraryCard } from '../components/ItineraryCard.tsx';
@@ -12,6 +12,7 @@ import { findOptions, type Found } from '../lib/ahead.ts';
 import { clock } from '../lib/format.ts';
 import { useGeolocation } from '../lib/geolocation.ts';
 import { decodePlace, encodePlace } from '../lib/itinerary.ts';
+import { expresswayStretches, kilometres } from '../lib/lines.ts';
 import {
   itineraryContent,
   WAY_WIDTH,
@@ -68,6 +69,11 @@ export function RideView({
   );
   const board = times[boardPos];
   const end = times[times.length - 1];
+  // Where the bus runs on the Via Rápida, after which of its stops.
+  const expressways = useMemo(
+    () => (p && times.length > 0 ? expresswayStretches(net, pattern) : []),
+    [net, p, pattern, times],
+  );
 
   const setParams = useCallback(
     (patch: Record<string, string | undefined>) =>
@@ -316,33 +322,46 @@ export function RideView({
         <ol className="ride__stops">
           {times.map((x, i) => {
             const name = net.stops[x.stop]!.name;
+            const vr = expressways.find((e) => e.from === i);
             return (
-              <li
-                key={`${x.stop}-${i}`}
-                className={[
-                  i < boardPos ? 'is-past' : '',
-                  i === boardPos ? 'is-board' : '',
-                  i > boardPos && name === chosenName ? 'is-chosen' : '',
-                ]
-                  .join(' ')
-                  .trim()}
-              >
-                <span className="ride__time">{clock(i === 0 ? x.dep : x.arr)}</span>
-                <span className="ride__name">{name}</span>
-                {i > boardPos && (
-                  <button
-                    type="button"
-                    className="icon-button"
-                    aria-label={t.t('ride.toStop', { stop: name })}
-                    title={t.t('ride.toStop', { stop: name })}
-                    onClick={() =>
-                      setParams({ to: encodePlace(stopValue(x.stop), net), i: undefined })
-                    }
+              <Fragment key={`${x.stop}-${i}`}>
+                <li
+                  className={[
+                    i < boardPos ? 'is-past' : '',
+                    i === boardPos ? 'is-board' : '',
+                    i > boardPos && name === chosenName ? 'is-chosen' : '',
+                  ]
+                    .join(' ')
+                    .trim()}
+                >
+                  <span className="ride__time">{clock(i === 0 ? x.dep : x.arr)}</span>
+                  <span className="ride__name">{name}</span>
+                  {i > boardPos && (
+                    <button
+                      type="button"
+                      className="icon-button"
+                      aria-label={t.t('ride.toStop', { stop: name })}
+                      title={t.t('ride.toStop', { stop: name })}
+                      onClick={() =>
+                        setParams({ to: encodePlace(stopValue(x.stop), net), i: undefined })
+                      }
+                    >
+                      <Flag size={16} />
+                    </button>
+                  )}
+                </li>
+                {vr && (
+                  <li
+                    className={`ride__vr${i < boardPos ? ' is-past' : ''}`}
+                    title={t.t('vr.hint')}
                   >
-                    <Flag size={16} />
-                  </button>
+                    <span className="vr-mark" aria-hidden>
+                      VR
+                    </span>
+                    {t.t('vr.ride', { km: kilometres(vr.metres, t.locale) })}
+                  </li>
                 )}
-              </li>
+              </Fragment>
             );
           })}
         </ol>

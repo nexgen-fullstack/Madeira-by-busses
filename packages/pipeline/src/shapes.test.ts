@@ -181,6 +181,53 @@ describe('lines along the roads', () => {
   });
 });
 
+describe('the Via Rápida', () => {
+  /**
+   *        N
+   *        │                 a street across it, over a bridge
+   *   A ═══╪═══════════ B ── C   the Via Rápida (trunk), 3.7 km; a secondary road on to C
+   *   D ─────────────── E        a street beside it, 220 m south
+   *        │
+   *        S
+   */
+  const at = (lon: number, lat = 32.66) => ({ lat, lon });
+  const [A, B, C, D, E] = [
+    at(-16.92),
+    at(-16.88),
+    at(-16.87),
+    at(-16.92, 32.658),
+    at(-16.88, 32.658),
+  ];
+  const [N, S] = [at(-16.91, 32.663), at(-16.91, 32.655)];
+  const vr = () => {
+    const { graph } = buildWalkGraph(
+      [
+        { id: 1, nodes: [1, 2], geometry: [A, B], tags: { highway: 'trunk', ref: 'VR1' } },
+        { id: 2, nodes: [2, 3], geometry: [B, C], tags: { highway: 'secondary' } },
+        { id: 3, nodes: [4, 5], geometry: [D, E], tags: { highway: 'residential' } },
+        { id: 4, nodes: [6, 7], geometry: [N, S], tags: { highway: 'tertiary', bridge: 'yes' } },
+      ],
+      { kindOf: (tags) => driveKind(tags), reverse: reverseDriveKind, minComponent: 0 },
+    );
+    return new RoadRouter(decodeWalkGraphData(encodeWalkGraph(graph)));
+  };
+
+  it('finds where a line runs on it', () => {
+    const line = [A, at(-16.9), B, C];
+    expect(vr().expresswayRuns(line)).toEqual([0, 2]);
+  });
+
+  it('is not a street beside it, nor one across it', () => {
+    const r = vr();
+    expect(r.expresswayRuns([D, E])).toEqual([]);
+    expect(r.expresswayRuns([N, S])).toEqual([]);
+  });
+
+  it('is not a few hundred metres of it', () => {
+    expect(vr().expresswayRuns([at(-16.885), B, C])).toEqual([]);
+  });
+});
+
 describe('lines off the roads', () => {
   it('finds the stretches far from every road', () => {
     // A line east along the parallel; the road leaves it for 100 m in the middle.

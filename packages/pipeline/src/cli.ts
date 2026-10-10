@@ -6,6 +6,7 @@ import { gzipSync, strToU8 } from 'fflate';
 import {
   addDays,
   buildBundle,
+  decodePolyline,
   madeiraHolidays,
   madeiraNow,
   parseGtfs,
@@ -280,6 +281,8 @@ async function build(args: Args) {
     },
   );
   if (router) {
+    // Where each line runs on the Via Rápida, for the app to show it.
+    bundle.shapeExpressways = bundle.shapes.map((s) => router.expresswayRuns(decodePolyline(s)));
     const s = router.stats;
     console.log(
       `Lines along the roads: ${s.patterns} stop sequences, ${s.routed} sections routed, ${s.straight} left straight; ` +

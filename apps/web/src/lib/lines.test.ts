@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { Network } from '@madeirabus/engine';
-import { lineGroups, lineOf } from './lines.ts';
+import { lineNetwork } from '../test/network.ts';
+import { expresswayStretches, lineGroups, lineOf } from './lines.ts';
 
 const route = (agency: number, short: string) => ({ agency, short });
 const pattern = (r: number, trips: number, stops = 10) => ({
@@ -35,5 +36,28 @@ describe('lineGroups', () => {
     expect(lineOf(net, 2)).toEqual([0, 2]);
     expect(lineOf(net, 3)).toEqual([3]);
     expect(lineOf(net, 99)).toEqual([]);
+  });
+});
+
+describe('expresswayStretches', () => {
+  // 110 out of Centro, as if it took the Via Rápida from Escola to Barreira.
+  const real = lineNetwork();
+  const out = real.patterns.findIndex(
+    (p) => p.stops.length === 4 && real.stops[p.stops[0]!]!.name === 'Centro',
+  );
+  real.bundle.shapeExpressways = real.bundle.shapes.map((_, i) =>
+    i === real.patterns[out]!.shape ? [1, 3] : [],
+  );
+
+  it('tells between which stops a line runs on it, and how far', () => {
+    const [x, ...more] = expresswayStretches(real, out);
+    expect(more).toEqual([]);
+    expect(x).toMatchObject({ from: 1, to: 3 });
+    expect(x!.metres).toBeCloseTo(667, -1);
+  });
+
+  it('keeps to a ride, and leaves out a short bit of it', () => {
+    expect(expresswayStretches(real, out, 1, 3)).toMatchObject([{ from: 1, to: 3 }]);
+    expect(expresswayStretches(real, out, 0, 2)).toEqual([]);
   });
 });

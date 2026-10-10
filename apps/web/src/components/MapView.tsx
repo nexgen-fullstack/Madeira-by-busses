@@ -25,6 +25,7 @@ import {
   TRAIL_RED,
   transitGeoJson,
   VIEW_WALK,
+  VR_VIOLET,
   WAY_TURQUOISE,
   WAY_WIDTH,
   type LineNote,
@@ -208,6 +209,14 @@ function toGeoJson(content: MapContent) {
           dot: stopDotId(p.fill ?? '#ffffff'),
         },
         geometry: { type: 'Point' as const, coordinates: [p.lon, p.lat] },
+      })),
+    },
+    expressways: {
+      type: 'FeatureCollection' as const,
+      features: (content.expressways ?? []).map((coords) => ({
+        type: 'Feature' as const,
+        properties: {},
+        geometry: { type: 'LineString' as const, coordinates: coords.map((c) => [c.lon, c.lat]) },
       })),
     },
   };
@@ -413,11 +422,12 @@ function plateImage(color: string): ImageData | undefined {
 
 /** Puts on the map the plates of the colours its lines are in. */
 function addPlates(map: MapLibreMap, content: MapContent) {
-  for (const line of content.lines) {
-    if (!line.label) continue;
-    const id = plateId(line.color);
+  const colors = content.lines.filter((l) => l.label).map((l) => l.color);
+  if (content.expressways?.length) colors.push(VR_VIOLET);
+  for (const color of colors) {
+    const id = plateId(color);
     if (map.hasImage(id)) continue;
-    const image = plateImage(line.color);
+    const image = plateImage(color);
     if (!image) continue;
     const mid = PLATE / 2;
     map.addImage(id, image, {
@@ -540,6 +550,19 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
   });
   map.addSource('mb-lines', { type: 'geojson', data: EMPTY });
   map.addSource('mb-points', { type: 'geojson', data: EMPTY });
+  // Where a bus shown runs on the Via Rápida: a violet band along the road, under its line.
+  map.addSource('mb-expressways', { type: 'geojson', data: EMPTY });
+  map.addLayer({
+    id: 'mb-expressway',
+    type: 'line',
+    source: 'mb-expressways',
+    layout: { 'line-cap': 'round', 'line-join': 'round' },
+    paint: {
+      'line-color': VR_VIOLET,
+      'line-width': ['interpolate', ['linear'], ['zoom'], 9, 9, 12, 16, 15, 26],
+      'line-opacity': 0.8,
+    },
+  });
   map.addLayer({
     id: 'mb-line-casing',
     type: 'line',
@@ -872,6 +895,33 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
         paint: { 'text-color': ['get', 'ink'] },
       },
       'mb-flag',
+    );
+    // Its name along the band, on a violet plate: "here the bus takes the Via Rápida".
+    map.addLayer(
+      {
+        id: 'mb-expressway-label',
+        type: 'symbol',
+        source: 'mb-expressways',
+        minzoom: 9.5,
+        layout: {
+          'symbol-placement': 'line',
+          'symbol-spacing': ['interpolate', ['linear'], ['zoom'], 10, 160, 13, 260, 15, 360],
+          'text-field': 'Via Rápida',
+          'text-size': ['interpolate', ['linear'], ['zoom'], 10, 10, 14, 11.5],
+          'text-font': ['Noto Sans Bold'],
+          'text-max-angle': 180,
+          'text-rotation-alignment': 'viewport',
+          'text-pitch-alignment': 'viewport',
+          'text-padding': 6,
+          'icon-image': plateId(VR_VIOLET),
+          'icon-text-fit': 'both',
+          'icon-text-fit-padding': [1, 5, 0, 5],
+          'icon-rotation-alignment': 'viewport',
+          'icon-pitch-alignment': 'viewport',
+        },
+        paint: { 'text-color': '#ffffff' },
+      },
+      'mb-line-label',
     );
     map.addLayer({
       id: 'mb-label',
@@ -1738,6 +1788,7 @@ function apply(map: MapLibreMap, content: MapContent, fit: { current: Fit }) {
   const data = toGeoJson(content);
   (map.getSource('mb-lines') as GeoJSONSource | undefined)?.setData(data.lines);
   (map.getSource('mb-points') as GeoJSONSource | undefined)?.setData(data.points);
+  (map.getSource('mb-expressways') as GeoJSONSource | undefined)?.setData(data.expressways);
   if (
     content.fitKey &&
     content.fitKey !== fit.current.key &&

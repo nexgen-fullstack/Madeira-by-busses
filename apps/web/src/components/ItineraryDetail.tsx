@@ -23,7 +23,7 @@ import { useI18n, type Key } from '../i18n.ts';
 import { isNative, remind } from '../lib/device.ts';
 import { clock, dayAhead, dayMonth, duration, longDate, price } from '../lib/format.ts';
 import { fareRides, isExpress, ridesOf, walkNotes } from '../lib/itinerary.ts';
-import { lineOf } from '../lib/lines.ts';
+import { expresswayStretches, kilometres, lineOf } from '../lib/lines.ts';
 import { rideColor } from '../lib/mapContent.ts';
 import { canSimulate } from '../lib/simulator.ts';
 import { useNow } from '../lib/useNow.ts';
@@ -204,6 +204,11 @@ export function ItineraryDetail({ it, date, ahead, onFocusLeg, onBack, onStart, 
           }
           const route = net.routes[leg.route]!;
           const between = leg.stops.slice(1, -1);
+          // How far of the ride is on the Via Rápida.
+          const vr = expresswayStretches(net, leg.pattern, leg.boardPos, leg.alightPos).reduce(
+            (m, x) => m + x.metres,
+            0,
+          );
           const open = expanded.has(i);
           return (
             <li
@@ -236,10 +241,19 @@ export function ItineraryDetail({ it, date, ahead, onFocusLeg, onBack, onStart, 
                     <RouteBadge route={route} size="sm" />{' '}
                     {t.t('detail.towards', { h: leg.headsign })}
                   </div>
-                  {isExpress(route) && (
-                    <div className="timeline__express" title={t.t('it.expressHint')}>
-                      <Zap size={12} aria-hidden /> {t.t('it.express')}
+                  {vr > 0 ? (
+                    <div className="timeline__vr" title={t.t('vr.hint')}>
+                      <span className="vr-mark" aria-hidden>
+                        VR
+                      </span>
+                      {t.t('vr.ride', { km: kilometres(vr, t.locale) })}
                     </div>
+                  ) : (
+                    isExpress(route) && (
+                      <div className="timeline__express" title={t.t('it.expressHint')}>
+                        <Zap size={12} aria-hidden /> {t.t('it.express')}
+                      </div>
+                    )
                   )}
                   {leg.nextDeparture !== undefined && (
                     <div className="muted small">
