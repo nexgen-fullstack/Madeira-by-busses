@@ -158,9 +158,6 @@ export const uk = {
   'settings.validity': 'Розклад дійсний з {from} по {to}',
   'settings.stats': 'зупинок: {stops} · маршрутів: {routes} · рейсів: {trips}',
   'settings.sources': 'Джерела',
-  'settings.dataset': 'Розклад',
-  'settings.real': 'Справжній',
-  'settings.demo': 'Демо',
   'settings.realMissing': 'Справжнього розкладу в цій збірці немає — показуємо демо.',
   'settings.about': 'Про застосунок',
   'settings.aboutText':

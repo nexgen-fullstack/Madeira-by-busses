@@ -10,7 +10,9 @@ test.beforeEach(async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-10-07T08:00:00Z'));
 });
 
-test('real timetable: every line, journey, grouped lines and the demo switch', async ({ page }) => {
+test('real timetable: every line, journey, grouped lines, and no demo to switch to', async ({
+  page,
+}) => {
   await page.goto('./');
   // The whole island's timetable takes a while to read on a slow machine.
   await raiseSheet(page, 20_000);
@@ -37,9 +39,8 @@ test('real timetable: every line, journey, grouped lines and the demo switch', a
   await expect(page.locator('.stop-line li').first()).toBeVisible();
 
   await page.getByRole('link', { name: 'Налаштування' }).click();
-  await page.getByRole('button', { name: 'Демо', exact: true }).click();
-  await expect(page.locator('.badge--demo').first()).toBeVisible();
-  await page.getByRole('button', { name: 'Справжній' }).click();
+  await expect(page.getByRole('heading', { name: 'Дані' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Демо', exact: true })).toHaveCount(0);
   await expect(page.locator('.badge--demo')).toHaveCount(0);
 });
 

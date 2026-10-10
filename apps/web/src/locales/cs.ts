@@ -155,9 +155,6 @@ export const cs: Dict = {
   'settings.validity': 'Jízdní řády platí od {from} do {to}',
   'settings.stats': 'zastávky: {stops} · linky: {routes} · spoje: {trips}',
   'settings.sources': 'Zdroje',
-  'settings.dataset': 'Jízdní řád',
-  'settings.real': 'Skutečný',
-  'settings.demo': 'Demo',
   'settings.realMissing': 'Tato verze neobsahuje skutečný jízdní řád – zobrazuje se demo.',
   'settings.about': 'O aplikaci',
   'settings.aboutText':

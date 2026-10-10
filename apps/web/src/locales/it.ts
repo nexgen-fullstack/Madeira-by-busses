@@ -135,9 +135,6 @@ export const it: Dict = {
   'settings.validity': 'Orari validi dal {from} al {to}',
   'settings.stats': 'fermate: {stops} · linee: {routes} · corse: {trips}',
   'settings.sources': 'Fonti',
-  'settings.dataset': 'Orari',
-  'settings.real': 'Reali',
-  'settings.demo': 'Demo',
   'settings.realMissing': 'Questa versione non include gli orari reali: viene mostrata la demo.',
   'settings.about': 'Informazioni',
   'settings.aboutText':

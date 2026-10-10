@@ -156,9 +156,6 @@ export const pl: Dict = {
   'settings.validity': 'Rozkłady ważne od {from} do {to}',
   'settings.stats': 'przystanki: {stops} · linie: {routes} · kursy: {trips}',
   'settings.sources': 'Źródła',
-  'settings.dataset': 'Rozkład',
-  'settings.real': 'Prawdziwy',
-  'settings.demo': 'Demo',
   'settings.realMissing': 'Ta wersja nie zawiera prawdziwego rozkładu – pokazujemy demo.',
   'settings.about': 'O aplikacji',
   'settings.aboutText':

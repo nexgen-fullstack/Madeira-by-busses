@@ -137,9 +137,6 @@ export const de: Dict = {
   'settings.validity': 'Fahrpläne gültig vom {from} bis {to}',
   'settings.stats': 'Haltestellen: {stops} · Linien: {routes} · Fahrten: {trips}',
   'settings.sources': 'Quellen',
-  'settings.dataset': 'Fahrplan',
-  'settings.real': 'Echt',
-  'settings.demo': 'Demo',
   'settings.realMissing':
     'Diese Version enthält keinen echten Fahrplan – es wird die Demo angezeigt.',
   'settings.about': 'Über die App',

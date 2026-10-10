@@ -51,11 +51,7 @@ async function newPage(options, { demo = false } = {}) {
   }
   if (demo) {
     // The whole-island demo network instead of the real timetable.
-    await ctx.addInitScript(() => {
-      const key = 'madeirabus.settings.v1';
-      const stored = JSON.parse(localStorage.getItem(key) ?? '{}');
-      localStorage.setItem(key, JSON.stringify({ ...stored, dataset: 'demo' }));
-    });
+    await ctx.addInitScript(() => localStorage.setItem('madeirabus.demo', '1'));
   }
   const page = await ctx.newPage();
   page.on('pageerror', (e) => console.log('pageerror', e.message));

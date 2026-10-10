@@ -136,9 +136,6 @@ export const en: Dict = {
   'settings.validity': 'Timetables valid from {from} to {to}',
   'settings.stats': '{stops} stops · {routes} lines · {trips} trips',
   'settings.sources': 'Sources',
-  'settings.dataset': 'Timetable',
-  'settings.real': 'Real',
-  'settings.demo': 'Demo',
   'settings.realMissing': 'This build has no real timetable — showing the demo.',
   'settings.about': 'About',
   'settings.aboutText':

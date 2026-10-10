@@ -143,22 +143,6 @@ export function SettingsView() {
           <Database size={16} aria-hidden /> {t.t('settings.data')}
           {b.demo && <span className="badge badge--demo">{t.t('demo.badge')}</span>}
         </h3>
-        <div
-          className="segmented segmented--wrap"
-          role="group"
-          aria-label={t.t('settings.dataset')}
-        >
-          {(['real', 'demo'] as const).map((d) => (
-            <button
-              key={d}
-              type="button"
-              aria-pressed={settings.dataset === d}
-              onClick={() => settings.dataset !== d && setSettings({ dataset: d })}
-            >
-              {t.t(d === 'real' ? 'settings.real' : 'settings.demo')}
-            </button>
-          ))}
-        </div>
         {fallback && <p className="muted small">{t.t('settings.realMissing')}</p>}
         {b.projected && (
           <p className="muted small">

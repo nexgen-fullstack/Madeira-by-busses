@@ -155,9 +155,6 @@ export const ru: Dict = {
   'settings.validity': 'Расписание действует с {from} по {to}',
   'settings.stats': 'остановок: {stops} · маршрутов: {routes} · рейсов: {trips}',
   'settings.sources': 'Источники',
-  'settings.dataset': 'Расписание',
-  'settings.real': 'Настоящее',
-  'settings.demo': 'Демо',
   'settings.realMissing': 'В этой сборке нет настоящего расписания — показываем демо.',
   'settings.about': 'О приложении',
   'settings.aboutText':

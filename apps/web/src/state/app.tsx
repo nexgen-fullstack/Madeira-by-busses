@@ -32,8 +32,23 @@ export interface Settings {
   /** What the best way should be best at: the balance, fewer changes or less walking. */
   route: RoutePreference;
   map: MapLayers;
-  /** Real timetables, or the invented whole-island demo network. */
-  dataset: 'real' | 'demo';
+}
+
+/** Real timetables, or the invented whole-island demo network. */
+export type Dataset = 'real' | 'demo';
+
+/**
+ * The demo network is for the browser tests and the README's screenshots only, which set
+ * this key; people always get the real timetable (an old "demo" in their settings too).
+ */
+export const DEMO_KEY = 'madeirabus.demo';
+
+function pinnedDataset(): Dataset {
+  try {
+    return localStorage.getItem(DEMO_KEY) === '1' ? 'demo' : 'real';
+  } catch {
+    return 'real';
+  }
 }
 
 export interface ActiveTrip {
@@ -63,10 +78,10 @@ export interface SavedStop {
 
 type DataState =
   | { status: 'loading' }
-  | { status: 'error'; error: string; dataset?: Settings['dataset'] }
+  | { status: 'error'; error: string; dataset?: Dataset }
   | {
       status: 'ready';
-      dataset?: Settings['dataset'];
+      dataset?: Dataset;
       net: Network;
       planner: PlannerClient;
       /** The real timetable was asked for but is not part of this build. */
@@ -134,7 +149,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       walkSpeed: 1.25,
       route: 'best',
       map: DEFAULT_LAYERS,
-      dataset: 'real',
     });
     // Most visitors pay cash on the bus; GIRO only for those who said they have the card.
     const payment = stored.paymentChosen ? stored.payment : 'cash';
@@ -142,7 +156,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return { ...stored, payment, route, map: { ...DEFAULT_LAYERS, ...stored.map } };
   });
   const [data, setData] = useState<DataState>({ status: 'loading' });
-  const dataset = settings.dataset;
+  const [dataset] = useState(pinnedDataset);
   const [trip, setTripState] = useState<ActiveTrip | undefined>();
   const [recent, setRecent] = useState<RecentTrip[]>(() => load(RECENT_KEY, { list: [] }).list);
   const [saved, setSaved] = useState<SavedStop[]>(() => load(SAVED_KEY, { list: [] }).list);
@@ -155,18 +169,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
     else remove(TRIP_KEY);
   }, []);
 
-  const setSettings = useCallback(
-    (patch: Partial<Settings>) => {
-      // Itineraries hold stop indices of the network they were planned on.
-      if (patch.dataset) setTrip(undefined);
-      setSettingsState((s) => {
-        const next = { ...s, ...patch };
-        save(SETTINGS_KEY, next);
-        return next;
-      });
-    },
-    [setTrip],
-  );
+  const setSettings = useCallback((patch: Partial<Settings>) => {
+    setSettingsState((s) => {
+      const next = { ...s, ...patch };
+      save(SETTINGS_KEY, next);
+      return next;
+    });
+  }, []);
 
   const addRecent = useCallback((r: RecentTrip) => {
     setRecent((list) => {
