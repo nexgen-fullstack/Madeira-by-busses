@@ -40,6 +40,17 @@ jobs:
           # data/sources/siga has a collector of its own (siga.yml) that keeps what it saw on earlier days.
           find data/sources -mindepth 1 -maxdepth 1 ! -name siga -exec rm -rf {} +
           node scripts/fetch-sources.mjs data/sources
+      - name: Keep what Overpass did not send
+        run: |
+          # A busy Overpass (504 on every server) stops the fetch part way: the previous bus
+          # routes, stops and places stay rather than none (on 2026-10-07 the places went so,
+          # and with them the airport, the museums and the beaches from the search).
+          for f in bus-routes.json bus-stops.json places.json; do
+            if [ ! -f "data/sources/osm/$f" ]; then
+              echo "::warning title=$f not refreshed::Not from Overpass; keeping the previous one."
+              git checkout HEAD -- "data/sources/osm/$f" || true
+            fi
+          done
       - name: Walking network
         run: |
           if [ -f data/sources/osm/walk-ways.json ]; then
