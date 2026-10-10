@@ -393,6 +393,12 @@ export const cs: Dict = {
     other: '{n} autobusů',
   },
   'lines.firstLast': 'První v {first} · poslední v {last}',
+  'ride.title': 'Autobus v {time}',
+  'ride.stops': 'Zastávky tohoto spoje',
+  'ride.toStop': 'Jet do „{stop}“',
+  'ride.fromBoardNote':
+    'Nevím, kde jste, takže trasa začíná na zastávce „{stop}“. Změňte „Odkud“: adresa, zastávka nebo špendlík na mapě.',
+  'lines.fromStop': 'ze zastávky {stop}',
   'print.card': 'Jízdní řád k tisku',
   'print.hint':
     'PDF ve formátu A4: pracovní dny, soboty, neděle a svátky a doba jízdy ke každé zastávce.',

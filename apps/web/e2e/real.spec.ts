@@ -52,8 +52,8 @@ test('the 110 that was the 10A, with its late short runs', async ({ page }) => {
   await expect(page.locator('.line-hero__number')).toHaveText('110');
   await page.getByLabel('Дата').fill('2026-10-03');
   const evening = page
-    .locator('.timetable tr')
-    .filter({ has: page.locator('th', { hasText: '21' }) });
+    .locator('.ways__row')
+    .filter({ has: page.locator('.ways__hour', { hasText: '21' }) });
   await expect(evening).toContainText('30a');
   await expect(page.locator('.legend')).toContainText('Caminho Barreira');
 });

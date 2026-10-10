@@ -364,6 +364,12 @@ export const pt: Dict = {
   'lines.none': 'Nenhuma linha corresponde a «{q}»',
   'lines.buses': { one: '{n} autocarro', other: '{n} autocarros' },
   'lines.firstLast': 'Primeiro às {first} · último às {last}',
+  'ride.title': 'O autocarro das {time}',
+  'ride.stops': 'Paragens deste autocarro',
+  'ride.toStop': 'Ir para «{stop}»',
+  'ride.fromBoardNote':
+    'Não sei onde está, por isso o percurso começa em «{stop}». Mude «De»: uma morada, uma paragem ou um pino no mapa.',
+  'lines.fromStop': 'de {stop}',
   'print.card': 'Horário para imprimir',
   'print.hint': 'PDF em A4: dias úteis, sábados, domingos e feriados, e o tempo até cada paragem.',
   'print.from': 'Partidas de',

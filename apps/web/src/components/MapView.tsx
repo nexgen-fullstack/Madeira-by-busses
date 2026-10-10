@@ -1504,10 +1504,15 @@ function planWith(patch: Record<string, string>) {
   navigate('plan', { ...current, ...patch, i: undefined });
 }
 
-/** A point chosen on the map goes to the screen that asked: a place's page, or the planner. */
+/**
+ * A point chosen on the map goes to the screen that asked: a place's page, a bus's trip, or
+ * the planner.
+ */
 function pickInto(field: PickField, value: string) {
   const [path = '', query = ''] = location.hash.replace(/^#\/?/, '').split('?');
-  if (!path.startsWith('explore/')) return planWith({ [field]: value });
+  if (!path.startsWith('explore/') && !path.startsWith('ride/')) {
+    return planWith({ [field]: value });
+  }
   navigate(path, {
     ...Object.fromEntries(new URLSearchParams(query)),
     [field]: value,

@@ -30,6 +30,7 @@ import { LineDetail } from './views/LineDetail.tsx';
 import { LinesView } from './views/LinesView.tsx';
 import { NearbyView } from './views/NearbyView.tsx';
 import { PlanView } from './views/PlanView.tsx';
+import { RideView } from './views/RideView.tsx';
 import { SettingsView } from './views/SettingsView.tsx';
 import { StopView } from './views/StopView.tsx';
 import { TripView } from './views/TripView.tsx';
@@ -87,6 +88,15 @@ function Screen() {
       const place = destination(sub);
       return place ? <DestinationView key={place.id} d={place} route={route} /> : <ExploreView />;
     }
+    case 'ride':
+      return (
+        <RideView
+          key={route.path.join('/')}
+          pattern={Number(sub)}
+          dayTrip={Number(route.path[2])}
+          route={route}
+        />
+      );
     case 'stop':
       return <StopView route={route} />;
     case 'settings':
@@ -233,6 +243,7 @@ function Shell() {
     }
     // A line or a place: back where it was opened from (a place's timetable, the list).
     if ((where === 'lines' || where === 'explore') && sub !== undefined) goBack(where);
+    else if (where === 'ride') goBack('lines');
     else if (where === 'stop') goBack('plan');
     else navigate('plan');
     return true;
@@ -327,7 +338,7 @@ function Shell() {
             href={`#/${path}`}
             className="tabbar__item"
             aria-current={
-              head === path || (path === 'lines' && head === 'lines') ? 'page' : undefined
+              head === path || (path === 'lines' && head === 'ride') ? 'page' : undefined
             }
           >
             <Icon size={20} aria-hidden />

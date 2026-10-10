@@ -362,6 +362,12 @@ export const en: Dict = {
   'lines.buses': { one: '{n} bus', other: '{n} buses' },
   'detail.wayBack': 'Back',
   'lines.firstLast': 'First {first} · last {last}',
+  'ride.title': 'The {time} bus',
+  'ride.stops': 'Stops of this bus',
+  'ride.toStop': 'Go to “{stop}”',
+  'ride.fromBoardNote':
+    'I don’t know where you are, so the route starts at “{stop}”. Change “From”: an address, a stop or a pin on the map.',
+  'lines.fromStop': 'from {stop}',
   'print.card': 'Timetable to print',
   'print.hint': 'An A4 PDF: weekdays, Saturdays, Sundays and holidays, and the time to every stop.',
   'print.from': 'Departures from',

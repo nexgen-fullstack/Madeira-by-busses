@@ -362,6 +362,12 @@ export const es: Dict = {
   'lines.none': 'Ninguna línea coincide con «{q}»',
   'lines.buses': { one: '{n} autobús', other: '{n} autobuses' },
   'lines.firstLast': 'Primero a las {first} · último a las {last}',
+  'ride.title': 'El autobús de las {time}',
+  'ride.stops': 'Paradas de este autobús',
+  'ride.toStop': 'Ir a «{stop}»',
+  'ride.fromBoardNote':
+    'No sé dónde estás, así que la ruta empieza en «{stop}». Cambia «Desde»: una dirección, una parada o un pin en el mapa.',
+  'lines.fromStop': 'desde {stop}',
   'print.card': 'Horario para imprimir',
   'print.hint':
     'PDF en A4: laborables, sábados, domingos y festivos, y el tiempo hasta cada parada.',

@@ -367,6 +367,12 @@ export const de: Dict = {
   'lines.none': 'Keine Linie passt zu „{q}“',
   'lines.buses': { one: '{n} Bus', other: '{n} Busse' },
   'lines.firstLast': 'Erster um {first} · letzter um {last}',
+  'ride.title': 'Der Bus um {time}',
+  'ride.stops': 'Haltestellen dieses Busses',
+  'ride.toStop': 'Nach „{stop}“ fahren',
+  'ride.fromBoardNote':
+    'Ich weiß nicht, wo Sie sind, also beginnt die Route an „{stop}“. Ändern Sie „Von“: eine Adresse, eine Haltestelle oder eine Nadel auf der Karte.',
+  'lines.fromStop': 'ab {stop}',
   'print.card': 'Fahrplan zum Ausdrucken',
   'print.hint':
     'PDF in A4: Werktage, Samstage, Sonn- und Feiertage und die Fahrzeit bis zu jeder Haltestelle.',

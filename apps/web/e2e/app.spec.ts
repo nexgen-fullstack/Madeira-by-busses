@@ -50,7 +50,17 @@ test('the simulated ride warns before the stop and arrives', async ({ page }) =>
 test('shows a line timetable and switches language', async ({ page }) => {
   await page.goto('./#/lines');
   await page.getByRole('button', { name: /D139/ }).click();
-  await expect(page.locator('.timetable')).toContainText('08');
+  // Both ways side by side, each minute a button that opens its bus.
+  await expect(page.locator('.ways')).toContainText('08');
+  await page.locator('.ways__min').first().click();
+  await expect(page).toHaveURL(/#\/ride\/\d+\/\d+\?d=/);
+  await expect(page.locator('.ride .line-hero__name')).toContainText('Рейс о');
+  await expect(page.locator('.ride .plan__from')).toBeVisible();
+  await expect(page.locator('.ride__stops li').first()).toBeVisible();
+  // Back on the line as it was left.
+  await page.locator('.ride .line-hero__back').click();
+  await expect(page).toHaveURL(/#\/lines\/\d+\?s=\d+&d=/);
+  await expect(page.locator('.ways')).toBeVisible();
   await page.getByRole('link', { name: 'Налаштування' }).click();
   await page.getByRole('button', { name: 'English' }).click();
   await expect(page.getByRole('link', { name: 'Settings' })).toBeVisible();

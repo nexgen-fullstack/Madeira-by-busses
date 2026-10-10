@@ -396,6 +396,12 @@ export const pl: Dict = {
     other: '{n} autobusu',
   },
   'lines.firstLast': 'Pierwszy o {first} · ostatni o {last}',
+  'ride.title': 'Autobus o {time}',
+  'ride.stops': 'Przystanki tego kursu',
+  'ride.toStop': 'Jedź do „{stop}”',
+  'ride.fromBoardNote':
+    'Nie wiem, gdzie jesteś, więc trasa zaczyna się na przystanku „{stop}”. Zmień „Skąd”: adres, przystanek lub pinezka na mapie.',
+  'lines.fromStop': 'z przystanku {stop}',
   'print.card': 'Rozkład do druku',
   'print.hint':
     'PDF w formacie A4: dni robocze, soboty, niedziele i święta oraz czas jazdy do każdego przystanku.',

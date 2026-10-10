@@ -397,6 +397,12 @@ export const uk = {
   },
   'detail.wayBack': 'Назад',
   'lines.firstLast': 'Перший о {first} · останній о {last}',
+  'ride.title': 'Рейс о {time}',
+  'ride.stops': 'Зупинки рейсу',
+  'ride.toStop': 'Їхати до «{stop}»',
+  'ride.fromBoardNote':
+    'Не знаю, де ви, тож маршрут — від зупинки «{stop}». Змініть «Звідки»: адреса, зупинка або шпилька на карті.',
+  'lines.fromStop': 'від зупинки {stop}',
   'print.card': 'Розклад для друку',
   'print.hint': 'PDF на аркуш A4: будні, субота, неділя і свята, а також час до кожної зупинки.',
   'print.from': 'Відправлення від зупинки',

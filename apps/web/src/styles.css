@@ -1215,6 +1215,129 @@ input[type='time'],
   border-bottom: 0;
 }
 
+/* A line's timetable both ways: the hour down the middle, each way's minutes as buttons
+   on its side, edged in its colour on the map. */
+.ways__head,
+.ways__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 40px minmax(0, 1fr);
+  gap: 6px;
+  align-items: start;
+}
+.ways:not(.ways--two) .ways__head,
+.ways:not(.ways--two) .ways__row {
+  grid-template-columns: 40px minmax(0, 1fr);
+}
+.ways__head {
+  margin-bottom: 6px;
+}
+.ways--two .ways__title:not(.ways__title--left) {
+  grid-column: 3;
+}
+.ways:not(.ways--two) .ways__title {
+  grid-column: 1 / -1;
+}
+.ways__title {
+  display: flex;
+  align-items: flex-start;
+  min-width: 0;
+  font-size: 13px;
+  line-height: 1.25;
+}
+.ways__title > span:last-child {
+  display: grid;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.ways__title .way-swatch {
+  flex: none;
+  margin-top: 4px;
+}
+.ways__row {
+  padding: 4px 0;
+  border-top: 1px solid var(--border);
+}
+.ways__hour {
+  display: grid;
+  place-items: center;
+  height: 40px;
+  font-weight: 800;
+}
+.ways__mins {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.ways__mins--left {
+  justify-content: flex-end;
+}
+.ways__min {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-bottom: 4px solid var(--way);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  cursor: pointer;
+}
+.ways__min .timetable__mark {
+  position: absolute;
+  top: 1px;
+  right: 3px;
+}
+.ways__min.is-past {
+  opacity: 0.45;
+}
+.ways__min:active {
+  background: var(--surface-2);
+}
+
+/* A bus's stops with their times: the stop it is taken at in bold, those before it faded,
+   a flag on each after it to go there. */
+.ride__stops {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.ride__stops li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  border-top: 1px solid var(--border);
+}
+.ride__stops li:first-child {
+  border-top: 0;
+}
+.ride__time {
+  flex: none;
+  width: 44px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+.ride__name {
+  flex: 1;
+  min-width: 0;
+}
+.ride__stops .is-past {
+  opacity: 0.5;
+}
+.ride__stops .is-board .ride__name,
+.ride__stops .is-chosen .ride__name {
+  font-weight: 700;
+}
+.ride__stops .is-chosen {
+  background: var(--surface-2);
+}
+
 .stop-line li {
   position: relative;
   padding-left: 26px;

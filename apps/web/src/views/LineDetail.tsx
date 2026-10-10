@@ -1,7 +1,7 @@
 import { useMemo, useState, type ReactNode } from 'react';
 import { ArrowLeft, Download, Image, Loader2, Printer, Share2 } from 'lucide-react';
 import { stopDepartures } from '@madeirabus/engine';
-import { HourTable } from '../components/HourTable.tsx';
+import { WaysTable, type WayColumn, type WayEntry } from '../components/HourTable.tsx';
 import { LineSheetBlock } from '../components/LineSheetBlock.tsx';
 import { useMapContent } from '../components/mapContext.tsx';
 import { RouteBadge } from '../components/RouteBadge.tsx';
@@ -10,7 +10,7 @@ import { isNative } from '../lib/device.ts';
 import { canPrint, canShareFiles, printPdf, saveFile, shareFile } from '../lib/files.ts';
 import { clock, longDate } from '../lib/format.ts';
 import { variantNote } from '../lib/lineSheet.ts';
-import { lineDirections, lineOf } from '../lib/lines.ts';
+import { lineDirections, lineOf, type Direction } from '../lib/lines.ts';
 import { routeContent, WAY_TURQUOISE, WAY_YELLOW } from '../lib/mapContent.ts';
 import { boardingStops, returnOf, terminusMarks } from '../lib/printable.ts';
 import { goBack, navigate } from '../lib/router.ts';
@@ -67,21 +67,51 @@ export function LineDetail({ routeIndex, at, day }: Props) {
     ),
   );
 
-  // Every bus of this direction that stops here, short runs marked with a letter.
+  // Every bus of this direction that stops here, short runs marked with a letter; and beside
+  // them the way back's from its stop across the road, as the map shows the two.
   const timetable = useMemo(() => {
     if (!dir || stop === undefined) return undefined;
-    const departures = stopDepartures(net, dir.patterns, stop, date);
-    const marks = terminusMarks(net, dir, departures);
-    const entries = departures.map((d) => ({ time: d.time, mark: marks.get(d.terminus) }));
-    return { departures, marks, entries };
-  }, [net, dir, stop, date]);
+    const way = (d: Direction, s: number) => {
+      const departures = stopDepartures(net, d.patterns, s, date);
+      const marks = terminusMarks(net, d, departures);
+      const entries: WayEntry[] = departures.map((x) => ({
+        time: x.time,
+        mark: marks.get(x.terminus),
+        pattern: x.pattern,
+        dayTrip: x.dayTrip,
+      }));
+      const ends = net.patterns[d.patterns[0]!]!.stops;
+      return { direction: d, stop: s, departures, marks, entries, end: ends[ends.length - 1]! };
+    };
+    const there = way(dir, stop);
+    const other = returnOf(net, variants, dir, stop);
+    return { there, back: other ? way(other.direction, other.stop) : undefined };
+  }, [net, variants, dir, stop, date]);
 
   if (!route || !dir || main === undefined || stop === undefined || !timetable) {
     return <p className="error">?</p>;
   }
   const agency = net.bundle.agencies[route.agency]!;
   const line = net.routes[variants[0]!]!;
-  const { departures } = timetable;
+  const { departures } = timetable.there;
+  const ways = [timetable.there, ...(timetable.back ? [timetable.back] : [])];
+  const columns: WayColumn[] = ways.map((w, i) => ({
+    color: i === 0 ? WAY_YELLOW : WAY_TURQUOISE,
+    title: net.stops[w.end]!.name,
+    from: t.t('lines.fromStop', { stop: net.stops[w.stop]!.name }),
+    entries: w.entries,
+  }));
+  // A bus tapped: its trip, to plan the way with it. This page keeps its way, stop and day
+  // in its address, so back comes to it as it was.
+  const openTrip = (e: WayEntry, way: number) => {
+    const here = `#/lines/${routeIndex}?${new URLSearchParams({ s: String(stop), d: date })}`;
+    try {
+      history.replaceState(history.state, '', here);
+    } catch {
+      // History unavailable (sandboxed frames): back opens the line at its first stop.
+    }
+    navigate(`ride/${e.pattern}/${e.dayTrip}`, { d: date, s: String(ways[way]!.stop) });
+  };
   const mainStops = net.patterns[main]!.stops;
 
   const switchDirection = (i: number) => {
@@ -218,26 +248,42 @@ export function LineDetail({ routeIndex, at, day }: Props) {
             ))}
           </select>
         </label>
-        {departures.length === 0 ? (
+        {departures.length === 0 && !timetable.back?.departures.length ? (
           <p className="muted">{t.t('lines.noService')}</p>
         ) : (
           <>
-            <p className="first-last">
-              {t.t('lines.firstLast', {
-                first: clock(departures[0]!.time),
-                last: clock(departures[departures.length - 1]!.time),
-              })}{' '}
-              · {t.tn('lines.buses', departures.length)}
-            </p>
-            <HourTable entries={timetable.entries} now={date === today ? now.time : undefined} />
-            {timetable.marks.size > 0 && (
+            {departures.length > 0 && (
+              <p className="first-last">
+                {t.t('lines.firstLast', {
+                  first: clock(departures[0]!.time),
+                  last: clock(departures[departures.length - 1]!.time),
+                })}{' '}
+                · {t.tn('lines.buses', departures.length)}
+              </p>
+            )}
+            <WaysTable
+              ways={columns}
+              now={date === today ? now.time : undefined}
+              label={(time) => t.t('ride.title', { time: clock(time) })}
+              onPick={openTrip}
+            />
+            {ways.some((w) => w.marks.size > 0) && (
               <ul className="legend">
-                {[...timetable.marks.entries()].map(([s, mark]) => (
-                  <li key={s}>
-                    <sup className="timetable__mark">{mark}</sup>{' '}
-                    {t.t('print.endsAt', { stop: net.stops[s]!.name })}
-                  </li>
-                ))}
+                {ways.flatMap((w, i) =>
+                  [...w.marks.entries()].map(([s, mark]) => (
+                    <li key={`${i}-${s}`}>
+                      {ways.length > 1 && (
+                        <span
+                          className="way-swatch"
+                          style={{ background: columns[i]!.color }}
+                          aria-hidden
+                        />
+                      )}
+                      <sup className="timetable__mark">{mark}</sup>{' '}
+                      {t.t('print.endsAt', { stop: net.stops[s]!.name })}
+                    </li>
+                  )),
+                )}
               </ul>
             )}
           </>
