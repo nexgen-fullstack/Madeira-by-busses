@@ -802,6 +802,82 @@ input[type='time'],
   display: grid;
   gap: 10px;
 }
+/* How to go, as the row of a maps app: bus, car, on foot, by bike, each with its time. */
+.modes {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+  margin: 0 0 12px;
+}
+.modes__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 50px;
+  min-width: 0;
+  padding: 4px 4px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.modes__item span {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.modes__item svg {
+  flex: none;
+}
+.modes__item[aria-pressed='true'] {
+  border-color: transparent;
+  background: var(--brand-soft);
+  color: var(--brand-strong);
+}
+.modes__item--car svg {
+  color: var(--car);
+}
+.modes__item--bike svg {
+  color: var(--bike);
+}
+/* Inside a place's "getting there": no second frame. */
+.card .travel {
+  margin: 0 0 10px;
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+  background: none;
+}
+.travel__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+.travel__icon {
+  flex: none;
+  color: var(--brand);
+}
+.travel--car .travel__icon {
+  color: var(--car);
+}
+.travel--bike .travel__icon {
+  color: var(--bike);
+}
+.travel__time {
+  font-size: 22px;
+  font-weight: 800;
+}
+.travel__none {
+  margin: 4px 2px 12px;
+}
+
 .it-card {
   display: grid;
   gap: 8px;

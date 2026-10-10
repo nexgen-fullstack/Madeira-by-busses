@@ -1,5 +1,5 @@
 import { GridIndex, hasView, haversine, offsetPolyline, pavementSides } from '@madeirabus/engine';
-import type { Itinerary, LatLon, Network, StopGroup } from '@madeirabus/engine';
+import type { Itinerary, LatLon, Network, StopGroup, Travel } from '@madeirabus/engine';
 import type { Direction } from './lines.ts';
 import { routeColor as colorOf } from './color.ts';
 
@@ -249,6 +249,42 @@ function pairFlags(points: MapPoint[]): void {
       board.apart = true;
     }
   }
+}
+
+/** A car's way in the blue of a maps app, a bike's in laurel green (as in styles.css). */
+export const CAR_BLUE = '#1A73E8';
+export const BIKE_GREEN = '#1E8A4C';
+
+/**
+ * The way by car, on foot or by bike: a car's and a bike's as a line along the roads
+ * (each with a white edge on any map), a walk as the dots of a walk; where it starts and
+ * the yellow pin where it goes.
+ */
+export function travelContent(travel: Travel): MapContent {
+  const first = travel.path[0]!;
+  const last = travel.path[travel.path.length - 1]!;
+  const lines: MapLine[] =
+    travel.mode === 'walk'
+      ? [{ coords: travel.path, color: WALK_INK, dashed: true }]
+      : [
+          {
+            coords: travel.path,
+            color: travel.mode === 'car' ? CAR_BLUE : BIKE_GREEN,
+            width: travel.mode === 'car' ? 7 : 5.5,
+            arrows: true,
+          },
+        ];
+  const key = (p: LatLon) => `${p.lat.toFixed(5)},${p.lon.toFixed(5)}`;
+  return {
+    lines,
+    points: [
+      { ...first, kind: 'origin', color: '#14181F' },
+      { ...last, kind: 'destination', color: '#14181F' },
+    ],
+    fitKey: `travel:${travel.mode}:${key(first)}>${key(last)}`,
+    fit: travel.path,
+    focus: `travel:${travel.mode}`,
+  };
 }
 
 /** Where the trip starts and where it goes, before there is a route between them. */

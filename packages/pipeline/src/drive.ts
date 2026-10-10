@@ -11,8 +11,19 @@
  * direction + class × 4 + side × 32.
  */
 
-/** Road classes, fastest first: motorway, primary, secondary, tertiary, minor, service, busway. */
-export const ROAD_SPEED_KMH = [75, 50, 42, 35, 28, 14, 40];
+// The road classes and their speeds, and how an edge's kind packs them, are the engine's:
+// the app drives a car along the same roads.
+import { BACKWARD, BOTH_WAYS, FORWARD, roadDirection } from '@madeirabus/engine';
+export {
+  BACKWARD,
+  BOTH_WAYS,
+  FORWARD,
+  ROAD_SPEED_KMH,
+  roadClass,
+  roadDirection,
+  roadSide,
+} from '@madeirabus/engine';
+
 /** A lane of each class of road, when OpenStreetMap does not give the road's width (m). */
 export const LANE_WIDTH_M = [3.5, 3.3, 3.2, 3.0, 2.8, 2.6, 3.2];
 
@@ -43,16 +54,6 @@ const PRIVATE_SERVICE = new Set(['parking_aisle', 'driveway', 'drive-through', '
 const NO_ACCESS = new Set(['no', 'private', 'military', 'agricultural', 'forestry', 'delivery']);
 const BUS_YES = new Set(['yes', 'designated', 'permissive', 'official']);
 
-export const BOTH_WAYS = 0;
-export const FORWARD = 1;
-export const BACKWARD = 2;
-
-/** Which way a road may be driven (BOTH_WAYS, FORWARD or BACKWARD). */
-export const roadDirection = (kind: number) => kind & 3;
-/** The class of a road (an index of ROAD_SPEED_KMH). */
-export const roadClass = (kind: number) => (kind >> 2) & 7;
-/** How far right of the road's middle a bus drives, in the centre of its lane (m). */
-export const roadSide = (kind: number) => (kind >> 5) / 10;
 /** The furthest a lane is kept from the middle of a road (m): what fits in the file's kind. */
 const MAX_SIDE = 6.3;
 

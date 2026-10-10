@@ -34,6 +34,27 @@ const KIND_COST = [1, 1.6, 1.15];
 export const UP_COST = 4;
 export const DOWN_COST = 0.5;
 /**
+ * How a way is gone along by other than walking: what a metre of each kind of way costs
+ * (Infinity: not at all), and a metre climbed and gone down, in metres of the level.
+ */
+export interface WayProfile {
+  kind: readonly number[];
+  up: number;
+  down: number;
+}
+/** On foot, as the planner walks. */
+export const WALK_PROFILE: WayProfile = { kind: KIND_COST, up: UP_COST, down: DOWN_COST };
+/**
+ * By bike: the streets, footpaths only when much shorter (and levadas are mostly for
+ * walkers), never the steps; a metre climbed is as hard as 14 on the level (about 3 s of
+ * climbing at a cyclist's 1 000 m an hour), going down no quicker than the level (brakes
+ * on Madeira's slopes).
+ */
+export const BIKE_PROFILE: WayProfile = { kind: [1, Infinity, 2.5], up: 14, down: 0 };
+/** A bike's pace on the level (m/s): 18 km/h. */
+export const BIKE_SPEED = 5;
+
+/**
  * An edge's kind packs how it walks (WALK_STREET, WALK_STEPS, WALK_PATH) and,
  * along a road, how far the road's pavement is from its middle in decimetres:
  * kind + kerb × 4. A walk along the road is drawn there, not down its middle.
@@ -281,7 +302,7 @@ export function decodeWalkGraphData(bytes: Uint8Array): WalkGraphData {
 // ---------- The graph ----------
 
 /** A binary min-heap of node indices keyed by cost. */
-class Heap {
+export class Heap {
   private keys: number[] = [];
   private items: number[] = [];
 
@@ -374,6 +395,8 @@ export class WalkGraph {
   private run = 0;
   /** How much more a metre off the ways with a view counts in the current search. */
   private offView = 1;
+  /** How the current search goes along the ways: on foot, or by bike. */
+  private profile: WayProfile = WALK_PROFILE;
 
   private constructor(bytes: Uint8Array) {
     const r = new Reader(bytes);
@@ -502,6 +525,8 @@ export class WalkGraph {
     const kx = 111_320 * Math.cos(p.lat * DEG);
     const ky = 110_540;
     let best: WalkHit | undefined;
+    /** The flat length of the best edge, to scale `along` to its true length. */
+    let bestFlat = 0;
     for (let y = cy - span; y <= cy + span; y++) {
       for (let x = cx - span; x <= cx + span; x++) {
         for (const e of this.cells.get(cellKey(y, x)) ?? []) {
@@ -515,6 +540,7 @@ export class WalkGraph {
           let aLat = this.lat[this.from[e]!]!;
           let aLon = this.lon[this.from[e]!]!;
           let along = 0;
+          const found = best;
           for (let j = g0; j <= g1; j++) {
             const bLat = j < g1 ? this.geoLat[j]! : this.lat[this.to[e]!]!;
             const bLon = j < g1 ? this.geoLon[j]! : this.lon[this.to[e]!]!;
@@ -537,15 +563,20 @@ export class WalkGraph {
             aLat = bLat;
             aLon = bLon;
           }
+          if (best !== found) bestFlat = along;
         }
       }
     }
-    if (best) best.along = Math.max(0, Math.min(best.along, this.len[best.edge]!));
+    if (best) {
+      const len = this.len[best.edge]!;
+      const scaled = bestFlat > 0 ? (best.along * len) / bestFlat : 0;
+      best.along = Math.max(0, Math.min(scaled, len));
+    }
     return best;
   }
 
   private factor(e: number): number {
-    return KIND_COST[walkWay(this.kind[e]!)] ?? 1;
+    return this.profile.kind[walkWay(this.kind[e]!)] ?? 1;
   }
 
   /**
@@ -558,7 +589,9 @@ export class WalkGraph {
     const share = len > 0 ? Math.min(1, d / len) : 0;
     const up = (forward ? this.up[e]! : this.down[e]!) * share;
     const down = (forward ? this.down[e]! : this.up[e]!) * share;
-    const cost = d * this.factor(e) + UP_COST * up + DOWN_COST * down;
+    // Nothing of a way not taken is nothing (not 0 × Infinity): a point at its very end.
+    const cost =
+      (d > 0.01 ? d * this.factor(e) : 0) + this.profile.up * up + this.profile.down * down;
     return { key: this.scenic[e] ? cost : cost * this.offView, cost, length: d, up, down };
   }
 
@@ -574,6 +607,8 @@ export class WalkGraph {
   }
 
   private settle(node: number, step: Step, prev: number, heap: Heap, estimate = 0) {
+    // A way this search does not take (the steps, for a bike).
+    if (!Number.isFinite(step.key)) return;
     if (this.stamp[node] === this.run && this.key[node]! <= step.key) return;
     this.stamp[node] = this.run;
     this.key[node] = step.key;
@@ -674,11 +709,18 @@ export class WalkGraph {
    * choosing the way: the promenade along the sea rather than the road behind it, when
    * it is not much longer.
    */
-  route(a: LatLon, b: LatLon, maxSnap = 300, offView = 1): WalkRoute | undefined {
+  route(
+    a: LatLon,
+    b: LatLon,
+    maxSnap = 300,
+    offView = 1,
+    profile: WayProfile = WALK_PROFILE,
+  ): WalkRoute | undefined {
     const start = this.snap(a, maxSnap);
     const end = this.snap(b, maxSnap);
     if (!start || !end) return undefined;
     this.offView = offView;
+    this.profile = profile;
     try {
       // A*: a straight line never overestimates a walk, so the first way found is the best.
       const goal = end.point;
@@ -703,10 +745,11 @@ export class WalkGraph {
           this.settle(other, this.extend(node, e, forward), e, astar, this.straight(other, goal));
         }
       }
-      if (!best) return undefined;
+      if (!best || !Number.isFinite(best.key)) return undefined;
       return { ...distanceOf(best), ...this.trace(start, end, a, b) };
     } finally {
       this.offView = 1;
+      this.profile = WALK_PROFILE;
     }
   }
 

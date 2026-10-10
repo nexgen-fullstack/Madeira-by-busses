@@ -202,6 +202,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
         // Streets for walking: the same for every timetable, loaded once the planner is up.
         const walkUrl = new URL(`${import.meta.env.BASE_URL}data/walk.bin`, document.baseURI).href;
         planner.loadWalk(walkUrl).catch(() => undefined);
+        // And the roads, for going by car.
+        const roadsUrl = new URL(`${import.meta.env.BASE_URL}data/drive.bin`, document.baseURI)
+          .href;
+        planner.loadRoads(roadsUrl).catch(() => undefined);
         const net = new Network(JSON.parse(json));
         if (cancelled) return;
         setData({ status: 'ready', dataset, net, planner, fallback });

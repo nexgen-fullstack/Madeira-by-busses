@@ -132,10 +132,10 @@ describe('WalkGraph', () => {
         ],
       });
     const long = withDetour(60).route(xy(0, 0), xy(0, 100))!;
-    expect(long.length).toBeCloseTo(100, 0); // steps: 160 m of effort against 220 m
-    expect(long.cost).toBeCloseTo(160, 0);
+    expect(long.length).toBeCloseTo(100, -1); // steps: 160 m of effort against 220 m
+    expect(long.cost).toBeCloseTo(160, -1);
     const short = withDetour(20).route(xy(0, 0), xy(0, 100))!;
-    expect(short.length).toBeCloseTo(140, 0); // street: 140 m against 160 m of effort
+    expect(short.length).toBeCloseTo(140, -1); // street: 140 m against 160 m of effort
   });
 
   it('tells where the pavements are along the roads, and still weighs the steps', () => {

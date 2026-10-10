@@ -458,4 +458,16 @@ export const ru: Dict = {
   'place.toTownhall': 'к совету',
   'place.toSquare': 'к площади',
   'place.pickIn': 'Поставьте булавку там, куда едете, в пределах «{name}»',
+  'mode.label': 'Как ехать',
+  'mode.bus': 'Автобус',
+  'mode.car': 'Авто',
+  'mode.walk': 'Пешком',
+  'mode.bike': 'Велосипед',
+  'travel.none': 'Здесь нет пути',
+  'travel.climb': '↑ {up} м · ↓ {down} м',
+  'travel.car.note': 'Ориентировочно, без пробок, вместе с парковкой.',
+  'travel.walk.note': 'По улицам, лестницам и тропам; время с учётом подъёмов.',
+  'travel.bike.note':
+    'По улицам без лестниц и без Via Rápida; горы крутые, поэтому время с учётом подъёмов.',
+  'travel.navigate': 'Навигация в Google Maps',
 };

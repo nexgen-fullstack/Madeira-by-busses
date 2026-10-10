@@ -60,7 +60,8 @@ const USAGE = `madeirabus-pipeline <command>
         [--walk <walk.bin>]          the walking network, copied next to the bundle (skipped if absent)
         [--addresses <json>]         streets and house numbers, copied next to the bundle (skipped if absent)
         [--areas <areas.json>]       the bounds of towns and villages: where a trip to one goes
-        [--drive <drive.bin>]        the roads: every line is drawn along them, in its lane
+        [--drive <drive.bin>]        the roads: every line is drawn along them, in its lane,
+                                     and they are copied next to the bundle for driving
         [--timetables <dir> --siga <dir>]  add CAM and SIGA Rodoeste from their printed
                                      timetables and the SIGA website's routes
         [--timetable-days <n>]       how far ahead their calendar goes (default 180)
@@ -376,6 +377,14 @@ async function build(args: Args) {
     );
   } else if (walkPath) {
     console.log(`! No walking network at ${walkPath}; walks are drawn as the crow flies`);
+  }
+
+  // The roads too, as drive.bin: the app drives a car along them, beside the buses.
+  const roadsPath = flag(args, 'drive');
+  if (roadsPath && existsSync(roadsPath)) {
+    const target = join(dirname(out), 'drive.bin');
+    await writeFile(target, await readFile(roadsPath));
+    console.log(`Roads copied to ${target}`);
   }
 
   // Streets and house numbers too, as addresses.json, which the app loads once someone types.

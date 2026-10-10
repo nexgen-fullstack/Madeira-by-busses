@@ -6,6 +6,7 @@ import { ItineraryDetail } from '../components/ItineraryDetail.tsx';
 import { MapContentContext, useMapContent } from '../components/mapContext.tsx';
 import { type PlaceValue } from '../components/PlaceSearch.tsx';
 import { RouteFields } from '../components/RouteFields.tsx';
+import { ModeTabs, modeOf, TravelCard, useTravels } from '../components/TravelModes.tsx';
 import { ScenicCard } from '../components/ScenicCard.tsx';
 import { useI18n } from '../i18n.ts';
 import { dayGroups, findOptions, firstDeparture, type Found } from '../lib/ahead.ts';
@@ -17,6 +18,7 @@ import {
   ISLAND,
   itineraryContent,
   placesContent,
+  travelContent,
   type MapContent,
 } from '../lib/mapContent.ts';
 import { navigate, type Route } from '../lib/router.ts';
@@ -57,6 +59,8 @@ export function PlanView({ route }: { route: Route }) {
   const arriveBy = Boolean(timeParam) && q.get('a') === '1';
   const dateParam = q.get('d');
   const selected = q.get('i') !== null ? Number(q.get('i')) : undefined;
+  // By bus, the app's own; or by car, on foot, by bike, as a maps app offers beside it.
+  const mode = modeOf(q.get('m'));
 
   // The options found, each with its day: today's, and tomorrow's when nothing goes any more;
   // with the day they were asked for and whether the time asked was gone today, so a new
@@ -219,7 +223,10 @@ export function PlanView({ route }: { route: Route }) {
     [net],
   );
 
+  const { travels, loading: travelling } = useTravels(from, to);
+  const travelShown = mode !== 'bus' ? travels[mode] : undefined;
   const mapContent = useMemo<MapContent>(() => {
+    if (travelShown) return travelContent(travelShown);
     if (selectedIt) return itineraryContent(net, selectedIt, focusLeg, true);
     if (results?.[0]) return itineraryContent(net, results[0]);
     // Nothing chosen yet: the whole island as the app opens, fitted to the screen whichever
@@ -230,7 +237,7 @@ export function PlanView({ route }: { route: Route }) {
     const point = (p: PlaceValue | undefined) =>
       p && { lat: p.lat, lon: p.lon, label: p.name, kind: 'stop' as const };
     return placesContent(point(from), point(to));
-  }, [selectedIt, results, from, to, net, focusLeg, scenic]);
+  }, [travelShown, selectedIt, results, from, to, net, focusLeg, scenic]);
   useMapContent(mapContent);
 
   const suggestions = useMemo(() => {
@@ -252,7 +259,7 @@ export function PlanView({ route }: { route: Route }) {
     [recent, net, myLocation],
   );
 
-  if (selectedIt) {
+  if (selectedIt && mode === 'bus') {
     return (
       <ItineraryDetail
         it={selectedIt}
@@ -363,17 +370,28 @@ export function PlanView({ route }: { route: Route }) {
         </div>
       </form>
 
-      {loading && !results?.length && (
+      {from && to && (
+        <ModeTabs
+          mode={mode}
+          onMode={(m) => setParams({ m: m === 'bus' ? undefined : m, i: undefined })}
+          bus={results?.find((it) => it.rides > 0)?.duration}
+          travels={travels}
+          loading={travelling}
+        />
+      )}
+      {mode !== 'bus' && <TravelCard mode={mode} travel={travelShown} loading={travelling} />}
+
+      {mode === 'bus' && loading && !results?.length && (
         <p className="plan__status" role="status">
           <Loader2 size={16} className="spin" aria-hidden /> {t.t('searching')}
         </p>
       )}
-      {error && <p className="error">{error}</p>}
-      {!loading && results && results.length === 0 && (
+      {mode === 'bus' && error && <p className="error">{error}</p>}
+      {mode === 'bus' && !loading && results && results.length === 0 && (
         <p className="plan__status">{t.t('results.none')}</p>
       )}
 
-      {results && results.length > 0 && (
+      {mode === 'bus' && results && results.length > 0 && (
         <div className="results" aria-live="polite" aria-busy={loading} ref={resultsRef}>
           {groups.map((g, n) => {
             // Nothing goes there any more on the day asked, or the time asked is gone today:

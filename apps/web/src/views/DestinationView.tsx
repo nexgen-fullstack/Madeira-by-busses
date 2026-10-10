@@ -15,13 +15,14 @@ import { ScenicArt } from '../components/ScenicCard.tsx';
 import { MapContentContext, useMapContent } from '../components/mapContext.tsx';
 import { type PlaceValue } from '../components/PlaceSearch.tsx';
 import { RouteFields, type RouteEnd } from '../components/RouteFields.tsx';
+import { ModeTabs, modeOf, TravelCard, useTravels } from '../components/TravelModes.tsx';
 import { DayTrips } from '../components/DayTrips.tsx';
 import { useI18n, type Key } from '../i18n.ts';
 import { findOptions, firstDeparture, type Found } from '../lib/ahead.ts';
 import { aheadFrom, capitalise, dayAhead, longDate } from '../lib/format.ts';
 import { useGeolocation } from '../lib/geolocation.ts';
 import { decodePlace, encodePlace } from '../lib/itinerary.ts';
-import { itineraryContent, type MapContent } from '../lib/mapContent.ts';
+import { itineraryContent, travelContent, type MapContent } from '../lib/mapContent.ts';
 import { goBack, navigate, type Route } from '../lib/router.ts';
 import {
   centreStops,
@@ -157,10 +158,15 @@ export function DestinationView({ d, route }: { d: Destination; route: Route }) 
     };
   }, [net, d, date, served, walk]);
 
-  const selectedIt = selected !== undefined ? results?.[selected] : undefined;
+  // By bus, or by car, on foot, by bike, as a maps app offers beside it.
+  const mode = modeOf(q.get('m'));
+  const { travels, loading: travelling } = useTravels(origin, target);
+  const travelShown = mode !== 'bus' ? travels[mode] : undefined;
+  const selectedIt = selected !== undefined && mode === 'bus' ? results?.[selected] : undefined;
   const selectedDay = (selected !== undefined && found?.days[selected]) || date;
   useMapContent(
     useMemo<MapContent>(() => {
+      if (travelShown) return travelContent(travelShown);
       const it = selectedIt ?? results?.find((r) => r.rides > 0);
       if (it) return itineraryContent(net, it, undefined, it === selectedIt);
       return {
@@ -173,7 +179,7 @@ export function DestinationView({ d, route }: { d: Destination; route: Route }) 
           { lat: d.lat - 0.01, lon: d.lon - 0.01 },
         ],
       };
-    }, [net, d, results, selectedIt]),
+    }, [net, d, results, selectedIt, travelShown]),
   );
 
   if (selectedIt) {
@@ -276,7 +282,7 @@ export function DestinationView({ d, route }: { d: Destination; route: Route }) 
             title={t.t('scenic.startHint')}
             // The best way there from where the trip starts (where you are), on the whole map;
             // the sheet with the steps and the timetables comes up from its handle.
-            onClick={() => setParams({ i: '0' })}
+            onClick={() => setParams({ i: '0', m: undefined })}
           >
             <Play size={14} aria-hidden /> {t.t('scenic.start')}
           </button>
@@ -304,15 +310,25 @@ export function DestinationView({ d, route }: { d: Destination; route: Route }) 
               />
             </div>
             {toCentre && <p className="muted small">{t.t('scenic.fromCentreNote')}</p>}
-            {(loading || (wantsHere && geo.pending)) && (
+            {origin && target && (
+              <ModeTabs
+                mode={mode}
+                onMode={(m) => setParams({ m: m === 'bus' ? undefined : m, i: undefined })}
+                bus={results?.find((it) => it.rides > 0)?.duration}
+                travels={travels}
+                loading={travelling}
+              />
+            )}
+            {mode !== 'bus' && <TravelCard mode={mode} travel={travelShown} loading={travelling} />}
+            {mode === 'bus' && (loading || (wantsHere && geo.pending)) && (
               <p className="plan__status" role="status">
                 <Loader2 size={16} className="spin" aria-hidden /> {t.t('searching')}
               </p>
             )}
-            {!loading && results && results.length === 0 && (
+            {mode === 'bus' && !loading && results && results.length === 0 && (
               <p className="muted">{t.t('scenic.noTrips')}</p>
             )}
-            {shownResults.length > 0 && found && (
+            {mode === 'bus' && shownResults.length > 0 && found && (
               <div className="results">
                 {shownResults.map((it, i) => {
                   const day = found.days[i]!;

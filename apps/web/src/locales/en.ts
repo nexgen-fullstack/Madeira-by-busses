@@ -427,4 +427,16 @@ export const en: Dict = {
   'place.toTownhall': 'to its town hall',
   'place.toSquare': 'to its square',
   'place.pickIn': 'Put the pin where you are going, within «{name}»',
+  'mode.label': 'How to go',
+  'mode.bus': 'Bus',
+  'mode.car': 'Car',
+  'mode.walk': 'Walk',
+  'mode.bike': 'Bike',
+  'travel.none': 'No way here',
+  'travel.climb': '↑ {up} m · ↓ {down} m',
+  'travel.car.note': 'Approximate, without traffic jams, parking included.',
+  'travel.walk.note': 'Along streets, steps and paths; the time counts the climbs.',
+  'travel.bike.note':
+    'Along streets, without steps or the Via Rápida; the hills are steep, so the time counts the climbs.',
+  'travel.navigate': 'Navigate in Google Maps',
 };

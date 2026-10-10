@@ -2,12 +2,15 @@ import { describe, expect, it } from 'vitest';
 import type { Itinerary, Network } from '@madeirabus/engine';
 import type { Direction } from './lines.ts';
 import {
+  BIKE_GREEN,
+  CAR_BLUE,
   itineraryContent,
   FLAG_FOOT,
   RIDE_COLORS,
   RIDE_WIDTH,
   routeContent,
   RUN_WIDTH,
+  travelContent,
   WAY_TURQUOISE,
   WAY_YELLOW,
 } from './mapContent.ts';
@@ -89,7 +92,10 @@ describe('the two ways of a line on one road', () => {
       stop('', -16.96, 32.6501),
       stop('', -16.91, 32.6501),
     ];
-    const oneWay = { ...net, lane: (p: number) => (p === 0 ? shapes[0]! : loop) } as unknown as Network;
+    const oneWay = {
+      ...net,
+      lane: (p: number) => (p === 0 ? shapes[0]! : loop),
+    } as unknown as Network;
     const c = routeContent(oneWay, [there, back], 0);
     const backLines = c.lines.filter((l) => l.color === WAY_TURQUOISE);
     expect(backLines.map((l) => l.side)).toEqual([true, false, true]);
@@ -105,7 +111,10 @@ describe('the two ways of a line on one road', () => {
   it('keeps a line crossing the other way back on one side of the road', () => {
     // The way back crosses the way there's road (north to south) once.
     const across = [stop('', -16.95, 32.66), stop('', -16.95, 32.64)];
-    const cross = { ...net, lane: (p: number) => (p === 0 ? shapes[0]! : across) } as unknown as Network;
+    const cross = {
+      ...net,
+      lane: (p: number) => (p === 0 ? shapes[0]! : across),
+    } as unknown as Network;
     const c = routeContent(cross, [there, back], 0);
     expect(c.lines.map((l) => l.side)).toEqual([false, false]);
   });
@@ -265,5 +274,21 @@ describe('a route on the map', () => {
     const along = c.lines[0]!.coords.slice(1, 3);
     // On the north pavement, the door's side of the road: about 3 m north of its middle.
     for (const p of along) expect((p.lat - 32.65) * 110_540).toBeCloseTo(3, 0);
+  });
+});
+
+describe('a way by car, on foot or by bike', () => {
+  const path = [stop('', -16.91), stop('', -16.95), stop('', -16.97)];
+  it('draws a car in blue with arrows, a walk as dots, from its start to the pin', () => {
+    const car = travelContent({ mode: 'car', path, length: 6000, seconds: 600 });
+    expect(car.lines).toMatchObject([{ color: CAR_BLUE, arrows: true }]);
+    expect(car.points.map((p) => p.kind)).toEqual(['origin', 'destination']);
+    expect(car.points[1]).toMatchObject({ lat: 32.65, lon: -16.97 });
+    const walk = travelContent({ mode: 'walk', path, length: 6000, seconds: 4800 });
+    expect(walk.lines).toMatchObject([{ dashed: true }]);
+    // Each way fitted of its own, and the bike in green.
+    expect(walk.fitKey).not.toBe(car.fitKey);
+    const bike = travelContent({ mode: 'bike', path, length: 6000, seconds: 1500 });
+    expect(bike.lines[0]!.color).toBe(BIKE_GREEN);
   });
 });

@@ -1,4 +1,4 @@
-import type { Itinerary, PlanRequest } from '@madeirabus/engine';
+import type { Itinerary, LatLon, PlanRequest, Travel, TravelMode } from '@madeirabus/engine';
 import type { Ahead, WorkerRequest, WorkerResponse } from './planner.worker.ts';
 
 type Pending = { resolve: (v: unknown) => void; reject: (e: Error) => void };
@@ -36,6 +36,21 @@ export class PlannerClient {
   /** Loads the walking network (walk.bin) for street distances and drawn walks. */
   loadWalk(url: string): Promise<true> {
     return this.call({ method: 'walk', url });
+  }
+
+  /** Loads the roads (drive.bin), for going by car. */
+  loadRoads(url: string): Promise<true> {
+    return this.call({ method: 'roads', url });
+  }
+
+  /** Going all the way by car, on foot or by bike, for each mode (null: no way). */
+  travel(
+    modes: TravelMode[],
+    from: LatLon,
+    to: LatLon,
+    walkSpeed: number,
+  ): Promise<(Travel | null)[]> {
+    return this.call({ method: 'travel', modes, from, to, walkSpeed });
   }
 
   plan(request: PlanRequest): Promise<Itinerary[]> {

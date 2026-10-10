@@ -434,4 +434,16 @@ export const de: Dict = {
   'place.toTownhall': 'zum Rathaus',
   'place.toSquare': 'zum Platz',
   'place.pickIn': 'Setzen Sie die Nadel dorthin, wohin Sie fahren, in «{name}»',
+  'mode.label': 'Wie hin',
+  'mode.bus': 'Bus',
+  'mode.car': 'Auto',
+  'mode.walk': 'Zu Fuß',
+  'mode.bike': 'Fahrrad',
+  'travel.none': 'Hier gibt es keinen Weg',
+  'travel.climb': '↑ {up} m · ↓ {down} m',
+  'travel.car.note': 'Ungefähr, ohne Stau, mit Parken.',
+  'travel.walk.note': 'Über Straßen, Treppen und Pfade; die Zeit rechnet die Anstiege ein.',
+  'travel.bike.note':
+    'Über Straßen, ohne Treppen und ohne Via Rápida; die Anstiege sind steil, die Zeit rechnet sie ein.',
+  'travel.navigate': 'In Google Maps navigieren',
 };

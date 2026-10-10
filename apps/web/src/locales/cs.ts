@@ -459,4 +459,16 @@ export const cs: Dict = {
   'place.toTownhall': 'k radnici',
   'place.toSquare': 'na náměstí',
   'place.pickIn': 'Umístěte špendlík tam, kam jedete, v «{name}»',
+  'mode.label': 'Jak jet',
+  'mode.bus': 'Autobus',
+  'mode.car': 'Auto',
+  'mode.walk': 'Pěšky',
+  'mode.bike': 'Kolo',
+  'travel.none': 'Tudy cesta nevede',
+  'travel.climb': '↑ {up} m · ↓ {down} m',
+  'travel.car.note': 'Přibližně, bez kolon, včetně parkování.',
+  'travel.walk.note': 'Po ulicích, schodech a stezkách; čas počítá se stoupáním.',
+  'travel.bike.note':
+    'Po ulicích bez schodů a bez Via Rápida; kopce jsou prudké a čas s nimi počítá.',
+  'travel.navigate': 'Navigovat v Google Maps',
 };

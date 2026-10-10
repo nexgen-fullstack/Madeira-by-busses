@@ -462,4 +462,16 @@ export const pl: Dict = {
   'place.toTownhall': 'do urzędu',
   'place.toSquare': 'na plac',
   'place.pickIn': 'Postaw pinezkę tam, dokąd jedziesz, w granicach «{name}»',
+  'mode.label': 'Jak jechać',
+  'mode.bus': 'Autobus',
+  'mode.car': 'Auto',
+  'mode.walk': 'Pieszo',
+  'mode.bike': 'Rower',
+  'travel.none': 'Tędy nie ma drogi',
+  'travel.climb': '↑ {up} m · ↓ {down} m',
+  'travel.car.note': 'Orientacyjnie, bez korków, z parkowaniem.',
+  'travel.walk.note': 'Ulicami, schodami i ścieżkami; czas uwzględnia podejścia.',
+  'travel.bike.note':
+    'Ulicami bez schodów i bez Via Rápida; podjazdy są strome, czas je uwzględnia.',
+  'travel.navigate': 'Nawiguj w Google Maps',
 };

@@ -1,5 +1,16 @@
 /// <reference lib="webworker" />
-import { Network, Planner, WalkGraph, type Itinerary, type PlanRequest } from '@madeirabus/engine';
+import {
+  Network,
+  Planner,
+  RoadGraph,
+  travel,
+  WalkGraph,
+  type Itinerary,
+  type LatLon,
+  type PlanRequest,
+  type Travel,
+  type TravelMode,
+} from '@madeirabus/engine';
 
 /** Runs journey planning off the main thread so the UI never stutters. */
 export type WorkerRequest =
@@ -8,7 +19,16 @@ export type WorkerRequest =
   | { id: number; method: 'plan'; request: PlanRequest }
   | { id: number; method: 'ahead'; request: PlanRequest }
   | { id: number; method: 'last'; request: PlanRequest }
-  | { id: number; method: 'walks'; requests: PlanRequest[] };
+  | { id: number; method: 'walks'; requests: PlanRequest[] }
+  | { id: number; method: 'roads'; url: string }
+  | {
+      id: number;
+      method: 'travel';
+      modes: TravelMode[];
+      from: LatLon;
+      to: LatLon;
+      walkSpeed: number;
+    };
 
 /** The first later day a bus gets there, and its options. */
 export type Ahead = { date: string; itineraries: Itinerary[] };
@@ -17,13 +37,19 @@ export type WorkerResponse =
   | {
       id: number;
       ok: true;
-      result: Itinerary[] | Itinerary | Ahead | null | true | (Itinerary | null)[];
+      result:
+        Itinerary[] | Itinerary | Ahead | null | true | (Itinerary | null)[] | (Travel | null)[];
     }
   | { id: number; ok: false; error: string };
 
 let planner: Planner | undefined;
 /** Settles once the streets for walking are loaded (or failed to load). */
 let walkReady: Promise<unknown> = Promise.resolve();
+/** The streets and paths, for going on foot or by bike all the way. */
+let walkGraph: WalkGraph | undefined;
+/** The roads, for driving; and when they are loaded. */
+let roads: RoadGraph | undefined;
+let roadsReady: Promise<unknown> = Promise.resolve();
 /** How long a search waits for the streets before walking as the crow flies. */
 const WALK_WAIT = 4000;
 
@@ -55,13 +81,39 @@ self.onmessage = (e: MessageEvent<WorkerRequest>) => {
           return res.arrayBuffer();
         })
         .then((buf) => {
-          ready.setWalk(WalkGraph.decode(buf));
+          walkGraph = WalkGraph.decode(buf);
+          ready.setWalk(walkGraph);
+          reply({ id: msg.id, ok: true, result: true });
+        })
+        .catch((err: unknown) => reply(failure(msg.id, err)));
+      return;
+    }
+    if (msg.method === 'roads') {
+      roadsReady = fetch(msg.url)
+        .then((res) => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.arrayBuffer();
+        })
+        .then((buf) => {
+          roads = RoadGraph.decode(buf);
           reply({ id: msg.id, ok: true, result: true });
         })
         .catch((err: unknown) => reply(failure(msg.id, err)));
       return;
     }
     const timeout = new Promise((resolve) => setTimeout(resolve, WALK_WAIT));
+    if (msg.method === 'travel') {
+      void Promise.race([Promise.all([walkReady, roadsReady]), timeout]).then(() => {
+        try {
+          const ways = { walk: walkGraph, roads, walkSpeed: msg.walkSpeed };
+          const result = msg.modes.map((m) => travel(m, msg.from, msg.to, ways) ?? null);
+          reply({ id: msg.id, ok: true, result });
+        } catch (err) {
+          reply(failure(msg.id, err));
+        }
+      });
+      return;
+    }
     void Promise.race([walkReady, timeout]).then(() => {
       try {
         if (msg.method === 'plan') reply({ id: msg.id, ok: true, result: ready.plan(msg.request) });

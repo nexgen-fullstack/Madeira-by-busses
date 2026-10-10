@@ -428,4 +428,16 @@ export const es: Dict = {
   'place.toTownhall': 'al ayuntamiento',
   'place.toSquare': 'a la plaza',
   'place.pickIn': 'Ponga el marcador donde va, dentro de «{name}»',
+  'mode.label': 'Cómo ir',
+  'mode.bus': 'Autobús',
+  'mode.car': 'Coche',
+  'mode.walk': 'A pie',
+  'mode.bike': 'Bici',
+  'travel.none': 'No hay camino aquí',
+  'travel.climb': '↑ {up} m · ↓ {down} m',
+  'travel.car.note': 'Aproximado, sin atascos, con el aparcamiento.',
+  'travel.walk.note': 'Por calles, escaleras y senderos; el tiempo cuenta las subidas.',
+  'travel.bike.note':
+    'Por calles, sin escaleras ni Via Rápida; las cuestas son duras y el tiempo las cuenta.',
+  'travel.navigate': 'Navegar en Google Maps',
 };

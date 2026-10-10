@@ -462,6 +462,18 @@ export const uk = {
   'place.toTownhall': 'до ради',
   'place.toSquare': 'до площі',
   'place.pickIn': 'Поставте шпильку там, куди їдете, у межах «{name}»',
+  'mode.label': 'Як їхати',
+  'mode.bus': 'Автобус',
+  'mode.car': 'Авто',
+  'mode.walk': 'Пішки',
+  'mode.bike': 'Велосипед',
+  'travel.none': 'Тут немає шляху',
+  'travel.climb': '↑ {up} м · ↓ {down} м',
+  'travel.car.note': 'Орієнтовно, без заторів, разом із паркуванням.',
+  'travel.walk.note': 'Вулицями, сходами й стежками; час з урахуванням підйомів.',
+  'travel.bike.note':
+    'Вулицями без сходів і без Via Rápida; гори круті, тож час з урахуванням підйомів.',
+  'travel.navigate': 'Навігація в Google Maps',
 } satisfies Record<string, Entry>;
 
 export type Key = keyof typeof uk;
