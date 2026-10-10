@@ -100,7 +100,11 @@ function Screen() {
         />
       );
     case 'hikes':
-      return sub !== undefined ? <HikeView key={sub} id={sub} /> : <HikesView />;
+      return sub !== undefined ? (
+        <HikeView key={sub} id={sub} reversed={route.query.get('rev') === '1'} />
+      ) : (
+        <HikesView />
+      );
     case 'stop':
       return <StopView route={route} />;
     case 'settings':

@@ -518,6 +518,11 @@ export const uk = {
   'hike.osm': 'Стежка на OpenStreetMap',
   'hike.views': 'Краєвиди на стежці',
   'hike.backSameWay': 'Біля кінця автобуса немає: назад тим самим шляхом, туди й назад ~{time}.',
+  'hike.reverse': 'Почати з кінця',
+  'hike.reverseLoop': 'Пройти в інший бік',
+  'hike.branches': 'Звідси можна звернути',
+  'hike.branchesNote':
+    'Кожна стежка — своїм кольором на карті: зелений прапорець там, де вона звертає, фініш там, де закінчується. Торкніться, щоб вибрати її.',
 } satisfies Record<string, Entry>;
 
 export type Key = keyof typeof uk;

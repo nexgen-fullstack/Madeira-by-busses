@@ -8,6 +8,7 @@ import {
   pointAlong,
   projectOnPolyline,
   slicePolyline,
+  stopsAlong,
   walkSeconds,
 } from './geo.ts';
 
@@ -45,6 +46,36 @@ describe('geo', () => {
     const mid = pointAlong(line, cum, cum[1]! + 100);
     expect(mid.lon).toBeCloseTo(-16.94, 6);
     expect(mid.lat).toBeGreaterThan(32.65);
+  });
+
+  it('keeps stops on their own pass of a road the bus goes up and comes back down', () => {
+    // Up a valley road 2 km north and back down it, the way down 6 m east of the way up.
+    const up = [0, 0.5, 1, 1.5, 2].map((km) => ({ lat: 32.7 + km / 111, lon: -16.97 }));
+    const down = [...up].reverse().map((p) => ({ lat: p.lat, lon: -16.96994 }));
+    const line = [...up, ...down];
+    const cum = cumulativeDistances(line);
+    const at = (km: number, east = false) => ({
+      lat: 32.7 + km / 111,
+      lon: east ? -16.96992 : -16.97002,
+    });
+    // On the way up, at the top, and down again: each stop on its own way's pass of the road,
+    // though both pass within a few metres of it.
+    const stops = [at(0.2), at(1), at(1.8), at(2, true), at(1, true), at(0.2, true)];
+    const along = stopsAlong(line, cum, stops);
+    const total = cum.at(-1)!;
+    expect(along[1]).toBeCloseTo(1000, -1);
+    expect(along[2]).toBeCloseTo(1800, -1);
+    expect(along[4]).toBeCloseTo(total - 1000, -1);
+    expect(along[5]).toBeCloseTo(total - 200, -1);
+    // A stop of the way down listed among the way up's (as SIGA lists Caminho do Colmeal on
+    // line 181) stays among them, and the stops after it on the way up.
+    const muddled = [at(0.2), at(1.5, true), at(1), at(1.8), at(1, true)];
+    const kept = stopsAlong(line, cum, muddled);
+    expect(kept[2]).toBeCloseTo(1000, -1);
+    expect(kept[3]).toBeCloseTo(1800, -1);
+    expect(kept[4]).toBeCloseTo(total - 1000, -1);
+    // Never back along the line.
+    for (let i = 1; i < kept.length; i++) expect(kept[i]).toBeGreaterThanOrEqual(kept[i - 1]!);
   });
 
   it('finds nearby points with the grid index', () => {

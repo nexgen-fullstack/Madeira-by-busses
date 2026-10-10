@@ -3,6 +3,7 @@ import {
   haversine,
   pointAlong,
   projectOnPolyline,
+  stopsAlong,
   type LatLon,
   type Projection,
 } from './geo.ts';
@@ -129,13 +130,7 @@ export class RideTracker {
     this.shape = shape.length >= 2 ? [...shape] : stops.map((s) => ({ lat: s.lat, lon: s.lon }));
     this.cum = cumulativeDistances(this.shape);
     // Snap stops to the shape in order, never moving backwards.
-    this.stopAlong = [];
-    let from = 0;
-    for (const s of stops) {
-      const pr = projectOnPolyline(this.shape, this.cum, s, from);
-      this.stopAlong.push(pr.along);
-      from = pr.segment;
-    }
+    this.stopAlong = stopsAlong(this.shape, this.cum, stops);
     this.lastPosition = stops[0]!;
   }
 

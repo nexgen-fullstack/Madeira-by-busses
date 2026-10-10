@@ -518,4 +518,9 @@ export const pl: Dict = {
   'hike.osm': 'Szlak w OpenStreetMap',
   'hike.views': 'Punkty widokowe na trasie',
   'hike.backSameWay': 'Na końcu nie ma autobusu: powrót tą samą drogą, tam i z powrotem ~{time}.',
+  'hike.reverse': 'Zacznij od końca',
+  'hike.reverseLoop': 'Przejdź w drugą stronę',
+  'hike.branches': 'Odbijające szlaki',
+  'hike.branchesNote':
+    'Każdy ma na mapie swój kolor: zielona flaga tam, gdzie odbija, flaga w szachownicę tam, gdzie się kończy. Dotknij, aby go wybrać.',
 };

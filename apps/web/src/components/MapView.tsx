@@ -190,6 +190,7 @@ function toGeoJson(content: MapContent) {
           route: l.route ?? -1,
           pattern: l.pattern ?? -1,
           board: l.board ?? -1,
+          href: l.href ?? '',
         },
         geometry: { type: 'LineString' as const, coordinates: l.coords.map((c) => [c.lon, c.lat]) },
       })),
@@ -1205,6 +1206,12 @@ export default function MapView({ className }: { className?: string }) {
         navigate('stop', { ids: String(stop.properties.stops) });
         return;
       }
+      // Another trail met on a trail's way: its page.
+      const branch = features.find((f) => f.layer.id.startsWith('mb-line') && f.properties?.href);
+      if (branch) {
+        navigate(String(branch.properties.href));
+        return;
+      }
       // A hiking trail or where it starts: its page.
       const trail = features.find(
         (f) =>
@@ -1368,15 +1375,22 @@ export default function MapView({ className }: { className?: string }) {
   // The places with a view by their photos, where they are (not while a place is picked).
   // The photos of the places with a view, and with the trails those along them, where each
   // was taken; the camera button hides them all.
+  // With the trails on, the photos without their names (a finger held on one shows it),
+  // but for the trail chosen's own.
   const allTrails = useTrails(trailsOn && layers.scenic);
+  const hikeChosen = content.focus?.startsWith('hike:') ?? false;
   const photoSpots = useMemo(() => {
     if (!layers.scenic) return undefined;
+    const quiet = (s: ScenicSpot): ScenicSpot => ({ ...s, quiet: true });
     const spots = [
-      ...(content.scenic ?? []),
-      ...(trailsOn && allTrails ? allTrails.flatMap(trailPhotoSpots) : []),
+      ...(content.scenic ?? []).map((s) => (trailsOn && !hikeChosen ? quiet(s) : s)),
+      ...(trailsOn && allTrails ? allTrails.flatMap(trailPhotoSpots).map(quiet) : []),
     ];
-    return [...new Map(spots.map((s) => [s.id, s])).values()];
-  }, [layers.scenic, content.scenic, trailsOn, allTrails]);
+    // Each once, as it came first.
+    const byId = new Map<string, ScenicSpot>();
+    for (const s of spots) if (!byId.has(s.id)) byId.set(s.id, s);
+    return [...byId.values()];
+  }, [layers.scenic, content.scenic, trailsOn, hikeChosen, allTrails]);
   useScenicMarkers(mapRef, ready, pick ? undefined : photoSpots);
   // A run or a line tapped belongs to the map shown; another one, forget it.
   useEffect(() => {
@@ -1703,6 +1717,10 @@ function useSpotlightMarker(
   );
 }
 
+/** A finger held this long (ms) on a photo shows its name, for this long (ms) after it lets go. */
+const HOLD_MS = 350;
+const PEEK_MS = 1800;
+
 /** How big a place's photo is drawn at a zoom (px): small far out, larger close in. */
 const scenicSize = (zoom: number) => (zoom < 9.5 ? 34 : zoom < 11 ? 46 : zoom < 12.5 ? 60 : 76);
 
@@ -1740,8 +1758,42 @@ function useScenicMarkers(
       const dot = document.createElement('span');
       dot.className = `scenic-pin__dot scenic-art--${spot.region}`;
       el.append(face, name, dot);
+      // Its name kept back: shown while a finger is held on it (and a little after), or
+      // the mouse is over it; the held finger then opens nothing.
+      let held = false;
+      if (spot.quiet) {
+        el.classList.add('scenic-pin--quiet');
+        let timer: number | undefined;
+        let hide: number | undefined;
+        const peek = (on: boolean) => el.classList.toggle('scenic-pin--peek', on);
+        el.addEventListener('pointerdown', (e) => {
+          held = false;
+          window.clearTimeout(hide);
+          if (e.pointerType === 'mouse') return;
+          timer = window.setTimeout(() => {
+            held = true;
+            peek(true);
+          }, HOLD_MS);
+        });
+        const release = () => {
+          window.clearTimeout(timer);
+          if (held) hide = window.setTimeout(() => peek(false), PEEK_MS);
+        };
+        for (const type of ['pointerup', 'pointercancel']) el.addEventListener(type, release);
+        el.addEventListener('mouseenter', () => peek(true));
+        el.addEventListener('mouseleave', () => !held && peek(false));
+        // Not the phone's menu, nor a pin dropped on the map under it.
+        el.addEventListener('contextmenu', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        });
+      }
       el.addEventListener('click', (e) => {
         e.stopPropagation();
+        if (held) {
+          held = false;
+          return;
+        }
         navigate(spot.href ?? `explore/${spot.id}`);
       });
       return new Marker({ element: el, anchor: 'bottom' })

@@ -89,6 +89,109 @@ export function projectOnPolyline(
   return best!;
 }
 
+/** Farther than this (m) from a line, a pass of it is no place for a stop. */
+const STOP_REACH = 200;
+/** What leaving a stop off the line costs (m off it): one listed out of its order. */
+const STOP_SKIP = 150;
+/** The closest passes of a line looked at for each stop. */
+const STOP_PASSES = 8;
+
+/**
+ * Where each of `stops`, in the order the bus calls at them, lies along a line (m, never
+ * going back): the passes of the line that keep them in order closest to them overall. A
+ * road the bus goes up and comes back down holds each stop on its own pass, and a stop
+ * listed out of its order (the timetable calls at a stop of the way back on the way up)
+ * is left where its neighbours put it, rather than pulling every stop after it onto the
+ * way back.
+ */
+export function stopsAlong(
+  points: readonly LatLon[],
+  cumDist: readonly number[],
+  stops: readonly LatLon[],
+): number[] {
+  if (stops.length === 0) return [];
+  if (points.length < 2) return stops.map(() => 0);
+  const last = points.length - 2;
+  // Each stop's passes: the nearest point of each stretch of the line coming close to it.
+  const passes = stops.map((s) => {
+    const all: Projection[] = [];
+    for (let i = 0; i <= last; i++) all.push(projectOnPolyline(points, cumDist, s, i, i));
+    const near = all.filter(
+      (p, i) =>
+        p.offset <= STOP_REACH &&
+        p.offset <= (all[i - 1]?.offset ?? Infinity) &&
+        p.offset < (all[i + 1]?.offset ?? Infinity),
+    );
+    return near
+      .sort((a, b) => a.offset - b.offset)
+      .slice(0, STOP_PASSES)
+      .sort((a, b) => a.along - b.along);
+  });
+  // The cheapest way through them in order (dynamic programming): each stop on one of its
+  // passes, at or after the stop before it, or left off at a cost.
+  const cost: number[][] = [];
+  const back: ([number, number] | undefined)[][] = [];
+  stops.forEach((_, i) => {
+    cost.push([]);
+    back.push([]);
+    passes[i]!.forEach((p, c) => {
+      let best = STOP_SKIP * i + p.offset;
+      let from: [number, number] | undefined;
+      for (let j = 0; j < i; j++) {
+        passes[j]!.forEach((q, d) => {
+          if (q.along > p.along) return;
+          const via = cost[j]![d]! + STOP_SKIP * (i - j - 1) + p.offset;
+          if (via < best) {
+            best = via;
+            from = [j, d];
+          }
+        });
+      }
+      cost[i]![c] = best;
+      back[i]![c] = from;
+    });
+  });
+  let end: [number, number] | undefined;
+  let total = STOP_SKIP * stops.length;
+  cost.forEach((row, i) =>
+    row.forEach((v, c) => {
+      const all = v + STOP_SKIP * (stops.length - 1 - i);
+      if (all < total) {
+        total = all;
+        end = [i, c];
+      }
+    }),
+  );
+  const chosen: (Projection | undefined)[] = stops.map(() => undefined);
+  for (let at = end; at; at = back[at[0]]![at[1]]) chosen[at[0]] = passes[at[0]]![at[1]];
+  // A stop left off: its nearest point between the stops on either side of it.
+  const out: number[] = [];
+  stops.forEach((s, i) => {
+    const prev = out[i - 1] ?? 0;
+    let along = chosen[i]?.along;
+    if (along === undefined) {
+      const next = chosen.slice(i + 1).find((x) => x !== undefined);
+      const p = projectOnPolyline(
+        points,
+        cumDist,
+        s,
+        segmentAt(cumDist, prev),
+        next ? next.segment : last,
+      );
+      along = Math.min(p.along, next ? next.along : Infinity);
+    }
+    out.push(Math.max(prev, along));
+  });
+  return out;
+}
+
+/** The segment of a polyline a distance along it falls on. */
+function segmentAt(cumDist: readonly number[], d: number): number {
+  let i = 0;
+  while (i + 2 < cumDist.length && cumDist[i + 1]! <= d) i++;
+  return i;
+}
+
 /** Point at a given distance along a polyline (clamped to its ends). */
 export function pointAlong(
   points: readonly LatLon[],

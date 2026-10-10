@@ -485,4 +485,9 @@ export const it: Dict = {
   'hike.views': 'Belvedere lungo il percorso',
   'hike.backSameWay':
     "Nessun autobus all'arrivo: ritorno per la stessa via, andata e ritorno ~{time}.",
+  'hike.reverse': 'Partire dalla fine',
+  'hike.reverseLoop': 'Percorrerlo nell’altro senso',
+  'hike.branches': 'Sentieri che si diramano',
+  'hike.branchesNote':
+    'Ognuno del suo colore sulla mappa: bandiera verde dove si dirama, bandiera a scacchi dove finisce. Tocca per sceglierlo.',
 };

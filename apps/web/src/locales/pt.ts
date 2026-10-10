@@ -486,4 +486,9 @@ export const pt: Dict = {
   'hike.osm': 'O percurso no OpenStreetMap',
   'hike.views': 'Miradouros no percurso',
   'hike.backSameWay': 'Sem autocarro no fim: volta pelo mesmo caminho, ida e volta ~{time}.',
+  'hike.reverse': 'Começar pelo fim',
+  'hike.reverseLoop': 'Fazer no sentido contrário',
+  'hike.branches': 'Trilhos que se cruzam',
+  'hike.branchesNote':
+    'Cada um com a sua cor no mapa: bandeira verde onde se separa, bandeira de xadrez onde termina. Toque para o escolher.',
 };

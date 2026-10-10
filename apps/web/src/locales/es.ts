@@ -484,4 +484,9 @@ export const es: Dict = {
   'hike.osm': 'El sendero en OpenStreetMap',
   'hike.views': 'Miradores en el camino',
   'hike.backSameWay': 'No hay autobús al final: vuelta por el mismo camino, ida y vuelta ~{time}.',
+  'hike.reverse': 'Empezar por el final',
+  'hike.reverseLoop': 'Recorrerla en sentido contrario',
+  'hike.branches': 'Senderos que se cruzan',
+  'hike.branchesNote':
+    'Cada uno con su color en el mapa: bandera verde donde se separa, bandera a cuadros donde termina. Toca uno para elegirlo.',
 };

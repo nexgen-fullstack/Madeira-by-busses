@@ -25,6 +25,8 @@ export interface MapLine {
   pattern?: number;
   /** The stop it is boarded at on a route: its card shows the next buses from there. */
   board?: number;
+  /** Where a tap on it goes (another trail met on the way: its page). */
+  href?: string;
 }
 
 export interface LineNote {
@@ -89,6 +91,8 @@ export interface ScenicSpot extends LatLon {
   region: string;
   /** Where a tap goes (a place with a view's page when not given). */
   href?: string;
+  /** Its name shown only while a finger is held on it (among the trails, which it would hide). */
+  quiet?: boolean;
 }
 
 export const EMPTY_CONTENT: MapContent = { lines: [], points: [] };
@@ -148,8 +152,9 @@ const routeColor = (net: Network, route: number) => colorOf(net.routes[route]!);
 /**
  * A route on the map, each of its buses in a neon of its own with arrows the way it goes,
  * a start flag where it is boarded and a chequered one where it is left, both on the bus's
- * side of the road, where the walks lead; `focus` brings one of its legs close up. A route
- * `chosen` to take is shown alone.
+ * side of the road, where the walks lead; each walk from a start flag to a chequered one
+ * too, so the journey starts at a start flag and ends at a chequered one. `focus` brings
+ * one of its legs close up. A route `chosen` to take is shown alone.
  */
 export function itineraryContent(
   net: Network,
@@ -176,11 +181,34 @@ export function itineraryContent(
       const from = rides[i - 1]?.at(-1);
       const to = rides[i + 1]?.[0];
       const path = walkPath(leg);
-      lines.push({
-        coords: [...(from ? [from] : []), ...path, ...(to ? [to] : [])],
-        color: hasView(leg) ? VIEW_WALK : WALK_INK,
-        dashed: true,
-      });
+      const coords = [...(from ? [from] : []), ...path, ...(to ? [to] : [])];
+      lines.push({ coords, color: hasView(leg) ? VIEW_WALK : WALK_INK, dashed: true });
+      // A walk, as a bus, from a start flag to a chequered one: where the journey starts on
+      // foot, where it is walked on from the bus, and where it ends; the names of the places
+      // walked from and to (a stop's name stands at its bus's flag).
+      const ends = i === 0 || i === it.legs.length - 1;
+      if (pathLength(coords) >= (ends ? END_WALK : TRANSFER_WALK)) {
+        const a = coords[0]!;
+        const b = coords.at(-1)!;
+        const fromName = i === 0 ? leg.from.name : '';
+        const toName = i === it.legs.length - 1 ? leg.to.name : '';
+        points.push({
+          lat: a.lat,
+          lon: a.lon,
+          kind: 'board',
+          color: '#ffffff',
+          fill: FLAG_FOOT,
+          ...(fromName ? { label: fromName } : {}),
+        });
+        points.push({
+          lat: b.lat,
+          lon: b.lon,
+          kind: 'alight',
+          color: '#ffffff',
+          fill: FLAG_FOOT,
+          ...(toName ? { label: toName } : {}),
+        });
+      }
       return;
     }
     const coords = rides[i]!;
@@ -220,20 +248,6 @@ export function itineraryContent(
     }
   });
   pairFlags(points);
-  const first = it.legs[0];
-  const last = it.legs[it.legs.length - 1];
-  if (first?.kind === 'walk') points.push({ ...first.from, kind: 'origin', color: '#14181F' });
-  // The yellow pin where the journey ends, as in a maps app (at the last stop when it ends there).
-  // Not over the chequered flag when the journey ends at the stop: that flag says it.
-  if (last?.kind === 'walk') {
-    points.push({
-      lat: last.to.lat,
-      lon: last.to.lon,
-      kind: 'destination',
-      color: '#14181F',
-      label: last.kind === 'walk' ? last.to.name || undefined : undefined,
-    });
-  }
   const leg = focus !== undefined ? lines[focus] : undefined;
   const key = `it:${it.key}:${it.depart}`;
   return {
@@ -245,6 +259,14 @@ export function itineraryContent(
     ...(expressways.length > 0 ? { expressways } : {}),
   };
 }
+
+/** A walk at either end of a journey this long (m) or longer has its flags; one between buses, this long. */
+const END_WALK = 15;
+const TRANSFER_WALK = 120;
+
+/** A line's length (m). */
+const pathLength = (coords: readonly LatLon[]) =>
+  coords.slice(1).reduce((m, p, i) => m + haversine(coords[i]!, p), 0);
 
 /** A bus left this close to where the next is boarded is left and boarded at one place (m). */
 const ONE_PLACE = 6;
@@ -264,7 +286,7 @@ function pairFlags(points: MapPoint[]): void {
     board.pair = true;
     if (alight.label === board.label) {
       board.label = undefined;
-    } else {
+    } else if (alight.label && board.label) {
       alight.apart = true;
       board.apart = true;
     }
@@ -280,8 +302,8 @@ export const BIKE_GREEN = '#1E8A4C';
 
 /**
  * The way by car, on foot or by bike: a car's and a bike's as a line along the roads
- * (each with a white edge on any map), a walk as the dots of a walk; where it starts and
- * the yellow pin where it goes.
+ * (each with a white edge on any map), a walk as the dots of a walk; a start flag where it
+ * starts and a chequered one where it goes.
  */
 export function travelContent(travel: Travel): MapContent {
   const first = travel.path[0]!;
@@ -300,9 +322,10 @@ export function travelContent(travel: Travel): MapContent {
   const key = (p: LatLon) => `${p.lat.toFixed(5)},${p.lon.toFixed(5)}`;
   return {
     lines,
+    // As every way: a start flag where it starts, a chequered one where it ends.
     points: [
-      { ...first, kind: 'origin', color: '#14181F' },
-      { ...last, kind: 'destination', color: '#14181F' },
+      { ...first, kind: 'board', color: '#ffffff', fill: FLAG_FOOT },
+      { ...last, kind: 'alight', color: '#ffffff', fill: FLAG_FOOT },
     ],
     fitKey: `travel:${travel.mode}:${key(first)}>${key(last)}`,
     fit: travel.path,

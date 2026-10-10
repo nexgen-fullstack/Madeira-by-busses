@@ -48,6 +48,20 @@ export function navigate(path: string, query?: Record<string, string | undefined
   }
 }
 
+/** The same screen another way (a trail walked from its end): no new step to go back through. */
+export function replaceRoute(path: string, query?: Record<string, string | undefined>): void {
+  const q = new URLSearchParams();
+  for (const [k, v] of Object.entries(query ?? {})) if (v !== undefined && v !== '') q.set(k, v);
+  const qs = q.toString();
+  const state = history.state as object | null;
+  location.replace(`#/${path}${qs ? `?${qs}` : ''}`);
+  try {
+    history.replaceState(state, '');
+  } catch {
+    // History state unavailable (sandboxed frames).
+  }
+}
+
 /**
  * Goes back when the current screen was opened from inside the app, or to
  * `fallback` when it was opened directly (a shared link, a restored tab), so

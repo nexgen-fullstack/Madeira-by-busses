@@ -296,7 +296,7 @@ export function trailOf(
     down,
     low,
     high,
-    roundtrip: tags.roundtrip === 'yes' || haversine(first, last) <= LOOP,
+    roundtrip: haversine(first, last) <= LOOP,
     start: [round(first.lat), round(first.lon)],
     end: [round(last.lat), round(last.lon)],
     lines: lines.map(encodePolyline),

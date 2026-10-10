@@ -490,4 +490,9 @@ export const de: Dict = {
   'hike.osm': 'Der Weg auf OpenStreetMap',
   'hike.views': 'Aussichtspunkte am Weg',
   'hike.backSameWay': 'Am Ziel fährt kein Bus: zurück auf demselben Weg, hin und zurück ~{time}.',
+  'hike.reverse': 'Vom Ende aus starten',
+  'hike.reverseLoop': 'In die andere Richtung gehen',
+  'hike.branches': 'Abzweigende Wege',
+  'hike.branchesNote':
+    'Jeder in eigener Farbe auf der Karte: grüne Fahne, wo er abzweigt, Zielflagge, wo er endet. Tippen, um ihn zu wählen.',
 };

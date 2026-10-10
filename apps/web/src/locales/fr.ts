@@ -488,4 +488,9 @@ export const fr: Dict = {
   'hike.osm': 'Le sentier sur OpenStreetMap',
   'hike.views': 'Points de vue en chemin',
   'hike.backSameWay': "Pas de bus à l'arrivée : retour par le même chemin, aller-retour ~{time}.",
+  'hike.reverse': 'Partir de la fin',
+  'hike.reverseLoop': 'Faire la boucle dans l’autre sens',
+  'hike.branches': 'Sentiers qui bifurquent',
+  'hike.branchesNote':
+    'Chacun de sa couleur sur la carte : drapeau vert là où il bifurque, drapeau à damier là où il finit. Touchez-en un pour le choisir.',
 };

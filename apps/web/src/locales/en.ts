@@ -483,4 +483,9 @@ export const en: Dict = {
   'hike.osm': 'The trail on OpenStreetMap',
   'hike.views': 'Views on the way',
   'hike.backSameWay': 'No bus at the end: back the same way, there and back ~{time}.',
+  'hike.reverse': 'Start from the end',
+  'hike.reverseLoop': 'Walk it the other way',
+  'hike.branches': 'Trails branching off',
+  'hike.branchesNote':
+    'Each in its own colour on the map: a green flag where it turns off, a chequered one where it ends. Tap one to choose it.',
 };

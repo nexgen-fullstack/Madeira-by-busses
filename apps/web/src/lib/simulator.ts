@@ -1,7 +1,7 @@
 import {
   cumulativeDistances,
   pointAlong,
-  projectOnPolyline,
+  stopsAlong,
   type Fix,
   type LatLon,
   type TrackedStop,
@@ -40,12 +40,7 @@ export class RideSimulator {
     private readonly delay = 60,
   ) {
     this.cum = cumulativeDistances(shape);
-    let from = 0;
-    for (const s of stops) {
-      const pr = projectOnPolyline(shape, this.cum, s, from);
-      this.stopAlong.push(pr.along);
-      from = pr.segment;
-    }
+    this.stopAlong.push(...stopsAlong(shape, this.cum, stops));
     this.total = this.stopAlong[this.stopAlong.length - 1] ?? 0;
   }
 

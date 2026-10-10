@@ -515,4 +515,9 @@ export const cs: Dict = {
   'hike.osm': 'Stezka na OpenStreetMap',
   'hike.views': 'Vyhlídky na trase',
   'hike.backSameWay': 'V cíli autobus nejezdí: zpět stejnou cestou, tam a zpět ~{time}.',
+  'hike.reverse': 'Začít od konce',
+  'hike.reverseLoop': 'Projít opačným směrem',
+  'hike.branches': 'Odbočující stezky',
+  'hike.branchesNote':
+    'Každá má na mapě svou barvu: zelená vlajka tam, kde odbočuje, šachovnicová tam, kde končí. Klepnutím ji vyberete.',
 };

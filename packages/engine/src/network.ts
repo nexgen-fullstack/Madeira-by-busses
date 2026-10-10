@@ -3,7 +3,7 @@ import {
   cumulativeDistances,
   decodePolyline,
   GridIndex,
-  projectOnPolyline,
+  stopsAlong,
   slicePolyline,
   walkSeconds,
   type LatLon,
@@ -185,13 +185,11 @@ export class Network {
     if (!cached) {
       const shape = this.shape(pattern);
       const cum = cumulativeDistances(shape);
-      const stops: number[] = [];
-      let from = 0;
-      for (const s of this.patterns[pattern]!.stops) {
-        const pr = projectOnPolyline(shape, cum, this.stops[s]!, from);
-        stops.push(Math.max(pr.along, stops[stops.length - 1] ?? 0));
-        from = pr.segment;
-      }
+      const stops = stopsAlong(
+        shape,
+        cum,
+        this.patterns[pattern]!.stops.map((s) => this.stops[s]!),
+      );
       cached = { cum, stops };
       this.alongCache.set(pattern, cached);
     }

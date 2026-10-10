@@ -260,6 +260,35 @@ describe('a route on the map', () => {
     expect(c.lines[0]!.coords.at(-1)).toEqual(shapes[0]![0]);
   });
 
+  it('walks from a start flag to a chequered one, as a bus is ridden', () => {
+    // From the hotel to the 207, and from Ribeira Brava on foot to the beach.
+    const to = {
+      kind: 'walk',
+      from: { name: 'Hotel', lat: 32.6502, lon: -16.9068 },
+      to: ride(0),
+      path: [stop('', -16.9068, 32.6502), stop('Funchal', -16.91)],
+    };
+    const on = {
+      kind: 'walk',
+      from: ride(2),
+      to: { name: 'Praia', lat: 32.6485, lon: -17.064 },
+      path: [stop('Ribeira Brava', -17.06), stop('', -17.064, 32.6485)],
+    };
+    const c = itineraryContent(net, { ...it207, legs: [to, it207.legs[0]!, on] } as Itinerary);
+    const flags = c.points.filter((p) => p.kind === 'board' || p.kind === 'alight');
+    expect(flags.map((p) => [p.kind, p.label, p.pair])).toEqual([
+      // The journey starts at a start flag at the hotel, walks to the bus's flags.
+      ['board', 'Hotel', undefined],
+      ['alight', undefined, true],
+      ['board', 'Funchal', true],
+      ['alight', 'Ribeira Brava', true],
+      ['board', undefined, true],
+      // And ends at a chequered one at the beach: no pin over it.
+      ['alight', 'Praia', undefined],
+    ]);
+    expect(c.points.some((p) => p.kind === 'destination' || p.kind === 'origin')).toBe(false);
+  });
+
   it('walks along the pavement, not down the middle of the road', () => {
     // From a door north of the road, 300 m west along it to the stop, its pavement 3 m out.
     const walk = {
@@ -283,10 +312,10 @@ describe('a route on the map', () => {
 
 describe('a way by car, on foot or by bike', () => {
   const path = [stop('', -16.91), stop('', -16.95), stop('', -16.97)];
-  it('draws a car in blue with arrows, a walk as dots, from its start to the pin', () => {
+  it('draws a car in blue with arrows, a walk as dots, from a start flag to a chequered one', () => {
     const car = travelContent({ mode: 'car', path, length: 6000, seconds: 600 });
     expect(car.lines).toMatchObject([{ color: CAR_BLUE, arrows: true }]);
-    expect(car.points.map((p) => p.kind)).toEqual(['origin', 'destination']);
+    expect(car.points.map((p) => p.kind)).toEqual(['board', 'alight']);
     expect(car.points[1]).toMatchObject({ lat: 32.65, lon: -16.97 });
     const walk = travelContent({ mode: 'walk', path, length: 6000, seconds: 4800 });
     expect(walk.lines).toMatchObject([{ dashed: true }]);
