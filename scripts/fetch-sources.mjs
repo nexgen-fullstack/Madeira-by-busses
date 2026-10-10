@@ -319,6 +319,14 @@ async function osm() {
      out geom qt;`,
   );
   writeFileSync(join(dir, 'bridges.json'), JSON.stringify(bridges));
+  // The hiking routes with their ways' shapes (`madeirabus-pipeline trails` makes them
+  // trails.json, with their climbs; this file is not kept).
+  const trails = await overpass(
+    `[out:json][timeout:300];
+     relation["type"="route"]["route"~"^(hiking|foot)$"](${BBOX});
+     out geom qt;`,
+  );
+  writeFileSync(join(dir, 'trails-osm.json'), JSON.stringify(trails));
   const relations = routes.elements.filter((e) => e.type === 'relation');
   return {
     routeRelations: relations.filter((r) => r.tags?.type === 'route').length,
@@ -326,6 +334,7 @@ async function osm() {
     operators: [...new Set(relations.map((r) => r.tags?.operator).filter(Boolean))],
     stops: stops.elements.length,
     places: places.elements.length,
+    trails: trails.elements.length,
   };
 }
 

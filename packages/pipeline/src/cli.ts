@@ -43,6 +43,7 @@ import { addScenery, loadTerrain, SegmentIndex, tilesFor, type Scenery } from '.
 import { driveKind, reverseDriveKind } from './drive.ts';
 import { RoadRouter } from './shapes.ts';
 import { checkShapes, offRoadMarkdown } from './checkShapes.ts';
+import { buildTrails, type OsmRelation } from './trails.ts';
 import { AGENCIES, buildTimetableFeed } from './timetables/build.ts';
 import { loadLocalities, loadSiga, loadTimetables } from './timetables/load.ts';
 import { timetableReportMarkdown } from './timetables/report.ts';
@@ -58,6 +59,7 @@ const USAGE = `madeirabus-pipeline <command>
         [--missing <op1,op2>]        operators not covered yet (shown in the app)
         [--places <osm.json>]        searchable places from an Overpass answer (skipped if absent)
         [--walk <walk.bin>]          the walking network, copied next to the bundle (skipped if absent)
+        [--trails <trails.json>]     the hiking trails, copied next to the bundle (skipped if absent)
         [--addresses <json>]         streets and house numbers, copied next to the bundle (skipped if absent)
         [--areas <areas.json>]       the bounds of towns and villages: where a trip to one goes
         [--drive <drive.bin>]        the roads: every line is drawn along them, in its lane,
@@ -71,6 +73,8 @@ const USAGE = `madeirabus-pipeline <command>
   addresses --osm <overpass.json> --places <osm.json> --out <addresses.json>
                                           streets and house numbers to search for
   drive --osm <overpass.json> --out <drive.bin>  the roads buses drive on, from OpenStreetMap ways
+  trails --osm <overpass.json> [--tiles <dir>] --out <trails.json>
+        the hiking trails from OpenStreetMap's hiking routes, their climbs on the elevation tiles
   scenery --walk <walk.bin> --tiles <dir> [--coast <overpass.json>] [--bridges <overpass.json>]
         [--places <osm.json>] --out <walk.bin>
                                           how much each walkable way climbs (free elevation tiles,
@@ -379,6 +383,14 @@ async function build(args: Args) {
     console.log(`! No walking network at ${walkPath}; walks are drawn as the crow flies`);
   }
 
+  // The hiking trails, as trails.json: the app's trails tab and their layer on the map.
+  const trailsPath = flag(args, 'trails');
+  if (trailsPath && existsSync(trailsPath)) {
+    const target = join(dirname(out), 'trails.json');
+    await writeFile(target, await readFile(trailsPath));
+    console.log(`Trails copied to ${target}`);
+  }
+
   // The roads too, as drive.bin: the app drives a car along them, beside the buses.
   const roadsPath = flag(args, 'drive');
   if (roadsPath && existsSync(roadsPath)) {
@@ -572,6 +584,31 @@ async function drive(args: Args) {
   console.log(`Written to ${out}: ${kb(bytes.length)} (${kb(gzipSync(bytes).length)} gzipped)`);
 }
 
+async function trails(args: Args) {
+  const input = flag(args, 'osm');
+  const out = flag(args, 'out');
+  const tiles = flag(args, 'tiles');
+  if (!input || !out) throw new Error('trails needs --osm <overpass.json> and --out <trails.json>');
+  const json = JSON.parse(await readFile(input, 'utf8')) as { elements?: OsmRelation[] };
+  const elements = json.elements ?? [];
+  // The elevation tiles under every trail, for how much each climbs.
+  const points = elements.flatMap((e) =>
+    (e.members ?? []).flatMap((m) => m.geometry ?? []).filter((_, i) => i % 5 === 0),
+  );
+  const ground = tiles ? await loadTerrain(tiles, tilesFor(points)) : undefined;
+  const file = buildTrails(elements, ground?.terrain);
+  await mkdir(dirname(out), { recursive: true });
+  const text = JSON.stringify(file);
+  await writeFile(out, text);
+  const pr = file.trails.filter((t) => t.kind === 'pr').length;
+  console.log(
+    `Trails: ${file.trails.length} (${pr} PR) of ${elements.length} routes, ` +
+      `${Math.round(file.trails.reduce((m, t) => m + t.length, 0) / 1000)} km; ` +
+      `${Math.round(text.length / 1024)} KiB` +
+      (ground ? `, ${ground.fetched} elevation tiles fetched` : ', no elevation'),
+  );
+}
+
 /** How far a point is from the nearest road, looking no further than 60 m (by the metre, remembered). */
 function roadDistance(router: RoadRouter) {
   const known = new Map<string, number>();
@@ -611,6 +648,7 @@ async function main() {
     scenery,
     addresses,
     drive,
+    trails,
     areas: areasCommand,
     'check-shapes': checkShapesCommand,
   };

@@ -13,3 +13,4 @@ export * from './tracker.ts';
 export * from './walk.ts';
 export * from './roads.ts';
 export * from './travel.ts';
+export * from './trails.ts';
