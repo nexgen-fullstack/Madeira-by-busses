@@ -1564,6 +1564,10 @@ input[type='time'],
   display: flex;
   gap: 8px;
 }
+/* Its sheet of choices open: above the screen's sheet, as the buttons are not. */
+.map-tools:has(.layers__panel) {
+  z-index: 31;
+}
 .layers {
   position: relative;
 }

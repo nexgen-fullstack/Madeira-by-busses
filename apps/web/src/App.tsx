@@ -118,8 +118,10 @@ function sheetRest(route: Route): SheetSnap {
   if (head === 'plan') return route.query.has('to') ? 'half' : 'peek';
   if (head === 'settings') return 'full';
   // A place: its photo, name and "start" over the map, the way there on the map above them;
-  // the rest when the sheet is pulled up.
-  if (head === 'explore' && route.path[1]) return 'peek';
+  // the rest when the sheet is pulled up. Its "from" or "to" changed: the ways there in view.
+  if (head === 'explore' && route.path[1]) {
+    return route.query.has('from') || route.query.has('to') ? 'half' : 'peek';
+  }
   return 'half';
 }
 
