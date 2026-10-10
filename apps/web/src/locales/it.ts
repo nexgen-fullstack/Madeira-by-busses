@@ -445,6 +445,7 @@ export const it: Dict = {
   'travel.navigate': 'Naviga in Google Maps',
   'tab.hikes': 'Sentieri',
   'layers.trails': 'Sentieri escursionistici',
+  'layers.scenic': 'Foto dei panorami',
   'hikes.title': 'Sentieri e levadas',
   'hikes.intro':
     "I sentieri ufficiali PR (segnavia rossi e gialli), levadas e antiche vie reali: lunghezza, dislivello, tempo e l'autobus più vicino. Tocca per i dettagli e come raggiungere la partenza.",

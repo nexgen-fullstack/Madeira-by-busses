@@ -27,6 +27,8 @@ export interface MapLayers {
   transit: boolean;
   /** The hiking trails, dashed in the red of their waymarks, with where each starts. */
   trails: boolean;
+  /** The places with a view by their photos (and, with the trails, the photos along them). */
+  scenic: boolean;
 }
 
 export const DEFAULT_LAYERS: MapLayers = {
@@ -36,6 +38,7 @@ export const DEFAULT_LAYERS: MapLayers = {
   terrain3d: false,
   transit: false,
   trails: false,
+  scenic: true,
 };
 
 const VECTOR_STYLE = 'https://tiles.openfreemap.org/styles/liberty';

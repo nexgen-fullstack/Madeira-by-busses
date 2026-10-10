@@ -87,6 +87,8 @@ export interface ScenicSpot extends LatLon {
   /** The small photo's address; none yet: the colours of `region`. */
   photo?: string;
   region: string;
+  /** Where a tap goes (a place with a view's page when not given). */
+  href?: string;
 }
 
 export const EMPTY_CONTENT: MapContent = { lines: [], points: [] };

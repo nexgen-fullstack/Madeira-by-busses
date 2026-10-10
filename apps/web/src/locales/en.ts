@@ -444,6 +444,7 @@ export const en: Dict = {
   'travel.navigate': 'Navigate in Google Maps',
   'tab.hikes': 'Trails',
   'layers.trails': 'Hiking trails',
+  'layers.scenic': 'Photos of the views',
   'hikes.title': 'Hiking trails and levadas',
   'hikes.intro':
     'The official PR trails (red and yellow waymarks), levadas and old royal paths: length, climb, time and the nearest bus. Tap one for details and the way to its start.',

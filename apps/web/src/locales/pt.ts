@@ -447,6 +447,7 @@ export const pt: Dict = {
   'travel.navigate': 'Navegar no Google Maps',
   'tab.hikes': 'Veredas',
   'layers.trails': 'Percursos pedestres',
+  'layers.scenic': 'Fotos das vistas',
   'hikes.title': 'Percursos pedestres e levadas',
   'hikes.intro':
     'Os percursos oficiais PR (marcas vermelhas e amarelas), levadas e caminhos reais: extensão, subida, tempo e o autocarro mais próximo. Toque para ver detalhes e o caminho até ao início.',

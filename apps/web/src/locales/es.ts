@@ -445,6 +445,7 @@ export const es: Dict = {
   'travel.navigate': 'Navegar en Google Maps',
   'tab.hikes': 'Senderos',
   'layers.trails': 'Senderos',
+  'layers.scenic': 'Fotos de los paisajes',
   'hikes.title': 'Senderos y levadas',
   'hikes.intro':
     'Los senderos oficiales PR (marcas rojas y amarillas), levadas y caminos reales: longitud, desnivel, tiempo y el autobús más cercano. Toque uno para ver detalles y cómo llegar al inicio.',

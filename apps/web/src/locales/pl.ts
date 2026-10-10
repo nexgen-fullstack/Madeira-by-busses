@@ -479,6 +479,7 @@ export const pl: Dict = {
   'travel.navigate': 'Nawiguj w Google Maps',
   'tab.hikes': 'Szlaki',
   'layers.trails': 'Szlaki piesze',
+  'layers.scenic': 'Zdjęcia widoków',
   'hikes.title': 'Szlaki piesze i lewady',
   'hikes.intro':
     'Oficjalne szlaki PR (czerwono-żółte znaki), lewady i dawne drogi królewskie: długość, podejście, czas i najbliższy autobus. Dotknij, by zobaczyć szczegóły i dojazd na start.',

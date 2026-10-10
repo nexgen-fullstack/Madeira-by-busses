@@ -449,6 +449,7 @@ export const fr: Dict = {
   'travel.navigate': 'Naviguer dans Google Maps',
   'tab.hikes': 'Sentiers',
   'layers.trails': 'Sentiers de randonnée',
+  'layers.scenic': 'Photos des paysages',
   'hikes.title': 'Sentiers et levadas',
   'hikes.intro':
     "Les sentiers officiels PR (balisage rouge et jaune), levadas et chemins royaux : longueur, dénivelé, durée et le bus le plus proche. Touchez-en un pour les détails et l'accès au départ.",

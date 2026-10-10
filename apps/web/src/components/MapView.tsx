@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { Bus, Check, Flag, MapPin, Signpost, X } from 'lucide-react';
+import { Bus, Camera, Check, Flag, MapPin, Signpost, X } from 'lucide-react';
 import {
   GeolocateControl,
   LngLatBounds,
@@ -46,7 +46,8 @@ import {
 import { pointName } from '../lib/pointName.ts';
 import { useBack } from '../lib/back.ts';
 import { navigate } from '../lib/router.ts';
-import { loadTrails, trailLines } from '../lib/trails.ts';
+import { trailPhotoSpots } from '../lib/photos.ts';
+import { loadTrails, trailLines, useTrails } from '../lib/trails.ts';
 import { useApp } from '../state/app.tsx';
 import { LayerSwitcher } from './LayerSwitcher.tsx';
 import { LineCard, LineChooser, type LinePick } from './LineCard.tsx';
@@ -1365,7 +1366,18 @@ export default function MapView({ className }: { className?: string }) {
   // And on a place tapped or a pin dropped.
   useMarker(mapRef, ready, pick ? undefined : picked);
   // The places with a view by their photos, where they are (not while a place is picked).
-  useScenicMarkers(mapRef, ready, pick ? undefined : content.scenic);
+  // The photos of the places with a view, and with the trails those along them, where each
+  // was taken; the camera button hides them all.
+  const allTrails = useTrails(trailsOn && layers.scenic);
+  const photoSpots = useMemo(() => {
+    if (!layers.scenic) return undefined;
+    const spots = [
+      ...(content.scenic ?? []),
+      ...(trailsOn && allTrails ? allTrails.flatMap(trailPhotoSpots) : []),
+    ];
+    return [...new Map(spots.map((s) => [s.id, s])).values()];
+  }, [layers.scenic, content.scenic, trailsOn, allTrails]);
+  useScenicMarkers(mapRef, ready, pick ? undefined : photoSpots);
   // A run or a line tapped belongs to the map shown; another one, forget it.
   useEffect(() => {
     setNote(undefined);
@@ -1519,6 +1531,16 @@ export default function MapView({ className }: { className?: string }) {
           onClick={() => setSettings({ map: { ...layers, trails: !layers.trails } })}
         >
           <Signpost size={18} />
+        </button>
+        <button
+          type="button"
+          className="map-tool"
+          aria-pressed={layers.scenic}
+          aria-label={t.t('layers.scenic')}
+          title={t.t('layers.scenic')}
+          onClick={() => setSettings({ map: { ...layers, scenic: !layers.scenic } })}
+        >
+          <Camera size={18} />
         </button>
       </div>
       {note && !pick && (
@@ -1720,7 +1742,7 @@ function useScenicMarkers(
       el.append(face, name, dot);
       el.addEventListener('click', (e) => {
         e.stopPropagation();
-        navigate(`explore/${spot.id}`);
+        navigate(spot.href ?? `explore/${spot.id}`);
       });
       return new Marker({ element: el, anchor: 'bottom' })
         .setLngLat([spot.lon, spot.lat])

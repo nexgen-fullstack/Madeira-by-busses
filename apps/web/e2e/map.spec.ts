@@ -201,3 +201,21 @@ test('a stop tapped in a list stands out on the map, named; tapped again, no mor
   await onRide.click();
   await expect(page.locator('.map-spot__name')).toHaveText((await onRide.textContent())!);
 });
+
+test('the camera button hides the photos of the places with a view, and shows them again', async ({
+  page,
+}) => {
+  await page.goto('./#/plan');
+  await page.waitForSelector('.map-canvas canvas');
+  const camera = page.getByRole('button', { name: 'Фото краєвидів' });
+  await expect(camera).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('.scenic-pin').first()).toBeAttached();
+  await camera.click();
+  await expect(page.locator('.scenic-pin')).toHaveCount(0);
+  await camera.click();
+  await expect(page.locator('.scenic-pin').first()).toBeAttached();
+  // With the trails, the photos along them too, each a tap from its trail.
+  const before = await page.locator('.scenic-pin').count();
+  await page.getByRole('button', { name: 'Піші стежки' }).click();
+  await expect.poll(() => page.locator('.scenic-pin').count()).toBeGreaterThan(before + 50);
+});

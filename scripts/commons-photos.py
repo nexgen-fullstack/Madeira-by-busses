@@ -45,8 +45,9 @@ def slug(text):
 
 
 def info(title):
-    q = urllib.parse.urlencode({'action': 'query', 'titles': title, 'prop': 'imageinfo',
-                                'iiprop': 'url|extmetadata', 'iiurlwidth': 1600,
+    q = urllib.parse.urlencode({'action': 'query', 'titles': title, 'prop': 'imageinfo|coordinates',
+                                'iiprop': 'url|extmetadata', 'coprop': 'type',
+                                'coprimary': 'all', 'colimit': 'max', 'iiurlwidth': 1600,
                                 'format': 'json', 'formatversion': '2'})
     page = json.loads(fetch(f'{API}?{q}'))['query']['pages'][0]
     ii = page['imageinfo'][0]
@@ -55,8 +56,12 @@ def info(title):
     author = re.sub(r'\s+', ' ', author)
     license = md.get('LicenseShortName', {}).get('value', '')
     url = md.get('LicenseUrl', {}).get('value', '') or (CC0 if 'CC0' in license else ii['descriptionurl'])
+    # Where the photo was taken (the camera), else where what it shows is.
+    spots = page.get('coordinates') or []
+    spot = next((c for c in spots if c.get('type') == 'camera'), spots[0] if spots else None)
+    where = {'lat': round(spot['lat'], 5), 'lon': round(spot['lon'], 5)} if spot else {}
     return {'thumb': ii['thumburl'], 'author': author[:80], 'license': license,
-            'licenseUrl': url, 'source': ii['descriptionurl']}
+            'licenseUrl': url, 'source': ii['descriptionurl'], **where}
 
 
 def save(title, file, label):
@@ -75,7 +80,8 @@ def save(title, file, label):
     im.resize((480, 320), Image.LANCZOS).save(f'{OUT}/{file}-sm.webp', quality=68, method=6)
     time.sleep(0.3)
     return {'file': file, 'title': label, 'author': meta['author'], 'license': meta['license'],
-            'licenseUrl': meta['licenseUrl'], 'source': meta['source']}
+            'licenseUrl': meta['licenseUrl'], 'source': meta['source'],
+            **({'lat': meta['lat'], 'lon': meta['lon']} if 'lat' in meta else {})}
 
 
 def write(data):

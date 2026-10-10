@@ -14,7 +14,7 @@ import { useI18n, type Key } from '../i18n.ts';
 import { duration } from '../lib/format.ts';
 import { encodePlace } from '../lib/itinerary.ts';
 import { FLAG_FOOT, TRAIL_RED, type MapContent, type MapPoint } from '../lib/mapContent.ts';
-import { photoUrl, trailPhoto, trailViews } from '../lib/photos.ts';
+import { photoUrl, trailPhoto, trailPhotoSpots, trailViews } from '../lib/photos.ts';
 import { goBack, navigate } from '../lib/router.ts';
 import {
   endOf,
@@ -93,6 +93,8 @@ function Hike({ trail }: { trail: Trail }) {
             : [{ ...end, kind: 'alight' as const, color: '#ffffff', fill: FLAG_FOOT }]),
           ...near,
         ],
+        // Its photos where they were taken: its own, its viewpoints'.
+        scenic: trailPhotoSpots(trail),
         fitKey: `hike:${trail.id}`,
         fit: lines.flat(),
         focus: `hike:${trail.id}`,

@@ -476,6 +476,7 @@ export const cs: Dict = {
   'travel.navigate': 'Navigovat v Google Maps',
   'tab.hikes': 'Stezky',
   'layers.trails': 'Turistické stezky',
+  'layers.scenic': 'Fotky vyhlídek',
   'hikes.title': 'Turistické stezky a levády',
   'hikes.intro':
     'Oficiální stezky PR (červenožluté značení), levády a staré královské cesty: délka, stoupání, čas a nejbližší autobus. Klepněte pro podrobnosti a cestu na start.',

@@ -451,6 +451,7 @@ export const de: Dict = {
   'travel.navigate': 'In Google Maps navigieren',
   'tab.hikes': 'Wandern',
   'layers.trails': 'Wanderwege',
+  'layers.scenic': 'Fotos der Aussichten',
   'hikes.title': 'Wanderwege und Levadas',
   'hikes.intro':
     'Die offiziellen PR-Wege (rot-gelbe Markierung), Levadas und alte Königswege: Länge, Anstieg, Zeit und der nächste Bus. Antippen für Details und den Weg zum Start.',
