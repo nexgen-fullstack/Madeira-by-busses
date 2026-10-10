@@ -215,6 +215,14 @@ const ACCESS = 1;
 const RIDE = 2;
 const WALK = 3;
 
+/**
+ * With no stop within walking range (the start of a trail on a mountain), the stops this far
+ * as the crow flies (m) are tried along the paths, up to this long a walk (m of level way,
+ * a metre up counting four).
+ */
+const FAR_STOPS = 6000;
+const FAR_WALK = 20_000;
+
 /** Street metres allowed to a stop, against `maxAccessWalk` metres as the crow flies. */
 const STREET_ALLOWANCE = 1.35;
 /** A wait for the next bus long enough to look for a later first bus (s). */
@@ -785,6 +793,16 @@ export class Planner {
     }
     const walked = this.walkAccess(place, opts, undefined, back);
     if (walked && walked.length > 0) return walked;
+    // Nothing within walking range up a mountain (the start of a trail): the stops a walk
+    // along the paths reaches, however far, the nearest few by the walk with its climb;
+    // never a line straight over the mountain to the stops nearest as the crow flies.
+    if (walked) {
+      const far = this.walkAccess(place, opts, FAR_WALK, back, FAR_STOPS);
+      if (far && far.length > 0) {
+        const best = Math.min(...far.map((a) => a.seconds));
+        return far.filter((a) => a.seconds <= best * 1.25 + 300);
+      }
+    }
     let hits = this.net.nearbyStops(place, opts.maxAccessWalk);
     if (hits.length === 0) {
       // Nothing within walking range: allow a longer walk to the 3 nearest stops.
@@ -808,13 +826,14 @@ export class Planner {
     opts: PlanOptions,
     max = opts.maxAccessWalk * STREET_ALLOWANCE,
     back = false,
+    around = max,
   ): Access[] | undefined {
     const walk = this.walk;
     if (!walk) return undefined;
     const start = walk.snap(place, 400);
     if (!start) return undefined;
     const hits = this.hits();
-    const near = this.net.nearbyStops(place, max).filter((h) => hits[h.stop]);
+    const near = this.net.nearbyStops(place, around).filter((h) => hits[h.stop]);
     const found = walk.distances(
       start,
       near.map((h) => hits[h.stop]!),

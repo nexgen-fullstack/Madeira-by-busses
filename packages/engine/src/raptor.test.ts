@@ -209,6 +209,38 @@ describe('Planner', () => {
     expect((straight!.legs[0] as WalkLeg).path).toBeUndefined();
   });
 
+  it('walks up to the start of a trail from the stop its path leads to, never straight over the hill', () => {
+    // A trailhead 1.7 km up the hill north of B, nearest E and F as the crow flies; its
+    // only path comes down to D: 3.6 km, beyond any usual walk to a bus.
+    const off = (p: LatLon, east: number, north: number): LatLon => ({
+      lat: p.lat + north / 110_574,
+      lon: p.lon + east / (111_320 * Math.cos((p.lat * Math.PI) / 180)),
+    });
+    const trailhead = off(STOPS.B, 0, 1700);
+    const above = { lat: trailhead.lat, lon: STOPS.D.lon };
+    const walk = WalkGraph.decode(
+      encodeWalkGraph({
+        nodes: [trailhead, above, STOPS.D, STOPS.A],
+        edges: [
+          { from: 0, to: 1, kind: WALK_STREET, points: [] },
+          { from: 1, to: 2, kind: WALK_STREET, points: [] },
+          { from: 3, to: 2, kind: WALK_STREET, points: [] },
+        ],
+      }),
+    );
+    const paths = new Planner(net, walk);
+    const to = { ...trailhead, name: 'Trail' };
+    const [best] = paths.plan({ from: place('A'), to, date: WEEKDAY, time: at(7, 50) });
+    const last = best!.legs.at(-1) as WalkLeg;
+    expect(last.kind).toBe('walk');
+    expect(last.from.stop).toBe(stopIndex(net, 'D'));
+    expect(last.distance).toBeGreaterThan(3500);
+    expect(haversine(last.path!.at(-1)!, trailhead)).toBeLessThan(1);
+    expect(last.path!.some((p) => haversine(p, above) < 2)).toBe(true);
+    // At the pace of the walk, not of the crow's 1.1 km.
+    expect(last.end - last.start).toBeGreaterThan(2800);
+  });
+
   it('prices rides by municipality', () => {
     const [toC] = planner.plan({ from: place('A'), to: place('C'), date: WEEKDAY, time: at(9, 0) });
     expect(toC!.fare.giro).toBe(1.45);
