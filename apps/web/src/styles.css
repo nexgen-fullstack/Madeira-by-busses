@@ -1410,9 +1410,13 @@ input[type='time'],
   justify-content: center;
 }
 
-/* MapLibre attribution should not hide our controls on phones. */
+/* MapLibre attribution should not hide our controls on phones: opened, it wraps on the
+   map's width, clear of its edges. */
 .maplibregl-ctrl-attrib {
   font-size: 10px;
+}
+.maplibregl-ctrl-attrib.maplibregl-compact-show {
+  max-width: min(420px, calc(100vw - 24px));
 }
 
 /* ---------- Map chrome: layers, place card, controls ---------- */

@@ -106,6 +106,38 @@ function pinElement(): HTMLElement {
   return el;
 }
 
+/**
+ * The map's credits as their round "i" alone, as in a maps app: MapLibre opens them as
+ * they first fill in (and again when the phone is turned); here they open only when the "i"
+ * is tapped, and fold away at a second tap or a tap on the map. Returns `fold`.
+ */
+function foldAttribution(map: MapLibreMap): () => void {
+  const el = map.getContainer().querySelector<HTMLElement>('.maplibregl-ctrl-attrib');
+  if (!el) return () => {};
+  let wanted = false;
+  const fold = () => {
+    wanted = false;
+    el.classList.remove('maplibregl-compact-show');
+  };
+  // Before MapLibre's own handler turns it: what the tap asks for.
+  el.addEventListener(
+    'click',
+    (e) => {
+      if ((e.target as Element).closest('.maplibregl-ctrl-attrib-button')) {
+        wanted = !el.classList.contains('maplibregl-compact-show');
+      }
+    },
+    true,
+  );
+  new MutationObserver(() => {
+    if (!wanted && el.classList.contains('maplibregl-compact-show')) {
+      el.classList.remove('maplibregl-compact-show');
+    }
+  }).observe(el, { attributes: true, attributeFilter: ['class'] });
+  fold();
+  return fold;
+}
+
 /** A tap on the map away from the pins: none of them is chosen any more. */
 function releasePins(map: MapLibreMap) {
   for (const pin of map.getCanvasContainer().querySelectorAll('.map-pin--chosen')) {
@@ -960,6 +992,8 @@ export default function MapView({ className }: { className?: string }) {
     transitControl.current = transit;
     map.addControl(transit, 'top-right');
     map.addControl(new ScaleControl({ maxWidth: 90 }), 'bottom-right');
+    const foldCredits = foldAttribution(map);
+    map.on('dragstart', foldCredits);
     map.once('load', hideLaunch);
     map.on('style.load', () => {
       styleLoaded.current = true;
@@ -972,6 +1006,7 @@ export default function MapView({ className }: { className?: string }) {
     });
     map.on('click', (e: MapMouseEvent) => {
       releasePins(map);
+      foldCredits();
       const box: [[number, number], [number, number]] = [
         [e.point.x - 8, e.point.y - 8],
         [e.point.x + 8, e.point.y + 8],
