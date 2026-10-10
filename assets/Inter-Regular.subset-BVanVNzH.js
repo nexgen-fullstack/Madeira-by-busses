@@ -1,0 +1,1 @@
+var e=new URL(`Inter-ExtraBold.subset-DCK9FvFw.ttf`,import.meta.url).href,t=new URL(`Inter-Regular.subset-CPCGrdpX.ttf`,import.meta.url).href;export{e as n,t};

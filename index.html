@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#002F85" />
+    <meta
+      name="description"
+      content="Madeira by busses: journey planner for the Madeira bus network — routes with transfers, fares, timetables and GPS get-off alerts. Works offline."
+    />
+    <meta property="og:title" content="Madeira by busses" />
+    <meta
+      property="og:description"
+      content="Explore Madeira with ease: buses, timetables and fares on your phone."
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="https://nexgen-fullstack.github.io/Madeira-by-busses/og-image.jpg"
+    />
+    <meta property="og:image:width" content="1024" />
+    <meta property="og:image:height" content="500" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="./favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="./favicon-64.png" type="image/png" sizes="64x64" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <title>Madeira by busses</title>
+    <style>#launch{z-index:10000;background:#0056c7;justify-content:center;align-items:center;transition:opacity .25s ease-out;display:none;position:fixed;inset:0}.launching #launch{display:flex}#launch.launch--gone{opacity:0;pointer-events:none}#launch img{width:min(88vw,480px);height:auto}@media (prefers-reduced-motion:reduce){#launch{transition:none}}</style>
+    <script>
+      // Inside the Android app (Capacitor serves it from https://localhost) or the installed web app.
+      (function () {
+        var cap = window.Capacitor;
+        var app =
+          (cap && cap.isNativePlatform && cap.isNativePlatform()) ||
+          (location.hostname === 'localhost' &&
+            location.port === '' &&
+            location.protocol === 'https:');
+        var installed = window.matchMedia && matchMedia('(display-mode: standalone)').matches;
+        if (!app && !installed) return;
+        document.documentElement.classList.add('launching');
+        var start = Date.now();
+        window.__mbHideLaunch = function () {
+          window.__mbHideLaunch = function () {};
+          setTimeout(
+            function () {
+              var el = document.getElementById('launch');
+              if (!el) return;
+              el.classList.add('launch--gone');
+              setTimeout(function () {
+                el.remove();
+                document.documentElement.classList.remove('launching');
+              }, 300);
+            },
+            Math.max(0, 800 - (Date.now() - start)),
+          );
+        };
+        // Never longer than this, even if the map is slow or fails to load.
+        setTimeout(function () {
+          window.__mbHideLaunch();
+        }, 2500);
+      })();
+    </script>
+    <script type="module" crossorigin src="./assets/index-b5igzdJJ.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-zZYxxxvK.css">
+  <link rel="manifest" href="./manifest.webmanifest"></head>
+  <body>
+    <div id="launch" aria-hidden="true"><img src="./launch-logo.webp" alt="" /></div>
+    <div id="root"></div>
+  </body>
+</html>
