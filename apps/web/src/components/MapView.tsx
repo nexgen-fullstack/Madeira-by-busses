@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { Check, Flag, MapPin, X } from 'lucide-react';
+import { Bus, Check, Flag, MapPin, X } from 'lucide-react';
 import {
   GeolocateControl,
   LngLatBounds,
@@ -10,7 +10,6 @@ import {
   setWorkerUrl,
   type ExpressionSpecification,
   type GeoJSONSource,
-  type IControl,
   type MapMouseEvent,
   type StyleSpecification,
 } from 'maplibre-gl';
@@ -82,9 +81,6 @@ const PIN_SVG = `<svg viewBox="0 0 28 40" width="28" height="40" aria-hidden="tr
 <path class="map-pin__edge" d="${PIN_PATH}"/>
 <ellipse class="map-pin__shine" cx="9.2" cy="8.2" rx="3.4" ry="1.9" transform="rotate(-38 9.2 8.2)"/>
 <circle class="map-pin__dot" cx="14" cy="14" r="5"/></svg>`;
-/** lucide "bus", for the button that shows every stop and line. */
-const BUS_SVG = `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6v6"/><path d="M15 6v6"/><path d="M2 12h19.6"/><path d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-1.4-5C20.1 6.8 19.1 6 18 6H4a2 2 0 0 0-2 2v10h3"/><circle cx="7" cy="18" r="2"/><path d="M9 18h5"/><circle cx="16" cy="18" r="2"/></svg>`;
-
 /**
  * A pin for a marker. Turquoise while pressed; a tap chooses it (it stays turquoise) or lets it
  * go again, and a tap anywhere else on the map lets it go too.
@@ -138,38 +134,33 @@ function foldAttribution(map: MapLibreMap): () => void {
   return fold;
 }
 
+/**
+ * The map's buttons where the sheet over it on a phone has come up to them (or the map's
+ * credits below them): they step aside rather than lie on the screen's content, and come
+ * back when the sheet goes down.
+ */
+function hideCovered(map: MapLibreMap): void {
+  const panel = document.querySelector<HTMLElement>('.panel--sheet');
+  const box = map.getContainer().parentElement;
+  if (!box) return;
+  const credits = box.querySelector('.maplibregl-ctrl-bottom-right');
+  const limit = Math.min(
+    panel ? panel.getBoundingClientRect().top : Infinity,
+    credits && credits.childElementCount > 0 ? credits.getBoundingClientRect().top : Infinity,
+  );
+  const buttons = box.querySelectorAll<HTMLElement>(
+    '.maplibregl-ctrl-top-right > .maplibregl-ctrl, .map-tools',
+  );
+  for (const el of buttons) {
+    el.classList.remove('map-ctrl--covered');
+    el.classList.toggle('map-ctrl--covered', el.getBoundingClientRect().bottom > limit - 4);
+  }
+}
+
 /** A tap on the map away from the pins: none of them is chosen any more. */
 function releasePins(map: MapLibreMap) {
   for (const pin of map.getCanvasContainer().querySelectorAll('.map-pin--chosen')) {
     pin.classList.remove('map-pin--chosen');
-  }
-}
-
-/** A map button (in the column of zoom and location buttons) that shows every stop and line. */
-class TransitControl implements IControl {
-  private container?: HTMLElement;
-  private button?: HTMLButtonElement;
-  constructor(private readonly onToggle: () => void) {}
-  onAdd(): HTMLElement {
-    const container = document.createElement('div');
-    container.className = 'maplibregl-ctrl maplibregl-ctrl-group';
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'mb-transit-button';
-    button.innerHTML = BUS_SVG;
-    button.addEventListener('click', this.onToggle);
-    container.appendChild(button);
-    this.container = container;
-    this.button = button;
-    return container;
-  }
-  onRemove(): void {
-    this.container?.remove();
-  }
-  set(on: boolean, label: string): void {
-    this.button?.setAttribute('aria-pressed', String(on));
-    this.button?.setAttribute('aria-label', label);
-    if (this.button) this.button.title = label;
   }
 }
 
@@ -946,7 +937,6 @@ export default function MapView({ className }: { className?: string }) {
       return true;
     }, [linePick, lineChoice]),
   );
-  const transitControl = useRef<TransitControl | null>(null);
   const transitRef = useRef<{ data?: TransitData; on: boolean }>({ on: false });
   // A chosen route is shown alone: every stop and line step aside until asked for again.
   const [transitWith, setTransitWith] = useState<string | undefined>();
@@ -955,8 +945,6 @@ export default function MapView({ className }: { className?: string }) {
     if (on && content.focus) setTransitWith(content.focus);
     setSettings({ map: { ...layers, transit: on } });
   };
-  const toggleTransitRef = useRef(() => {});
-  toggleTransitRef.current = () => setTransit(!transitOn);
   // Choosing a place: the point under the pin, its name, and whether the map is moving.
   const [center, setCenter] = useState<LatLon | undefined>();
   const [moving, setMoving] = useState(false);
@@ -988,9 +976,6 @@ export default function MapView({ className }: { className?: string }) {
       }),
       'top-right',
     );
-    const transit = new TransitControl(() => toggleTransitRef.current());
-    transitControl.current = transit;
-    map.addControl(transit, 'top-right');
     map.addControl(new ScaleControl({ maxWidth: 90 }), 'bottom-right');
     const foldCredits = foldAttribution(map);
     map.on('dragstart', foldCredits);
@@ -1105,7 +1090,13 @@ export default function MapView({ className }: { className?: string }) {
       map.on('mouseenter', id, () => (map.getCanvas().style.cursor = 'pointer'));
       map.on('mouseleave', id, () => (map.getCanvas().style.cursor = ''));
     }
+    // The sheet over the map on a phone, pulled up and down: the buttons it reaches step aside.
+    const covered = () => hideCovered(map);
+    const sheet = new ResizeObserver(covered);
+    const panel = document.querySelector('.panel');
+    if (panel) sheet.observe(panel);
     const ro = new ResizeObserver(() => {
+      covered();
       map.resize();
       // A route fitted while the map was another size (still loading, a sheet opening) stays in view.
       const { bounds, moved } = fitted.current;
@@ -1118,8 +1109,11 @@ export default function MapView({ className }: { className?: string }) {
       if (bounds && !moved && !pickRef.current) fitTo(map, bounds, 300);
     };
     window.addEventListener('mb-map-inset', onInset);
+    window.addEventListener('mb-map-inset', covered);
     return () => {
       window.removeEventListener('mb-map-inset', onInset);
+      window.removeEventListener('mb-map-inset', covered);
+      sheet.disconnect();
       ro.disconnect();
       map.remove();
       mapRef.current = null;
@@ -1162,14 +1156,13 @@ export default function MapView({ className }: { className?: string }) {
   );
   const shownTransit = useRef<TransitData | undefined>(undefined);
   useEffect(() => {
-    transitControl.current?.set(transitOn, t.t('layers.transit'));
     transitRef.current = { data: transit ?? transitRef.current.data, on: transitOn };
     const map = mapRef.current;
     if (!map || !ready) return;
     // Hidden and shown again for a chosen route, the same stops need not be loaded again.
     applyTransit(map, transit !== shownTransit.current ? transit : undefined, transitOn);
     if (transit) shownTransit.current = transit;
-  }, [transit, transitOn, ready, t]);
+  }, [transit, transitOn, ready]);
 
   // The yellow pin where the journey goes.
   const destination = content.points.find((p) => p.kind === 'destination');
@@ -1302,14 +1295,27 @@ export default function MapView({ className }: { className?: string }) {
           </div>
         </>
       )}
-      <LayerSwitcher
-        value={{ ...layers, transit: transitOn }}
-        onChange={(map) =>
-          map.transit !== transitOn
-            ? setTransit(map.transit)
-            : setSettings({ map: { ...map, transit: layers.transit } })
-        }
-      />
+      {/* Top left under the bar, as in a maps app: the layers, and every stop and line. */}
+      <div className="map-tools">
+        <LayerSwitcher
+          value={{ ...layers, transit: transitOn }}
+          onChange={(map) =>
+            map.transit !== transitOn
+              ? setTransit(map.transit)
+              : setSettings({ map: { ...map, transit: layers.transit } })
+          }
+        />
+        <button
+          type="button"
+          className="map-tool"
+          aria-pressed={transitOn}
+          aria-label={t.t('layers.transit')}
+          title={t.t('layers.transit')}
+          onClick={() => setTransit(!transitOn)}
+        >
+          <Bus size={18} />
+        </button>
+      </div>
       {note && !pick && (
         <div className="place-card" role="dialog" aria-label={note.title}>
           <div className="place-card__text">

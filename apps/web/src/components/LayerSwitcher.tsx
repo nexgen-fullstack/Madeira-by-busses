@@ -60,7 +60,7 @@ export function LayerSwitcher({
         title={t.t('layers.title')}
         onClick={() => setOpen((o) => !o)}
       >
-        <Layers size={20} />
+        <Layers size={18} />
       </button>
       {open && (
         <div className="layers__panel" role="dialog" aria-label={t.t('layers.title')}>
