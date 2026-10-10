@@ -372,6 +372,31 @@ export function detours(coords: readonly LatLon[], drawn: readonly LatLon[][]): 
   return runs.filter((r) => r.slice(1).reduce((m, p, i) => m + haversine(r[i]!, p), 0) >= DETOUR);
 }
 
+/** A line drawn this close (m) to its bus's lane on the Via Rápida is on it there. */
+const ON_VR = 6;
+/** Shorter bits (m) of a line on the Via Rápida are where it only touches it. */
+const VR_BIT = 80;
+
+/** The parts of a line drawn that lie on its bus's stretches on the Via Rápida (`lanes`). */
+export function onExpressway(coords: readonly LatLon[], lanes: readonly LatLon[][]): LatLon[][] {
+  if (lanes.length === 0) return [];
+  const index = new GridIndex(
+    lanes.flatMap((l) => densify(l, 4)),
+    40,
+  );
+  const runs: LatLon[][] = [];
+  let run: LatLon[] | undefined;
+  for (const p of densify(coords, 4)) {
+    if (index.within(p, ON_VR).length > 0) (run ??= []).push(p);
+    else if (run) {
+      runs.push(run);
+      run = undefined;
+    }
+  }
+  if (run) runs.push(run);
+  return runs.filter((r) => r.slice(1).reduce((m, p, i) => m + haversine(r[i]!, p), 0) >= VR_BIT);
+}
+
 /** Whether a variant has a bus on `date` (every variant when no date is given). */
 const runsOn = (net: Network, pattern: number, date?: string) =>
   date === undefined ||
@@ -495,10 +520,13 @@ export function routeContent(
   });
   const lines: MapLine[] = [];
   const points = new Map<number, MapPoint>();
-  // Where its buses run on the Via Rápida, each pattern drawn once.
-  const expressways = [...new Set(drawnBy.flat().map((x) => x.pattern))].flatMap((p) =>
-    expresswayLanes(net, p),
-  );
+  // Where its buses run on the Via Rápida: under each line drawn, where its bus takes it
+  // (not where a variant runs beside the line drawn for it, a carriageway away).
+  const vr = new Map<number, LatLon[][]>();
+  const expressways = drawnBy.flat().flatMap(({ coords, pattern: p }) => {
+    if (!vr.has(p)) vr.set(p, expresswayLanes(net, p));
+    return onExpressway(coords, vr.get(p)!);
+  });
   ways.forEach((d, w) => {
     const color = d === way ? WAY_YELLOW : WAY_TURQUOISE;
     const mine = drawnBy[w]!;

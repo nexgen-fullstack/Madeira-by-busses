@@ -297,6 +297,34 @@ describe('a way by car, on foot or by bike', () => {
   });
 });
 
+describe('the Via Rápida under a variant of a line', () => {
+  // The Saturday run inland, as if it took the Via Rápida all the way: only where it is
+  // drawn (its detour) is the band, not along the coast road the main way is drawn on.
+  const coast = [stop('', -17.06), stop('', -16.97), stop('', -16.91)];
+  const inland = [stop('', -17.06), stop('', -16.97), stop('', -16.94, 32.66), stop('', -16.91)];
+  const lines = {
+    stops: [stop('Ribeira Brava', -17.06), stop('Funchal', -16.91)],
+    patterns: [
+      { route: 7, stops: [0, 1], trips: [[0, 36000, 0, 'weekday']] },
+      { route: 7, stops: [0, 1], trips: [[1, 27000, 0, 'saturday']] },
+    ],
+    shape: (p: number) => (p === 0 ? coast : inland),
+    lane: (p: number) => (p === 0 ? coast : inland),
+    isServiceActive: () => true,
+    expressways: (p: number) => (p === 1 ? [{ from: 0, to: 20_000 }] : []),
+    laneBetween: () => inland,
+  } as unknown as Network;
+
+  it('is only under the line drawn for it', () => {
+    const c = routeContent(lines, [{ label: '', patterns: [0, 1] }], 0, '2026-10-10');
+    expect(c.expressways).toHaveLength(1);
+    const band = c.expressways![0]!;
+    expect(Math.max(...band.map((p) => p.lat))).toBeCloseTo(32.66);
+    expect(Math.min(...band.map((p) => p.lon))).toBeGreaterThan(-16.98);
+    expect(Math.max(...band.map((p) => p.lon))).toBeLessThan(-16.9);
+  });
+});
+
 describe('the Via Rápida on the map', () => {
   // The 207 on the Via Rápida from Câmara de Lobos on, both ways.
   const vr = {
