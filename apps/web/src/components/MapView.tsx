@@ -1556,9 +1556,10 @@ function fitTo(map: MapLibreMap, bounds: LngLatBounds, duration: number) {
     getComputedStyle(map.getContainer()).getPropertyValue('--map-bottom-inset'),
   );
   const room = map.getContainer().clientHeight;
-  // A phone on its side has little height: smaller margins, for a larger island.
+  // A phone on its side has little height: smaller margins, for a larger island. At the
+  // top, clear of the buttons there and of the pin and flags standing up from the stops.
   const low = room < 420;
-  const top = low ? 36 : 56;
+  const top = low ? 56 : 92;
   const bottom = (low ? 16 : 40) + (Number.isFinite(sheet) ? sheet : 0);
   map.fitBounds(bounds, {
     padding: {

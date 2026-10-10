@@ -107,6 +107,9 @@ function sheetRest(route: Route): SheetSnap {
   if (head === 'trip' || route.query.has('i')) return 'min';
   if (head === 'plan') return route.query.has('to') ? 'half' : 'peek';
   if (head === 'settings') return 'full';
+  // A place: its photo, name and "start" over the map, the way there on the map above them;
+  // the rest when the sheet is pulled up.
+  if (head === 'explore' && route.path[1]) return 'peek';
   return 'half';
 }
 
@@ -171,6 +174,27 @@ function Shell() {
     .map((k) => k ?? '')
     .join('|');
   const rest = sheetRest(route);
+  // The strip a screen asks for as the sheet's lowest but one: down to the bottom of what
+  // it marks `data-peek` (a place's photo, name and "start").
+  const [peek, setPeek] = useState<number>();
+  useEffect(() => {
+    const el = panel.current?.querySelector<HTMLElement>('[data-peek]');
+    if (!sheetMode || !el || !panel.current) {
+      setPeek(undefined);
+      return;
+    }
+    const box = panel.current;
+    const measure = () =>
+      setPeek(
+        Math.round(
+          el.getBoundingClientRect().bottom - box.getBoundingClientRect().top + box.scrollTop,
+        ),
+      );
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [screenKey, sheetMode]);
   const sheet = useBottomSheet(
     sheetMode,
     frame,
@@ -178,9 +202,10 @@ function Shell() {
     searchKey,
     rest,
     head === 'plan' && [...route.query.keys()].length === 0 ? 'min' : rest,
+    peek,
   );
   // The map keeps the route clear of the sheet once it rests.
-  const inset = sheetMode ? snapInset(sheet.snap, sheet.areaHeight) : 0;
+  const inset = sheetMode ? snapInset(sheet.snap, sheet.areaHeight, peek) : 0;
   useEffect(() => {
     window.dispatchEvent(new Event('mb-map-inset'));
   }, [inset]);
@@ -280,6 +305,7 @@ function Shell() {
             <SheetHandle
               height={sheet.height}
               areaHeight={sheet.areaHeight}
+              peek={peek}
               snap={sheet.snap}
               onSnap={sheet.setSnap}
               onDrag={sheet.setDrag}

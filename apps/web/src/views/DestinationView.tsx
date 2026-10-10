@@ -239,7 +239,7 @@ export function DestinationView({ d, route }: { d: Destination; route: Route }) 
 
   return (
     <div className="destination">
-      <div className={`destination__hero${hasPhoto(d) ? '' : ' destination__hero--art'}`}>
+      <div className={`destination__hero${hasPhoto(d) ? '' : ' destination__hero--art'}`} data-peek>
         {hasPhoto(d) ? (
           <img
             className="destination__photo"
