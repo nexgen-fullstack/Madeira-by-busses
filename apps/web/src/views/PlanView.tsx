@@ -1,18 +1,11 @@
 import { Fragment, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import {
-  ArrowUpDown,
-  CalendarClock,
-  ChevronRight,
-  History,
-  Loader2,
-  MapPinned,
-  Sparkles,
-} from 'lucide-react';
+import { CalendarClock, ChevronRight, History, Loader2, MapPinned, Sparkles } from 'lucide-react';
 import { addDays, madeiraNow, normalise } from '@madeirabus/engine';
 import { ItineraryCard } from '../components/ItineraryCard.tsx';
 import { ItineraryDetail } from '../components/ItineraryDetail.tsx';
 import { MapContentContext, useMapContent } from '../components/mapContext.tsx';
-import { PlaceSearch, type PlaceValue } from '../components/PlaceSearch.tsx';
+import { type PlaceValue } from '../components/PlaceSearch.tsx';
+import { RouteFields } from '../components/RouteFields.tsx';
 import { ScenicCard } from '../components/ScenicCard.tsx';
 import { useI18n } from '../i18n.ts';
 import { dayGroups, findOptions, firstDeparture, type Found } from '../lib/ahead.ts';
@@ -296,40 +289,30 @@ export function PlanView({ route }: { route: Route }) {
   return (
     <div className="plan">
       <form className="plan__form" onSubmit={(e) => e.preventDefault()}>
-        <PlaceSearch
-          className="plan__from"
-          label={t.t('from')}
-          value={from}
-          onChange={(v) => setParams({ from: v ? encode(v) : undefined, i: undefined })}
-          onUseLocation={() => {
-            wantLocation.current = true;
-            autoLocate.current = false;
-            geo.request();
+        <RouteFields
+          from={{
+            value: from,
+            onChange: (v) => setParams({ from: v ? encode(v) : undefined, i: undefined }),
+            onUseLocation: () => {
+              wantLocation.current = true;
+              autoLocate.current = false;
+              geo.request();
+            },
+            locating: geo.pending,
+            onPickOnMap: (area) => setPick('from', area),
           }}
-          locating={geo.pending}
-          onPickOnMap={(area) => setPick('from', area)}
-        />
-        <button
-          type="button"
-          className="plan__swap icon-button"
-          aria-label={t.t('swap')}
-          title={t.t('swap')}
-          onClick={() =>
+          to={{
+            value: to,
+            onChange: (v) => setParams({ to: v ? encode(v) : undefined, i: undefined }),
+            onPickOnMap: (area) => setPick('to', area),
+          }}
+          onSwap={() =>
             setParams({
               from: q.get('to') ?? undefined,
               to: q.get('from') ?? undefined,
               i: undefined,
             })
           }
-        >
-          <ArrowUpDown size={18} />
-        </button>
-        <PlaceSearch
-          className="plan__to"
-          label={t.t('to')}
-          value={to}
-          onChange={(v) => setParams({ to: v ? encode(v) : undefined, i: undefined })}
-          onPickOnMap={(area) => setPick('to', area)}
         />
         {geo.error && !autoLocate.current && <p className="error small">{t.t('place.denied')}</p>}
         <div className="plan__time">

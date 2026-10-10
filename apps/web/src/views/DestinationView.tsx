@@ -13,7 +13,8 @@ import { ItineraryCard } from '../components/ItineraryCard.tsx';
 import { ItineraryDetail } from '../components/ItineraryDetail.tsx';
 import { ScenicArt } from '../components/ScenicCard.tsx';
 import { MapContentContext, useMapContent } from '../components/mapContext.tsx';
-import { PlaceSearch, type PlaceValue } from '../components/PlaceSearch.tsx';
+import { type PlaceValue } from '../components/PlaceSearch.tsx';
+import { RouteFields, type RouteEnd } from '../components/RouteFields.tsx';
 import { DayTrips } from '../components/DayTrips.tsx';
 import { useI18n, type Key } from '../i18n.ts';
 import { findOptions, firstDeparture, type Found } from '../lib/ahead.ts';
@@ -60,19 +61,14 @@ export function DestinationView({ d, route }: { d: Destination; route: Route }) 
     [d.id, q],
   );
 
-  // Where the trip starts: where you are, as in a maps app, unless you choose a stop, an
-  // address or a point on the map; central Funchal when the phone cannot tell where you are
-  // or you are not on the island. "none": the field emptied, to type a start.
+  // The two ends of the trip, as in a maps app: from where you are to the place, unless you
+  // choose a stop, an address or a point on the map for either, or turn the trip round.
+  // "here": where you are (central Funchal when the phone cannot tell, or you are not on
+  // the island); "place": this place; "none": the field emptied, to type in it.
   const centreName = t.t('scenic.centre');
   const myLocation = t.t('place.myLocation');
-  const chosen = useMemo(
-    () =>
-      fromParam && fromParam !== 'here' && fromParam !== 'none'
-        ? decodePlace(net, fromParam, myLocation)
-        : undefined,
-    [net, fromParam, myLocation],
-  );
-  const auto = !chosen && fromParam !== 'none';
+  const fromToken = fromParam ?? 'here';
+  const toToken = q.get('to') ?? 'place';
   const located = useMemo<PlaceValue | undefined>(
     () =>
       geo.position && haversine(geo.position, CENTRE) < ON_ISLAND
@@ -80,21 +76,32 @@ export function DestinationView({ d, route }: { d: Destination; route: Route }) 
         : undefined,
     [geo.position, myLocation],
   );
-  const toCentre = auto && !located && (geo.error !== undefined || geo.position !== undefined);
-  const origin = useMemo<PlaceValue | undefined>(
-    () =>
-      chosen ??
-      (!auto
-        ? undefined
-        : (located ??
+  const wantsHere = fromToken === 'here' || toToken === 'here';
+  const toCentre = wantsHere && !located && (geo.error !== undefined || geo.position !== undefined);
+  const placeValue = useMemo<PlaceValue>(
+    () => ({ lat: d.lat, lon: d.lon, name: d.name, kind: 'location' }),
+    [d],
+  );
+  const resolve = useCallback(
+    (token: string): PlaceValue | undefined => {
+      if (token === 'none') return undefined;
+      if (token === 'place') return placeValue;
+      if (token === 'here')
+        return (
+          located ??
           (toCentre
             ? { ...CENTRE, name: centreName, stops: centreStops(net), kind: 'location' }
-            : undefined))),
-    [chosen, auto, located, toCentre, centreName, net],
+            : undefined)
+        );
+      return decodePlace(net, token, myLocation);
+    },
+    [placeValue, located, toCentre, centreName, net, myLocation],
   );
+  const origin = useMemo(() => resolve(fromToken), [resolve, fromToken]);
+  const target = useMemo(() => resolve(toToken), [resolve, toToken]);
   useEffect(() => {
-    if (auto && !geo.position && !geo.pending && !geo.error) geo.request();
-  }, [auto, geo]);
+    if (wantsHere && !geo.position && !geo.pending && !geo.error) geo.request();
+  }, [wantsHere, geo]);
   // Choosing the start on the map: the pin starts where the trip starts now.
   const { setPick } = useContext(MapContentContext);
   useEffect(() => () => setPick(undefined), [setPick]);
@@ -103,12 +110,12 @@ export function DestinationView({ d, route }: { d: Destination; route: Route }) 
   const [found, setFound] = useState<Found | undefined>();
   const results = found?.options;
   const [loading, setLoading] = useState(false);
-  const target = useMemo(() => ({ lat: d.lat, lon: d.lon, name: d.name }), [d]);
-  const searchKey = origin
-    ? `${encodePlace(origin)}>${d.id}@${date}|${settings.walkSpeed}|${settings.route}`
-    : '';
+  const searchKey =
+    origin && target
+      ? `${encodePlace(origin)}>${encodePlace(target)}@${date}|${settings.walkSpeed}|${settings.route}`
+      : '';
   useEffect(() => {
-    if (!origin || !served) {
+    if (!origin || !target || !served) {
       setFound(undefined);
       return;
     }
@@ -197,25 +204,36 @@ export function DestinationView({ d, route }: { d: Destination; route: Route }) 
     );
   }
 
+  // A field of the form: a place typed or chosen on the map, emptied, or where you are.
+  const end = (field: 'from' | 'to', value: PlaceValue | undefined): RouteEnd => ({
+    value,
+    onChange: (v) => setParams({ [field]: v ? encodePlace(v, net) : 'none', i: undefined }),
+    onUseLocation: () => {
+      setParams({ [field]: 'here', i: undefined });
+      geo.request();
+    },
+    locating: geo.pending && (field === 'from' ? fromToken : toToken) === 'here',
+    onPickOnMap: (area) => setPick(field, area, value),
+  });
+
   // A line of the timetable: its way on the map and its timetable from where it is boarded;
   // back returns here.
   const openLine = (route: number, stop: number) =>
     navigate(`lines/${route}`, { s: String(stop), d: q.get('d') ?? undefined });
   const missing = (net.bundle.missingOperators ?? net.bundle.partialOperators)?.join(', ');
   const shownResults = results?.slice(0, SHOWN) ?? [];
+  // An end chosen as it is; else a point, not the dozens of central stops, and "my
+  // location" unnamed.
+  const linkEnd = (token: string, p: PlaceValue) =>
+    token === 'here' || token === 'place'
+      ? encodePlace({ lat: p.lat, lon: p.lon, name: p === located ? undefined : p.name })
+      : encodePlace(p, net);
   const plannerLink =
     origin &&
+    target &&
     `#/plan?${new URLSearchParams({
-      // A start chosen as it is; else a point, not the dozens of central stops, and "my
-      // location" unnamed.
-      from: chosen
-        ? encodePlace(chosen, net)
-        : encodePlace({
-            lat: origin.lat,
-            lon: origin.lon,
-            name: origin === located ? undefined : origin.name,
-          }),
-      to: encodePlace(target),
+      from: linkEnd(fromToken, origin),
+      to: linkEnd(toToken, target),
       ...(q.get('d') ? { d: date, t: '05:00' } : {}),
     })}`;
 
@@ -274,20 +292,15 @@ export function DestinationView({ d, route }: { d: Destination; route: Route }) 
                 <RouteIcon size={16} aria-hidden /> {t.t('scenic.getThere')}
               </h3>
             </div>
-            <PlaceSearch
-              className="destination__from"
-              label={t.t('from')}
-              value={origin}
-              onChange={(v) => setParams({ from: v ? encodePlace(v, net) : 'none', i: undefined })}
-              onUseLocation={() => {
-                setParams({ from: undefined, i: undefined });
-                geo.request();
-              }}
-              locating={geo.pending}
-              onPickOnMap={(area) => setPick('from', area, origin)}
-            />
+            <div className="plan__form plan__form--flat">
+              <RouteFields
+                from={end('from', origin)}
+                to={end('to', target)}
+                onSwap={() => setParams({ from: toToken, to: fromToken, i: undefined })}
+              />
+            </div>
             {toCentre && <p className="muted small">{t.t('scenic.fromCentreNote')}</p>}
-            {(loading || (auto && geo.pending)) && (
+            {(loading || (wantsHere && geo.pending)) && (
               <p className="plan__status" role="status">
                 <Loader2 size={16} className="spin" aria-hidden /> {t.t('searching')}
               </p>

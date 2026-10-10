@@ -33,7 +33,7 @@ test('a scenic place plans the trip and shows every bus of the day', async ({ pa
   await expect(page.locator('.ride-timetable').filter({ hasText: 'Назад' })).toHaveCount(1);
 
   // Where you are is not known here: the trip starts in the centre, and says so.
-  await expect(page.locator('.destination__from input')).toHaveValue('Центр Фуншала');
+  await expect(page.locator('.destination .plan__from input')).toHaveValue('Центр Фуншала');
   await expect(page.getByText(/Не знаю, де ви/)).toBeVisible();
   // The next bus from the centre is the 09:30; its day timetable marks it.
   const first = page.locator('.it-card').first();
@@ -52,20 +52,31 @@ test('a place’s trip starts where you are, or at an address or a point chosen'
   await context.grantPermissions(['geolocation']);
   await context.setGeolocation({ latitude: 32.6487, longitude: -16.9036 });
   await page.goto('./#/explore/curral');
-  const from = page.locator('.destination__from input');
+  const from = page.locator('.destination .plan__from input');
   await expect(from).toHaveValue('Моє місцезнаходження');
   await expect(page.locator('.it-card').first()).toContainText('D81');
   // A house on a street instead.
   await from.fill('Rua da Carreira, 1');
-  await page.locator('.destination__from [role=option]').first().click();
+  await page.locator('.destination .plan__from [role=option]').first().click();
   await expect(from).toHaveValue(/^Rua da Carreira \d+/);
   await expect(page).toHaveURL(/#\/explore\/curral\?from=p/);
   await expect(page.locator('.it-card').first()).toContainText('D81');
   // Or a point on the map: the pin starts at the start, and the place's page takes it.
-  await page.getByRole('button', { name: 'Вибрати на карті' }).click();
+  await page
+    .locator('.destination .plan__from')
+    .getByRole('button', { name: 'Вибрати на карті' })
+    .click();
   await page.getByRole('button', { name: /Вибрати цю точку/ }).click();
   await expect(page).toHaveURL(/#\/explore\/curral\?from=p/);
   await expect(page.getByRole('heading', { name: 'Curral das Freiras' })).toBeVisible();
+  // "To" is the place, and the trip turns round as in a maps app: back from the place.
+  const to = page.locator('.destination .plan__to input');
+  await expect(to).toHaveValue('Curral das Freiras');
+  await page.locator('.destination').getByRole('button', { name: 'Поміняти місцями' }).click();
+  await expect(from).toHaveValue('Curral das Freiras');
+  await expect(to).not.toHaveValue('Curral das Freiras');
+  await expect(to).not.toHaveValue('');
+  await expect(page.locator('.it-card').first()).toContainText('D81');
 });
 
 test('walks along the sea: listed by the places with a view, then the walk first', async ({

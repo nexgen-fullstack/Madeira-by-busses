@@ -649,6 +649,14 @@ input[type='time'],
 .plan__form > * {
   grid-column: 1 / -1;
 }
+/* The same form inside a card (a place's page): no second frame round it. */
+.plan__form--flat {
+  background: none;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  margin-bottom: 10px;
+}
 .plan__form > .plan__from {
   grid-column: 1;
   grid-row: 1;
