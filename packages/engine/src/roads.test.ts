@@ -73,4 +73,10 @@ describe('riding a bike', () => {
     expect(ride.length).toBeGreaterThan(3 * haversine(A, D));
     expect(ride.up).toBeCloseTo(20, 0);
   });
+
+  it('starts by the steps on the street, not on them', () => {
+    // A point on the steps, nearer them than the street.
+    const onSteps = { lat: A.lat + 2e-4, lon: A.lon + 2e-5 };
+    expect(graph.route(onSteps, C, 300, 1, BIKE_PROFILE)).toBeDefined();
+  });
 });

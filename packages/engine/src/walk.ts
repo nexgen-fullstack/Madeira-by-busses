@@ -517,7 +517,7 @@ export class WalkGraph {
   }
 
   /** The nearest place on a walkable way, if one is within `max` metres. */
-  snap(p: LatLon, max = 300): WalkHit | undefined {
+  snap(p: LatLon, max = 300, profile: WayProfile = WALK_PROFILE): WalkHit | undefined {
     const span = Math.ceil(max / 111_000 / CELL / Math.cos(p.lat * DEG)) + 1;
     const cy = Math.floor((p.lat + 90) / CELL);
     const cx = Math.floor((p.lon + 180) / CELL);
@@ -532,6 +532,8 @@ export class WalkGraph {
         for (const e of this.cells.get(cellKey(y, x)) ?? []) {
           if (seen.has(e)) continue;
           seen.add(e);
+          // Not onto a way the profile does not take: a bike starts on the street by the steps.
+          if (!Number.isFinite(profile.kind[walkWay(this.kind[e]!)] ?? 1)) continue;
           // Segments from the first node through the inner points to the last node,
           // in metres around p; `along` is measured the same way and scaled to the
           // edge's true length at the end.
@@ -716,8 +718,8 @@ export class WalkGraph {
     offView = 1,
     profile: WayProfile = WALK_PROFILE,
   ): WalkRoute | undefined {
-    const start = this.snap(a, maxSnap);
-    const end = this.snap(b, maxSnap);
+    const start = this.snap(a, maxSnap, profile);
+    const end = this.snap(b, maxSnap, profile);
     if (!start || !end) return undefined;
     this.offView = offView;
     this.profile = profile;
