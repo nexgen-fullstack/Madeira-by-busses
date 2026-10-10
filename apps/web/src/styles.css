@@ -2867,6 +2867,34 @@ input[type='time'],
   font-size: 13px;
   color: var(--muted);
 }
+/* A part of the settings folded to its title: a tap opens it, another folds it again. */
+.fold__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 36px;
+  list-style: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+.fold__head::-webkit-details-marker {
+  display: none;
+}
+.fold__head .card__title {
+  margin: 0;
+}
+.fold__chevron {
+  flex: none;
+  color: var(--muted);
+  transition: transform 0.2s ease;
+}
+.fold[open] > .fold__head .fold__chevron {
+  transform: rotate(180deg);
+}
+.fold[open] > .fold__head {
+  margin-bottom: 8px;
+}
 .credits {
   margin: 8px 0;
   padding-left: 18px;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Camera, Database, Download, Info, Smartphone } from 'lucide-react';
+import { Camera, ChevronDown, Database, Download, Info, Smartphone } from 'lucide-react';
 import { useI18n, LANGS } from '../i18n.ts';
 import { isNative } from '../lib/device.ts';
 import { fullDate, shortDate } from '../lib/format.ts';
@@ -181,23 +181,33 @@ export function SettingsView() {
             to: shortDate(t, b.validity.to),
           })}
         </p>
-        <p className="muted">
-          {t.t('settings.stats', {
-            stops: b.stats.stops,
-            routes: lines,
-            trips: b.stats.trips,
-          })}
-        </p>
-        <p className="muted small">
-          {t.t('settings.sources')}:{' '}
-          {b.sources.map((s) => (s.url ? `${s.name} (${s.url})` : s.name)).join(', ')}
-        </p>
-        <p className="muted small">{t.t('fare.note')}</p>
+        {/* Where the timetable comes from: a tap away, not a screen of small print. */}
+        <details className="fold">
+          <summary className="fold__head">
+            {t.t('settings.sources')}
+            <ChevronDown size={16} aria-hidden className="fold__chevron" />
+          </summary>
+          <p className="muted">
+            {t.t('settings.stats', {
+              stops: b.stats.stops,
+              routes: lines,
+              trips: b.stats.trips,
+            })}
+          </p>
+          <p className="muted small">
+            {b.sources.map((s) => (s.url ? `${s.name} (${s.url})` : s.name)).join(', ')}
+          </p>
+          <p className="muted small">{t.t('fare.note')}</p>
+        </details>
       </section>
-      <section className="card">
-        <h3 className="card__title">
-          <Camera size={16} aria-hidden /> {t.t('scenic.credits')}
-        </h3>
+      {/* Who took the photos and under which licence: one tap opens the list. */}
+      <details className="card fold">
+        <summary className="fold__head">
+          <h3 className="card__title">
+            <Camera size={16} aria-hidden /> {t.t('scenic.credits')}
+          </h3>
+          <ChevronDown size={18} aria-hidden className="fold__chevron" />
+        </summary>
         <p className="muted small">{t.t('scenic.creditsHint')}</p>
         <ul className="credits">
           {DESTINATIONS.flatMap(({ id, name, credit }) =>
@@ -217,7 +227,7 @@ export function SettingsView() {
           )}
         </ul>
         <p className="muted small">Inter · SIL Open Font License 1.1</p>
-      </section>
+      </details>
       <section className="card">
         <h3 className="card__title">
           <Info size={16} aria-hidden /> {t.t('settings.about')}
