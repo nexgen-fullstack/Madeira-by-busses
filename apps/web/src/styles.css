@@ -1,9 +1,9 @@
 :root {
   /* The colours of the Madeira by busses logo: its azure glow and navy road,
      the yellow of "Madeira" and its pin, the cyan wave under it. */
-  --brand: #0066dd;
-  --brand-strong: #004fb5;
-  --brand-soft: #e3f1ff;
+  --brand: #0b57c4;
+  --brand-strong: #08449c;
+  --brand-soft: #e2ebf8;
   --accent: #ffd400;
   --accent-strong: #ffc400;
   --navy: #002f85;
@@ -16,12 +16,21 @@
   /* A walk with a view along the sea: the cyan wave of the logo, dark enough to read. */
   --view: #00707a;
   --view-bg: #dcf6f8;
-  --bg: #f3f7fc;
-  --surface: #ffffff;
-  --surface-2: #eef3f9;
-  --text: #14181f;
-  --muted: #5b6573;
-  --border: #dfe7f0;
+  /* The island's own colours round the logo's: warm sand under the cards instead of a
+     clinical white, deep charcoal text, slate for the quiet words, the deep Atlantic blue
+     for what is chosen. */
+  --bg: #f5f1ea;
+  --surface: #fffcf7;
+  --surface-2: #f0eadf;
+  --text: #1f2a30;
+  --muted: #56656d;
+  --border: #e6ddcf;
+  /* The ways other than the bus, as in a maps app: a car's in Google's blue, a bike's in
+     laurel green; a hiking trail in the volcanic red of Madeira's PR waymarks. */
+  --car: #1a73e8;
+  --bike: #1e8a4c;
+  --trail: #b8471b;
+  --trail-bg: #fbe9df;
   --danger: #c62828;
   --danger-bg: #fdeeee;
   --warn-bg: #fff4dc;
@@ -40,12 +49,16 @@
     --brand-strong: #8ccbff;
     --brand-soft: #0c2550;
     --navy: #001f5c;
-    --bg: #0d1117;
-    --surface: #161b22;
-    --surface-2: #1d232c;
-    --text: #e6eaf0;
-    --muted: #9aa4b2;
-    --border: #2a313c;
+    --bg: #10151a;
+    --surface: #171e24;
+    --surface-2: #1f272e;
+    --text: #e8ecee;
+    --muted: #9ba9b1;
+    --border: #2c363e;
+    --car: #8ab4f8;
+    --bike: #6fcf97;
+    --trail: #ff9a6b;
+    --trail-bg: #3a1e12;
     --warn-bg: #3a2a08;
     --warn: #ffcf70;
     --danger: #ff8a80;
@@ -217,6 +230,17 @@ h3 {
 }
 .tabbar__item[aria-current='page'] {
   color: var(--brand);
+  font-weight: 700;
+}
+/* The tab open: its icon on a soft pill of the deep blue, as in a maps app. */
+.tabbar__item svg {
+  box-sizing: content-box;
+  padding: 3px 14px;
+  border-radius: 999px;
+  transition: background 0.15s ease;
+}
+.tabbar__item[aria-current='page'] svg {
+  background: var(--brand-soft);
 }
 
 /* ---------- Primitives ---------- */

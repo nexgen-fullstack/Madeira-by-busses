@@ -208,10 +208,14 @@ export function DestinationView({ d, route }: { d: Destination; route: Route }) 
   const end = (field: 'from' | 'to', value: PlaceValue | undefined): RouteEnd => ({
     value,
     onChange: (v) => setParams({ [field]: v ? encodePlace(v, net) : 'none', i: undefined }),
-    onUseLocation: () => {
-      setParams({ [field]: 'here', i: undefined });
-      geo.request();
-    },
+    // "Where you are" on the start's field, as in a maps app; "to" chooses on the map.
+    onUseLocation:
+      field === 'from'
+        ? () => {
+            setParams({ [field]: 'here', i: undefined });
+            geo.request();
+          }
+        : undefined,
     locating: geo.pending && (field === 'from' ? fromToken : toToken) === 'here',
     onPickOnMap: (area) => setPick(field, area, value),
   });

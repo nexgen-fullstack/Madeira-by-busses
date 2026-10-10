@@ -243,10 +243,14 @@ export function RideView({
   const field = (name: 'from' | 'to', value: PlaceValue | undefined): RouteEnd => ({
     value,
     onChange: (v) => setParams({ [name]: v ? encodePlace(v, net) : 'none', i: undefined }),
-    onUseLocation: () => {
-      setParams({ [name]: 'here', i: undefined });
-      geo.request();
-    },
+    // "Where you are" on the start's field, as in a maps app; "to" chooses on the map.
+    onUseLocation:
+      name === 'from'
+        ? () => {
+            setParams({ [name]: 'here', i: undefined });
+            geo.request();
+          }
+        : undefined,
     locating: geo.pending && (name === 'from' ? fromToken : toToken) === 'here',
     onPickOnMap: (area) => setPick(name, area, value),
   });
