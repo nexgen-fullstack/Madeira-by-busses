@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { decodePolyline, haversine, trailMinutes } from '@madeirabus/engine';
-import { buildTrails, joinWays, kindOf, splitName } from './trails.ts';
+import { buildTrails, joinWays, kindOf, splitName, trailLinesOf } from './trails.ts';
 
 const at = (dx: number, dy = 0) => ({ lat: 32.75 + dy * 1e-3, lon: -16.9 + dx * 1e-3 });
 
@@ -54,5 +54,52 @@ describe('the hiking trails', () => {
     expect(pr6.start).toEqual([32.759, -16.9]);
     const line = decodePolyline(pr6.lines[0]!);
     expect(haversine(line[0]!, at(0, 9))).toBeLessThan(2);
+  });
+
+  it('starts and ends where it leaves the road, and is no trail when it is mostly road', () => {
+    // A street of a village (500 m), the path up the hill (1.5 km), a street crossed (30 m),
+    // the path on, and a road for 600 m in the middle of it all.
+    const way = (ref: number, ...points: ReturnType<typeof at>[]) => ({
+      type: 'way',
+      ref,
+      geometry: points,
+    });
+    const rel = {
+      type: 'relation',
+      id: 9,
+      tags: { ref: 'PR 2', name: 'PR 2 - Vereda do Urzal' },
+      members: [
+        way(1, at(0), at(5)),
+        way(2, at(5), at(20)),
+        way(3, at(20), at(20.3)),
+        way(4, at(20.3), at(30)),
+        way(5, at(30), at(37)),
+        way(6, at(37), at(50)),
+      ],
+    };
+    const tags = new Map([
+      [1, { highway: 'residential' }],
+      [2, { highway: 'path' }],
+      [3, { highway: 'residential' }],
+      [4, { highway: 'path' }],
+      [5, { highway: 'tertiary' }],
+      [6, { highway: 'path' }],
+    ]);
+    const { lines } = trailLinesOf(rel, tags);
+    const ends = lines.map((l) =>
+      [l[0]!, l[l.length - 1]!].map((p) => Math.round((p.lon + 16.9) * 1e4)),
+    );
+    expect(ends).toEqual([
+      [50, 300],
+      [370, 500],
+    ]);
+    // Without the ways' tags, all of it.
+    expect(trailLinesOf(rel).lines).toHaveLength(1);
+    // Mostly a road: none.
+    const road = new Map([...tags].map(([k]) => [k, { highway: 'secondary' }]));
+    road.set(2, { highway: 'path' });
+    expect(
+      buildTrails([rel, ...[...road].map(([id, t]) => ({ type: 'way', id, tags: t }))]).trails,
+    ).toEqual([]);
   });
 });

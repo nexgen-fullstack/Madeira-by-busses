@@ -602,14 +602,6 @@
       "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
       "source": "https://commons.wikimedia.org/wiki/File:Antiga_ER_101_in_the_valley_of_Ribeira_do_Inferno,_S%C3%A3o_Vicente,_Madeira,_2023_May.jpg"
     },
-    "osm-11088599": {
-      "file": "trail-osm-11088599",
-      "title": "Caminho Real 24",
-      "author": "Dietmar Rabich",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-      "source": "https://commons.wikimedia.org/wiki/File:Ribeiro_Frio_(Madeira,_Portugal),_Ribeiro-Frio-Wasserfall_--_2025_--_1502.jpg"
-    },
     "osm-19661598": {
       "file": "trail-osm-19661598",
       "title": "Caminho Real 25",
@@ -641,14 +633,6 @@
       "license": "CC BY-SA 4.0",
       "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
       "source": "https://commons.wikimedia.org/wiki/File:Serra_de_%C3%81gua_3.jpg"
-    },
-    "osm-10750040": {
-      "file": "trail-osm-10750040",
-      "title": "Caminho Real 28",
-      "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
-      "license": "CC BY-SA 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
-      "source": "https://commons.wikimedia.org/wiki/File:Ponta_do_Sol_-_Portugal_(6423843809).jpg"
     },
     "osm-6224974": {
       "file": "trail-osm-6224974",
@@ -1698,44 +1682,6 @@
         "lon": -16.8053
       }
     ],
-    "osm-11088599": [
-      {
-        "name": "Eirinha - Pico do Lombo Galêgo",
-        "lat": 32.76825,
-        "lon": -16.87598
-      },
-      {
-        "name": "Encontro - Cruzinhas",
-        "lat": 32.76216,
-        "lon": -16.87498,
-        "photo": {
-          "file": "view-miradouro-do-encontro-cruzinhas-towards-ribeira-seca-valley-",
-          "title": "Encontro - Cruzinhas",
-          "author": "Ximonic (Simo Räsänen)",
-          "license": "CC BY-SA 4.0",
-          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-          "source": "https://commons.wikimedia.org/wiki/File:Miradouro_do_Encontro_Cruzinhas_towards_Ribeira_Seca_valley,_Santana,_Madeira,_Portugal,_2023_May.jpg"
-        }
-      },
-      {
-        "name": "Loirinho - Fajã Grande",
-        "lat": 32.75848,
-        "lon": -16.87841
-      },
-      {
-        "name": "Serrado",
-        "lat": 32.80249,
-        "lon": -16.87963,
-        "photo": {
-          "file": "view-casas-tipicas-de-santana-9",
-          "title": "Serrado",
-          "author": "Alberto-g-rovi",
-          "license": "CC BY 3.0",
-          "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
-          "source": "https://commons.wikimedia.org/wiki/File:Casas_tipicas_de_Santana_(9).jpg"
-        }
-      }
-    ],
     "osm-19661598": [
       {
         "name": "Boca da Encumeada",
@@ -1892,39 +1838,6 @@
           "license": "CC BY-SA 3.0",
           "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
           "source": "https://commons.wikimedia.org/wiki/File:Mountains_outside_Curral_Das_Freiras,_2014.jpg"
-        }
-      }
-    ],
-    "osm-10750040": [
-      {
-        "name": "Cais da Ponta do Sol",
-        "lat": 32.67792,
-        "lon": -17.10441,
-        "photo": {
-          "file": "view-cais-da-ponta-do-sol-madeira-portugal-2024-02",
-          "title": "Cais da Ponta do Sol",
-          "author": "Celsoazevedo",
-          "license": "CC BY 4.0",
-          "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
-          "source": "https://commons.wikimedia.org/wiki/File:Cais_da_Ponta_do_Sol,_Madeira,_Portugal_2024_02.jpg"
-        }
-      },
-      {
-        "name": "Paul da Serra",
-        "lat": 32.75772,
-        "lon": -17.09732
-      },
-      {
-        "name": "Miradouro da Ponta do Sol",
-        "lat": 32.68085,
-        "lon": -17.10371,
-        "photo": {
-          "file": "view-ponta-do-sol-roofs-landscape-38094803851",
-          "title": "Miradouro da Ponta do Sol",
-          "author": "VillageHero from Ulm, Germany",
-          "license": "CC BY-SA 2.0",
-          "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
-          "source": "https://commons.wikimedia.org/wiki/File:Ponta_do_Sol_roofs_landscape_(38094803851).jpg"
         }
       }
     ],
