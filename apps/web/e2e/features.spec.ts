@@ -36,7 +36,7 @@ test('remembers recent trips', async ({ page }) => {
 test('saved stops show their departures nearby and in the search', async ({ page }) => {
   await page.goto('./#/lines');
   await page.getByRole('button', { name: /D139/ }).click();
-  await page.locator('.stop-line li button').first().click();
+  await page.locator('.stop-line__times').first().click();
   const name = (await page.locator('.stop-view .view-title').textContent())!;
   await page.getByRole('button', { name: 'Зберегти зупинку' }).click();
   await expect(page.getByRole('button', { name: 'Прибрати зі збережених' })).toBeVisible();
