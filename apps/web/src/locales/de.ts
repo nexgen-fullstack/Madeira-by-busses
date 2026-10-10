@@ -210,6 +210,8 @@ export const de: Dict = {
   'remind.title': 'Zeit, zum Bus zu gehen',
   'remind.body': '{route} um {t} ab „{stop}“',
   'map.label': 'Karte',
+  'map.showStop': 'Auf der Karte zeigen',
+  'map.stopTimes': 'Fahrplan an der Haltestelle {stop}',
   'scenic.curral.tag': 'Das Tal der Nonnen',
   'scenic.curral.text':
     'Ein Dorf tief in einem vulkanischen Talkessel, umringt von Gipfeln. Der Bus klettert von Funchal durch Tunnel und Kehren hinauf; probieren Sie den Kastanienkuchen.',
@@ -485,5 +487,6 @@ export const de: Dict = {
     'Prüfen Sie vor dem Start das Wetter, ob der Weg offen ist und ob ein Ticket nötig ist. Nehmen Sie Wasser mit und auf Levadas eine Lampe für die Tunnel.',
   'hike.official': 'Website des IFCN (Wege auf Madeira)',
   'hike.osm': 'Der Weg auf OpenStreetMap',
+  'hike.views': 'Aussichtspunkte am Weg',
   'hike.backSameWay': 'Am Ziel fährt kein Bus: zurück auf demselben Weg, hin und zurück ~{time}.',
 };

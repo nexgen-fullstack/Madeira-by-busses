@@ -206,6 +206,8 @@ export const es: Dict = {
   'remind.title': 'Hora de salir hacia el autobús',
   'remind.body': '{route} a las {t} desde «{stop}»',
   'map.label': 'Mapa',
+  'map.showStop': 'Mostrar en el mapa',
+  'map.stopTimes': 'Horario de la parada {stop}',
   'scenic.curral.tag': 'Valle de las monjas',
   'scenic.curral.text':
     'Un pueblo en el fondo de un valle volcánico rodeado de picos. El autobús sube desde Funchal por túneles y curvas cerradas; prueba el pastel de castañas.',
@@ -479,5 +481,6 @@ export const es: Dict = {
     'Antes de salir, mire el tiempo, si el sendero está abierto y si hace falta entrada. Lleve agua y, en las levadas, una linterna para los túneles.',
   'hike.official': 'Web del IFCN (senderos de Madeira)',
   'hike.osm': 'El sendero en OpenStreetMap',
+  'hike.views': 'Miradores en el camino',
   'hike.backSameWay': 'No hay autobús al final: vuelta por el mismo camino, ida y vuelta ~{time}.',
 };

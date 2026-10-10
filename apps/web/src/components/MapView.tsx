@@ -50,7 +50,7 @@ import { loadTrails, trailLines } from '../lib/trails.ts';
 import { useApp } from '../state/app.tsx';
 import { LayerSwitcher } from './LayerSwitcher.tsx';
 import { LineCard, LineChooser, type LinePick } from './LineCard.tsx';
-import { MapContentContext, type PickField } from './mapContext.tsx';
+import { MapContentContext, type PickField, type Spotlight } from './mapContext.tsx';
 
 // MapLibre computes its worker URL at runtime, which bundlers cannot see; point it at the bundled worker.
 setWorkerUrl(maplibreWorkerUrl);
@@ -1064,7 +1064,7 @@ function plannedPlaces(net: Network | undefined, myLocation: string) {
 }
 
 export default function MapView({ className }: { className?: string }) {
-  const { content, pick, pickArea, pickStart, setPick } = useContext(MapContentContext);
+  const { content, pick, pickArea, pickStart, setPick, spotlight } = useContext(MapContentContext);
   const { settings, setSettings, data } = useApp();
   const t = useI18n();
   const net = data.status === 'ready' ? data.net : undefined;
@@ -1361,6 +1361,7 @@ export default function MapView({ className }: { className?: string }) {
   // The yellow pin where the journey goes.
   const destination = content.points.find((p) => p.kind === 'destination');
   useMarker(mapRef, ready, destination);
+  useSpotlightMarker(mapRef, ready, spotlight);
   // And on a place tapped or a pin dropped.
   useMarker(mapRef, ready, pick ? undefined : picked);
   // The places with a view by their photos, where they are (not while a place is picked).
@@ -1620,6 +1621,57 @@ function useMarker(
     marker.current ??= new Marker({ element: pinElement(), anchor: 'bottom' });
     marker.current.setLngLat([lon, lat]).addTo(map);
   }, [mapRef, ready, lat, lon]);
+  useEffect(
+    () => () => {
+      marker.current?.remove();
+      marker.current = null;
+    },
+    [],
+  );
+}
+
+/**
+ * A stop tapped in a list: the map goes to it, above the sheet, close enough to see the
+ * streets round it, and it pulses there with its name.
+ */
+function useSpotlightMarker(
+  mapRef: { current: MapLibreMap | null },
+  ready: boolean,
+  spot: Spotlight | undefined,
+): void {
+  const marker = useRef<Marker | null>(null);
+  useEffect(() => {
+    const map = mapRef.current;
+    marker.current?.remove();
+    marker.current = null;
+    if (!map || !ready || !spot) return;
+    const el = document.createElement('div');
+    el.className = 'map-spot';
+    el.setAttribute('role', 'status');
+    for (const part of ['ring', 'dot']) {
+      const span = document.createElement('span');
+      span.className = `map-spot__${part}`;
+      el.append(span);
+    }
+    const name = document.createElement('span');
+    name.className = 'map-spot__name';
+    name.textContent = spot.name;
+    el.append(name);
+    marker.current = new Marker({ element: el, anchor: 'center' })
+      .setLngLat([spot.lon, spot.lat])
+      .addTo(map);
+    const sheet = parseFloat(
+      getComputedStyle(map.getContainer()).getPropertyValue('--map-bottom-inset'),
+    );
+    const room = map.getContainer().clientHeight;
+    const bottom = Math.min((Number.isFinite(sheet) ? sheet : 0) + 40, Math.max(40, room - 160));
+    map.easeTo({
+      center: [spot.lon, spot.lat],
+      zoom: Math.max(map.getZoom(), 15),
+      padding: { top: 92, bottom, left: 40, right: 64 },
+      duration: 600,
+    });
+  }, [mapRef, ready, spot]);
   useEffect(
     () => () => {
       marker.current?.remove();

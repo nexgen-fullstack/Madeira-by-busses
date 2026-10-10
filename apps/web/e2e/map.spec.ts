@@ -177,3 +177,27 @@ test('a chosen route is shown alone; the stops and lines come back with the list
   await expect(swatches.first()).toHaveCSS('background-color', 'rgb(255, 230, 0)');
   await expect(swatches.nth(1)).toHaveCSS('background-color', 'rgb(0, 232, 213)');
 });
+
+test('a stop tapped in a list stands out on the map, named; tapped again, no more', async ({
+  page,
+}) => {
+  await page.goto('./#/lines');
+  await page.getByRole('button', { name: /D139/ }).click();
+  await page.waitForSelector('.map-canvas canvas');
+  const stop = page.locator('.stop-line .stop-spot').nth(1);
+  const name = (await stop.textContent())!;
+  await stop.click();
+  await expect(stop).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('.map-spot__name')).toHaveText(name);
+  await stop.click();
+  await expect(page.locator('.map-spot')).toHaveCount(0);
+  // Its timetable is a button of its own.
+  await page.locator('.stop-line__times').nth(1).click();
+  await expect(page).toHaveURL(/#\/stop\?ids=\d+/);
+  // On a bus's page too.
+  await page.goBack();
+  await page.locator('.ways__min').first().click();
+  const onRide = page.locator('.ride__stops .stop-spot').nth(2);
+  await onRide.click();
+  await expect(page.locator('.map-spot__name')).toHaveText((await onRide.textContent())!);
+});

@@ -11,6 +11,11 @@ export interface PickArea {
   rings: LatLon[][];
 }
 
+/** A stop tapped in a list: the map goes to it and makes it stand out. */
+export interface Spotlight extends LatLon {
+  name: string;
+}
+
 /** Map content lives in a tiny module so the heavy map library can load lazily. */
 interface MapCtx {
   content: MapContent;
@@ -21,15 +26,24 @@ interface MapCtx {
   /** Where the pin starts, when the screen asking knows better than the planner's fields. */
   pickStart?: LatLon;
   setPick: (field: PickField | undefined, area?: PickArea, start?: LatLon) => void;
+  spotlight?: Spotlight;
+  setSpotlight: (spot: Spotlight | undefined) => void;
 }
 export const MapContentContext = createContext<MapCtx>({
   content: EMPTY_CONTENT,
   setContent: () => {},
   setPick: () => {},
+  setSpotlight: () => {},
 });
 
 export function MapProvider({ children }: { children: ReactNode }) {
-  const [content, setContent] = useState<MapContent>(EMPTY_CONTENT);
+  const [content, setContentState] = useState<MapContent>(EMPTY_CONTENT);
+  const [spotlight, setSpotlight] = useState<Spotlight | undefined>();
+  // Another screen's map: the stop tapped on the last one no longer stands out.
+  const setContent = useCallback((c: MapContent) => {
+    setContentState(c);
+    setSpotlight(undefined);
+  }, []);
   const [pick, setPickField] = useState<PickField | undefined>();
   const [pickArea, setPickArea] = useState<PickArea | undefined>();
   const [pickStart, setPickStart] = useState<LatLon | undefined>();
@@ -39,7 +53,9 @@ export function MapProvider({ children }: { children: ReactNode }) {
     setPickStart(field && start ? { lat: start.lat, lon: start.lon } : undefined);
   }, []);
   return (
-    <MapContentContext.Provider value={{ content, setContent, pick, pickArea, pickStart, setPick }}>
+    <MapContentContext.Provider
+      value={{ content, setContent, pick, pickArea, pickStart, setPick, spotlight, setSpotlight }}
+    >
       {children}
     </MapContentContext.Provider>
   );
@@ -51,4 +67,24 @@ export function useMapContent(content: MapContent | undefined): void {
   useEffect(() => {
     if (content) setContent(content);
   }, [content, setContent]);
+}
+
+/**
+ * Shows a stop of a list on the map: it flies there and the stop pulses, named; the same
+ * stop tapped again stops standing out. `isShown` tells the stop shown.
+ */
+export function useSpotlight(): {
+  show: (spot: Spotlight) => void;
+  isShown: (p: LatLon) => boolean;
+} {
+  const { spotlight, setSpotlight } = useContext(MapContentContext);
+  const isShown = useCallback(
+    (p: LatLon) => spotlight !== undefined && spotlight.lat === p.lat && spotlight.lon === p.lon,
+    [spotlight],
+  );
+  const show = useCallback(
+    (spot: Spotlight) => setSpotlight(isShown(spot) ? undefined : spot),
+    [isShown, setSpotlight],
+  );
+  return { show, isShown };
 }

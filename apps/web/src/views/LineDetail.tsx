@@ -1,9 +1,9 @@
 import { Fragment, useMemo, useState, type ReactNode } from 'react';
-import { ArrowLeft, Download, Image, Loader2, Printer, Share2 } from 'lucide-react';
+import { ArrowLeft, Clock, Download, Image, Loader2, Printer, Share2 } from 'lucide-react';
 import { stopDepartures } from '@madeirabus/engine';
 import { WaysTable, type WayColumn, type WayEntry } from '../components/HourTable.tsx';
 import { LineSheetBlock } from '../components/LineSheetBlock.tsx';
-import { useMapContent } from '../components/mapContext.tsx';
+import { useMapContent, useSpotlight } from '../components/mapContext.tsx';
 import { RouteBadge } from '../components/RouteBadge.tsx';
 import { useI18n } from '../i18n.ts';
 import { isNative } from '../lib/device.ts';
@@ -60,6 +60,8 @@ export function LineDetail({ routeIndex, at, day }: Props) {
   const main = dir?.patterns[0];
   const stops = useMemo(() => (dir ? boardingStops(net, dir) : []), [net, dir]);
   const stop = chosenStop !== undefined && stops.includes(chosenStop) ? chosenStop : stops[0];
+  // A stop of the list tapped: shown on the map.
+  const spot = useSpotlight();
   // Where this way runs on the Via Rápida, between which of its stops.
   const expressways = useMemo(
     () => (main === undefined ? [] : expresswayStretches(net, main)),
@@ -362,8 +364,23 @@ export function LineDetail({ routeIndex, at, day }: Props) {
             return (
               <Fragment key={`${s}-${i}`}>
                 <li className={className || undefined}>
-                  <button type="button" onClick={() => navigate('stop', { ids: String(s) })}>
+                  <button
+                    type="button"
+                    className="stop-spot"
+                    aria-pressed={spot.isShown(net.stops[s]!)}
+                    title={t.t('map.showStop')}
+                    onClick={() => spot.show({ ...net.stops[s]! })}
+                  >
                     {net.stops[s]!.name}
+                  </button>
+                  <button
+                    type="button"
+                    className="icon-button stop-line__times"
+                    aria-label={t.t('map.stopTimes', { stop: net.stops[s]!.name })}
+                    title={t.t('map.stopTimes', { stop: net.stops[s]!.name })}
+                    onClick={() => navigate('stop', { ids: String(s) })}
+                  >
+                    <Clock size={16} />
                   </button>
                 </li>
                 {/* Where it takes the Via Rápida, between the stops it leaves and reaches it at. */}

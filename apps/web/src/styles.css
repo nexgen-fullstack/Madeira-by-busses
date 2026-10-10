@@ -918,6 +918,71 @@ input[type='time'],
   font-size: 13px;
   color: var(--brand);
 }
+/* A trail with its photo: a square of it on the left, its words beside it. */
+.trail-card--photo {
+  grid-template-columns: 84px 1fr;
+  column-gap: 12px;
+  align-items: center;
+}
+.trail-card--photo > :not(.trail-card__photo) {
+  grid-column: 2;
+}
+.trail-card__photo {
+  grid-row: 1 / span 3;
+  width: 84px;
+  height: 84px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: var(--surface-2);
+}
+/* The places with a view on a trail, each with its photo; a tap shows it on the map. */
+.hike-views {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+}
+.hike-view {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+.hike-view__photo {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
+  background: var(--surface-2);
+}
+.hike-view__photo--none {
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+}
+.hike-view__name {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.hike-view[aria-pressed='true'] .hike-view__photo {
+  outline: 3px solid var(--brand);
+  outline-offset: 2px;
+}
+.hike-view[aria-pressed='true'] .hike-view__name {
+  color: var(--brand);
+}
+.hike__hero .trail-badge {
+  vertical-align: 3px;
+}
 .hikes__filters {
   margin: 10px 0 4px;
 }
@@ -1592,6 +1657,19 @@ input[type='time'],
   background: var(--surface);
   border: 3px solid var(--route);
   box-sizing: border-box;
+}
+.stop-line li:not(.stop-line__vr) {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.stop-line li .stop-spot {
+  flex: 1;
+  min-width: 0;
+}
+.stop-line__times {
+  flex: none;
+  color: var(--muted);
 }
 .stop-line button {
   border: 0;
@@ -3184,6 +3262,55 @@ input[type='time'],
 .walk-card:active {
   transform: scale(0.985);
 }
+/* A walk on the photo of where it goes: its words in white over the darkened foot of it. */
+.walk-card--photo {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 190px;
+  padding: 12px 14px 13px;
+  border: 0;
+  border-radius: 20px;
+  background: #1d2a33;
+  color: #ffffff;
+  box-shadow: 0 8px 22px rgb(16 24 40 / 18%);
+}
+.walk-card__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+  transition: transform 0.6s ease;
+}
+.walk-card--photo:hover .walk-card__photo {
+  transform: scale(1.04);
+}
+.walk-card__shade {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(to bottom, rgb(5 12 18 / 35%) 0%, rgb(5 12 18 / 0%) 30%),
+    linear-gradient(to top, rgb(5 12 18 / 85%) 0%, rgb(5 12 18 / 50%) 40%, rgb(5 12 18 / 0%) 70%);
+}
+.walk-card--photo .walk-card__icon {
+  background: rgb(255 255 255 / 92%);
+  color: var(--view);
+}
+.walk-card--photo .walk-card__region {
+  color: #8ff3f8;
+}
+.walk-card--photo .walk-card__name {
+  font-size: 17px;
+  text-shadow: 0 1px 10px rgb(0 0 0 / 45%);
+}
+.walk-card--photo .walk-card__facts {
+  color: rgb(255 255 255 / 88%);
+}
 .walk-card__icon {
   flex: none;
   display: grid;
@@ -3435,4 +3562,80 @@ input[type='time'],
 }
 .stop-line li.stop-line__vr::after {
   content: none;
+}
+
+/* ---------- A stop tapped in a list, on the map ---------- */
+
+.map-spot {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+}
+.map-spot__dot,
+.map-spot__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+.map-spot__dot {
+  background: #ffffff;
+  border: 5px solid var(--brand);
+  box-shadow: 0 1px 6px rgb(0 0 0 / 45%);
+}
+.map-spot__ring {
+  border: 3px solid var(--brand);
+  animation: map-spot 1.4s ease-out infinite;
+}
+@keyframes map-spot {
+  from {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(3.2);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .map-spot__ring {
+    animation: none;
+    transform: scale(1.8);
+    opacity: 0.5;
+  }
+}
+.map-spot__name {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 220px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--brand);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
+}
+/* A stop's name in a list is a button: it shows the stop on the map. */
+.stop-spot {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.stop-spot:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.stop-spot[aria-pressed='true'] {
+  color: var(--brand);
+  font-weight: 700;
 }

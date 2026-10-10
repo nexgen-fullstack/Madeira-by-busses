@@ -233,6 +233,8 @@ export const pl: Dict = {
   'remind.title': 'Czas wyjść na autobus',
   'remind.body': '{route} o {t} z przystanku „{stop}”',
   'map.label': 'Mapa',
+  'map.showStop': 'Pokaż na mapie',
+  'map.stopTimes': 'Rozkład na przystanku {stop}',
   'scenic.curral.tag': 'Dolina zakonnic',
   'scenic.curral.text':
     'Wioska na dnie głębokiej wulkanicznej doliny otoczonej szczytami. Autobus wspina się tu z Funchal tunelami i serpentynami; spróbuj ciasta z kasztanów.',
@@ -513,5 +515,6 @@ export const pl: Dict = {
     'Przed wyjściem sprawdź pogodę, czy szlak jest otwarty i czy potrzebny jest bilet. Weź wodę, a na lewady latarkę do tuneli.',
   'hike.official': 'Strona IFCN (szlaki Madery)',
   'hike.osm': 'Szlak w OpenStreetMap',
+  'hike.views': 'Punkty widokowe na trasie',
   'hike.backSameWay': 'Na końcu nie ma autobusu: powrót tą samą drogą, tam i z powrotem ~{time}.',
 };

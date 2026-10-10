@@ -207,6 +207,8 @@ export const en: Dict = {
   'remind.title': 'Time to leave for the bus',
   'remind.body': '{route} at {t} from «{stop}»',
   'map.label': 'Map',
+  'map.showStop': 'Show on the map',
+  'map.stopTimes': 'Timetable at {stop}',
   'scenic.curral.tag': 'Valley of the Nuns',
   'scenic.curral.text':
     'A village deep in a volcanic valley, ringed by sheer peaks. The bus climbs from Funchal through tunnels and hairpin bends; try the chestnut cake.',
@@ -478,5 +480,6 @@ export const en: Dict = {
     "Before you set off, check the weather, whether the trail is open and whether it needs a ticket. Take water, and a torch for the levadas' tunnels.",
   'hike.official': "IFCN website (Madeira's trails)",
   'hike.osm': 'The trail on OpenStreetMap',
+  'hike.views': 'Views on the way',
   'hike.backSameWay': 'No bus at the end: back the same way, there and back ~{time}.',
 };

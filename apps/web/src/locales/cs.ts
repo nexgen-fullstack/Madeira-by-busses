@@ -231,6 +231,8 @@ export const cs: Dict = {
   'remind.title': 'Čas vyrazit na autobus',
   'remind.body': '{route} v {t} ze zastávky „{stop}“',
   'map.label': 'Mapa',
+  'map.showStop': 'Ukázat na mapě',
+  'map.stopTimes': 'Jízdní řád zastávky {stop}',
   'scenic.curral.tag': 'Údolí jeptišek',
   'scenic.curral.text':
     'Vesnice na dně hlubokého sopečného údolí obklopeného štíty. Autobus sem stoupá z Funchalu tunely a serpentinami; ochutnejte kaštanový koláč.',
@@ -510,5 +512,6 @@ export const cs: Dict = {
     'Před vyrazením zkontrolujte počasí, zda je stezka otevřená a zda je potřeba vstupenka. Vezměte vodu a na levády baterku do tunelů.',
   'hike.official': 'Web IFCN (stezky Madeiry)',
   'hike.osm': 'Stezka na OpenStreetMap',
+  'hike.views': 'Vyhlídky na trase',
   'hike.backSameWay': 'V cíli autobus nejezdí: zpět stejnou cestou, tam a zpět ~{time}.',
 };

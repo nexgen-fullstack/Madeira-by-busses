@@ -208,6 +208,8 @@ export const fr: Dict = {
   'remind.title': 'C’est l’heure de partir pour le bus',
   'remind.body': '{route} à {t} depuis « {stop} »',
   'map.label': 'Carte',
+  'map.showStop': 'Voir sur la carte',
+  'map.stopTimes': 'Horaires à l’arrêt {stop}',
   'scenic.curral.tag': 'La vallée des nonnes',
   'scenic.curral.text':
     'Un village au fond d’une profonde vallée volcanique cernée de pics. Le bus y monte depuis Funchal par des tunnels et des lacets ; goûtez le gâteau à la châtaigne.',
@@ -483,5 +485,6 @@ export const fr: Dict = {
     "Avant de partir, vérifiez la météo, si le sentier est ouvert et s'il faut un billet. Prenez de l'eau et, sur les levadas, une lampe pour les tunnels.",
   'hike.official': "Site de l'IFCN (sentiers de Madère)",
   'hike.osm': 'Le sentier sur OpenStreetMap',
+  'hike.views': 'Points de vue en chemin',
   'hike.backSameWay': "Pas de bus à l'arrivée : retour par le même chemin, aller-retour ~{time}.",
 };

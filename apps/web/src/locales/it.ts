@@ -206,6 +206,8 @@ export const it: Dict = {
   'remind.title': 'È ora di andare alla fermata',
   'remind.body': '{route} alle {t} da «{stop}»',
   'map.label': 'Mappa',
+  'map.showStop': 'Mostra sulla mappa',
+  'map.stopTimes': 'Orari alla fermata {stop}',
   'scenic.curral.tag': 'La valle delle suore',
   'scenic.curral.text':
     'Un villaggio in fondo a una profonda valle vulcanica cinta da vette. L’autobus sale da Funchal tra gallerie e tornanti; assaggiate la torta di castagne.',
@@ -479,6 +481,7 @@ export const it: Dict = {
     'Prima di partire controlla il meteo, se il sentiero è aperto e se serve un biglietto. Porta acqua e, sulle levadas, una torcia per le gallerie.',
   'hike.official': "Sito dell'IFCN (sentieri di Madeira)",
   'hike.osm': 'Il sentiero su OpenStreetMap',
+  'hike.views': 'Belvedere lungo il percorso',
   'hike.backSameWay':
     "Nessun autobus all'arrivo: ritorno per la stessa via, andata e ritorno ~{time}.",
 };

@@ -29,6 +29,7 @@ import { canSimulate } from '../lib/simulator.ts';
 import { useNow } from '../lib/useNow.ts';
 import { planOptions, useApp, useNetwork } from '../state/app.tsx';
 import { LineSheetBlock } from './LineSheetBlock.tsx';
+import { useSpotlight } from './mapContext.tsx';
 import { RideTimetable } from './RideTimetable.tsx';
 import { RouteBadge } from './RouteBadge.tsx';
 import { routeColor } from '../lib/color.ts';
@@ -55,6 +56,8 @@ export function ItineraryDetail({ it, date, ahead, onFocusLeg, onBack, onStart, 
   );
   const [reminder, setReminder] = useState<number | undefined>();
   const now = useNow();
+  // A stop tapped: shown on the map.
+  const spot = useSpotlight();
 
   const firstLeg = it.legs[0]!;
   const lastLeg = it.legs[it.legs.length - 1]!;
@@ -204,6 +207,21 @@ export function ItineraryDetail({ it, date, ahead, onFocusLeg, onBack, onStart, 
           }
           const route = net.routes[leg.route]!;
           const between = leg.stops.slice(1, -1);
+          // A stop's name shows it on the map (and does not bring the whole ride into view).
+          const stopButton = (stop: number, name = net.stops[stop]!.name) => (
+            <button
+              type="button"
+              className="stop-spot"
+              aria-pressed={spot.isShown(net.stops[stop]!)}
+              title={t.t('map.showStop')}
+              onClick={(e) => {
+                e.stopPropagation();
+                spot.show({ ...net.stops[stop]!, name });
+              }}
+            >
+              {name}
+            </button>
+          );
           // How far of the ride is on the Via Rápida.
           const vr = expresswayStretches(net, leg.pattern, leg.boardPos, leg.alightPos).reduce(
             (m, x) => m + x.metres,
@@ -231,7 +249,7 @@ export function ItineraryDetail({ it, date, ahead, onFocusLeg, onBack, onStart, 
                 <span className="timeline__time strong">{clock(leg.start)}</span>
                 <span className="timeline__dot" />
                 <div>
-                  <div className="strong">{leg.from.name}</div>
+                  <div className="strong">{stopButton(leg.from.stop!, leg.from.name)}</div>
                   <div className="timeline__route">
                     <span
                       className="way-swatch"
@@ -281,7 +299,7 @@ export function ItineraryDetail({ it, date, ahead, onFocusLeg, onBack, onStart, 
                     <li key={s.stop}>
                       <span className="timeline__time">{clock(s.dep)}</span>
                       <span className="timeline__mini-dot" />
-                      <span>{net.stops[s.stop]!.name}</span>
+                      {stopButton(s.stop)}
                     </li>
                   ))}
                 </ul>
@@ -289,7 +307,7 @@ export function ItineraryDetail({ it, date, ahead, onFocusLeg, onBack, onStart, 
               <div className="timeline__stop timeline__stop--alight">
                 <span className="timeline__time strong">{clock(leg.end)}</span>
                 <span className="timeline__dot" />
-                <div className="strong">{leg.to.name}</div>
+                <div className="strong">{stopButton(leg.to.stop!, leg.to.name)}</div>
               </div>
             </li>
           );

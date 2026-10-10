@@ -207,6 +207,8 @@ export const pt: Dict = {
   'remind.title': 'Hora de sair para o autocarro',
   'remind.body': '{route} às {t} de «{stop}»',
   'map.label': 'Mapa',
+  'map.showStop': 'Mostrar no mapa',
+  'map.stopTimes': 'Horário da paragem {stop}',
   'scenic.curral.tag': 'Vale das freiras',
   'scenic.curral.text':
     'Uma aldeia no fundo de um vale vulcânico rodeado de picos. O autocarro sobe do Funchal por túneis e curvas apertadas; prove o bolo de castanha.',
@@ -481,5 +483,6 @@ export const pt: Dict = {
     'Antes de partir, veja o tempo, se o percurso está aberto e se precisa de bilhete. Leve água e, nas levadas, uma lanterna para os túneis.',
   'hike.official': 'Site do IFCN (percursos da Madeira)',
   'hike.osm': 'O percurso no OpenStreetMap',
+  'hike.views': 'Miradouros no percurso',
   'hike.backSameWay': 'Sem autocarro no fim: volta pelo mesmo caminho, ida e volta ~{time}.',
 };

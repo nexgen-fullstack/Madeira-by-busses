@@ -3,7 +3,7 @@ import { ArrowLeft, Flag, Loader2 } from 'lucide-react';
 import { haversine, madeiraNow, type Itinerary } from '@madeirabus/engine';
 import { ItineraryCard } from '../components/ItineraryCard.tsx';
 import { ItineraryDetail } from '../components/ItineraryDetail.tsx';
-import { MapContentContext, useMapContent } from '../components/mapContext.tsx';
+import { MapContentContext, useMapContent, useSpotlight } from '../components/mapContext.tsx';
 import { type PlaceValue } from '../components/PlaceSearch.tsx';
 import { RouteBadge } from '../components/RouteBadge.tsx';
 import { RouteFields, type RouteEnd } from '../components/RouteFields.tsx';
@@ -69,6 +69,8 @@ export function RideView({
   );
   const board = times[boardPos];
   const end = times[times.length - 1];
+  // A stop of the list tapped: shown on the map.
+  const spot = useSpotlight();
   // Where the bus runs on the Via Rápida, after which of its stops.
   const expressways = useMemo(
     () => (p && times.length > 0 ? expresswayStretches(net, pattern) : []),
@@ -335,7 +337,17 @@ export function RideView({
                     .trim()}
                 >
                   <span className="ride__time">{clock(i === 0 ? x.dep : x.arr)}</span>
-                  <span className="ride__name">{name}</span>
+                  <span className="ride__name">
+                    <button
+                      type="button"
+                      className="stop-spot"
+                      aria-pressed={spot.isShown(net.stops[x.stop]!)}
+                      title={t.t('map.showStop')}
+                      onClick={() => spot.show({ ...net.stops[x.stop]! })}
+                    >
+                      {name}
+                    </button>
+                  </span>
                   {i > boardPos && (
                     <button
                       type="button"
