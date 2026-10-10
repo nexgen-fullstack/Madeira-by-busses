@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-10-10T13:32:00.869Z",
+  "fetchedAt": "2026-10-10T15:10:52.919Z",
   "seeds": [
     "https://siga.madeira.gov.pt/",
     "https://siga.madeira.gov.pt/public/index.php/language/en",
@@ -14,7 +14,21 @@
     "feedInfo": "feed_type,feed_publisher_name,feed_publisher_url,feed_lang,feed_start_date,feed_end_date,feed_version,feed_desc,feed_remarks,feed_contact_email,feed_contact_url\r\n,HF,https://www.horariosdofunchal.pt/,pt,20260909,20261130,202609091923,,,geral@horariosdofunchal.pt,https://www.horariosdofunchal.pt/"
   },
   "osm": {
-    "error": "Error: https://overpass-api.de/api/interpreter: HTTP 504; https://overpass.kumi.systems/api/interpreter: HTTP 500; https://overpass.private.coffee/api/interpreter: HTTP 500; https://maps.mail.ru/osm/tools/overpass/api/interpreter: HTTP 504"
+    "routeRelations": 224,
+    "routeMasters": 2,
+    "operators": [
+      "CAM",
+      "RODOESTE",
+      "Rodoeste",
+      "SAM",
+      "HF",
+      "HF - Urbano",
+      "Horários do Funchal",
+      "SIGA"
+    ],
+    "stops": 4058,
+    "places": 3261,
+    "trails": 2991
   },
   "web": {
     "pages": 415,
