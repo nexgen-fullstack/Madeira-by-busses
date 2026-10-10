@@ -25,6 +25,8 @@ export interface MapLayers {
   terrain3d: boolean;
   /** Every bus stop and line on the map (off: a plain island, as a maps app opens). */
   transit: boolean;
+  /** The hiking trails, dashed in the red of their waymarks, with where each starts. */
+  trails: boolean;
 }
 
 export const DEFAULT_LAYERS: MapLayers = {
@@ -33,6 +35,7 @@ export const DEFAULT_LAYERS: MapLayers = {
   places: true,
   terrain3d: false,
   transit: false,
+  trails: false,
 };
 
 const VECTOR_STYLE = 'https://tiles.openfreemap.org/styles/liberty';

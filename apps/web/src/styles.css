@@ -163,6 +163,20 @@ h3 {
   min-height: 0;
   -webkit-overflow-scrolling: touch;
 }
+/* The gear of the settings at the top bar's far end. */
+.topbar__settings {
+  order: 10;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-left: auto;
+  border-radius: 50%;
+  color: #ffffff;
+}
+.topbar__settings[aria-current='page'] {
+  background: rgb(255 255 255 / 22%);
+}
 .tabbar {
   grid-area: tabs;
   display: grid;
@@ -846,6 +860,115 @@ input[type='time'],
 .modes__item--bike svg {
   color: var(--bike);
 }
+/* The trails: their number on a plate in the red and yellow of the PR waymarks. */
+.trail-badge {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: var(--trail-bg);
+  color: var(--trail);
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+  vertical-align: 2px;
+}
+.trail-badge--pr {
+  background: linear-gradient(180deg, #d7261e 0 50%, #ffd400 50% 100%);
+  color: #ffffff;
+  text-shadow: 0 1px 1px rgb(0 0 0 / 55%);
+}
+.trail-list {
+  display: grid;
+  gap: 8px;
+}
+.trail-card {
+  display: grid;
+  gap: 4px;
+  padding: 11px 13px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+  box-shadow: var(--shadow);
+}
+.trail-card__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.trail-card__name {
+  font-weight: 700;
+  min-width: 0;
+}
+.trail-card__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.trail-card__facts svg,
+.trail-card__bus svg {
+  vertical-align: -2px;
+}
+.trail-card__bus {
+  font-size: 13px;
+  color: var(--brand);
+}
+.hikes__filters {
+  margin: 10px 0 4px;
+}
+.chip[aria-pressed='true'] {
+  border-color: transparent;
+  background: var(--brand-soft);
+  color: var(--brand-strong);
+  font-weight: 700;
+}
+.hike__facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0 0 14px;
+}
+.hike__facts > div {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.hike__facts dt {
+  font-size: 12px;
+  color: var(--muted);
+}
+.hike__facts dd {
+  margin: 2px 0 0;
+  font-size: 17px;
+  font-weight: 800;
+}
+.hike-stop {
+  margin-bottom: 10px;
+}
+.hike-stop__label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.hike-stop__stop {
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+.hike__safety {
+  display: flex;
+  gap: 10px;
+  margin: 14px 0 10px;
+}
+
 /* Inside a place's "getting there": no second frame. */
 .card .travel {
   margin: 0 0 10px;

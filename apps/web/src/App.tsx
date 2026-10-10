@@ -8,7 +8,7 @@ import {
   useState,
   type CSSProperties,
 } from 'react';
-import { List, Map as MapIcon, Mountain, Navigation, Settings } from 'lucide-react';
+import { List, Map as MapIcon, Mountain, Navigation, Settings, Signpost } from 'lucide-react';
 import {
   SheetHandle,
   snapInset,
@@ -26,6 +26,8 @@ import { AppProvider, useApp } from './state/app.tsx';
 import { TripProvider } from './state/trip.tsx';
 import { DestinationView } from './views/DestinationView.tsx';
 import { ExploreView } from './views/ExploreView.tsx';
+import { HikesView } from './views/HikesView.tsx';
+import { HikeView } from './views/HikeView.tsx';
 import { LineDetail } from './views/LineDetail.tsx';
 import { LinesView } from './views/LinesView.tsx';
 import { NearbyView } from './views/NearbyView.tsx';
@@ -40,9 +42,9 @@ const MapView = lazy(() => import('./components/MapView.tsx'));
 const TABS: { path: string; key: Key; icon: typeof MapIcon }[] = [
   { path: 'plan', key: 'tab.plan', icon: Navigation },
   { path: 'explore', key: 'tab.explore', icon: Mountain },
+  { path: 'hikes', key: 'tab.hikes', icon: Signpost },
   { path: 'nearby', key: 'tab.nearby', icon: MapIcon },
   { path: 'lines', key: 'tab.lines', icon: List },
-  { path: 'settings', key: 'tab.settings', icon: Settings },
 ];
 
 function Screen() {
@@ -97,6 +99,8 @@ function Screen() {
           route={route}
         />
       );
+    case 'hikes':
+      return sub !== undefined ? <HikeView key={sub} id={sub} /> : <HikesView />;
     case 'stop':
       return <StopView route={route} />;
     case 'settings':
@@ -244,7 +248,8 @@ function Shell() {
       return false;
     }
     // A line or a place: back where it was opened from (a place's timetable, the list).
-    if ((where === 'lines' || where === 'explore') && sub !== undefined) goBack(where);
+    if ((where === 'lines' || where === 'explore' || where === 'hikes') && sub !== undefined)
+      goBack(where);
     else if (where === 'ride') goBack('lines');
     else if (where === 'stop') goBack('plan');
     else navigate('plan');
@@ -294,6 +299,16 @@ function Shell() {
           <img className="brand__words" src="brand-words.png" alt="" width={84} height={37} />
         </a>
         {demo && <span className="badge badge--demo">{t.t('demo.badge')}</span>}
+        {/* The settings, as a maps app keeps them: a gear at the top, the tabs for the island. */}
+        <a
+          className="topbar__settings"
+          href="#/settings"
+          aria-label={t.t('tab.settings')}
+          title={t.t('tab.settings')}
+          aria-current={head === 'settings' ? 'page' : undefined}
+        >
+          <Settings size={22} aria-hidden />
+        </a>
         {trip && head !== 'trip' && (
           <button type="button" className="chip chip--live" onClick={() => navigate('trip')}>
             <span className="live-dot" aria-hidden /> {t.t('trip.title')}

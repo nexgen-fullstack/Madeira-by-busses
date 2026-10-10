@@ -74,6 +74,8 @@ export interface MapContent {
    * the app opens. The first ones stay when they crowd each other far out.
    */
   scenic?: ScenicSpot[];
+  /** The hiking trails shown whatever the layers say: the trails tab. */
+  trails?: boolean;
 }
 
 /** A place with a view on the map: its photo (or its region's colours) and its name. */
@@ -250,6 +252,9 @@ function pairFlags(points: MapPoint[]): void {
     }
   }
 }
+
+/** A hiking trail in the volcanic red of the island's PR waymarks (as in styles.css). */
+export const TRAIL_RED = '#B8471B';
 
 /** A car's way in the blue of a maps app, a bike's in laurel green (as in styles.css). */
 export const CAR_BLUE = '#1A73E8';

@@ -7,6 +7,7 @@ import {
   Map as MapIcon,
   Mountain,
   Satellite,
+  Signpost,
   Store,
 } from 'lucide-react';
 import { useI18n } from '../i18n.ts';
@@ -45,6 +46,7 @@ export function LayerSwitcher({
 
   const toggles = [
     { key: 'transit', label: t.t('layers.transit'), icon: Bus },
+    { key: 'trails', label: t.t('layers.trails'), icon: Signpost },
     { key: 'places', label: t.t('layers.places'), icon: Store },
     { key: 'buildings3d', label: t.t('layers.buildings'), icon: Building2 },
     { key: 'terrain3d', label: t.t('layers.terrain'), icon: Box },

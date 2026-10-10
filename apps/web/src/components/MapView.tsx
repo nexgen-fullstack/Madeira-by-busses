@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { Bus, Check, Flag, MapPin, X } from 'lucide-react';
+import { Bus, Check, Flag, MapPin, Signpost, X } from 'lucide-react';
 import {
   GeolocateControl,
   LngLatBounds,
@@ -22,6 +22,7 @@ import { decodePlace, encodePlace } from '../lib/itinerary.ts';
 import { hideLaunch } from '../lib/launch.ts';
 import {
   RUN_WIDTH,
+  TRAIL_RED,
   transitGeoJson,
   VIEW_WALK,
   WAY_TURQUOISE,
@@ -44,6 +45,7 @@ import {
 import { pointName } from '../lib/pointName.ts';
 import { useBack } from '../lib/back.ts';
 import { navigate } from '../lib/router.ts';
+import { loadTrails, trailLines } from '../lib/trails.ts';
 import { useApp } from '../state/app.tsx';
 import { LayerSwitcher } from './LayerSwitcher.tsx';
 import { LineCard, LineChooser, type LinePick } from './LineCard.tsx';
@@ -488,6 +490,54 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
       'circle-stroke-width': ['interpolate', ['linear'], ['zoom'], 9, 0.8, 14, 2],
     },
   });
+  // The hiking trails: dashed in the red of their waymarks on a white edge, a tap opens one;
+  // where each starts, a dot in its red with its number from closer in.
+  map.addSource('mb-trails', { type: 'geojson', data: EMPTY });
+  map.addSource('mb-trail-heads', { type: 'geojson', data: EMPTY });
+  const trailWidth = ['interpolate', ['linear'], ['zoom'], 9, 1.4, 12, 2.4, 15, 3.6];
+  map.addLayer({
+    id: 'mb-trail-casing',
+    type: 'line',
+    source: 'mb-trails',
+    layout: { 'line-cap': 'round', 'line-join': 'round', visibility: 'none' },
+    paint: {
+      'line-color': '#ffffff',
+      'line-width': ['*', trailWidth, 2.2] as unknown as number,
+      'line-opacity': 0.75,
+    },
+  });
+  map.addLayer({
+    id: 'mb-trail',
+    type: 'line',
+    source: 'mb-trails',
+    layout: { 'line-join': 'round', visibility: 'none' },
+    paint: {
+      'line-color': TRAIL_RED,
+      'line-width': trailWidth as unknown as number,
+      'line-dasharray': [2, 1.2],
+    },
+  });
+  map.addLayer({
+    id: 'mb-trail-hit',
+    type: 'line',
+    source: 'mb-trails',
+    layout: { 'line-cap': 'round', visibility: 'none' },
+    paint: { 'line-color': '#000000', 'line-width': HIT_WIDTH, 'line-opacity': 0 },
+  });
+  map.addLayer({
+    id: 'mb-trail-head',
+    type: 'circle',
+    source: 'mb-trail-heads',
+    layout: { visibility: 'none' },
+    // Far out only the official PR trails' starts.
+    filter: ['any', ['get', 'pr'], ['>=', ['zoom'], 11.5]],
+    paint: {
+      'circle-radius': ['interpolate', ['linear'], ['zoom'], 9, 3.5, 13, 6],
+      'circle-color': TRAIL_RED,
+      'circle-stroke-color': '#ffffff',
+      'circle-stroke-width': 2,
+    },
+  });
   map.addSource('mb-lines', { type: 'geojson', data: EMPTY });
   map.addSource('mb-points', { type: 'geojson', data: EMPTY });
   map.addLayer({
@@ -755,6 +805,23 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
   });
   if (map.getStyle().glyphs) {
     map.addLayer({
+      id: 'mb-trail-label',
+      type: 'symbol',
+      source: 'mb-trail-heads',
+      minzoom: 11,
+      layout: {
+        visibility: 'none',
+        'text-field': ['get', 'label'],
+        'text-size': 11,
+        'text-font': ['Noto Sans Bold'],
+        'text-offset': [0, 1],
+        'text-anchor': 'top',
+        'text-optional': true,
+        'text-max-width': 9,
+      },
+      paint: { 'text-color': TRAIL_RED, 'text-halo-color': '#ffffff', 'text-halo-width': 1.6 },
+    });
+    map.addLayer({
       id: 'mb-net-label',
       type: 'symbol',
       source: 'mb-net-stops',
@@ -840,6 +907,54 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
 }
 
 const TRANSIT_LAYERS = ['mb-net-line', 'mb-net-line-hit', 'mb-net-stop', 'mb-net-label'];
+const TRAIL_LAYERS = [
+  'mb-trail-casing',
+  'mb-trail',
+  'mb-trail-hit',
+  'mb-trail-head',
+  'mb-trail-label',
+];
+
+/** What a GeoJSON source is given. */
+type GeoJsonData = Parameters<GeoJSONSource['setData']>[0];
+type TrailData = { lines: GeoJsonData; heads: GeoJsonData };
+
+/** The trails as GeoJSON: their lines, and where each starts with its number. */
+async function trailGeoJson(): Promise<TrailData> {
+  const trails = await loadTrails();
+  return {
+    lines: {
+      type: 'FeatureCollection',
+      features: trails.flatMap((t) =>
+        trailLines(t).map((line) => ({
+          type: 'Feature' as const,
+          properties: { id: t.id },
+          geometry: { type: 'LineString' as const, coordinates: line.map((p) => [p.lon, p.lat]) },
+        })),
+      ),
+    },
+    heads: {
+      type: 'FeatureCollection',
+      features: trails.map((t) => ({
+        type: 'Feature' as const,
+        properties: { id: t.id, label: t.ref ?? t.name, pr: t.kind === 'pr' },
+        geometry: { type: 'Point' as const, coordinates: [t.start[1], t.start[0]] },
+      })),
+    },
+  };
+}
+
+/** Puts the hiking trails on the map, or hides them. */
+function applyTrails(map: MapLibreMap, data: TrailData | undefined, on: boolean) {
+  if (!map.getSource('mb-trails')) return;
+  if (data) {
+    (map.getSource('mb-trails') as GeoJSONSource).setData(data.lines);
+    (map.getSource('mb-trail-heads') as GeoJSONSource).setData(data.heads);
+  }
+  for (const id of TRAIL_LAYERS) {
+    if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', on ? 'visible' : 'none');
+  }
+}
 /** How wide a line is to a finger (px): easy to tap on a phone. */
 const HIT_WIDTH = 22;
 
@@ -938,6 +1053,23 @@ export default function MapView({ className }: { className?: string }) {
     }, [linePick, lineChoice]),
   );
   const transitRef = useRef<{ data?: TransitData; on: boolean }>({ on: false });
+  // The hiking trails: on by the button or layers, and always on the trails tab.
+  const trailsRef = useRef<{ data?: TrailData; on: boolean }>({ on: false });
+  const trailsOn = layers.trails || Boolean(content.trails);
+  const [trailData, setTrailData] = useState<TrailData | undefined>();
+  useEffect(() => {
+    if (!trailsOn || trailData) return;
+    let cancelled = false;
+    void trailGeoJson().then((d) => !cancelled && setTrailData(d));
+    return () => {
+      cancelled = true;
+    };
+  }, [trailsOn, trailData]);
+  useEffect(() => {
+    trailsRef.current = { data: trailData, on: trailsOn };
+    const map = mapRef.current;
+    if (map && ready) applyTrails(map, trailData, trailsOn);
+  }, [trailData, trailsOn, ready]);
   // A chosen route is shown alone: every stop and line step aside until asked for again.
   const [transitWith, setTransitWith] = useState<string | undefined>();
   const transitOn = layers.transit && (!content.focus || transitWith === content.focus);
@@ -985,6 +1117,7 @@ export default function MapView({ className }: { className?: string }) {
       addOverlay(map, layersRef.current.base);
       applyDetails(map, layersRef.current);
       applyTransit(map, transitRef.current.data, transitRef.current.on);
+      applyTrails(map, trailsRef.current.data, trailsRef.current.on);
       fitted.current = {};
       setReady(true);
       apply(map, contentRef.current, fitted);
@@ -1019,6 +1152,15 @@ export default function MapView({ className }: { className?: string }) {
       }
       if (stop) {
         navigate('stop', { ids: String(stop.properties.stops) });
+        return;
+      }
+      // A hiking trail or where it starts: its page.
+      const trail = features.find(
+        (f) =>
+          (f.layer.id === 'mb-trail-hit' || f.layer.id === 'mb-trail-head') && f.properties?.id,
+      );
+      if (trail) {
+        navigate(`hikes/${String(trail.properties.id)}`);
         return;
       }
       // A run of a line that goes its own way: when it runs.
@@ -1086,6 +1228,8 @@ export default function MapView({ className }: { className?: string }) {
       'mb-net-stop',
       'mb-line-hit',
       'mb-net-line-hit',
+      'mb-trail-hit',
+      'mb-trail-head',
     ]) {
       map.on('mouseenter', id, () => (map.getCanvas().style.cursor = 'pointer'));
       map.on('mouseleave', id, () => (map.getCanvas().style.cursor = ''));
@@ -1314,6 +1458,16 @@ export default function MapView({ className }: { className?: string }) {
           onClick={() => setTransit(!transitOn)}
         >
           <Bus size={18} />
+        </button>
+        <button
+          type="button"
+          className="map-tool map-tool--trails"
+          aria-pressed={trailsOn}
+          aria-label={t.t('layers.trails')}
+          title={t.t('layers.trails')}
+          onClick={() => setSettings({ map: { ...layers, trails: !layers.trails } })}
+        >
+          <Signpost size={18} />
         </button>
       </div>
       {note && !pick && (
