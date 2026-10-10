@@ -54,9 +54,20 @@ export default defineConfig({
       workbox: {
         // Photos of the scenic trips and the fonts of printable timetables work offline too.
         globPatterns: ['**/*.{js,css,html,svg,png,json,webmanifest,webp,ttf,bin}'],
+        // The photos of the trails, their viewpoints and the walks (some 20 MB): each once it
+        // is first shown, not all with the website (the phone app has them all built in).
+        globIgnores: ['photos/trail-*', 'photos/view-*', 'photos/walk-*'],
         maximumFileSizeToCacheInBytes: 15 * 1024 * 1024,
         navigateFallback: 'index.html',
         runtimeCaching: [
+          {
+            urlPattern: /\/photos\/(trail|view|walk)-[^/]+\.webp$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'photos',
+              expiration: { maxEntries: 600, maxAgeSeconds: 60 * 60 * 24 * 180 },
+            },
+          },
           {
             // Open elevation tiles for the relief layer: also available offline once seen.
             urlPattern: /^https:\/\/s3\.amazonaws\.com\/elevation-tiles-prod\//,

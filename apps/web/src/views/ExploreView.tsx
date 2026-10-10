@@ -17,6 +17,7 @@ import {
   scenicSpots,
   type ScenicWalk,
 } from '../lib/scenic.ts';
+import { photoUrl, walkPhoto } from '../lib/photos.ts';
 import { useNow } from '../lib/useNow.ts';
 import { planOptions, useApp, useNetwork } from '../state/app.tsx';
 
@@ -29,8 +30,26 @@ function WalkCard({ w, it }: { w: ScenicWalk; it?: Itinerary }) {
   const t = useI18n();
   const leg = it?.legs[0] as WalkLeg | undefined;
   const href = `#/plan?${new URLSearchParams({ from: encodePlace(w.from), to: encodePlace(w.to) })}`;
+  // On the photo of where it goes, its name and facts over the photo's darkened foot.
+  const pic = walkPhoto(w.to.name);
   return (
-    <a className="walk-card" href={href}>
+    <a className={`walk-card${pic ? ' walk-card--photo' : ''}`} href={href}>
+      {pic && (
+        <>
+          <img
+            className="walk-card__photo"
+            src={photoUrl(pic, 'sm')}
+            srcSet={`${photoUrl(pic, 'sm')} 480w, ${photoUrl(pic, 'lg')} 960w`}
+            sizes="(min-width: 900px) 300px, 72vw"
+            width={480}
+            height={320}
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
+          <span className="walk-card__shade" aria-hidden />
+        </>
+      )}
       <span className="walk-card__icon" aria-hidden>
         <Waves size={18} />
       </span>

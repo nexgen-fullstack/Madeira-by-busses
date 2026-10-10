@@ -89,6 +89,8 @@ test('walks along the sea: listed by the places with a view, then the walk first
   // Measured along the streets, with the climb: Marina do Funchal to the Old Town's fort.
   const walk = page.locator('.walk-card').filter({ hasText: 'Forte de São Tiago' });
   await expect(walk).toContainText(/\d+ хв пішки · 1,2 км/);
+  // On the photo of where it goes.
+  await expect(walk.locator('.walk-card__photo')).toBeVisible();
   await walk.click();
   // In the planner the walk along Avenida do Mar is a way of its own, the best one here.
   const first = page.locator('.it-card').first();

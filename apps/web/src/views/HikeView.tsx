@@ -1,11 +1,20 @@
 import { useMemo } from 'react';
-import { ArrowLeft, Bus, ExternalLink, Flag, Navigation, TriangleAlert } from 'lucide-react';
+import {
+  ArrowLeft,
+  Bus,
+  Camera,
+  ExternalLink,
+  Flag,
+  Navigation,
+  TriangleAlert,
+} from 'lucide-react';
 import { trailMinutes, type LatLon, type Trail } from '@madeirabus/engine';
-import { useMapContent } from '../components/mapContext.tsx';
+import { useMapContent, useSpotlight } from '../components/mapContext.tsx';
 import { useI18n, type Key } from '../i18n.ts';
 import { duration } from '../lib/format.ts';
 import { encodePlace } from '../lib/itinerary.ts';
 import { FLAG_FOOT, TRAIL_RED, type MapContent, type MapPoint } from '../lib/mapContent.ts';
+import { photoUrl, trailPhoto, trailViews } from '../lib/photos.ts';
 import { goBack, navigate } from '../lib/router.ts';
 import {
   endOf,
@@ -92,6 +101,15 @@ function Hike({ trail }: { trail: Trail }) {
     }, [trail, net]),
   );
 
+  const pic = trailPhoto(trail.id);
+  const views = trailViews(trail.id);
+  const credits = [
+    ...new Map(
+      [pic, ...views.map((v) => v.photo)].flatMap((p) => (p ? [[p.file, p] as const] : [])),
+    ).values(),
+  ];
+  // A viewpoint tapped: shown on the map.
+  const spot = useSpotlight();
   const minutes = trailMinutes(trail.length, trail.up, trail.down);
   const backSameWay = !trail.roundtrip && !nearestStop(net, end);
   const facts: [Key, string][] = [
@@ -100,27 +118,59 @@ function Hike({ trail }: { trail: Trail }) {
     ['hike.climb', t.t('travel.climb', { up: trail.up, down: trail.down })],
     ['hike.height', t.t('hike.heights', { low: trail.low, high: trail.high })],
   ];
+  const kind = (
+    <>
+      {t.t(`hikes.kind.${trail.kind}` as Key)} ·{' '}
+      {t.t(trail.roundtrip ? 'hike.loop' : 'hike.oneWay')}
+    </>
+  );
   return (
     <div className="hike">
-      <div className="line-hero">
-        <button
-          type="button"
-          className="icon-button line-hero__back"
-          onClick={() => goBack('hikes')}
-          aria-label={t.t('back')}
-        >
-          <ArrowLeft size={20} />
-        </button>
-        <div className="line-hero__text">
-          <h2 className="line-hero__name">
-            <TrailBadge trail={trail} /> {trail.name}
-          </h2>
-          <div className="line-hero__meta">
-            {t.t(`hikes.kind.${trail.kind}` as Key)} ·{' '}
-            {t.t(trail.roundtrip ? 'hike.loop' : 'hike.oneWay')}
+      {pic ? (
+        // Its photo, its name over it, as a place with a view.
+        <div className="destination__hero hike__hero" data-peek>
+          <img
+            className="destination__photo"
+            src={photoUrl(pic, 'lg')}
+            width={960}
+            height={640}
+            alt=""
+            style={{ backgroundImage: `url("${photoUrl(pic, 'sm')}")` }}
+          />
+          <span className="destination__shade" aria-hidden />
+          <button
+            type="button"
+            className="icon-button destination__back"
+            onClick={() => goBack('hikes')}
+            aria-label={t.t('back')}
+          >
+            <ArrowLeft size={20} />
+          </button>
+          <div className="destination__title">
+            <span className="destination__tag">{kind}</span>
+            <h2>
+              <TrailBadge trail={trail} /> {trail.name}
+            </h2>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="line-hero">
+          <button
+            type="button"
+            className="icon-button line-hero__back"
+            onClick={() => goBack('hikes')}
+            aria-label={t.t('back')}
+          >
+            <ArrowLeft size={20} />
+          </button>
+          <div className="line-hero__text">
+            <h2 className="line-hero__name">
+              <TrailBadge trail={trail} /> {trail.name}
+            </h2>
+            <div className="line-hero__meta">{kind}</div>
+          </div>
+        </div>
+      )}
 
       <dl className="hike__facts">
         {facts.map(([k, v]) => (
@@ -165,6 +215,44 @@ function Hike({ trail }: { trail: Trail }) {
         </div>
       </section>
 
+      {views.length > 0 && (
+        <section className="card">
+          <h3 className="card__title">
+            <Camera size={16} aria-hidden /> {t.t('hike.views')}
+          </h3>
+          <ul className="hike-views">
+            {views.map((v) => (
+              <li key={`${v.lat},${v.lon}`}>
+                <button
+                  type="button"
+                  className="hike-view"
+                  aria-pressed={spot.isShown(v)}
+                  title={t.t('map.showStop')}
+                  onClick={() => spot.show({ lat: v.lat, lon: v.lon, name: v.name })}
+                >
+                  {v.photo ? (
+                    <img
+                      className="hike-view__photo"
+                      src={photoUrl(v.photo, 'sm')}
+                      width={480}
+                      height={320}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : (
+                    <span className="hike-view__photo hike-view__photo--none" aria-hidden>
+                      <Camera size={22} />
+                    </span>
+                  )}
+                  <span className="hike-view__name">{v.name}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       <div className="banner banner--warn hike__safety">
         <TriangleAlert size={18} aria-hidden />
         <div>
@@ -184,6 +272,18 @@ function Hike({ trail }: { trail: Trail }) {
           {t.t('hike.osm')} <ExternalLink size={12} aria-hidden />
         </a>
       </p>
+      {credits.length > 0 && (
+        <p className="destination__credit muted small">
+          {credits.map((c, i) => (
+            <span key={c.file}>
+              {i > 0 && ' · '}
+              <a href={c.source} target="_blank" rel="noopener noreferrer">
+                {t.t('scenic.photo', { author: c.author, license: c.license })}
+              </a>
+            </span>
+          ))}
+        </p>
+      )}
     </div>
   );
 }

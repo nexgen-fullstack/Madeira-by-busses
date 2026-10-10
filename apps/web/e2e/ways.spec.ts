@@ -55,7 +55,15 @@ test('the hiking trails: by kind and region, each with its buses, on the map', a
   await expect(page.locator('.hike__facts')).toContainText('Довжина');
   await expect(page.locator('.hike-stop').first()).toContainText('Початок');
   await expect(page.locator('.hike__back')).toContainText('назад тим самим шляхом');
-  await page.locator('.hike .line-hero__back').click();
+  // Its photo over its name, and the places with a view on it: a tap shows one on the map.
+  await expect(page.locator('.hike__hero img')).toBeVisible();
+  const view = page.locator('.hike-view').first();
+  await view.click();
+  await expect(page.locator('.map-spot__name')).toHaveText(
+    (await view.locator('.hike-view__name').textContent())!,
+  );
+  await expect(page.locator('.hike .destination__credit')).toContainText('Фото:');
+  await page.locator('.hike .destination__back').click();
   await expect(page).toHaveURL(/#\/hikes$/);
   // The trails on the map from any screen, by their button.
   await page.getByRole('link', { name: 'Маршрут' }).click();

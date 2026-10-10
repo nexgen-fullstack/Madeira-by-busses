@@ -6,6 +6,7 @@ import { fullDate, shortDate } from '../lib/format.ts';
 import { lineGroups } from '../lib/lines.ts';
 import { canInstall, install, isStandalone, onInstallChange } from '../lib/pwa.ts';
 import { DESTINATIONS } from '../lib/scenic.ts';
+import { photoCredits } from '../lib/photos.ts';
 import { APP_NAME } from '../lib/site.ts';
 import { useApp } from '../state/app.tsx';
 
@@ -209,6 +210,17 @@ export function SettingsView() {
                 ]
               : [],
           )}
+          {photoCredits().map((p) => (
+            <li key={p.file}>
+              <a href={p.source} target="_blank" rel="noopener noreferrer">
+                {p.title}
+              </a>{' '}
+              — {p.author},{' '}
+              <a href={p.licenseUrl} target="_blank" rel="noopener noreferrer">
+                {p.license}
+              </a>
+            </li>
+          ))}
         </ul>
         <p className="muted small">Inter · SIL Open Font License 1.1</p>
       </details>

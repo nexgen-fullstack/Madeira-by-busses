@@ -5,6 +5,7 @@ import { useMapContent } from '../components/mapContext.tsx';
 import { useI18n, type Key } from '../i18n.ts';
 import { duration } from '../lib/format.ts';
 import { EMPTY_CONTENT, ISLAND, type MapContent } from '../lib/mapContent.ts';
+import { photoUrl, trailPhoto } from '../lib/photos.ts';
 import { REGIONS, regionKey } from '../lib/scenic.ts';
 import { nearestStop, startOf, TRAIL_KINDS, trailRegion, useTrails } from '../lib/trails.ts';
 import { useNetwork } from '../state/app.tsx';
@@ -26,8 +27,20 @@ export function TrailBadge({ trail }: { trail: Trail }) {
 /** One trail in the list: its number, name, length, climb and time, and its bus. */
 function TrailCard({ trail, bus }: { trail: Trail; bus?: number }) {
   const t = useI18n();
+  const pic = trailPhoto(trail.id);
   return (
-    <a className="trail-card" href={`#/hikes/${trail.id}`}>
+    <a className={`trail-card${pic ? ' trail-card--photo' : ''}`} href={`#/hikes/${trail.id}`}>
+      {pic && (
+        <img
+          className="trail-card__photo"
+          src={photoUrl(pic, 'sm')}
+          width={480}
+          height={320}
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+      )}
       <span className="trail-card__head">
         <TrailBadge trail={trail} />
         <span className="trail-card__name">{trail.name}</span>

@@ -1,0 +1,2372 @@
+{
+  "walks": {
+    "Forte de São Tiago": {
+      "file": "walk-forte-de-sao-tiago",
+      "title": "Forte de São Tiago",
+      "author": "H. Zell",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Forte_de_S%C3%A3o_Tiago_-_Funchal_05.jpg"
+    },
+    "Pontinha": {
+      "file": "walk-pontinha",
+      "title": "Pontinha",
+      "author": "Ввласенко",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Santa_Maria_de_Colombo_(replica)_in_the_port_of_Funchal._Madeira,_Portugal.jpg"
+    },
+    "Doca do Cavacas": {
+      "file": "walk-doca-do-cavacas",
+      "title": "Doca do Cavacas",
+      "author": "H. Zell",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Doca_do_Cavacas_-_Funchal_01.jpg"
+    },
+    "Câmara de Lobos": {
+      "file": "walk-camara-de-lobos",
+      "title": "Câmara de Lobos",
+      "author": "Stephen Colebourne",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:C%C3%A2mara_de_Lobos,_Madeira_-_Jan_2012_-_02.jpg"
+    },
+    "Tabua": {
+      "file": "walk-tabua",
+      "title": "Tabua",
+      "author": "Celsoazevedo",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Ribeira_Brava_to_Tabua,_January_2024_3.jpg"
+    },
+    "Praia da Calheta": {
+      "file": "walk-praia-da-calheta",
+      "title": "Praia da Calheta",
+      "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Praia_artificial_da_Calheta_-_Portugal_(2123930233).jpg"
+    },
+    "Praia do Portinho": {
+      "file": "walk-praia-do-portinho",
+      "title": "Praia do Portinho",
+      "author": "Stephen Colebourne",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Jardim_do_Mar,_Madeira_-_Jan_2012_-_02.jpg"
+    },
+    "Calhau": {
+      "file": "walk-calhau",
+      "title": "Calhau",
+      "author": "Ximonic (Simo Räsänen)",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Pools_of_Piscinas_Naturais_do_Aqu%C3%A1rio_at_Cachalote_in_Porto_Moniz,_Madeira,_2023_May.jpg"
+    },
+    "Praia das Lajes": {
+      "file": "walk-praia-das-lajes",
+      "title": "Praia das Lajes",
+      "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Praia_da_Laje_-_Ilha_da_Madeira_-_Portugal_(6836899475).jpg"
+    },
+    "Fajã do Rente": {
+      "file": "walk-faja-do-rente",
+      "title": "Fajã do Rente",
+      "author": "H. Zell",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Capela_de_S%C3%A3o_Vicente_do_Calhau_-_Madeira_01.jpg"
+    },
+    "Matur": {
+      "file": "walk-matur",
+      "title": "Matur",
+      "author": "Dietmar Rabich",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Machico_(Madeira,_Portugal),_Ortsansicht_--_2025_--_1369.jpg"
+    },
+    "Pista do aeroporto": {
+      "file": "walk-pista-do-aeroporto",
+      "title": "Pista do aeroporto",
+      "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Santa_Cruz_-_Portugal_(51820559173).jpg"
+    },
+    "Reis Magos": {
+      "file": "walk-reis-magos",
+      "title": "Reis Magos",
+      "author": "Tiia Monto",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Cani%C3%A7o_-_Reis_Magos.jpg"
+    }
+  },
+  "trails": {
+    "pr1.2": {
+      "file": "trail-pr1-2",
+      "title": "Vereda do Pico Ruivo",
+      "author": "anagh",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Trail_from_Achada_do_Teixeira_to_Pico_Ruivo,_Madeira,_Portugal,_June-July_2011_-_panoramio_(48).jpg"
+    },
+    "pr1": {
+      "file": "trail-pr1",
+      "title": "Vereda do Areeiro",
+      "author": "H. Zell",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:View_from_Miradouro_do_Pico_do_Arieiro_-_Madeira_03.jpg"
+    },
+    "pr1.3": {
+      "file": "trail-pr1-3",
+      "title": "Vereda da Encumeada",
+      "author": "H. Zell",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:View_from_Miradouro_da_Encumeada_01.jpg"
+    },
+    "pr1.1": {
+      "file": "trail-pr1-1",
+      "title": "Vereda da Ilha",
+      "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Paisagem_entre_o_Pico_Ruivo_e_a_Achada_do_Teixeira_-_Ilha_da_Madeira_-_Portugal_(52187828660).jpg"
+    },
+    "pr3.1": {
+      "file": "trail-pr3-1",
+      "title": "Caminho Real do Monte",
+      "author": "Krzysztof Popławski",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Route_to_Pico_Alto_1129m,_Funchal,_Monte,_Madeira,_summer,_August_2022,_KP.jpg"
+    },
+    "pr4": {
+      "file": "trail-pr4",
+      "title": "Levada do Barreiro",
+      "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Po%C3%A7o_da_Neve_-_Ilha_da_Madeira_-_Portugal_(564381657).jpg"
+    },
+    "pr3": {
+      "file": "trail-pr3",
+      "title": "Vereda do Burro",
+      "author": "H. Zell",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:View_from_Miradouro_do_Pico_do_Arieiro_-_Madeira_01.jpg"
+    },
+    "pr5": {
+      "file": "trail-pr5",
+      "title": "Vereda das Funduras",
+      "author": "Sergey Ashmarin",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Porto_da_Cruz,_Madeira_-_2013-04-05_-_90145235.jpg"
+    },
+    "pr6": {
+      "file": "trail-pr6",
+      "title": "Levada das 25 Fontes",
+      "author": "Jon Kolbert",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Levada_das_25_Fontes_May_2023.jpg"
+    },
+    "pr6.1": {
+      "file": "trail-pr6-1",
+      "title": "Levada do Risco",
+      "author": "Asurnipal",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Madeira-Levada_do_Risco_(path_PR6.1)-Casa_do_Rabacal-hiking_trail-15ASD.jpg"
+    },
+    "pr6.2": {
+      "file": "trail-pr6-2",
+      "title": "Levada do Alecrim",
+      "author": "Ximonic (Simo Räsänen)",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Valley_view_northwest_from_Miradouro_do_Raba%C3%A7al_in_Calheta,_Madeira,_2023_May.jpg"
+    },
+    "pr6.3": {
+      "file": "trail-pr6-3",
+      "title": "Vereda da Lagoa do Vento",
+      "author": "Asurnipal",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Madeira-Levada_do_Risco_(path_PR6.1)-Casa_do_Rabacal-hiking_trail-12ASD.jpg"
+    },
+    "pr6.4": {
+      "file": "trail-pr6-4",
+      "title": "Levada Velha do Rabaçal",
+      "author": "anagh",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:From_Rabacal_to_Levada_do_Risco_%5E_Levada_25_Fontes,_Madeira,_Portugal,_June-July_2011_-_panoramio_(49).jpg"
+    },
+    "pr6.6": {
+      "file": "trail-pr6-6",
+      "title": "Vereda do Túnel do Cavalo",
+      "author": "Mark Skarratts",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Madeira_(28749656515).jpg"
+    },
+    "pr6.7": {
+      "file": "trail-pr6-7",
+      "title": "Vereda da Câmara Carga",
+      "author": "Stephen Colebourne",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Paul_da_Serra,_Madeira_-_Jan_2012_-_02.jpg"
+    },
+    "pr6.5": {
+      "file": "trail-pr6-5",
+      "title": "Vereda do Pico Fernandes",
+      "author": "anagh",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:From_Rabacal_to_Levada_do_Risco_%5E_Levada_25_Fontes,_Madeira,_Portugal,_June-July_2011_-_panoramio_(32).jpg"
+    },
+    "pr6.8": {
+      "file": "trail-pr6-8",
+      "title": "Levada do Paul II",
+      "author": "Asurnipal",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Madeira-Rabacal-Damm_Levada_do_Paul-01ASD.jpg"
+    },
+    "pr8": {
+      "file": "trail-pr8",
+      "title": "Vereda da Ponta de São Lourenço",
+      "author": "Ввласенко",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Ponta_de_S%C3%A3o_Louren%C3%A7o,_Cais_do_Sardinha,_Desertas_Islands._Madeira,_Portugal.jpg"
+    },
+    "pr9": {
+      "file": "trail-pr9",
+      "title": "Levada do Caldeirão Verde",
+      "author": "franek2",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Levada_sur_un_petit_pont_-_panoramio.jpg"
+    },
+    "pr9.1": {
+      "file": "trail-pr9-1",
+      "title": "Levada do Caldeirão Verde - Um Caminho para todos",
+      "author": "Jorge Daniel Guimarã…",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Madeira,_Portugal_-_panoramio_(1).jpg"
+    },
+    "pr11": {
+      "file": "trail-pr11",
+      "title": "Vereda dos Balcões",
+      "author": "H. Zell",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:View_from_Balc%C3%B5es_-_Madeira.jpg"
+    },
+    "pr10": {
+      "file": "trail-pr10",
+      "title": "Levada do Furado",
+      "author": "Sergey Ashmarin",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Levada_do_Furado,_Madeira_-_2013-04-05_-_90145204.jpg"
+    },
+    "pr12": {
+      "file": "trail-pr12",
+      "title": "Caminho Real da Encumeada",
+      "author": "Ximonic (Simo Räsänen)",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Valley_view_from_Boca_da_Corrida_in_Curral_das_Freiras,_C%C3%A2mara_de_Lobos,_Madeira,_2023_May.jpg"
+    },
+    "pr13.1": {
+      "file": "trail-pr13-1",
+      "title": "PR 13.1",
+      "author": "Bjørn Christian Tørrissen",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:25Fontes-Madeira-2013.JPG"
+    },
+    "pr15": {
+      "file": "trail-pr15",
+      "title": "Vereda da Ribeira da Janela",
+      "author": "Богдан Митронов-Слоб…",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Madeira_-_panoramio_(12).jpg"
+    },
+    "pr14": {
+      "file": "trail-pr14",
+      "title": "Levada dos Cedros",
+      "author": "Ximonic (Simo Räsänen)",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Trees_of_Fanal_forest_in_Seixal,_Porto_Moniz,_Madeira,_2023_May_-_3.jpg"
+    },
+    "pr13": {
+      "file": "trail-pr13",
+      "title": "Vereda do Fanal",
+      "author": "Ximonic (Simo Räsänen)",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Trees_of_Fanal_forest_in_Seixal,_Porto_Moniz,_Madeira,_2023_May_-_4.jpg"
+    },
+    "pr19": {
+      "file": "trail-pr19",
+      "title": "Caminho Real do Paúl do Mar",
+      "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Pa%C3%BAl_do_Mar_-_Ilha_da_Madeira_-_Portugal_(51795332872).jpg"
+    },
+    "pr17": {
+      "file": "trail-pr17",
+      "title": "Caminho do Pináculo e Folhadal",
+      "author": "Ximonic (Simo Räsänen)",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:High_valley_view_of_Ribeira_Brava_at_Lombo_do_Mouro,_Serra_de_%C3%81gua,_Ribeira_Brava,_Madeira,_2023_May.jpg"
+    },
+    "pr18": {
+      "file": "trail-pr18",
+      "title": "Levada do Rei",
+      "author": "Tiia Monto",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Levada_do_Rei.jpg"
+    },
+    "pr20": {
+      "file": "trail-pr20",
+      "title": "Vereda do Jardim do Mar",
+      "author": "VinceTraveller",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Little_shade_at_Jardim_do_Mar_(26008658787).jpg"
+    },
+    "pr21": {
+      "file": "trail-pr21",
+      "title": "Caminho do Norte",
+      "author": "Michael Gaylard from Horsham, UK",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Madeira_-_West_Coast_and_Plateau_West_Coast_and_Plateau_(53397085336).jpg"
+    },
+    "pr22": {
+      "file": "trail-pr22",
+      "title": "Vereda do Chão dos Louros",
+      "author": "Michael Gaylard from Horsham, UK",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Ch%C3%A3o_dos_Louros_forest_park_(53842880567).jpg"
+    },
+    "osm-4442861": {
+      "file": "trail-osm-4442861",
+      "title": "Levada do Blandy",
+      "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Percurso_entre_o_Poiso_e_o_Pico_do_Areeiro_-_Ilha_da_Madeira_-_Portugal_(4975796229).jpg"
+    },
+    "pr27": {
+      "file": "trail-pr27",
+      "title": "Glaciar de Planalto",
+      "author": "Богдан Митронов-Слоб…",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Madeira_-_panoramio_(20).jpg"
+    },
+    "pr28": {
+      "file": "trail-pr28",
+      "title": "Levada da Rocha Vermelha",
+      "author": "anagh",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:From_Rabacal_to_Levada_do_Risco_%5E_Levada_25_Fontes,_Madeira,_Portugal,_June-July_2011_-_panoramio_(3).jpg"
+    },
+    "osm-19938186": {
+      "file": "trail-osm-19938186",
+      "title": "Levada do Caniço",
+      "author": "Tiia Monto",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Levada_do_Cani%C3%A7o.jpg"
+    },
+    "osm-4444583": {
+      "file": "trail-osm-4444583",
+      "title": "Levada do Bom Sucesso",
+      "author": "Dietmar Rabich",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Santa_Maria_Maior_(Madeira,_Portugal),_Jardim_Bot%C3%A2nico_da_Madeira,_Blick_auf_den_Hafen_von_Funchal_--_2025_--_1824.jpg"
+    },
+    "osm-5562363": {
+      "file": "trail-osm-5562363",
+      "title": "Levada das Rabaças",
+      "author": "Bex Walton from London, England",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Mountains_of_Serra_de_Agua_(52892945704).jpg"
+    },
+    "osm-5562195": {
+      "file": "trail-osm-5562195",
+      "title": "Levada do Castelejo",
+      "author": "Petras Gagilas from Erith, Kent, UK",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Madeira_mountains_and_clouds_(3454357772).jpg"
+    },
+    "osm-6224972": {
+      "file": "trail-osm-6224972",
+      "title": "Levada dos Pombais",
+      "author": "Hansueli Krapf",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2010-03-01_16_45_31_Portugal-Sal%C3%A3o.jpg"
+    },
+    "osm-4444577": {
+      "file": "trail-osm-4444577",
+      "title": "Levada do Curral",
+      "author": "Nuno Caldeira",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Levada_dos_Piornais.jpg"
+    },
+    "osm-5562216": {
+      "file": "trail-osm-5562216",
+      "title": "Levada das Faias",
+      "author": "Ximonic (Simo Räsänen)",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Vale_da_Ribeira_do_Porco_at_Faj%C3%A3_do_Penedo_in_Boa_Ventura,_S%C3%A3o_Vicente,_Madeira,_2023_May.jpg"
+    },
+    "osm-15635292": {
+      "file": "trail-osm-15635292",
+      "title": "Levada Nova do Arco da Calheta",
+      "author": "Hansueli Krapf",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2010-03-04_13_34_52_Portugal-Ribeira_do_Raposo.jpg"
+    },
+    "osm-4752386": {
+      "file": "trail-osm-4752386",
+      "title": "Levada Nova da Calheta",
+      "author": "anagh",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Lombada_Velha,_Madeira,_Portugal,_June-July_2011_-_panoramio_(1).jpg"
+    },
+    "osm-19609007": {
+      "file": "trail-osm-19609007",
+      "title": "Levada do Norte (Nord)",
+      "author": "VillageHero from Ulm, Germany",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Ribeira_Brava_(from_Encumeda)_with_Hydrangea_(37385843244).jpg"
+    },
+    "osm-5563074": {
+      "file": "trail-osm-5563074",
+      "title": "Levada do Norte (South)",
+      "author": "Ronny Baumann",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Stairs_(117964139).jpeg"
+    },
+    "osm-20019057": {
+      "file": "trail-osm-20019057",
+      "title": "Levada Nova Tabua",
+      "author": "Harald Lordick",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Levada_Nova-004.JPG"
+    },
+    "osm-19604129": {
+      "file": "trail-osm-19604129",
+      "title": "Levada do Poiso - Levada do Pico Furão",
+      "author": "Ximonic (Simo Räsänen)",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Pico_das_Torres_from_the_west,_Curral_das_Freiras,_C%C3%A2mara_de_Lobos,_Madeira,_2023_May.jpg"
+    },
+    "osm-4745247": {
+      "file": "trail-osm-4745247",
+      "title": "Levada do Poço do Bezerro",
+      "author": "Sergey Ashmarin",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Levada_do_Furado,_Madeira_-_2013-04-05_-_90145218.jpg"
+    },
+    "osm-6193460": {
+      "file": "trail-osm-6193460",
+      "title": "Levada do Paul 2",
+      "author": "Alberto-g-rovi",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Paul_da_Serra_(9).jpg"
+    },
+    "osm-4441705": {
+      "file": "trail-osm-4441705",
+      "title": "Levada da Ribeira da Janela",
+      "author": "Mattes",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2015_Madeira_Samsung_(156).jpg"
+    },
+    "osm-5626092": {
+      "file": "trail-osm-5626092",
+      "title": "Levada da Rocha Vermelha",
+      "author": "anagh",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:From_Rabacal_to_Levada_do_Risco_%5E_Levada_25_Fontes,_Madeira,_Portugal,_June-July_2011_-_panoramio.jpg"
+    },
+    "osm-5742678": {
+      "file": "trail-osm-5742678",
+      "title": "Levada da Rocha Vermelha A",
+      "author": "anagh",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Levada_do_Risco,_Madeira,_Portugal,_June-July_2011_-_panoramio_(1).jpg"
+    },
+    "osm-5562217": {
+      "file": "trail-osm-5562217",
+      "title": "Levada de Santana",
+      "author": "giggel",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Sao_Jorge_%E2%80%93_Ilha_%E2%80%93_Santana_(von_links)_-_2009-05-19.jpg"
+    },
+    "osm-1354532": {
+      "file": "trail-osm-1354532",
+      "title": "Levada da Serra do Faial",
+      "author": "Bengt Nyman",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Camacha_Madeira_January_2014_-_panoramio.jpg"
+    },
+    "osm-3285943": {
+      "file": "trail-osm-3285943",
+      "title": "Levada dos Tornos - Sul",
+      "author": "TeWeBs",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Madeira_Tunnel_Lev_d_Tornos.JPG"
+    },
+    "osm-4442859": {
+      "file": "trail-osm-4442859",
+      "title": "Levada da Negra",
+      "author": "Bekaner",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Wanderung_-_panoramio_-_Bekaner.jpg"
+    },
+    "osm-19607947": {
+      "file": "trail-osm-19607947",
+      "title": "Caminho da Degolada",
+      "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Ponta_de_S%C3%A3o_Louren%C3%A7o_-_Ilha_da_Madeira_-_Portugal_(2846222462).jpg"
+    },
+    "osm-4745248": {
+      "file": "trail-osm-4745248",
+      "title": "Levada dos Piornais",
+      "author": "TeWeBs",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Madeira_Ponte_Levada_Piornais.JPG"
+    },
+    "osm-5716148": {
+      "file": "trail-osm-5716148",
+      "title": "Caminho Real nº23 Achada do Gramacho",
+      "author": "Dietmar Rabich",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:S%C3%A3o_Jorge_(Madeira,_Portugal),_Ilh%C3%A9u_da_Rocha_das_Vinhas_--_2025_--_1435.jpg"
+    },
+    "osm-4752515": {
+      "file": "trail-osm-4752515",
+      "title": "Caminho dos Pessegueiros",
+      "author": "Ximonic (Simo Räsänen)",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Antiga_ER_101_in_the_valley_of_Ribeira_do_Inferno,_S%C3%A3o_Vicente,_Madeira,_2023_May.jpg"
+    },
+    "osm-11088599": {
+      "file": "trail-osm-11088599",
+      "title": "Caminho Real 24",
+      "author": "Dietmar Rabich",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Ribeiro_Frio_(Madeira,_Portugal),_Ribeiro-Frio-Wasserfall_--_2025_--_1502.jpg"
+    },
+    "osm-19661598": {
+      "file": "trail-osm-19661598",
+      "title": "Caminho Real 25",
+      "author": "5onyfreak",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:S%C3%A3o_Vicente_(31146535526).jpg"
+    },
+    "osm-5721350": {
+      "file": "trail-osm-5721350",
+      "title": "Caminho Real Boaventura",
+      "author": "acquimat4 from Heidelberg, Germany",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Madeira_(27101623573).jpg"
+    },
+    "osm-10750407": {
+      "file": "trail-osm-10750407",
+      "title": "Caminho Real 27",
+      "author": "H. Zell",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Curral_das_Freiras_from_Eira_do_Serrado_02.jpg"
+    },
+    "osm-4451074": {
+      "file": "trail-osm-4451074",
+      "title": "Vereda do Espigão",
+      "author": "Nuno Capelo Caldeira",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Serra_de_%C3%81gua_3.jpg"
+    },
+    "osm-10750040": {
+      "file": "trail-osm-10750040",
+      "title": "Caminho Real 28",
+      "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Ponta_do_Sol_-_Portugal_(6423843809).jpg"
+    },
+    "osm-6224974": {
+      "file": "trail-osm-6224974",
+      "title": "Vereda do Pico",
+      "author": "H. Zell",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:View_from_Miradouro_da_Santa_on_Porto_Moniz_01.jpg"
+    },
+    "osm-4442863": {
+      "file": "trail-osm-4442863",
+      "title": "Vereda da Levada do Caniçal",
+      "author": "Tiia Monto",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Levada_do_Cani%C3%A7al_2.jpg"
+    },
+    "osm-5659111": {
+      "file": "trail-osm-5659111",
+      "title": "Vereda Achada do Teixeira - Arco de São Jorge",
+      "author": "anagh",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Trail_from_Achada_do_Teixeira_to_Pico_Ruivo,_Madeira,_Portugal,_June-July_2011_-_panoramio_(60).jpg"
+    },
+    "osm-5659105": {
+      "file": "trail-osm-5659105",
+      "title": "Vereda Achada do Teixeira - Fajã do Penedo",
+      "author": "singra13",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Cabo_Gir%C3%A3o,_Madeira_-_panoramio.jpg"
+    },
+    "osm-5633861": {
+      "file": "trail-osm-5633861",
+      "title": "Vereda Achada do Teixeira - Queimadas",
+      "author": "anagh",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Trail_from_Achada_do_Teixeira_to_Pico_Ruivo,_Madeira,_Portugal,_June-July_2011_-_panoramio.jpg"
+    },
+    "osm-5610434": {
+      "file": "trail-osm-5610434",
+      "title": "Vereda da Boca dos Namorados",
+      "author": "Ximonic (Simo Räsänen)",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Valley_view_from_Boca_dos_Namorados_in_Curral_das_Freiras,_C%C3%A2mara_de_Lobos,_Madeira,_2023_May.jpg"
+    },
+    "osm-19604085": {
+      "file": "trail-osm-19604085",
+      "title": "Vereda Boca do Risco",
+      "author": "Tiia Monto",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Machico_2.jpg"
+    },
+    "osm-5633403": {
+      "file": "trail-osm-5633403",
+      "title": "Vereda Boca do Risco - Caniçal",
+      "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Boca_do_Risco_-_Portugal_(285839166).jpg"
+    },
+    "osm-4444456": {
+      "file": "trail-osm-4444456",
+      "title": "Vereda do Calhau",
+      "author": "Hansueli Krapf",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2010-03-01_16_14_27_Portugal-Sal%C3%A3o.jpg"
+    },
+    "osm-5562365": {
+      "file": "trail-osm-5562365",
+      "title": "Vereda da Atalaia",
+      "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Pa%C3%BAl_do_Mar_-_Ilha_da_Madeira_-_Portugal_(51735923992).jpg"
+    },
+    "osm-5562366": {
+      "file": "trail-osm-5562366",
+      "title": "Vereda dos Zimbreiros",
+      "author": "Wilrooij",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Viewpoint_Vereda_dos_Zimbreiros_03.jpg"
+    },
+    "osm-6224973": {
+      "file": "trail-osm-6224973",
+      "title": "Vereda da Fajã do Barro",
+      "author": "Dietmar Rabich",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Ribeira_da_Janela_(Madeira,_Portugal),_Ilheuzinho,_Ilheus_da_Rib_und_Ilheus_da_Janela_--_2025_--_1562.jpg"
+    },
+    "osm-5562105": {
+      "file": "trail-osm-5562105",
+      "title": "Vereda da Fajã Grande",
+      "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Ponta_do_Pargo_-_Ilha_da_Madeira_-_Portugal_(51737387314).jpg"
+    },
+    "osm-4444479": {
+      "file": "trail-osm-4444479",
+      "title": "Vereda da Fajã Escura",
+      "author": "Ximonic (Simo Räsänen)",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Rural_landscape_in_Faj%C3%A3_Escura,_Curral_das_Freiras,_C%C3%A2mara_de_Lobos,_Madeira,_2023_May.jpg"
+    },
+    "osm-4444453": {
+      "file": "trail-osm-4444453",
+      "title": "Vereda da Ladeira",
+      "author": "Hansueli Krapf",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2010-03-01_16_46_34_Portugal-Sal%C3%A3o.jpg"
+    },
+    "osm-4444477": {
+      "file": "trail-osm-4444477",
+      "title": "Vereda do Galhano",
+      "author": "Norbert Reimer from Mettlach-Orscholz, Saarland",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Offroad_(38562669821).jpg"
+    },
+    "osm-4442865": {
+      "file": "trail-osm-4442865",
+      "title": "Vereda da Fajã da Nogueira",
+      "author": "anagh",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Trail_from_Achada_do_Teixeira_to_Pico_Ruivo,_Madeira,_Portugal,_June-July_2011_-_panoramio_(44).jpg"
+    },
+    "osm-4442869": {
+      "file": "trail-osm-4442869",
+      "title": "Vereda do Larano",
+      "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Boca_do_Risco_-_Ilha_da_Madeira_-_Portugal_(434009598).jpg"
+    },
+    "osm-4444478": {
+      "file": "trail-osm-4444478",
+      "title": "Vereda do Pico Grande",
+      "author": "Tiia Monto",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:View_from_Pico_Grande.jpg"
+    },
+    "osm-4444578": {
+      "file": "trail-osm-4444578",
+      "title": "Vereda da Penha D'Águia ao Faial",
+      "author": "Mike Lehmann, Mike Switzerland (talk) 06:53, 10 August 2011 (UTC)",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:FaialFromPenhaDeAguia.jpg"
+    },
+    "osm-4442867": {
+      "file": "trail-osm-4442867",
+      "title": "Vereda da Rocha do Navio",
+      "author": "franek2",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Il%C3%B4t_-_panoramio.jpg"
+    },
+    "osm-5573596": {
+      "file": "trail-osm-5573596",
+      "title": "Vereda da Ribeira Funda",
+      "author": "Hansueli Krapf",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2010-03-01_12_36_29_Portugal-Ribeira_Funda.jpg"
+    },
+    "osm-5562196": {
+      "file": "trail-osm-5562196",
+      "title": "Vereda da Terra Baptista",
+      "author": "Sergey Ashmarin",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Levada_do_Furado,_Madeira_-_2013-04-05_-_90145226.jpg"
+    },
+    "osm-4442868": {
+      "file": "trail-osm-4442868",
+      "title": "Vereda da Trompica",
+      "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Paisagem_da_Boca_da_Corrida_-_Ilha_da_Madeira_-_Portugal_(3534672564).jpg"
+    },
+    "osm-4442858": {
+      "file": "trail-osm-4442858",
+      "title": "Vereda das Voltas",
+      "author": "H. Zell",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Curral_das_Freiras_from_Eira_do_Serrado_04.jpg"
+    },
+    "osm-11548686": {
+      "file": "trail-osm-11548686",
+      "title": "Estanquinhos - Pico Ruivo do Paul",
+      "author": "Harald Lordick",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Paul_da_Serra-003.JPG"
+    },
+    "osm-20820577": {
+      "file": "trail-osm-20820577",
+      "title": "Lombada da Ponta do Sol",
+      "author": "PESP/ Wikimedia",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Capela_do_Esp%C3%ADrito_Santo,_Lombada,_Ponta_do_Sol,_Madeira_-_IMG_20190411_163654.jpg"
+    },
+    "osm-2232228": {
+      "file": "trail-osm-2232228",
+      "title": "Passeio Marítimo (Lido - Doca do Cavacas)",
+      "author": "Dietmar Rabich",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:S%C3%A3o_Martinho_(Madeira,_Portugal),_Miradouro_do_Lido_--_2025_--_1946.jpg"
+    },
+    "osm-5726642": {
+      "file": "trail-osm-5726642",
+      "title": "Machico - Ribeira do Natal",
+      "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Machico_(Portugal)_(55176528).jpg"
+    },
+    "osm-19513690": {
+      "file": "trail-osm-19513690",
+      "title": "Rota da Banana: Vereda da Ladeira",
+      "author": "Luigi Rosa",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Madeira_(54592254906).jpg"
+    },
+    "osm-2232229": {
+      "file": "trail-osm-2232229",
+      "title": "Passeio Marítimo (Praia Formosa - Câmara de Lobos)",
+      "author": "Dietmar Rabich",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:C%C3%A2mara_de_Lobos_(Madeira,_Portugal),_Porto_de_C%C3%A2mara_de_Lobos_--_2025_--_1897.jpg"
+    },
+    "osm-2223213": {
+      "file": "trail-osm-2223213",
+      "title": "Passeio Público Marítimo",
+      "author": "Dietmar Rabich",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:S%C3%A3o_Martinho_(Madeira,_Portugal),_Ilh%C3%A9u_do_Gorgulho_--_2025_--_1958.jpg"
+    },
+    "osm-4444454": {
+      "file": "trail-osm-4444454",
+      "title": "Terra Chã",
+      "author": "VinceTraveller",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Crop_cabins_(39142449550).jpg"
+    }
+  },
+  "views": {
+    "pr1.2": [
+      {
+        "name": "Achada do Teixeira",
+        "lat": 32.76533,
+        "lon": -16.92085,
+        "photo": {
+          "file": "view-trail-from-achada-do-teixeira-to-pico-ruivo-madeira-portugal",
+          "title": "Achada do Teixeira",
+          "author": "anagh",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Trail_from_Achada_do_Teixeira_to_Pico_Ruivo,_Madeira,_Portugal,_June-July_2011_-_panoramio.jpg"
+        }
+      }
+    ],
+    "pr1": [
+      {
+        "name": "Pico do Arieiro",
+        "lat": 32.73573,
+        "lon": -16.92871,
+        "photo": {
+          "file": "view-view-from-miradouro-do-pico-do-arieiro-madeira-03",
+          "title": "Pico do Arieiro",
+          "author": "H. Zell",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:View_from_Miradouro_do_Pico_do_Arieiro_-_Madeira_03.jpg"
+        }
+      },
+      {
+        "name": "Pedra Rija",
+        "lat": 32.73917,
+        "lon": -16.93689,
+        "photo": {
+          "file": "view-pr1-vereda-do-areeiro-droga-z-pico-arreiro-do-pico-rujvo-mad",
+          "title": "Pedra Rija",
+          "author": "Krzysztof Popławski",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:PR1_-_Vereda_do_Areeiro_-_Droga_z_Pico_Arreiro_do_Pico_Rujvo,_Madera,_Porgutal,_sierpie%C5%84_2022.jpg"
+        }
+      },
+      {
+        "name": "Ninho da Manta",
+        "lat": 32.73923,
+        "lon": -16.93355,
+        "photo": {
+          "file": "view-paisagem-entre-o-pico-do-areeiro-e-o-pico-ruivo-ilha-da-made",
+          "title": "Ninho da Manta",
+          "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+          "license": "CC BY-SA 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Paisagem_entre_o_Pico_do_Areeiro_e_o_Pico_Ruivo_-_Ilha_da_Madeira_-_Portugal_(51822293660).jpg"
+        }
+      }
+    ],
+    "pr1.3": [
+      {
+        "name": "Boca da Encumeada",
+        "lat": 32.75456,
+        "lon": -17.01952,
+        "photo": {
+          "file": "view-view-from-miradouro-da-encumeada-02",
+          "title": "Boca da Encumeada",
+          "author": "H. Zell",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:View_from_Miradouro_da_Encumeada_02.jpg"
+        }
+      },
+      {
+        "name": "Encumeada",
+        "lat": 32.75434,
+        "lon": -17.01938,
+        "photo": {
+          "file": "view-encumeada-road-er110-madeira-portugal-june-july-2011-panoram",
+          "title": "Encumeada",
+          "author": "anagh",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Encumeada,_road_ER110,_Madeira,_Portugal,_June-July_2011_-_panoramio_(3).jpg"
+        }
+      }
+    ],
+    "pr3.1": [
+      {
+        "name": "Pico Alto",
+        "lat": 32.69291,
+        "lon": -16.90286,
+        "photo": {
+          "file": "view-route-to-pico-alto-1129m-funchal-monte-madeira-summer-august",
+          "title": "Pico Alto",
+          "author": "Krzysztof Popławski",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Route_to_Pico_Alto_1129m,_Funchal,_Monte,_Madeira,_summer,_August_2022,_KP.jpg"
+        }
+      },
+      {
+        "name": "Terreiro da Luta",
+        "lat": 32.68418,
+        "lon": -16.8988,
+        "photo": {
+          "file": "view-funchal-portugal-51679118529",
+          "title": "Terreiro da Luta",
+          "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+          "license": "CC BY-SA 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Funchal_-_Portugal_(51679118529).jpg"
+        }
+      },
+      {
+        "name": "Pico Alto",
+        "lat": 32.69433,
+        "lon": -16.90387
+      }
+    ],
+    "pr3": [
+      {
+        "name": "Pico do Arieiro",
+        "lat": 32.73573,
+        "lon": -16.92871,
+        "photo": {
+          "file": "view-view-from-miradouro-do-pico-do-arieiro-madeira-03",
+          "title": "Pico do Arieiro",
+          "author": "H. Zell",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:View_from_Miradouro_do_Pico_do_Arieiro_-_Madeira_03.jpg"
+        }
+      },
+      {
+        "name": "Astronomia",
+        "lat": 32.72296,
+        "lon": -16.91657,
+        "photo": {
+          "file": "view-2010-03-05-16-18-16-portugal-ribeiro-frio-pano",
+          "title": "Astronomia",
+          "author": "Hansueli Krapf",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:2010-03-05_16_18_16_Portugal-Ribeiro_Frio-Pano.jpg"
+        }
+      }
+    ],
+    "pr5": [
+      {
+        "name": "Portela",
+        "lat": 32.74733,
+        "lon": -16.82566,
+        "photo": {
+          "file": "view-porto-da-cruz-madeira-2013-04-05-90145235",
+          "title": "Portela",
+          "author": "Sergey Ashmarin",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Porto_da_Cruz,_Madeira_-_2013-04-05_-_90145235.jpg"
+        }
+      },
+      {
+        "name": "Portela",
+        "lat": 32.74675,
+        "lon": -16.82657,
+        "photo": {
+          "file": "view-2011-03-05-03-13-madeira-227-machico-5544647739",
+          "title": "Portela",
+          "author": "Allie_Caulfield from Germany",
+          "license": "CC BY 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:2011-03-05_03-13_Madeira_227_Machico_(5544647739).jpg"
+        }
+      }
+    ],
+    "pr6.1": [
+      {
+        "name": "Risco",
+        "lat": 32.76057,
+        "lon": -17.12442,
+        "photo": {
+          "file": "view-from-rabacal-to-levada-do-risco-levada-25-fontes-madeira-por",
+          "title": "Risco",
+          "author": "anagh",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:From_Rabacal_to_Levada_do_Risco_%5E_Levada_25_Fontes,_Madeira,_Portugal,_June-July_2011_-_panoramio_(15).jpg"
+        }
+      },
+      {
+        "name": "Lagoa do Vento",
+        "lat": 32.76018,
+        "lon": -17.12229,
+        "photo": {
+          "file": "view-madeira-levada-do-risco-path-pr6-1-casa-do-rabacal-hiking-tr",
+          "title": "Lagoa do Vento",
+          "author": "Asurnipal",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Madeira-Levada_do_Risco_(path_PR6.1)-Casa_do_Rabacal-hiking_trail-15ASD.jpg"
+        }
+      },
+      {
+        "name": "Risco",
+        "lat": 32.7602,
+        "lon": -17.12262,
+        "photo": {
+          "file": "view-madeira-levada-do-risco-path-pr6-1-casa-do-rabacal-hiking-tr",
+          "title": "Lagoa do Vento",
+          "author": "Asurnipal",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Madeira-Levada_do_Risco_(path_PR6.1)-Casa_do_Rabacal-hiking_trail-15ASD.jpg"
+        }
+      }
+    ],
+    "pr6.3": [
+      {
+        "name": "Risco",
+        "lat": 32.76057,
+        "lon": -17.12442,
+        "photo": {
+          "file": "view-from-rabacal-to-levada-do-risco-levada-25-fontes-madeira-por",
+          "title": "Risco",
+          "author": "anagh",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:From_Rabacal_to_Levada_do_Risco_%5E_Levada_25_Fontes,_Madeira,_Portugal,_June-July_2011_-_panoramio_(15).jpg"
+        }
+      },
+      {
+        "name": "Pico do Vento",
+        "lat": 32.75893,
+        "lon": -17.12122,
+        "photo": {
+          "file": "view-levada-das-25-fontes-xii-42391550332",
+          "title": "Pico do Vento",
+          "author": "Pedro from Maia (Porto), Portugal",
+          "license": "CC BY 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Levada_das_25_Fontes_XII_(42391550332).jpg"
+        }
+      },
+      {
+        "name": "Lagoa do Vento",
+        "lat": 32.76018,
+        "lon": -17.12229,
+        "photo": {
+          "file": "view-madeira-levada-do-risco-path-pr6-1-casa-do-rabacal-hiking-tr",
+          "title": "Lagoa do Vento",
+          "author": "Asurnipal",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Madeira-Levada_do_Risco_(path_PR6.1)-Casa_do_Rabacal-hiking_trail-15ASD.jpg"
+        }
+      },
+      {
+        "name": "Risco",
+        "lat": 32.7602,
+        "lon": -17.12262,
+        "photo": {
+          "file": "view-madeira-levada-do-risco-path-pr6-1-casa-do-rabacal-hiking-tr",
+          "title": "Lagoa do Vento",
+          "author": "Asurnipal",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Madeira-Levada_do_Risco_(path_PR6.1)-Casa_do_Rabacal-hiking_trail-15ASD.jpg"
+        }
+      }
+    ],
+    "pr6.6": [
+      {
+        "name": "Rabaçal",
+        "lat": 32.75859,
+        "lon": -17.13904,
+        "photo": {
+          "file": "view-vista-do-miradouro-do-rabacal-portugal-51927910658",
+          "title": "Rabaçal",
+          "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+          "license": "CC BY-SA 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Vista_do_Miradouro_do_Raba%C3%A7al_-_Portugal_(51927910658).jpg"
+        }
+      }
+    ],
+    "pr8": [
+      {
+        "name": "São Lourenço",
+        "lat": 32.74898,
+        "lon": -16.69768,
+        "photo": {
+          "file": "view-the-rocks-of-sao-lourenco-at-sunset-madeira-portugal",
+          "title": "São Lourenço",
+          "author": "Ввласенко",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:The_rocks_of_S%C3%A3o_Louren%C3%A7o_at_sunset._Madeira,_Portugal.jpg"
+        }
+      },
+      {
+        "name": "São Lourenço",
+        "lat": 32.74341,
+        "lon": -16.70104,
+        "photo": {
+          "file": "view-on-the-way-to-ponta-do-sao-lourenco-37762389305",
+          "title": "São Lourenço",
+          "author": "Michael from Mannheim, Germany",
+          "license": "CC BY-SA 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:On_the_way_to_Ponta_do_S%C3%A3o_Louren%C3%A7o_(37762389305).jpg"
+        }
+      },
+      {
+        "name": "Pedra Furada",
+        "lat": 32.7505,
+        "lon": -16.69389,
+        "photo": {
+          "file": "view-steilkuste-auf-madeira",
+          "title": "Pedra Furada",
+          "author": "Faultierfachhandel",
+          "license": "CC0",
+          "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+          "source": "https://commons.wikimedia.org/wiki/File:Steilk%C3%BCste_auf_Madeira.jpg"
+        }
+      },
+      {
+        "name": "Casa do Sardinha",
+        "lat": 32.74291,
+        "lon": -16.68182,
+        "photo": {
+          "file": "view-2010-03-02-17-47-54-portugal-canical",
+          "title": "Casa do Sardinha",
+          "author": "Hansueli Krapf",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:2010-03-02_17_47_54_Portugal-Cani%C3%A7al.jpg"
+        }
+      }
+    ],
+    "pr7": [
+      {
+        "name": "Lamaçeiros",
+        "lat": 32.85152,
+        "lon": -17.16604,
+        "photo": {
+          "file": "view-2015-madeira-samsung-143",
+          "title": "Lamaçeiros",
+          "author": "Mattes",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:2015_Madeira_Samsung_(143).jpg"
+        }
+      },
+      {
+        "name": "Lamaçeiros",
+        "lat": 32.8517,
+        "lon": -17.16645,
+        "photo": {
+          "file": "view-2015-madeira-samsung-143",
+          "title": "Lamaçeiros",
+          "author": "Mattes",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:2015_Madeira_Samsung_(143).jpg"
+        }
+      }
+    ],
+    "pr9": [
+      {
+        "name": "Birdwatching",
+        "lat": 32.78441,
+        "lon": -16.9088
+      }
+    ],
+    "pr11": [
+      {
+        "name": "Balcões",
+        "lat": 32.74159,
+        "lon": -16.89032,
+        "photo": {
+          "file": "view-view-from-balcoes-madeira",
+          "title": "Balcões",
+          "author": "H. Zell",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:View_from_Balc%C3%B5es_-_Madeira.jpg"
+        }
+      }
+    ],
+    "pr10": [
+      {
+        "name": "Portela",
+        "lat": 32.74675,
+        "lon": -16.82657,
+        "photo": {
+          "file": "view-2011-03-05-03-13-madeira-227-machico-5544647739",
+          "title": "Portela",
+          "author": "Allie_Caulfield from Germany",
+          "license": "CC BY 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:2011-03-05_03-13_Madeira_227_Machico_(5544647739).jpg"
+        }
+      }
+    ],
+    "pr12": [
+      {
+        "name": "Relvinha",
+        "lat": 32.73201,
+        "lon": -16.98527,
+        "photo": {
+          "file": "view-madeira-trail-2",
+          "title": "Relvinha",
+          "author": "Tiia Monto",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Madeira_-_trail_2.jpg"
+        }
+      },
+      {
+        "name": "Boca da Corrida",
+        "lat": 32.71067,
+        "lon": -16.9861,
+        "photo": {
+          "file": "view-valley-view-from-boca-da-corrida-in-curral-das-freiras-camar",
+          "title": "Boca da Corrida",
+          "author": "Ximonic (Simo Räsänen)",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Valley_view_from_Boca_da_Corrida_in_Curral_das_Freiras,_C%C3%A2mara_de_Lobos,_Madeira,_2023_May.jpg"
+        }
+      }
+    ],
+    "pr13": [
+      {
+        "name": "Fio",
+        "lat": 32.80899,
+        "lon": -17.12544
+      },
+      {
+        "name": "Rocha dos Ingleses",
+        "lat": 32.81037,
+        "lon": -17.13893,
+        "photo": {
+          "file": "view-2010-03-01-12-04-52-portugal-ribeira-funda",
+          "title": "Rocha dos Ingleses",
+          "author": "Hansueli Krapf",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:2010-03-01_12_04_52_Portugal-Ribeira_Funda.jpg"
+        }
+      },
+      {
+        "name": "Vereda do Fanal",
+        "lat": 32.80264,
+        "lon": -17.1301
+      },
+      {
+        "name": "Miradouro",
+        "lat": 32.78003,
+        "lon": -17.1365
+      }
+    ],
+    "pr19": [
+      {
+        "name": "Prazeres",
+        "lat": 32.75186,
+        "lon": -17.21795,
+        "photo": {
+          "file": "view-hotel-jardin-atlantico-prazeres-panoramio-azoren66",
+          "title": "Prazeres",
+          "author": "azoren66",
+          "license": "CC BY 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:H%C3%B4tel_jardin_atlantico_prazeres_-_panoramio_-_azoren66.jpg"
+        }
+      }
+    ],
+    "pr17": [
+      {
+        "name": "Boca da Encumeada",
+        "lat": 32.75456,
+        "lon": -17.01952,
+        "photo": {
+          "file": "view-view-from-miradouro-da-encumeada-02",
+          "title": "Boca da Encumeada",
+          "author": "H. Zell",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:View_from_Miradouro_da_Encumeada_02.jpg"
+        }
+      },
+      {
+        "name": "Encumeada",
+        "lat": 32.75434,
+        "lon": -17.01938,
+        "photo": {
+          "file": "view-encumeada-road-er110-madeira-portugal-june-july-2011-panoram",
+          "title": "Encumeada",
+          "author": "anagh",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Encumeada,_road_ER110,_Madeira,_Portugal,_June-July_2011_-_panoramio_(3).jpg"
+        }
+      },
+      {
+        "name": "Lapa do Galho",
+        "lat": 32.75186,
+        "lon": -17.02651,
+        "photo": {
+          "file": "view-encumeada-ilha-da-madeira-portugal-2848671039",
+          "title": "Lapa do Galho",
+          "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+          "license": "CC BY-SA 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Encumeada_-_Ilha_da_Madeira_-_Portugal_(2848671039).jpg"
+        }
+      }
+    ],
+    "pr18": [
+      {
+        "name": "Posto Florestal Cascalho",
+        "lat": 32.81018,
+        "lon": -16.93342,
+        "photo": {
+          "file": "view-levada-do-rei",
+          "title": "Posto Florestal Cascalho",
+          "author": "Tiia Monto",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Levada_do_Rei.jpg"
+        }
+      }
+    ],
+    "pr21": [
+      {
+        "name": "Boca da Encumeada",
+        "lat": 32.75456,
+        "lon": -17.01952,
+        "photo": {
+          "file": "view-view-from-miradouro-da-encumeada-02",
+          "title": "Boca da Encumeada",
+          "author": "H. Zell",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:View_from_Miradouro_da_Encumeada_02.jpg"
+        }
+      },
+      {
+        "name": "Encumeada",
+        "lat": 32.75434,
+        "lon": -17.01938,
+        "photo": {
+          "file": "view-encumeada-road-er110-madeira-portugal-june-july-2011-panoram",
+          "title": "Encumeada",
+          "author": "anagh",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Encumeada,_road_ER110,_Madeira,_Portugal,_June-July_2011_-_panoramio_(3).jpg"
+        }
+      }
+    ],
+    "pr27": [
+      {
+        "name": "Rabaças",
+        "lat": 32.74376,
+        "lon": -17.07187
+      }
+    ],
+    "pr28": [
+      {
+        "name": "Paul",
+        "lat": 32.76696,
+        "lon": -17.13311
+      },
+      {
+        "name": "Rabaçal",
+        "lat": 32.75859,
+        "lon": -17.13904,
+        "photo": {
+          "file": "view-vista-do-miradouro-do-rabacal-portugal-51927910658",
+          "title": "Rabaçal",
+          "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+          "license": "CC BY-SA 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Vista_do_Miradouro_do_Raba%C3%A7al_-_Portugal_(51927910658).jpg"
+        }
+      }
+    ],
+    "osm-4444583": [
+      {
+        "name": "Furna dos Namorados",
+        "lat": 32.66335,
+        "lon": -16.89602,
+        "photo": {
+          "file": "view-santa-maria-maior-madeira-portugal-jardim-botanico-da-madeir",
+          "title": "Furna dos Namorados",
+          "author": "Dietmar Rabich",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Santa_Maria_Maior_(Madeira,_Portugal),_Jardim_Bot%C3%A2nico_da_Madeira,_Blick_auf_den_Hafen_von_Funchal_--_2025_--_1824.jpg"
+        }
+      }
+    ],
+    "osm-6224972": [
+      {
+        "name": "Pombais",
+        "lat": 32.85774,
+        "lon": -17.20155
+      }
+    ],
+    "osm-15635292": [
+      {
+        "name": "Florenças",
+        "lat": 32.73008,
+        "lon": -17.14486
+      }
+    ],
+    "osm-4752386": [
+      {
+        "name": "Lombada dos Marinheiros",
+        "lat": 32.78738,
+        "lon": -17.2335,
+        "photo": {
+          "file": "view-miradouro-da-lombada-dos-marinheiros-ilha-da-madeira-portuga",
+          "title": "Lombada dos Marinheiros",
+          "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+          "license": "CC BY-SA 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Miradouro_da_Lombada_dos_Marinheiros_-_Ilha_da_Madeira_-_Portugal_(51551824225).jpg"
+        }
+      }
+    ],
+    "osm-19609007": [
+      {
+        "name": "Boca da Encumeada",
+        "lat": 32.75456,
+        "lon": -17.01952,
+        "photo": {
+          "file": "view-view-from-miradouro-da-encumeada-02",
+          "title": "Boca da Encumeada",
+          "author": "H. Zell",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:View_from_Miradouro_da_Encumeada_02.jpg"
+        }
+      },
+      {
+        "name": "Encumeada",
+        "lat": 32.75434,
+        "lon": -17.01938,
+        "photo": {
+          "file": "view-encumeada-road-er110-madeira-portugal-june-july-2011-panoram",
+          "title": "Encumeada",
+          "author": "anagh",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Encumeada,_road_ER110,_Madeira,_Portugal,_June-July_2011_-_panoramio_(3).jpg"
+        }
+      },
+      {
+        "name": "Lapa do Galho",
+        "lat": 32.75186,
+        "lon": -17.02651,
+        "photo": {
+          "file": "view-encumeada-ilha-da-madeira-portugal-2848671039",
+          "title": "Lapa do Galho",
+          "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+          "license": "CC BY-SA 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Encumeada_-_Ilha_da_Madeira_-_Portugal_(2848671039).jpg"
+        }
+      }
+    ],
+    "osm-5563074": [
+      {
+        "name": "Espigão",
+        "lat": 32.70729,
+        "lon": -17.03121,
+        "photo": {
+          "file": "view-serra-de-agua-3",
+          "title": "Espigão",
+          "author": "Nuno Capelo Caldeira",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Serra_de_%C3%81gua_3.jpg"
+        }
+      }
+    ],
+    "osm-6193460": [
+      {
+        "name": "Rabaças",
+        "lat": 32.74376,
+        "lon": -17.07187
+      }
+    ],
+    "osm-4441705": [
+      {
+        "name": "Lamaçeiros",
+        "lat": 32.85152,
+        "lon": -17.16604,
+        "photo": {
+          "file": "view-2015-madeira-samsung-143",
+          "title": "Lamaçeiros",
+          "author": "Mattes",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:2015_Madeira_Samsung_(143).jpg"
+        }
+      },
+      {
+        "name": "Lamaçeiros",
+        "lat": 32.8517,
+        "lon": -17.16645,
+        "photo": {
+          "file": "view-2015-madeira-samsung-143",
+          "title": "Lamaçeiros",
+          "author": "Mattes",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:2015_Madeira_Samsung_(143).jpg"
+        }
+      }
+    ],
+    "osm-5626092": [
+      {
+        "name": "Paul",
+        "lat": 32.76696,
+        "lon": -17.13311
+      },
+      {
+        "name": "Rabaçal",
+        "lat": 32.75859,
+        "lon": -17.13904,
+        "photo": {
+          "file": "view-vista-do-miradouro-do-rabacal-portugal-51927910658",
+          "title": "Rabaçal",
+          "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+          "license": "CC BY-SA 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Vista_do_Miradouro_do_Raba%C3%A7al_-_Portugal_(51927910658).jpg"
+        }
+      }
+    ],
+    "osm-5742678": [
+      {
+        "name": "Paul",
+        "lat": 32.76696,
+        "lon": -17.13311
+      },
+      {
+        "name": "Rabaçal",
+        "lat": 32.75859,
+        "lon": -17.13904,
+        "photo": {
+          "file": "view-vista-do-miradouro-do-rabacal-portugal-51927910658",
+          "title": "Rabaçal",
+          "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+          "license": "CC BY-SA 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Vista_do_Miradouro_do_Raba%C3%A7al_-_Portugal_(51927910658).jpg"
+        }
+      }
+    ],
+    "osm-3285943": [
+      {
+        "name": "Curral dos Romeiros",
+        "lat": 32.67528,
+        "lon": -16.89241
+      }
+    ],
+    "osm-4444452": [
+      {
+        "name": "Fio",
+        "lat": 32.80899,
+        "lon": -17.12544
+      }
+    ],
+    "osm-19607947": [
+      {
+        "name": "Teleférico",
+        "lat": 32.76154,
+        "lon": -16.8053
+      }
+    ],
+    "osm-11088599": [
+      {
+        "name": "Eirinha - Pico do Lombo Galêgo",
+        "lat": 32.76825,
+        "lon": -16.87598
+      },
+      {
+        "name": "Encontro - Cruzinhas",
+        "lat": 32.76216,
+        "lon": -16.87498,
+        "photo": {
+          "file": "view-miradouro-do-encontro-cruzinhas-towards-ribeira-seca-valley-",
+          "title": "Encontro - Cruzinhas",
+          "author": "Ximonic (Simo Räsänen)",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Miradouro_do_Encontro_Cruzinhas_towards_Ribeira_Seca_valley,_Santana,_Madeira,_Portugal,_2023_May.jpg"
+        }
+      },
+      {
+        "name": "Loirinho - Fajã Grande",
+        "lat": 32.75848,
+        "lon": -16.87841
+      },
+      {
+        "name": "Serrado",
+        "lat": 32.80249,
+        "lon": -16.87963,
+        "photo": {
+          "file": "view-casas-tipicas-de-santana-9",
+          "title": "Serrado",
+          "author": "Alberto-g-rovi",
+          "license": "CC BY 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Casas_tipicas_de_Santana_(9).jpg"
+        }
+      }
+    ],
+    "osm-19661598": [
+      {
+        "name": "Boca da Encumeada",
+        "lat": 32.75456,
+        "lon": -17.01952,
+        "photo": {
+          "file": "view-view-from-miradouro-da-encumeada-02",
+          "title": "Boca da Encumeada",
+          "author": "H. Zell",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:View_from_Miradouro_da_Encumeada_02.jpg"
+        }
+      },
+      {
+        "name": "Encumeada",
+        "lat": 32.75434,
+        "lon": -17.01938,
+        "photo": {
+          "file": "view-encumeada-road-er110-madeira-portugal-june-july-2011-panoram",
+          "title": "Encumeada",
+          "author": "anagh",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Encumeada,_road_ER110,_Madeira,_Portugal,_June-July_2011_-_panoramio_(3).jpg"
+        }
+      },
+      {
+        "name": "Torre da Igreja do Colégio",
+        "lat": 32.64988,
+        "lon": -16.90889,
+        "photo": {
+          "file": "view-madeira-funchal-jesuit-church-dsc-0184-through-the-rain-to-i",
+          "title": "Torre da Igreja do Colégio",
+          "author": "Michael Gaylard from Horsham, UK",
+          "license": "CC BY 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Madeira_-_Funchal_-_Jesuit_Church_DSC_0184_Through_the_rain_to_Igreja_de_Santa_Maria_Maior_(Socorro)_(52590842807).jpg"
+        }
+      },
+      {
+        "name": "Vigia",
+        "lat": 32.80472,
+        "lon": -17.04685,
+        "photo": {
+          "file": "view-sao-vicente-53396557082",
+          "title": "Vigia",
+          "author": "Michael Gaylard from Horsham, UK",
+          "license": "CC BY 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Sao_Vicente_(53396557082).jpg"
+        }
+      },
+      {
+        "name": "Relvinha",
+        "lat": 32.73201,
+        "lon": -16.98527,
+        "photo": {
+          "file": "view-madeira-trail-2",
+          "title": "Relvinha",
+          "author": "Tiia Monto",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Madeira_-_trail_2.jpg"
+        }
+      },
+      {
+        "name": "Boca da Corrida",
+        "lat": 32.71067,
+        "lon": -16.9861,
+        "photo": {
+          "file": "view-valley-view-from-boca-da-corrida-in-curral-das-freiras-camar",
+          "title": "Boca da Corrida",
+          "author": "Ximonic (Simo Räsänen)",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Valley_view_from_Boca_da_Corrida_in_Curral_das_Freiras,_C%C3%A2mara_de_Lobos,_Madeira,_2023_May.jpg"
+        }
+      }
+    ],
+    "osm-5721350": [
+      {
+        "name": "São Cristovão",
+        "lat": 32.82695,
+        "lon": -16.97294,
+        "photo": {
+          "file": "view-caminho-da-entrosa",
+          "title": "São Cristovão",
+          "author": "Krib",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Caminho_da_Entrosa.jpg"
+        }
+      }
+    ],
+    "osm-10750407": [
+      {
+        "name": "Santo António",
+        "lat": 32.66392,
+        "lon": -16.93842
+      },
+      {
+        "name": "Quinta das Cruzes",
+        "lat": 32.6504,
+        "lon": -16.91399
+      },
+      {
+        "name": "Torre da Igreja do Colégio",
+        "lat": 32.64988,
+        "lon": -16.90889,
+        "photo": {
+          "file": "view-madeira-funchal-jesuit-church-dsc-0184-through-the-rain-to-i",
+          "title": "Torre da Igreja do Colégio",
+          "author": "Michael Gaylard from Horsham, UK",
+          "license": "CC BY 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Madeira_-_Funchal_-_Jesuit_Church_DSC_0184_Through_the_rain_to_Igreja_de_Santa_Maria_Maior_(Socorro)_(52590842807).jpg"
+        }
+      },
+      {
+        "name": "São Cristovão",
+        "lat": 32.82695,
+        "lon": -16.97294,
+        "photo": {
+          "file": "view-caminho-da-entrosa",
+          "title": "São Cristovão",
+          "author": "Krib",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Caminho_da_Entrosa.jpg"
+        }
+      },
+      {
+        "name": "Malhada",
+        "lat": 32.70169,
+        "lon": -16.95949,
+        "photo": {
+          "file": "view-valley-of-ribeira-dos-socorridos-from-the-mountain-funchal-m",
+          "title": "Malhada",
+          "author": "Ximonic (Simo Räsänen)",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Valley_of_Ribeira_dos_Socorridos_from_the_mountain,_Funchal,_Madeira,_2023_May.jpg"
+        }
+      },
+      {
+        "name": "Voltas",
+        "lat": 32.71331,
+        "lon": -16.9638,
+        "photo": {
+          "file": "view-mountains-outside-curral-das-freiras-2014",
+          "title": "Voltas",
+          "author": "Jane White",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Mountains_outside_Curral_Das_Freiras,_2014.jpg"
+        }
+      }
+    ],
+    "osm-10750040": [
+      {
+        "name": "Cais da Ponta do Sol",
+        "lat": 32.67792,
+        "lon": -17.10441,
+        "photo": {
+          "file": "view-cais-da-ponta-do-sol-madeira-portugal-2024-02",
+          "title": "Cais da Ponta do Sol",
+          "author": "Celsoazevedo",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Cais_da_Ponta_do_Sol,_Madeira,_Portugal_2024_02.jpg"
+        }
+      },
+      {
+        "name": "Paul da Serra",
+        "lat": 32.75772,
+        "lon": -17.09732
+      },
+      {
+        "name": "Miradouro da Ponta do Sol",
+        "lat": 32.68085,
+        "lon": -17.10371,
+        "photo": {
+          "file": "view-ponta-do-sol-roofs-landscape-38094803851",
+          "title": "Miradouro da Ponta do Sol",
+          "author": "VillageHero from Ulm, Germany",
+          "license": "CC BY-SA 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Ponta_do_Sol_roofs_landscape_(38094803851).jpg"
+        }
+      }
+    ],
+    "osm-4442863": [
+      {
+        "name": "Paraíso",
+        "lat": 32.73271,
+        "lon": -16.76443
+      }
+    ],
+    "osm-5659111": [
+      {
+        "name": "Achada do Teixeira",
+        "lat": 32.76533,
+        "lon": -16.92085,
+        "photo": {
+          "file": "view-trail-from-achada-do-teixeira-to-pico-ruivo-madeira-portugal",
+          "title": "Achada do Teixeira",
+          "author": "anagh",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Trail_from_Achada_do_Teixeira_to_Pico_Ruivo,_Madeira,_Portugal,_June-July_2011_-_panoramio.jpg"
+        }
+      }
+    ],
+    "osm-5659105": [
+      {
+        "name": "Achada do Teixeira",
+        "lat": 32.76533,
+        "lon": -16.92085,
+        "photo": {
+          "file": "view-trail-from-achada-do-teixeira-to-pico-ruivo-madeira-portugal",
+          "title": "Achada do Teixeira",
+          "author": "anagh",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Trail_from_Achada_do_Teixeira_to_Pico_Ruivo,_Madeira,_Portugal,_June-July_2011_-_panoramio.jpg"
+        }
+      }
+    ],
+    "osm-5633861": [
+      {
+        "name": "Achada do Teixeira",
+        "lat": 32.76533,
+        "lon": -16.92085,
+        "photo": {
+          "file": "view-trail-from-achada-do-teixeira-to-pico-ruivo-madeira-portugal",
+          "title": "Achada do Teixeira",
+          "author": "anagh",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Trail_from_Achada_do_Teixeira_to_Pico_Ruivo,_Madeira,_Portugal,_June-July_2011_-_panoramio.jpg"
+        }
+      },
+      {
+        "name": "Empenas",
+        "lat": 32.7709,
+        "lon": -16.9172
+      }
+    ],
+    "osm-5610434": [
+      {
+        "name": "Boca dos Namorados",
+        "lat": 32.69556,
+        "lon": -16.97818,
+        "photo": {
+          "file": "view-valley-view-from-boca-dos-namorados-in-curral-das-freiras-ca",
+          "title": "Boca dos Namorados",
+          "author": "Ximonic (Simo Räsänen)",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Valley_view_from_Boca_dos_Namorados_in_Curral_das_Freiras,_C%C3%A2mara_de_Lobos,_Madeira,_2023_May.jpg"
+        }
+      }
+    ],
+    "osm-19604085": [
+      {
+        "name": "Boca do Risco",
+        "lat": 32.75549,
+        "lon": -16.77244
+      }
+    ],
+    "osm-5633403": [
+      {
+        "name": "Boca do Risco",
+        "lat": 32.75549,
+        "lon": -16.77244
+      },
+      {
+        "name": "Pico das Roçadas",
+        "lat": 32.75431,
+        "lon": -16.75016,
+        "photo": {
+          "file": "view-canical-trail",
+          "title": "Pico das Roçadas",
+          "author": "Tiia Monto",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Cani%C3%A7al_-_trail.jpg"
+        }
+      }
+    ],
+    "osm-4444456": [
+      {
+        "name": "Calhau das Achadas",
+        "lat": 32.85287,
+        "lon": -17.20995,
+        "photo": {
+          "file": "view-calhau-snack-bar-near-cable-lift-achadas-da-cruz-madeira-por",
+          "title": "Calhau das Achadas",
+          "author": "anagh",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Calhau_Snack_Bar_near_cable_lift,_Achadas_da_Cruz,_Madeira,_Portugal,_June-July_2011_-_panoramio_(3).jpg"
+        }
+      }
+    ],
+    "osm-5562366": [
+      {
+        "name": "Precipício",
+        "lat": 32.77024,
+        "lon": -17.2345,
+        "photo": {
+          "file": "view-all-down-hill-to-paul-do-mar-panoramio",
+          "title": "Precipício",
+          "author": "Jane White",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:All_down_hill_to_Paul_Do_Mar._-_panoramio.jpg"
+        }
+      }
+    ],
+    "osm-5562105": [
+      {
+        "name": "Fio",
+        "lat": 32.80953,
+        "lon": -17.25657,
+        "photo": {
+          "file": "view-madeira-west-coast-and-plateau-dsc-0452-53397509665",
+          "title": "Fio",
+          "author": "Michael Gaylard from Horsham, UK",
+          "license": "CC BY 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Madeira_-_West_Coast_and_Plateau_DSC_0452_(53397509665).jpg"
+        }
+      }
+    ],
+    "osm-4444479": [
+      {
+        "name": "Relvinha",
+        "lat": 32.73201,
+        "lon": -16.98527,
+        "photo": {
+          "file": "view-madeira-trail-2",
+          "title": "Relvinha",
+          "author": "Tiia Monto",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Madeira_-_trail_2.jpg"
+        }
+      }
+    ],
+    "osm-4444453": [
+      {
+        "name": "Ponta da Ladeira",
+        "lat": 32.85954,
+        "lon": -17.20352,
+        "photo": {
+          "file": "view-2010-03-01-16-38-45-portugal-salao",
+          "title": "Ponta da Ladeira",
+          "author": "Hansueli Krapf",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:2010-03-01_16_38_45_Portugal-Sal%C3%A3o.jpg"
+        }
+      }
+    ],
+    "osm-4444477": [
+      {
+        "name": "Fonte do Bispo",
+        "lat": 32.79485,
+        "lon": -17.17921,
+        "photo": {
+          "file": "view-er110-9370-portugal-panoramio-2",
+          "title": "Fonte do Bispo",
+          "author": "Hansjoerg Eberle",
+          "license": "CC BY 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:ER110,_9370,_Portugal_-_panoramio_(2).jpg"
+        }
+      }
+    ],
+    "osm-4442869": [
+      {
+        "name": "Boca do Risco",
+        "lat": 32.75549,
+        "lon": -16.77244
+      },
+      {
+        "name": "Teleférico",
+        "lat": 32.76154,
+        "lon": -16.8053
+      }
+    ],
+    "osm-4444579": [
+      {
+        "name": "Porto da Cruz",
+        "lat": 32.7774,
+        "lon": -16.83734
+      }
+    ],
+    "osm-4444478": [
+      {
+        "name": "Relvinha",
+        "lat": 32.73201,
+        "lon": -16.98527,
+        "photo": {
+          "file": "view-madeira-trail-2",
+          "title": "Relvinha",
+          "author": "Tiia Monto",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Madeira_-_trail_2.jpg"
+        }
+      }
+    ],
+    "osm-4444578": [
+      {
+        "name": "Penha de Águia",
+        "lat": 32.77931,
+        "lon": -16.84117
+      }
+    ],
+    "osm-4442867": [
+      {
+        "name": "Rocha do Navio",
+        "lat": 32.81463,
+        "lon": -16.87652
+      }
+    ],
+    "osm-4442858": [
+      {
+        "name": "Voltas",
+        "lat": 32.71331,
+        "lon": -16.9638,
+        "photo": {
+          "file": "view-mountains-outside-curral-das-freiras-2014",
+          "title": "Voltas",
+          "author": "Jane White",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Mountains_outside_Curral_Das_Freiras,_2014.jpg"
+        }
+      }
+    ],
+    "osm-2232228": [
+      {
+        "name": "Doca do Cavacas",
+        "lat": 32.63582,
+        "lon": -16.9478,
+        "photo": {
+          "file": "view-doca-do-cavacas-funchal-01",
+          "title": "Doca do Cavacas",
+          "author": "H. Zell",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Doca_do_Cavacas_-_Funchal_01.jpg"
+        }
+      },
+      {
+        "name": "Lido Poente",
+        "lat": 32.63608,
+        "lon": -16.93433,
+        "photo": {
+          "file": "view-sao-martinho-madeira-portugal-miradouro-do-lido-2025-1949",
+          "title": "Lido Poente",
+          "author": "Dietmar Rabich",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:S%C3%A3o_Martinho_(Madeira,_Portugal),_Miradouro_do_Lido_--_2025_--_1949.jpg"
+        }
+      },
+      {
+        "name": "Poças do Governador",
+        "lat": 32.63328,
+        "lon": -16.94367,
+        "photo": {
+          "file": "view-sao-martinho-madeira-portugal-pocas-do-governador-2025-0167",
+          "title": "Poças do Governador",
+          "author": "Dietmar Rabich",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:S%C3%A3o_Martinho_(Madeira,_Portugal),_Po%C3%A7as_do_Governador_--_2025_--_0167.jpg"
+        }
+      },
+      {
+        "name": "Lido Nascente",
+        "lat": 32.63594,
+        "lon": -16.93179,
+        "photo": {
+          "file": "view-lido-funchal-01",
+          "title": "Lido Nascente",
+          "author": "H. Zell",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Lido_-_Funchal_01.jpg"
+        }
+      }
+    ],
+    "osm-2232229": [
+      {
+        "name": "Winston Churchill's",
+        "lat": 32.64798,
+        "lon": -16.97414,
+        "photo": {
+          "file": "view-camara-de-lobos-fishing-boats-01",
+          "title": "Winston Churchill's",
+          "author": "H. Zell",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:C%C3%A2mara_de_Lobos_-_Fishing_boats_01.jpg"
+        }
+      },
+      {
+        "name": "Salão Ideal",
+        "lat": 32.64557,
+        "lon": -16.97208,
+        "photo": {
+          "file": "view-view-from-miradouro-do-salao-ideal-in-camara-de-lobos-madeir",
+          "title": "Salão Ideal",
+          "author": "Ximonic (Simo Räsänen)",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:View_from_Miradouro_do_Sal%C3%A3o_Ideal_in_C%C3%A2mara_de_Lobos,_Madeira,_2023_May.jpg"
+        }
+      },
+      {
+        "name": "Ilhéu da Praia Formosa",
+        "lat": 32.64131,
+        "lon": -16.95691,
+        "photo": {
+          "file": "view-praia-formosa-ilha-da-madeira-portugal-2046395113",
+          "title": "Ilhéu da Praia Formosa",
+          "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+          "license": "CC BY-SA 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Praia_Formosa_-_Ilha_da_Madeira_-_Portugal_(2046395113).jpg"
+        }
+      }
+    ],
+    "osm-2223213": [
+      {
+        "name": "Winston Churchill's",
+        "lat": 32.64798,
+        "lon": -16.97414,
+        "photo": {
+          "file": "view-camara-de-lobos-fishing-boats-01",
+          "title": "Winston Churchill's",
+          "author": "H. Zell",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:C%C3%A2mara_de_Lobos_-_Fishing_boats_01.jpg"
+        }
+      },
+      {
+        "name": "Doca do Cavacas",
+        "lat": 32.63582,
+        "lon": -16.9478,
+        "photo": {
+          "file": "view-doca-do-cavacas-funchal-01",
+          "title": "Doca do Cavacas",
+          "author": "H. Zell",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Doca_do_Cavacas_-_Funchal_01.jpg"
+        }
+      },
+      {
+        "name": "Lido Poente",
+        "lat": 32.63608,
+        "lon": -16.93433,
+        "photo": {
+          "file": "view-sao-martinho-madeira-portugal-miradouro-do-lido-2025-1949",
+          "title": "Lido Poente",
+          "author": "Dietmar Rabich",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:S%C3%A3o_Martinho_(Madeira,_Portugal),_Miradouro_do_Lido_--_2025_--_1949.jpg"
+        }
+      },
+      {
+        "name": "Salão Ideal",
+        "lat": 32.64557,
+        "lon": -16.97208,
+        "photo": {
+          "file": "view-view-from-miradouro-do-salao-ideal-in-camara-de-lobos-madeir",
+          "title": "Salão Ideal",
+          "author": "Ximonic (Simo Räsänen)",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:View_from_Miradouro_do_Sal%C3%A3o_Ideal_in_C%C3%A2mara_de_Lobos,_Madeira,_2023_May.jpg"
+        }
+      },
+      {
+        "name": "Poças do Governador",
+        "lat": 32.63328,
+        "lon": -16.94367,
+        "photo": {
+          "file": "view-sao-martinho-madeira-portugal-pocas-do-governador-2025-0167",
+          "title": "Poças do Governador",
+          "author": "Dietmar Rabich",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:S%C3%A3o_Martinho_(Madeira,_Portugal),_Po%C3%A7as_do_Governador_--_2025_--_0167.jpg"
+        }
+      },
+      {
+        "name": "Lido Nascente",
+        "lat": 32.63594,
+        "lon": -16.93179,
+        "photo": {
+          "file": "view-lido-funchal-01",
+          "title": "Lido Nascente",
+          "author": "H. Zell",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Lido_-_Funchal_01.jpg"
+        }
+      },
+      {
+        "name": "Ilhéu da Praia Formosa",
+        "lat": 32.64131,
+        "lon": -16.95691,
+        "photo": {
+          "file": "view-praia-formosa-ilha-da-madeira-portugal-2046395113",
+          "title": "Ilhéu da Praia Formosa",
+          "author": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+          "license": "CC BY-SA 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Praia_Formosa_-_Ilha_da_Madeira_-_Portugal_(2046395113).jpg"
+        }
+      }
+    ]
+  }
+}
