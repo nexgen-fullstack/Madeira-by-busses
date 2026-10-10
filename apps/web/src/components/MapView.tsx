@@ -22,9 +22,11 @@ import { luminance, readableOn } from '../lib/color.ts';
 import { decodePlace, encodePlace } from '../lib/itinerary.ts';
 import { hideLaunch } from '../lib/launch.ts';
 import {
+  RUN_WIDTH,
   transitGeoJson,
   VIEW_WALK,
   WAY_TURQUOISE,
+  WAY_WIDTH,
   type LineNote,
   type MapContent,
   type ScenicSpot,
@@ -177,6 +179,8 @@ function toGeoJson(content: MapContent) {
           stops: (p.stops ?? []).join(','),
           pair: Boolean(p.pair),
           apart: Boolean(p.apart),
+          heading: p.heading ?? -1,
+          dot: stopDotId(p.fill ?? '#ffffff'),
         },
         geometry: { type: 'Point' as const, coordinates: [p.lon, p.lat] },
       })),
@@ -187,18 +191,82 @@ function toGeoJson(content: MapContent) {
 const EMPTY = { type: 'FeatureCollection' as const, features: [] };
 
 /**
- * Lines are drawn in their lanes, moved over by real metres (see `offsetPolyline`): close
- * up, each way of a road in the centre of its own lane. Further out, where a lane is less
- * than a pixel, the two ways of a line on its page are drawn this much further apart (px),
- * to see both; from z18, where the lanes show, not at all.
+ * Lines are drawn in their lanes, moved over by real metres (see `offsetPolyline`), which
+ * far out are less than a pixel. Where the two ways of a line share a road, each is drawn
+ * to its own side of it by this much of its width at any zoom: their dark edges meet in
+ * the middle, a solid line between two lanes, and neither covers the other.
  */
-const APART: [number, number][] = [
-  [13, 0],
-  [15, 1.5],
-  [16, 2.5],
-  [17, 1.5],
-  [18, 0],
-];
+const LANE_APART = 0.75;
+
+/** How far a way on a shared road is drawn to its side (px), by its width. */
+const sideOffset = [
+  'case',
+  ['get', 'side'],
+  ['*', ['get', 'width'], LANE_APART],
+  0,
+] as unknown as number;
+
+/** The arrows of a way on a shared road with it, on their side (px across the line). */
+const sideArrows = [
+  'case',
+  ['==', ['get', 'width'], WAY_WIDTH],
+  ['literal', [0, WAY_WIDTH * LANE_APART]],
+  ['literal', [0, RUN_WIDTH * LANE_APART]],
+] as unknown as [number, number];
+
+/** The image of a stop on a shared road, a dot in its way's colour in a dark ring. */
+const stopDotId = (fill: string) => `mb-stop-${fill.replace('#', '').toLowerCase()}`;
+/** Its dot and ring at full size (px), as the stops drawn as circles are close up. */
+const DOT_FILL = 4.5;
+const DOT_RING = 2;
+
+/**
+ * How big a stop is drawn at a zoom, of its full size: as the circles of the other stops
+ * grow (their radius and ring in the `mb-point` layer), so the two kinds look alike.
+ */
+function stopScale(zoom: number): number {
+  const at = (stops: [number, number][]) => {
+    const i = stops.findIndex(([z]) => z >= zoom);
+    if (i <= 0) return i === 0 ? stops[0]![1] : stops.at(-1)![1];
+    const [z0, v0] = stops[i - 1]!;
+    const [z1, v1] = stops[i]!;
+    return v0 + ((v1 - v0) * (zoom - z0)) / (z1 - z0);
+  };
+  const radius = at([
+    [10, 0],
+    [11.5, 1.8],
+    [13, 3],
+    [15, 4.5],
+  ]);
+  const ring = at([
+    [10, 0],
+    [11.5, 1],
+    [14, 2],
+  ]);
+  return (radius + ring) / (DOT_FILL + DOT_RING);
+}
+const DOT_ZOOMS = [10, 10.5, 11, 11.5, 12, 12.5, 13, 13.5, 14, 14.5, 15];
+
+/** Puts on the map the dots of the colours its stops on shared roads are in. */
+function addStopDots(map: MapLibreMap, content: MapContent) {
+  for (const p of content.points) {
+    if (p.heading === undefined) continue;
+    const id = stopDotId(p.fill ?? '#ffffff');
+    if (map.hasImage(id)) continue;
+    const r = (DOT_FILL + DOT_RING) * 2;
+    const image = canvasImage(r * 2, r * 2, (ctx) => {
+      ctx.beginPath();
+      ctx.arc(r, r, r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color ?? '#14181F';
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(r, r, DOT_FILL * 2, 0, Math.PI * 2);
+      ctx.fillStyle = p.fill ?? '#ffffff';
+      ctx.fill();
+    });
+    if (image) map.addImage(id, image, { pixelRatio: 2 });
+  }
+}
 
 /** A chevron pointing along a line, for the arrows the way the bus goes. */
 function arrowImage(): ImageData | undefined {
@@ -363,12 +431,6 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
     const image = make();
     if (image) map.addImage(id, image, { pixelRatio: 2 });
   }
-  const sideOffset = [
-    'interpolate',
-    ['linear'],
-    ['zoom'],
-    ...APART.flatMap(([zoom, px]) => [zoom, ['case', ['get', 'side'], px, 0]]),
-  ] as unknown as number;
   // Every stop and line, under whatever the screen draws.
   map.addSource('mb-net-lines', { type: 'geojson', data: EMPTY });
   map.addSource('mb-net-stops', { type: 'geojson', data: EMPTY });
@@ -484,14 +546,7 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
         'icon-allow-overlap': true,
         'icon-ignore-placement': true,
         'icon-rotation-alignment': 'map',
-        ...(side && {
-          'icon-offset': [
-            'interpolate',
-            ['linear'],
-            ['zoom'],
-            ...APART.flatMap(([zoom, px]) => [zoom, ['literal', [0, px]]]),
-          ] as unknown as [number, number],
-        }),
+        ...(side && { 'icon-offset': sideArrows }),
       },
     });
   }
@@ -512,8 +567,9 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
     id: 'mb-point',
     type: 'circle',
     source: 'mb-points',
-    // The destination is the yellow pin (a marker), not a circle.
-    filter: ['!=', ['get', 'kind'], 'destination'],
+    // The destination is the yellow pin (a marker), not a circle; a stop on a road both ways
+    // of its line share is a dot on its way's side (below).
+    filter: ['all', ['!=', ['get', 'kind'], 'destination'], ['<', ['get', 'heading'], 0]],
     // Where one bus is left and the next boarded at the same stop: a red dot in a blue ring.
     layout: { 'circle-sort-key': ['match', ['get', 'kind'], 'board', 2, 'alight', 1, 0] },
     paint: {
@@ -615,6 +671,38 @@ function addOverlay(map: MapLibreMap, base: BaseLayer) {
         14,
         ['match', ['get', 'kind'], 'stop', 2, 3],
       ],
+    },
+  });
+  // A stop on a road both ways of its line share: on its way's side of it, as its line is,
+  // turned the way its bus goes so that its right is that side.
+  map.addLayer({
+    id: 'mb-stop-side',
+    type: 'symbol',
+    source: 'mb-points',
+    filter: ['>=', ['get', 'heading'], 0],
+    layout: {
+      'icon-image': ['get', 'dot'],
+      'icon-rotate': ['get', 'heading'],
+      'icon-rotation-alignment': 'map',
+      'icon-pitch-alignment': 'map',
+      'icon-size': [
+        'interpolate',
+        ['linear'],
+        ['zoom'],
+        ...DOT_ZOOMS.flatMap((z) => [z, stopScale(z)]),
+      ] as unknown as number,
+      // The offset is scaled with the dot: so much more where the dot is small.
+      'icon-offset': [
+        'interpolate',
+        ['linear'],
+        ['zoom'],
+        ...DOT_ZOOMS.flatMap((z) => {
+          const scale = stopScale(z);
+          return [z, ['literal', [scale > 0 ? (WAY_WIDTH * LANE_APART) / scale : 0, 0]]];
+        }),
+      ] as unknown as [number, number],
+      'icon-allow-overlap': true,
+      'icon-ignore-placement': true,
     },
   });
   // The flags where each bus is boarded and left, standing on their stops.
@@ -890,7 +978,11 @@ export default function MapView({ className }: { className?: string }) {
       ];
       const features = map.queryRenderedFeatures(box);
       const stop = features.find(
-        (f) => (f.layer.id === 'mb-point' || f.layer.id === 'mb-net-stop') && f.properties?.stops,
+        (f) =>
+          (f.layer.id === 'mb-point' ||
+            f.layer.id === 'mb-stop-side' ||
+            f.layer.id === 'mb-net-stop') &&
+          f.properties?.stops,
       );
       if (pickRef.current) {
         // Choosing a place: the pin goes where the map was tapped (onto a stop, if one was).
@@ -968,7 +1060,13 @@ export default function MapView({ className }: { className?: string }) {
       const c = map.getCenter();
       setCenter({ lat: c.lat, lon: c.lng });
     });
-    for (const id of ['mb-point', 'mb-net-stop', 'mb-line-hit', 'mb-net-line-hit']) {
+    for (const id of [
+      'mb-point',
+      'mb-stop-side',
+      'mb-net-stop',
+      'mb-line-hit',
+      'mb-net-line-hit',
+    ]) {
       map.on('mouseenter', id, () => (map.getCanvas().style.cursor = 'pointer'));
       map.on('mouseleave', id, () => (map.getCanvas().style.cursor = ''));
     }
@@ -1435,6 +1533,7 @@ function fitTo(map: MapLibreMap, bounds: LngLatBounds, duration: number) {
 
 function apply(map: MapLibreMap, content: MapContent, fit: { current: Fit }) {
   addPlates(map, content);
+  addStopDots(map, content);
   const data = toGeoJson(content);
   (map.getSource('mb-lines') as GeoJSONSource | undefined)?.setData(data.lines);
   (map.getSource('mb-points') as GeoJSONSource | undefined)?.setData(data.points);

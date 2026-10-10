@@ -68,6 +68,49 @@ describe('a line on the map', () => {
   });
 });
 
+describe('the two ways of a line on one road', () => {
+  it('puts each stop on its way, to its side, heading the way its bus goes', () => {
+    const c = routeContent(net, [there, back], 0);
+    const at = (s: number) => c.points.find((p) => p.stops?.[0] === s)!;
+    // Westward there (270°), eastward back (90°): each drawn on its own right.
+    expect(at(1).heading).toBe(270);
+    expect(at(3).heading).toBe(90);
+    // On the line itself, not the pavement it is mapped on.
+    expect(at(3).lat).toBeCloseTo(32.6501, 6);
+  });
+
+  it('draws the ways apart only where they share a road, not on one-way streets', () => {
+    // Back through Câmara de Lobos by a street 200 m north, one way, then the coast again.
+    const loop = [
+      stop('', -17.06, 32.6501),
+      stop('', -16.98, 32.6501),
+      stop('', -16.98, 32.652),
+      stop('', -16.96, 32.652),
+      stop('', -16.96, 32.6501),
+      stop('', -16.91, 32.6501),
+    ];
+    const oneWay = { ...net, lane: (p: number) => (p === 0 ? shapes[0]! : loop) } as unknown as Network;
+    const c = routeContent(oneWay, [there, back], 0);
+    const backLines = c.lines.filter((l) => l.color === WAY_TURQUOISE);
+    expect(backLines.map((l) => l.side)).toEqual([true, false, true]);
+    // The street of its own in the middle, from the coast road and back to it.
+    const street = backLines[1]!.coords;
+    expect(Math.max(...street.map((p) => p.lat))).toBeCloseTo(32.652, 4);
+    expect(street[0]!.lat).toBeCloseTo(32.6501, 3);
+    // The way there is alone on the coast road along that street: in the middle there too.
+    const thereLines = c.lines.filter((l) => l.color === WAY_YELLOW);
+    expect(thereLines.map((l) => l.side)).toEqual([true, false, true]);
+  });
+
+  it('keeps a line crossing the other way back on one side of the road', () => {
+    // The way back crosses the way there's road (north to south) once.
+    const across = [stop('', -16.95, 32.66), stop('', -16.95, 32.64)];
+    const cross = { ...net, lane: (p: number) => (p === 0 ? shapes[0]! : across) } as unknown as Network;
+    const c = routeContent(cross, [there, back], 0);
+    expect(c.lines.map((l) => l.side)).toEqual([false, false]);
+  });
+});
+
 describe('the variants of a line on the map', () => {
   // Back from Ribeira Brava along the coast; on Saturdays one bus by the Via Rápida
   // inland from Câmara de Lobos, rejoining the coast road at Funchal.
@@ -97,7 +140,8 @@ describe('the variants of a line on the map', () => {
     expect(saturday.lines.map((l) => l.note)).toEqual([undefined, note]);
     expect(saturday.lines).toHaveLength(2);
     const detour = saturday.lines[1]!;
-    expect(detour).toMatchObject({ arrows: true, side: true, width: RUN_WIDTH });
+    // With no way back on its roads, in the middle of them.
+    expect(detour).toMatchObject({ arrows: true, side: false, width: RUN_WIDTH });
     // From where it leaves the coast road to where it comes back to it.
     expect(Math.max(...detour.coords.map((c) => c.lat))).toBeCloseTo(32.66);
     expect(Math.min(...detour.coords.map((c) => c.lon))).toBeGreaterThan(-16.98);

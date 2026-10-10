@@ -14,8 +14,8 @@ export interface MapLine {
   /** Arrows along the line, the way the bus goes. */
   arrows?: boolean;
   /**
-   * Beside the line running the other way on the same road: drawn a little
-   * further apart from it while the map is too far away for the lanes to show.
+   * Along the line running the other way on the same road: each drawn to its own side of
+   * the road at any zoom, as two lanes with a dark line between them.
    */
   side?: boolean;
   /** Shown when the line is tapped: what it is and when it runs. */
@@ -51,6 +51,11 @@ export interface MapPoint extends LatLon {
   pair?: boolean;
   /** Its name written to the side of its flag, away from the other's name at the same place. */
   apart?: boolean;
+  /**
+   * A stop on a road both ways of its line share: the way its bus goes there (degrees from
+   * north), so it is drawn on its own way's side, as that way's line is.
+   */
+  heading?: number;
 }
 
 export interface MapContent {
@@ -315,10 +320,92 @@ const runsOn = (net: Network, pattern: number, date?: string) =>
   date === undefined ||
   net.patterns[pattern]!.trips.some(([service]) => net.isServiceActive(service, date));
 
+/** Closer than this (m) to the other way's road, along it, the two ways share the road. */
+const SHARED = 18;
+/** Shorter runs (m) on or off the other way's road are crossings and wobbles, not a change. */
+const SHORT_RUN = 60;
+/** A stop farther than this (m) from its way's line stays where it is mapped. */
+const SNAP = 60;
+
+/** The heading of a step (degrees clockwise from north). */
+function heading(a: LatLon, b: LatLon): number {
+  const dx = (b.lon - a.lon) * Math.cos((a.lat * Math.PI) / 180);
+  const dy = b.lat - a.lat;
+  return ((Math.atan2(dx, dy) * 180) / Math.PI + 360) % 360;
+}
+
+/** The heading of a line at its `i`th point. */
+const headingAt = (line: readonly LatLon[], i: number) =>
+  heading(line[Math.max(0, i - 1)]!, line[Math.min(line.length - 1, i + 1)]!);
+
 /**
- * A line on the map, each way it runs on its side of the road with arrows the way the bus
- * goes: the `chosen` way in neon yellow, the way back (and any other) in neon turquoise,
- * and each stop in the colour of its way. Of the other variants of a way, those with a
+ * A way's line in runs along the other ways' roads (`shared`: drawn to its side, as the
+ * two lanes of one road) and on roads of its own (one-way streets, loops: drawn in the
+ * middle of its road). Close to the other way's line and running along it, either way
+ * (not across it at a crossing), is on its road.
+ */
+export function sharedRuns(
+  coords: readonly LatLon[],
+  others: readonly (readonly LatLon[])[],
+): { coords: LatLon[]; shared: boolean }[] {
+  const dense = densify(coords);
+  const other = others.map((o) => densify(o));
+  const points = other.flat();
+  const headings = other.flatMap((o) => o.map((_, i) => headingAt(o, i)));
+  const index = new GridIndex(points, 60);
+  const flags = dense.map((p, i) => {
+    const h = headingAt(dense, i);
+    return index.within(p, SHARED).some(({ index: k }) => {
+      const turn = Math.abs(((headings[k]! - h + 540) % 360) - 180);
+      // Running along it (back the other way, or the same way) within 35°.
+      return turn > 145 || turn < 35;
+    });
+  });
+  // Runs of one kind, as [first point, last point, shared].
+  const runs = () => {
+    const out: [number, number, boolean][] = [];
+    flags.forEach((f, i) => {
+      const last = out.at(-1);
+      if (last && last[2] === f) last[1] = i;
+      else out.push([i, i, f]);
+    });
+    return out;
+  };
+  const length = (a: number, b: number) => {
+    let m = 0;
+    for (let i = Math.max(1, a); i <= b; i++) m += haversine(dense[i - 1]!, dense[i]!);
+    return m;
+  };
+  // A short run between two of the other kind takes theirs: first the short shared ones
+  // (a crossing), then the short ones apart (a wobble of the map, a lay-by).
+  for (const kind of [true, false]) {
+    const all = runs();
+    all.forEach(([a, b, f], i) => {
+      if (f !== kind || i === 0 || i === all.length - 1 || length(a, b) >= SHORT_RUN) return;
+      for (let k = a; k <= b; k++) flags[k] = !kind;
+    });
+  }
+  // A short run at either end goes with the one next to it.
+  const ends = runs();
+  for (const r of [ends[0], ends.at(-1)]) {
+    if (!r || ends.length < 2 || length(r[0], r[1]) >= SHORT_RUN) continue;
+    for (let k = r[0]; k <= r[1]; k++) flags[k] = !r[2];
+  }
+  const all = runs();
+  if (all.length === 1) return [{ coords: coords.slice(), shared: all[0]![2] }];
+  // Each run from where the one before it ends, so the line goes on unbroken.
+  return all.map(([a, b, shared]) => ({
+    coords: dense.slice(Math.max(0, a - 1), b + 1),
+    shared,
+  }));
+}
+
+/**
+ * A line on the map, each way it runs with arrows the way the bus goes: the `chosen` way
+ * in neon yellow, the way back (and any other) in neon turquoise, and each stop in the
+ * colour of its way, on its line. Where both ways take one road, each is drawn to its own
+ * side of it (traffic keeps right), its stops with it; where they part (one-way streets,
+ * a loop), each in the middle of its road. Of the other variants of a way, those with a
  * bus on `date`, only where they leave its road are drawn, thinner and with arrows too;
  * tapped, they tell their `note`.
  */
@@ -329,48 +416,79 @@ export function routeContent(
   date?: string,
   note?: (direction: Direction, pattern: number) => LineNote,
 ): MapContent {
-  const lines: MapLine[] = [];
-  const points = new Map<number, MapPoint>();
   const way = directions[chosen];
   // The chosen way last, over the way back where the two share a stop.
   const ways = [...directions.filter((d) => d !== way), ...(way ? [way] : [])];
-  for (const d of ways) {
-    const color = d === way ? WAY_YELLOW : WAY_TURQUOISE;
-    const drawn: LatLon[][] = [];
-    // The main variant always, the line's road; the others on the day they run.
+  // Each way's lines: its main variant always, the line's road; the others on the day they run.
+  const drawnBy = ways.map((d) => {
+    const drawn: { coords: LatLon[]; pattern: number; main: boolean }[] = [];
     d.patterns.forEach((p, i) => {
       if (i > 0 && !runsOn(net, p, date)) return;
       const shape = net.lane(p);
-      const parts = i === 0 ? [shape] : detours(shape, drawn);
-      drawn.push(...parts);
-      const about = i > 0 ? note?.(d, p) : undefined;
-      for (const coords of parts) {
+      const parts =
+        i === 0
+          ? [shape]
+          : detours(
+              shape,
+              drawn.map((x) => x.coords),
+            );
+      for (const coords of parts) drawn.push({ coords, pattern: p, main: i === 0 });
+    });
+    return drawn;
+  });
+  const lines: MapLine[] = [];
+  const points = new Map<number, MapPoint>();
+  ways.forEach((d, w) => {
+    const color = d === way ? WAY_YELLOW : WAY_TURQUOISE;
+    const mine = drawnBy[w]!;
+    const others = drawnBy.flatMap((x, k) => (k === w ? [] : x.map((y) => y.coords)));
+    // Where this way's lines run, to put its stops on them.
+    const along: { point: LatLon; heading: number; shared: boolean }[] = [];
+    for (const { coords, pattern: p, main } of mine) {
+      const about = main ? undefined : note?.(d, p);
+      for (const run of sharedRuns(coords, others)) {
         lines.push({
-          coords,
+          coords: run.coords,
           color,
-          width: i === 0 ? WAY_WIDTH : RUN_WIDTH,
+          width: main ? WAY_WIDTH : RUN_WIDTH,
           arrows: true,
-          side: true,
+          side: run.shared,
           route: net.patterns[p]!.route,
           pattern: p,
           ...(about ? { note: about } : {}),
         });
+        const dense = densify(run.coords);
+        dense.forEach((point, i) =>
+          along.push({ point, heading: headingAt(dense, i), shared: run.shared }),
+        );
       }
+    }
+    const index = new GridIndex(
+      along.map((a) => a.point),
+      60,
+    );
+    for (const p of d.patterns) {
+      if (!mine.some((x) => x.pattern === p)) continue;
       for (const s of net.patterns[p]!.stops) {
         const st = net.stops[s]!;
+        // On its way's line, in the lane its bus stops in; to its side where the way back
+        // shares the road.
+        const near = index.within(st, SNAP)[0];
+        const on = near ? along[near.index] : undefined;
         points.delete(s);
         points.set(s, {
-          lat: st.lat,
-          lon: st.lon,
+          lat: on?.point.lat ?? st.lat,
+          lon: on?.point.lon ?? st.lon,
           kind: 'stop',
           color: INK,
           fill: color,
           label: st.name,
           stops: [s],
+          ...(on?.shared ? { heading: Math.round(on.heading) } : {}),
         });
       }
-    });
-  }
+    }
+  });
   // The same while the reader switches between the ways or days: the line is shown alone.
   const main = directions[0]?.patterns[0];
   const key = `route:${main === undefined ? '' : net.patterns[main]!.route}`;
