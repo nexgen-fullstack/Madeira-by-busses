@@ -41,7 +41,10 @@ export interface Destination {
   id: DestinationId;
   name: string;
   region: Region;
-  /** Where a trip there ends: the stop or viewpoint. */
+  /**
+   * Where its photo was taken (from the photo's page, or read from the photo against the
+   * aerial one), else what the photo shows: its pin on the map, and where a trip there ends.
+   */
   lat: number;
   lon: number;
   /**
@@ -123,16 +126,16 @@ export const DESTINATIONS: readonly Destination[] = [
     id: 'eira',
     name: 'Eira do Serrado',
     region: 'mountains',
-    lat: 32.71066,
-    lon: -16.96188,
+    lat: 32.71035,
+    lon: -16.96576,
     credit: { author: 'Luís Campanário', ...BY_SA_4, source: commons('Eira_do_Serrado.jpg') },
   },
   {
     id: 'monte',
     name: 'Monte',
     region: 'funchal',
-    lat: 32.67666,
-    lon: -16.90374,
+    lat: 32.67334,
+    lon: -16.90286,
     credit: {
       author: 'H. Zell',
       ...BY_SA_3,
@@ -143,8 +146,8 @@ export const DESTINATIONS: readonly Destination[] = [
     id: 'botanico',
     name: 'Jardim Botânico',
     region: 'funchal',
-    lat: 32.66225,
-    lon: -16.89404,
+    lat: 32.66224,
+    lon: -16.89499,
     credit: {
       author: 'Dietmar Rabich',
       ...BY_SA_4,
@@ -157,8 +160,8 @@ export const DESTINATIONS: readonly Destination[] = [
     id: 'palheiro',
     name: 'Jardins do Palheiro',
     region: 'funchal',
-    lat: 32.66306,
-    lon: -16.8685,
+    lat: 32.66005,
+    lon: -16.86725,
     credit: {
       author: 'muffinn',
       ...BY_2,
@@ -169,8 +172,8 @@ export const DESTINATIONS: readonly Destination[] = [
     id: 'barcelos',
     name: 'Pico dos Barcelos',
     region: 'funchal',
-    lat: 32.65905,
-    lon: -16.94128,
+    lat: 32.65866,
+    lon: -16.93941,
     credit: {
       author: 'Diego Delso',
       ...BY_SA_4,
@@ -183,8 +186,8 @@ export const DESTINATIONS: readonly Destination[] = [
     id: 'formosa',
     name: 'Praia Formosa',
     region: 'funchal',
-    lat: 32.64274,
-    lon: -16.95066,
+    lat: 32.63555,
+    lon: -16.94745,
     credit: {
       author: 'Bex Walton',
       ...BY_2,
@@ -203,8 +206,8 @@ export const DESTINATIONS: readonly Destination[] = [
     id: 'cabo-girao',
     name: 'Cabo Girão',
     region: 'west',
-    lat: 32.656,
-    lon: -17.0047,
+    lat: 32.65661,
+    lon: -17.00454,
     credit: {
       author: 'H. Zell',
       ...BY_SA_3,
@@ -215,8 +218,8 @@ export const DESTINATIONS: readonly Destination[] = [
     id: 'camara-lobos',
     name: 'Câmara de Lobos',
     region: 'west',
-    lat: 32.6489,
-    lon: -16.9773,
+    lat: 32.64797,
+    lon: -16.97562,
     credit: {
       author: 'Dietmar Rabich',
       ...BY_SA_4,
@@ -227,8 +230,8 @@ export const DESTINATIONS: readonly Destination[] = [
     id: 'porto-moniz',
     name: 'Porto Moniz',
     region: 'north',
-    lat: 32.8667,
-    lon: -17.1697,
+    lat: 32.8683,
+    lon: -17.1664,
     credit: {
       author: 'Holger Uwe Schmitt',
       ...BY_SA_4,
@@ -239,8 +242,8 @@ export const DESTINATIONS: readonly Destination[] = [
     id: 'santana',
     name: 'Santana',
     region: 'north',
-    lat: 32.8058,
-    lon: -16.882,
+    lat: 32.80543,
+    lon: -16.88258,
     credit: {
       author: 'H. Zell',
       ...BY_SA_3,
@@ -251,8 +254,9 @@ export const DESTINATIONS: readonly Destination[] = [
     id: 'sao-lourenco',
     name: 'Ponta de São Lourenço',
     region: 'east',
-    lat: 32.7432,
-    lon: -16.7068,
+    lat: 32.74988,
+    lon: -16.70002,
+    reach: 1600,
     credit: {
       author: 'Diego Delso',
       ...BY_SA_4,
@@ -263,8 +267,9 @@ export const DESTINATIONS: readonly Destination[] = [
     id: 'balcoes',
     name: 'Balcões',
     region: 'mountains',
-    lat: 32.7349,
-    lon: -16.8869,
+    lat: 32.74159,
+    lon: -16.89032,
+    reach: 1200,
     credit: {
       author: 'Ricardo Martins',
       ...BY_SA_4,
@@ -292,8 +297,8 @@ export const DESTINATIONS: readonly Destination[] = [
     id: 'ribeira-brava',
     name: 'Ribeira Brava',
     region: 'west',
-    lat: 32.67148,
-    lon: -17.06744,
+    lat: 32.66995,
+    lon: -17.06535,
     uncredited: true,
   },
   {
@@ -324,8 +329,8 @@ export const DESTINATIONS: readonly Destination[] = [
     id: 'paul-do-mar',
     name: 'Paul do Mar',
     region: 'west',
-    lat: 32.7569,
-    lon: -17.2272,
+    lat: 32.7537,
+    lon: -17.2262,
     uncredited: true,
   },
   {
@@ -358,8 +363,8 @@ export const DESTINATIONS: readonly Destination[] = [
     id: 'seixal',
     name: 'Seixal',
     region: 'north',
-    lat: 32.8237,
-    lon: -17.1043,
+    lat: 32.82192,
+    lon: -17.10299,
     uncredited: true,
   },
   {
@@ -375,16 +380,16 @@ export const DESTINATIONS: readonly Destination[] = [
     id: 'sao-vicente',
     name: 'São Vicente',
     region: 'north',
-    lat: 32.80228,
-    lon: -17.04724,
+    lat: 32.80915,
+    lon: -17.04875,
     uncredited: true,
   },
   {
     id: 'ponta-delgada',
     name: 'Ponta Delgada',
     region: 'north',
-    lat: 32.827,
-    lon: -16.9862,
+    lat: 32.82783,
+    lon: -16.98459,
     uncredited: true,
   },
   {
@@ -415,8 +420,8 @@ export const DESTINATIONS: readonly Destination[] = [
     id: 'porto-da-cruz',
     name: 'Porto da Cruz',
     region: 'north',
-    lat: 32.7734,
-    lon: -16.8276,
+    lat: 32.77355,
+    lon: -16.82585,
     uncredited: true,
   },
   {
@@ -455,8 +460,8 @@ export const DESTINATIONS: readonly Destination[] = [
     id: 'canico-de-baixo',
     name: 'Caniço de Baixo',
     region: 'east',
-    lat: 32.64605,
-    lon: -16.82439,
+    lat: 32.64505,
+    lon: -16.82745,
     uncredited: true,
   },
   {
